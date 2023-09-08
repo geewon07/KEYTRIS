@@ -8,7 +8,7 @@ DIR_NAME=$(dirname "$FILE_PATH")
 
 # 디렉토리의 마지막 부분만 추출
 FOLDER_NAME=$(basename "$DIR_NAME")
-
+ 
 # Information 
 SERVICE_NAME=keytris
 PART_NAME=$FOLDER_NAME
