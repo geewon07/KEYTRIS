@@ -11,15 +11,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomResponse {
-
-  private String roomId;
+public class StartResponse {
+  private int score;
+  private Room room;
   private RoomStatus roomStatus;
 
-  public RoomResponse makeRoom(Room room) {
-    return RoomResponse.builder()
-        .roomId(room.getRoomId())
-        .roomStatus(room.getRoomStatus())
+//TODO: roomManager-> 방의 정보 가져오기
+  public StartResponse getRoom(Room room) {
+
+    return StartResponse.builder()
+
         .build();
   }
 }

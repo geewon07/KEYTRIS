@@ -1,6 +1,7 @@
 package com.ssafy.confidentIs.keytris.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,16 +19,16 @@ public class Player {
   private String nickname;
   private PlayerStatus playerStatus;
   private int score;
-  private String[] currentWordList;
-  private String[] targetWordList;
-  private String[] subWordList;
+  private List<String> currentWordList;
+  private List<String> targetWordList;
+  private List<String> subWordList;
   private Timestamp overTime;//멀티모드
   private int streak;
   private String lastWord;
 
   @Builder //1인 모드 초기 값
   public Player(PlayerStatus playerStatus, int score,
-      String[] targetWordList, String[] subWordList, int streak) {
+      List<String> targetWordList, List<String> subWordList, int streak) {
     this.playerStatus = playerStatus;
     this.score = score;
     this.targetWordList = targetWordList;
@@ -36,8 +37,8 @@ public class Player {
   }
 
   @Builder
-  public Player(String playerId, PlayerStatus playerStatus, int score, String[] targetWordList,
-      String[] subWordList, int streak) {
+  public Player(String playerId, PlayerStatus playerStatus, int score, List<String> targetWordList,
+      List<String> subWordList, int streak) {
     this.playerId = playerId;
     this.playerStatus = playerStatus;
     this.score = score;

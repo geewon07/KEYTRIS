@@ -11,7 +11,7 @@ public class PlayerServiceImpl implements PlayerService {
 
   private final WordService wordService;
   @Override
-  public Player intialPlayer() {
+  public Player initialPlayer() {
 
     return Player.builder()
         .playerId("testerPlayer")

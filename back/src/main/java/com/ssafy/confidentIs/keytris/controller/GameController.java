@@ -1,6 +1,7 @@
 package com.ssafy.confidentIs.keytris.controller;
 
 import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
+import com.ssafy.confidentIs.keytris.dto.CreateRequest;
 import com.ssafy.confidentIs.keytris.dto.GuessRequest;
 import com.ssafy.confidentIs.keytris.dto.StatusResponse;
 import com.ssafy.confidentIs.keytris.dto.OverRequest;
@@ -14,6 +15,7 @@ import com.ssafy.confidentIs.keytris.service.WordService;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,17 +36,21 @@ public class GameController {
   private final RoomService roomService;
   private final WordService wordService;
 
-  @PostMapping
-  public ResponseEntity<?> create(@RequestBody String type, String category) {
-    //
+  private final int REFILL_SUB_AMOUNT = 300;
+  private final int REFILL_TARGET_AMOUNT = 30;
 
-    //log.info("not used in testing type:{} , category: {}", type, category);
+
+  @PostMapping
+  public ResponseEntity<?> create(@RequestBody CreateRequest request) {
+    log.info("not used in testing type:{} , category: {}", request.getType(),
+        request.getCategory());
     log.info("called create");
 //    Date currentDate = new Date();// Convert the Date object to a Timestamp
 //    Timestamp timestamp = new Timestamp(currentDate.getTime());
-    Player single = playerService.intialPlayer();
+    Player single = playerService.initialPlayer();
 
-    Room room = roomService.createRoom("type", "category", single);
+    //단어 가져오기 요청
+    Room room = roomService.createRoom("type", 0, single);
 
     StatusResponse makeRoomResponse = new StatusResponse();
     ResponseDto responseDto = new ResponseDto("success", "방만들기 성공",
@@ -63,6 +69,7 @@ public class GameController {
       //-> ID 배정
     } else {
       if (roomService.checkReady(request.getRoomStatus(), request.getPlayerStatus())) {
+
         responseDto = new ResponseDto("success", "게임 시작",
             Collections.singletonMap("startTime", timestamp));
       } else {
@@ -76,7 +83,7 @@ public class GameController {
   public ResponseEntity<?> enter(@RequestBody GuessRequest request) {
     ResponseDto responseDto;
     if (wordService.checkDataBase(request.getGuessWord())) {
-      String[] sortedWordList = wordService.sortByProximity(request.getCurrenWordList());
+      List<String> sortedWordList = wordService.sortByProximity(request.getCurrenWordList());
       responseDto = new ResponseDto("success", "유사도 정렬",
           Collections.singletonMap("sortedWordList", sortedWordList));
     } else {
@@ -93,8 +100,8 @@ public class GameController {
 //    wordListResponse.refill();
     responseDto = new ResponseDto("success", "단어 목록 보강",
         Collections.singletonMap("wordListResponse",
-            wordListResponse.refill(wordService.getWords("categoryOrSub", 1),
-                wordService.getWords("categoryOrTarget", 2))));
+            wordListResponse.refill(wordService.getWords("sub", 0, REFILL_SUB_AMOUNT),
+                wordService.getWords("target", 0, REFILL_TARGET_AMOUNT))));
     return new ResponseEntity<>(responseDto, HttpStatus.OK);
   }
 
@@ -116,10 +123,10 @@ public class GameController {
   }
 
   @PostMapping("/ranking")
-  public ResponseEntity<?> newRecord(@RequestBody String nickname,@RequestBody int score){
-    log.info("new record, score:{}, name:{}", nickname,score);//랭킹 redis 저장 대체
-    ResponseDto responseDto = new ResponseDto("success","신기록 등록");
-    return new ResponseEntity<>(responseDto,HttpStatus.OK);
+  public ResponseEntity<?> newRecord(@RequestBody String nickname, @RequestBody int score) {
+    log.info("new record, score:{}, name:{}", nickname, score);//랭킹 redis 저장 대체
+    ResponseDto responseDto = new ResponseDto("success", "신기록 등록");
+    return new ResponseEntity<>(responseDto, HttpStatus.OK);
   }
 
 

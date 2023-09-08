@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 public interface RoomService {
 
 
-  Room createRoom(String type, String category, Player player);
+  Room createRoom(String type, int category, Player player);
   Boolean checkReady(RoomStatus rStatus, PlayerStatus pStatus);
 
 //  Boolean checkExistance(String playerId, String roomId);

@@ -16,14 +16,15 @@ public class RoomServiceImpl implements RoomService {
   private final RoomManager roomManager;
   private final WordService wordService;
   @Override
-  public Room createRoom(String type, String category, Player player) {
+  public Room createRoom(String type, int category, Player player) {
+    //TODO : 멀티 가능하게  string type 숫자로 적는 법? 일단 1인 모드만 고려
 
-    String[] subWords = wordService.getWords("categoryOrSub",1);//subwords: 1
-    String[] targetWords = wordService.getWords("categoryOrTarget",2);//later number of words to be brought, target:2
-    String[] levelWords = wordService.getWords("categoryOrSub",1);
+    List<String> subWords = wordService.getWords("sub",category,17);//subwords: 1
+    List<String> targetWords = wordService.getWords("target",category,1);//later number of words to be brought, target:2
+    List<String> levelWords = wordService.getWords("level",category,10);
     Room created = Room.builder()
         .roomStatus(RoomStatus.PREPARED)
-        .limit(1)
+        .limit(type.equals("single")?1:Integer.parseInt(type))
         .playerList(new Player[]{player})
         .master(player.getPlayerId())
         .subWordList(subWords)

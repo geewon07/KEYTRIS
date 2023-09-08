@@ -5,6 +5,6 @@ import com.ssafy.confidentIs.keytris.model.Player;
 
 public interface PlayerService {
 
-  Player intialPlayer();
+  Player initialPlayer();
 
 }
