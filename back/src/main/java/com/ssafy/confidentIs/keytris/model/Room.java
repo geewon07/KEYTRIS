@@ -1,12 +1,14 @@
 package com.ssafy.confidentIs.keytris.model;
 
 import java.sql.Timestamp;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-
+@ToString
 @Getter
 @Builder
 @NoArgsConstructor
@@ -19,16 +21,16 @@ public class Room {
   private int limit;
   private Player[] playerList = new Player[limit];
   private Timestamp startTime;
-  private String[] targetWordList;
-  private String[] subWordList;
-  private String[] levelWordList;
+  private List<String> targetWordList;
+  private List<String> subWordList;
+  private List<String> levelWordList;
   private String type;
-  private String category;
+  private int category;
 
   @Builder
   public Room(RoomStatus status, String master, int limit, Player[] playerList,
       Timestamp startTime,
-      String[] levelWordList) {
+      List<String> levelWordList) {
     this.roomStatus = status;
     this.master = master;
     this.limit = limit;
@@ -42,8 +44,9 @@ public class Room {
    */
   @Builder
   public Room(String roomId, RoomStatus roomStatus, String master, int limit, Player[] playerList,
-      String[] targetWordList, String[] subWordList, String[] levelWordList, String type,
-      String category) {
+      List<String> targetWordList, List<String> subWordList, List<String> levelWordList,
+      String type,
+      int category) {
     this.roomId = roomId;
     this.roomStatus = roomStatus;
     this.master = master;
@@ -55,4 +58,13 @@ public class Room {
     this.type = type;
     this.category = category;
   }
+
+  public void updateStatus(RoomStatus roomStatus) {
+    this.roomStatus = roomStatus;
+  }
+  //TODO: 싱글플레이어 라 유저목록이 없음, 합친다면 멀티플레이어 방식으로, 그냥이라면 이대로
+  public void updatePlayer(Player player){
+    this.playerList[0] = player;
+  }
+
 }
