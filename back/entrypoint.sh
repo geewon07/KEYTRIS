@@ -33,7 +33,7 @@ if [ $? -ne 0 ]; then
         echo "### Docker installed successfully."
     else 
         echo "### Docker is installed but not logged in."
-        cat /configure/docker/my_password.txt | sudo docker login --username yimo22 --password-stdin
+        cat "/configure/docker/my_password.txt" | sudo docker login --username yimo22 --password-stdin
     fi
 else 
     echo "### Docker already logged in."
