@@ -1,5 +1,6 @@
 package com.ssafy.confidentIs.keytris.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,10 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WordListResponse {
 
-  private String[] subWordList;
-  private String[] targetWordList;
+  private List<String> subWordList;
+  private List<String> targetWordList;
 
-  public WordListResponse refill(String[] subList, String[] targetList){
+  public WordListResponse refill(List<String> subList, List<String> targetList){
 
     return WordListResponse.builder()
         .subWordList(subList)
