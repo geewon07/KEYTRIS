@@ -19,8 +19,10 @@ public class Player {
   private String nickname;
   private PlayerStatus playerStatus;
   private int score;
+  private int targetWordIndex;
+  private int subWordIndex;
   private List<String> currentWordList;
-  private List<String> targetWordList;
+  private String targetWord;
   private List<String> subWordList;
   private Timestamp overTime;//멀티모드
   private int streak;
@@ -28,22 +30,51 @@ public class Player {
 
   @Builder //1인 모드 초기 값
   public Player(PlayerStatus playerStatus, int score,
-      List<String> targetWordList, List<String> subWordList, int streak) {
+      String targetWord, List<String> subWordList, int streak) {
     this.playerStatus = playerStatus;
     this.score = score;
-    this.targetWordList = targetWordList;
+    this.targetWord = targetWord;
     this.subWordList = subWordList;
     this.streak = streak;
   }
 
   @Builder
-  public Player(String playerId, PlayerStatus playerStatus, int score, List<String> targetWordList,
+  public Player(String playerId, PlayerStatus playerStatus, int score, String targetWord,
       List<String> subWordList, int streak) {
     this.playerId = playerId;
     this.playerStatus = playerStatus;
     this.score = score;
-    this.targetWordList = targetWordList;
+    this.targetWord = targetWord;
     this.subWordList = subWordList;
     this.streak = streak;
+  }
+
+  public Player(String playerId, PlayerStatus playerStatus, int score, int targetWordIndex,
+      int subWordIndex) {
+    this.playerId = playerId;
+    this.playerStatus = playerStatus;
+    this.score = score;
+    this.targetWordIndex = targetWordIndex;
+    this.subWordIndex = subWordIndex;
+  }
+
+  public void updateWords(List<String> subWordList, String targetWord,
+      List<String> currentWordList) {
+    this.currentWordList = currentWordList;
+    this.subWordList = subWordList;
+    this.targetWord = targetWord;
+  }
+
+  public void updateIndex(int subWordIndex, int targetWordIndex) {
+    this.subWordIndex = subWordIndex;
+    this.targetWordIndex = targetWordIndex;
+  }
+
+  public void updateStatus(PlayerStatus playerStatus) {
+    this.playerStatus = playerStatus;
+  }
+
+  public void updateLastWord(String lastWord) {
+    this.lastWord = lastWord;
   }
 }

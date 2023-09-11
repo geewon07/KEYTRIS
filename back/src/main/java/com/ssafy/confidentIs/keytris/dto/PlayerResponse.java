@@ -13,10 +13,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlayerResponse {
+  // 단어 변동 시 보낼 것
 
   private String playerId;
   private PlayerStatus playerStatus;
-  private List<String> targetWordList;
+  private String targetWord;
   private List<String> subWordList;
 
 
@@ -24,7 +25,7 @@ public class PlayerResponse {
     return PlayerResponse.builder()
         .playerId(player.getPlayerId())
         .playerStatus(player.getPlayerStatus())
-        .targetWordList(player.getTargetWordList())
+        .targetWord(player.getTargetWord())
         .subWordList(player.getSubWordList())
         .build();
   }

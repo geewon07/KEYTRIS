@@ -6,8 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-
+@ToString
 @Getter
 @Builder
 @NoArgsConstructor
@@ -43,7 +44,8 @@ public class Room {
    */
   @Builder
   public Room(String roomId, RoomStatus roomStatus, String master, int limit, Player[] playerList,
-      List<String> targetWordList, List<String> subWordList, List<String> levelWordList, String type,
+      List<String> targetWordList, List<String> subWordList, List<String> levelWordList,
+      String type,
       int category) {
     this.roomId = roomId;
     this.roomStatus = roomStatus;
@@ -56,4 +58,13 @@ public class Room {
     this.type = type;
     this.category = category;
   }
+
+  public void updateStatus(RoomStatus roomStatus) {
+    this.roomStatus = roomStatus;
+  }
+  //TODO: 싱글플레이어 라 유저목록이 없음, 합친다면 멀티플레이어 방식으로, 그냥이라면 이대로
+  public void updatePlayer(Player player){
+    this.playerList[0] = player;
+  }
+
 }
