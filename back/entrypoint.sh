@@ -48,7 +48,7 @@ echo "### Image Build Completed - $IMAGE_INFO"
 
 # Image Tagging
 echo "### Image Tagging Start"
-UPLOAD_IMAGE="$USER_NAME/$IMAGE_INFO"
+UPLOAD_IMAGE="yimo22/$IMAGE_INFO"
 docker tag $IMAGE_INFO $UPLOAD_IMAGE
 echo "### Image Tagging Completed - $UPLOAD_IMAGE"
 
