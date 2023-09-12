@@ -5,12 +5,13 @@ import com.ssafy.confidentIs.keytris.dto.CreateRequest;
 import com.ssafy.confidentIs.keytris.dto.GuessRequest;
 import com.ssafy.confidentIs.keytris.dto.OverRequest;
 import com.ssafy.confidentIs.keytris.dto.StartRequest;
-import com.ssafy.confidentIs.keytris.model.Player;
+import com.ssafy.confidentIs.keytris.model.SinglePlayer;
 import com.ssafy.confidentIs.keytris.service.PlayerService;
 import com.ssafy.confidentIs.keytris.service.RoomService;
 import com.ssafy.confidentIs.keytris.service.WordService;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+@ToString
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -36,13 +37,10 @@ public class GameController {
 
   @PostMapping
   public ResponseEntity<?> create(@RequestBody CreateRequest request) {
-    log.info("create singlePlayer & room, type:{} , category: {}", request.getType(),
-        request.getCategory());
-    Player singlePlayer = playerService.initialPlayer();
-//    log.info("singlePlayer: {} ,\n room:{}",singlePlayer.toString(),room.toString());
+    log.info("create singlePlayer & room, category: {}",request.getCategory());
     ResponseDto responseDto = new ResponseDto("success", "방만들기 성공",
-        Collections.singletonMap("newRoomResponseDto",
-            roomService.createRoom(request.getType(), 0, singlePlayer)));
+        Collections.singletonMap("statusResponse",
+            roomService.createRoom( 0)));
     log.info("created :{}", responseDto);
     return new ResponseEntity<>(responseDto, HttpStatus.OK);
   }
@@ -99,7 +97,7 @@ public class GameController {
   }
 
   @PostMapping("/ranking")
-  public ResponseEntity<?> newRecord(@RequestBody String nickname, @RequestBody int score) {
+  public ResponseEntity<?> newRecord(@RequestBody String nickname, @RequestBody long score) {
     log.info("new record, score:{}, name:{}", nickname, score);//랭킹 redis 저장 대체
     ResponseDto responseDto = new ResponseDto("success", "신기록 등록");
     return new ResponseEntity<>(responseDto, HttpStatus.OK);

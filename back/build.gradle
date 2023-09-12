@@ -22,6 +22,8 @@ repositories {
 }
 
 dependencies {
+	//scheduler tutorial has this??
+	implementation 'org.springframework.boot:spring-boot-starter'
 	//check and validate dto
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	//web & websocket
@@ -42,6 +44,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.awaitility:awaitility:3.1.2'
 }
 
 tasks.named('test') {

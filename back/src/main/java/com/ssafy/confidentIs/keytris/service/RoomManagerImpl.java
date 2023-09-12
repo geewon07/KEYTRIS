@@ -1,13 +1,14 @@
 package com.ssafy.confidentIs.keytris.service;
 
 import com.ssafy.confidentIs.keytris.model.Room;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class RoomManagerImpl implements RoomManager {
 
-  private static final ConcurrentHashMap<String, Room> roomRegistry = new ConcurrentHashMap<>();
+  private static final ConcurrentHashMap<UUID, Room> roomRegistry = new ConcurrentHashMap<>();
 
   @Override
   public void addRoom(Room room) {
@@ -16,17 +17,17 @@ public class RoomManagerImpl implements RoomManager {
   }
 
   @Override
-  public Room getRoom(String roomId) {
+  public Room getRoom(UUID roomId) {
     return roomRegistry.get(roomId);
   }
 
   @Override
-  public void updateRoom(String roomId, Room updated) {
+  public void updateRoom(UUID roomId, Room updated) {
     roomRegistry.put(roomId, updated);
   }
 
   @Override
-  public void removeRoom(String roomId) {
+  public void removeRoom(UUID roomId) {
     roomRegistry.remove(roomId);
   }
 }

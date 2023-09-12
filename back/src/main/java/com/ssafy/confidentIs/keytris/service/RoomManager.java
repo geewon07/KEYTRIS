@@ -1,15 +1,16 @@
 package com.ssafy.confidentIs.keytris.service;
 
 import com.ssafy.confidentIs.keytris.model.Room;
+import java.util.UUID;
 
 public interface RoomManager {
 
   void addRoom(Room room);
 
-  Room getRoom(String roomId);
+  Room getRoom(UUID roomId);
 
-  void updateRoom(String roomId, Room updated);
+  void updateRoom(UUID roomId, Room updated);
 
-  void removeRoom(String roomId);
+  void removeRoom(UUID roomId);
 
 }
