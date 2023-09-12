@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active:
+      - local
+    group:
+      local:
+        - data-local
+      dev:
+        - data-dev
+      prod:
+        - data-prod
+    include:
+      - data
+
+server:
+  port: 8765
+
+logging:
+  level:
+    org:
+      springframework: info
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
