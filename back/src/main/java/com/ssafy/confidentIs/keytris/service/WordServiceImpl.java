@@ -4,8 +4,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class WordServiceImpl implements WordService {
 
@@ -16,19 +18,20 @@ public class WordServiceImpl implements WordService {
   }
 
   @Override //TODO: 지원과 조율 필요 ,데이터에 단어가져올 때 API 요청이 들어간다고?
-  public List<String> sortByProximity(List<String> currentWordList) {
+  public List<String> sortByProximity(List<String> currentWordList, String guess) {
+//    log.info("null error troubleshoot, currentWL:{}, guess:{}",currentWordList,guess);
     currentWordList.sort(Comparator.naturalOrder());
     return currentWordList;
   }
 
   //TODO: 나중에 단어뽑아올때 어느 카테고리에서 얼마만큼 가져올것인지, 키워드는 따로 뽑는 로직이 있는 지 추가
   @Override
-  public List<String> getWords(String type,int category, int amount) {
+  public List<String> getWords(String type, int category, int amount) {
     //TODO: 카테고리 부분 추가 구현 @지원 , amount 개수, sublist 와 idx 활용?
-    List<String> toReturn= new LinkedList<String>();
+    List<String> toReturn = new LinkedList<String>();
     if (type.equals("sub")) {
       toReturn = new LinkedList<String>(Arrays.asList(
-        "가방", "강아지", "고양이", "곰돌이", "기린",
+          "가방", "강아지", "고양이", "곰돌이", "기린",
           "나무", "냉장고", "눈사람", "다람쥐", "더위",
           "라디오", "마법", "무지개", "물고기", "바나나",
           "사과", "소녀", "솜사탕", "아기", "안녕",
@@ -42,7 +45,7 @@ public class WordServiceImpl implements WordService {
           "바", "사", "아", "자", "차",
           "카", "타", "파", "하"));
     } else if (type.equals("level")) {
-      toReturn =new LinkedList<String>(Arrays.asList(
+      toReturn = new LinkedList<String>(Arrays.asList(
           "거울", "고구마", "공부", "꽃", "나비",
           "물", "바다", "바이올린", "별", "빵",
           "사탕", "선물", "손", "숟가락", "식탁",
@@ -53,6 +56,11 @@ public class WordServiceImpl implements WordService {
     }
 
     return toReturn;
+  }
+
+  @Override
+  public int getIndex(String target, List<String> sortedWordList) {
+    return sortedWordList.indexOf(target);
   }
 
 }

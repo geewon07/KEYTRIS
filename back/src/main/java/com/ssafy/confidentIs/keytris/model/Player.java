@@ -77,4 +77,8 @@ public class Player {
   public void updateLastWord(String lastWord) {
     this.lastWord = lastWord;
   }
+
+  public void updateScore(int score) {
+    this.score = score;
+  }
 }

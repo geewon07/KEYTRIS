@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Getter
 @Builder
 @AllArgsConstructor
@@ -23,7 +25,7 @@ public class StatusResponse {
   private String roomId;
   private RoomStatus roomStatus;
 
-  public StatusResponse idStatus(Player player,Room room){
+  public StatusResponse idStatus(Player player, Room room) {
     return StatusResponse.builder()
         .playerId(player.getPlayerId())
         .playerStatus(player.getPlayerStatus())
