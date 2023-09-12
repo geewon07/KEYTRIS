@@ -16,7 +16,7 @@ PART_NAME=$FOLDER_NAME
 TAG=latest
 
 # Docker login
-sudo docker info 2>/dev/null | grep "Username:" > /dev/null 2>&1
+docker info 2>/dev/null | grep "Username:" > /dev/null 2>&1
 
 if [ $? -ne 0 ]; then
     echo "### Docker not logged or not installed."
@@ -24,7 +24,7 @@ if [ $? -ne 0 ]; then
     # Docker 설치 확인
     if ! command -v docker &> /dev/null; then 
         echo "### Docker not found! Installing..."
-        sudo apt-get update && install -y docker.io
+        sudo apt-get update && sudo apt install -y docker.io
 
         # Docker Service start!
         sudo systemctl start docker
@@ -33,7 +33,7 @@ if [ $? -ne 0 ]; then
         echo "### Docker installed successfully."
     else 
         echo "### Docker is installed but not logged in."
-        cat ~/configure/docker/my_password.txt | sudo docker login --username yimo22 --password-stdin
+        cat "/configure/docker/my_password.txt" | sudo docker login --username yimo22 --password-stdin
     fi
 else 
     echo "### Docker already logged in."
@@ -43,17 +43,17 @@ fi
 USER_NAME=$(sudo docker info 2>/dev/null | grep "Username:" | awk '{print $2}')
 IMAGE_INFO="$SERVICE_NAME-$PART_NAME:$TAG"
 echo "### Image Building Start - $IMAGE_INFO"
-sudo docker build -t $IMAGE_INFO .
+docker build -t $IMAGE_INFO .
 echo "### Image Build Completed - $IMAGE_INFO"
 
 # Image Tagging
 echo "### Image Tagging Start"
 UPLOAD_IMAGE="$USER_NAME/$IMAGE_INFO"
-sudo docker tag $IMAGE_INFO $UPLOAD_IMAGE
+docker tag $IMAGE_INFO $UPLOAD_IMAGE
 echo "### Image Tagging Completed - $UPLOAD_IMAGE"
 
 # Image pushing
 echo "### Image Pushing : $UPLOAD_IMAGE "
-sudo docker push $UPLOAD_IMAGE
+docker push $UPLOAD_IMAGE
 echo "### Image Pushing Completed - $UPLOAD_IMAGE"
 
