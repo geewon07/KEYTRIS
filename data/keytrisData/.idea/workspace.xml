@@ -39,6 +39,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ssafy/confidentIs/keytris/service/RoomServiceImpl.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ssafy/confidentIs/keytris/service/WordService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ssafy/confidentIs/keytris/service/WordServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/com/ssafy/confidentIs/keytris/KeytrisApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/ssafy/confidentIs/keytrisData/KeytrisApplicationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -192,6 +193,8 @@
       <workItem from="1694393746592" duration="19774000" />
       <workItem from="1694482186507" duration="77000" />
       <workItem from="1694483006217" duration="86000" />
+      <workItem from="1694484975680" duration="16000" />
+      <workItem from="1694485326535" duration="121000" />
     </task>
     <task id="LOCAL-00001" summary="testing lombok and slf4j">
       <option name="closed" value="true" />

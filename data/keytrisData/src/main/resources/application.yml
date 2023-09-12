@@ -1,0 +1,9 @@
+server:
+  port: 8765
+
+logging:
+  level:
+    org:
+      springframework: info
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
