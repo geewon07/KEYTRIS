@@ -26,6 +26,7 @@ public class DataServiceImpl {
     // 단어 유사도 확인 및 정렬된 데이터 요청
     public DataGuessWordResponse sendGuessWordRequest(DataGuessWordRequest dataGuessWordRequest) {
         String serverBUrl = dataServerUrl + "/guess-words";
+//        String serverBUrl = dataServerUrl;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -39,6 +40,7 @@ public class DataServiceImpl {
 
     public DataWordListResponse sendWordListRequest(DataWordListRequest dataWordListRequest) {
         String serverBUrl = dataServerUrl + "/get-words";
+//        String serverBUrl = dataServerUrl + "/start";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

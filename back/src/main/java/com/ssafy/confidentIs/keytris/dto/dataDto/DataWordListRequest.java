@@ -1,6 +1,7 @@
 package com.ssafy.confidentIs.keytris.dto.dataDto;
 
 import com.ssafy.confidentIs.keytris.model.Category;
+import com.ssafy.confidentIs.keytris.model.WordType;
 import lombok.*;
 
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class DataWordListRequest {
 
-    private String type;
-    private Category category;
-    private Integer amount;
+    private WordType type;
+    private int category;
+    private int amount;
 
 }
