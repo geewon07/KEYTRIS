@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OverResponse {
   private boolean isRecord;
-  private List<String> recordList;
+  private List<RankingResponse> recordList;
   private List<Article> newsList;
   StatusResponse statusResponse;
 
-  public OverResponse gameOver(boolean isRecord, String lastWord, Room room, List<Article> newsList,List<String> recordList) {
+  public OverResponse gameOver(boolean isRecord, Room room, List<Article> newsList,List<RankingResponse> recordList) {
     StatusResponse sResponse = new StatusResponse();
 
     return OverResponse.builder()

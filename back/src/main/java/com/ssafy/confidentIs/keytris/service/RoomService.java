@@ -1,15 +1,17 @@
 package com.ssafy.confidentIs.keytris.service;
 
 import com.ssafy.confidentIs.keytris.dto.GuessRequest;
+import com.ssafy.confidentIs.keytris.dto.OverRequest;
+import com.ssafy.confidentIs.keytris.dto.OverResponse;
+import com.ssafy.confidentIs.keytris.dto.RankingResponse;
 import com.ssafy.confidentIs.keytris.dto.StartResponse;
 import com.ssafy.confidentIs.keytris.dto.StatusResponse;
 import com.ssafy.confidentIs.keytris.dto.WordListResponse;
-import com.ssafy.confidentIs.keytris.model.SinglePlayer;
 import com.ssafy.confidentIs.keytris.model.PlayerStatus;
 import com.ssafy.confidentIs.keytris.model.Room;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
+import com.ssafy.confidentIs.keytris.model.SinglePlayer;
 import java.util.List;
-import java.util.UUID;
 
 public interface RoomService {
 
@@ -21,7 +23,7 @@ public interface RoomService {
 
   WordListResponse enterWord(GuessRequest request);
 
-  void gameOver(String roomId,String lastWord,Long score);
+  OverResponse gameOver(OverRequest request);
 
   //게임 상태 변경 준비->시작->
   void updateRoomStatus(String roomId, RoomStatus rStatus);
@@ -32,4 +34,5 @@ public interface RoomService {
   //플레이어 상태변경 + 플레이어
   void updatePlayerStatus(Room room, SinglePlayer player, String step);
 
+  List<RankingResponse> addHighscore(String nickname, String roomId);
 }

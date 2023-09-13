@@ -1,11 +1,15 @@
 package com.ssafy.confidentIs.keytris.service;
 
 import com.ssafy.confidentIs.keytris.dto.GuessRequest;
+import com.ssafy.confidentIs.keytris.dto.OverRequest;
+import com.ssafy.confidentIs.keytris.dto.OverResponse;
+import com.ssafy.confidentIs.keytris.dto.RankingResponse;
 import com.ssafy.confidentIs.keytris.dto.StartResponse;
 import com.ssafy.confidentIs.keytris.dto.StatusResponse;
 import com.ssafy.confidentIs.keytris.dto.WordListResponse;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
+import com.ssafy.confidentIs.keytris.model.Article;
 import com.ssafy.confidentIs.keytris.model.PlayerStatus;
 import com.ssafy.confidentIs.keytris.model.Room;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
@@ -16,9 +20,14 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -30,6 +39,7 @@ public class RoomServiceImpl implements RoomService {
   private final WordService wordService;
   private final PlayerService playerService;
   private final DataServiceImpl dataServiceImpl;
+  private final RedisTemplate redisTemplate;
 
   //TODO: 주석처리한 부분 정리하기
   @Override
@@ -117,7 +127,9 @@ public class RoomServiceImpl implements RoomService {
           .currentWordList(request.getCurrentWordList())
           .build();
       DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(dataGuessWordRequest);
-      String[][] sortedWordList = dataGuessWordResponse.getSortedWordList();
+      String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
+
+
 
       //점수
       //TODO : index -1 일때 없을 때 제외 시켜야..
@@ -157,28 +169,30 @@ public class RoomServiceImpl implements RoomService {
   }
 
   @Override
-  public void gameOver(String roomId, String lastWord, Long score) {
-    Room room = roomManager.getRoom(roomId);
+  public OverResponse gameOver(OverRequest request) {
+    OverResponse overResponse = new OverResponse();
+
+    Room room = roomManager.getRoom(request.getRoomId());
     SinglePlayer player = room.getPlayerList().get(0);
-    updateRoomStatus(roomId, RoomStatus.FINISHED);
+    updateRoomStatus(room.getRoomId(), RoomStatus.FINISHED);
     player.updateStatus(PlayerStatus.OVER);
     room.updatePlayer(player);
+    List<Article> newsList = new ArrayList<>();
     //TODO : news API
     // URL :https://openapi.naver.com/v1/search/news.json
     // method : GET
 
-    roomManager.updateRoom(roomId, room);
+    roomManager.updateRoom(request.getRoomId(), room);
     //TODO: redis-> 5위점수 < score
-    if (score > 2000) {
+    boolean isRecord;
+    List<RankingResponse> rankingList = getRanking();
+    if (request.getScore() > rankingList.get(4).getScore()) {
       log.info("score higher than 5th place -> add to redis");
-//      responseDto = new ResponseDto("success", "신기록 갱신, 입력창 보여주기",
-//          Collections.singletonMap("isRecord", true));
+      isRecord = true;
     } else {
-//      responseDto = new ResponseDto("success", "게임 종료, 기사 목록",
-//          Collections.singletonMap("articleList",
-//              new String[]{"https://developers.naver.com/docs/serviceapi/search/news/news.md"}));
-      //regardless give some articles -> naver api search news keyword ( lastWord : latest )
+      isRecord =false;
     }
+    return overResponse.gameOver(isRecord,room,newsList,rankingList);
   }
 
   @Override
@@ -206,5 +220,22 @@ public class RoomServiceImpl implements RoomService {
     room.updatePlayer(player);
     roomManager.updateRoom(room.getRoomId(), room);
   }
+
+  public List<RankingResponse> getRanking(){
+    String key = "ranking";
+    ZSetOperations<String, String> stringStringZSetOperations = redisTemplate.opsForZSet();
+    Set<TypedTuple<String>> typedTuples = stringStringZSetOperations.reverseRangeWithScores(key,0,4);
+    //TODO null의 경우 생각하기 -> 초기 레벨로 랭킹값 만들기?
+    List<RankingResponse> toList = typedTuples.stream().map(RankingResponse::convert).collect(
+        Collectors.toList());
+    return toList;
+  };
+
+  public List<RankingResponse> addHighscore(String nickname, String roomId){
+    Long score = roomManager.getRoom(roomId).getPlayerList().get(0).getScore();
+    redisTemplate.opsForZSet().add("ranking", nickname, score);
+    return getRanking();
+  }
+
 
 }
