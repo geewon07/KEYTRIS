@@ -8,11 +8,13 @@ import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListResponse;
 import com.ssafy.confidentIs.keytris.dto.multiDto.MultiGuessRequest;
 import com.ssafy.confidentIs.keytris.dto.multiDto.MultiGuessResponse;
 import com.ssafy.confidentIs.keytris.model.Category;
+import com.ssafy.confidentIs.keytris.model.WordType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -22,58 +24,37 @@ public class MultiRoomServiceImpl {
 
     private final DataServiceImpl dataServiceImpl;
 
+    private static final int AMOUNT = 10;
+
     public MultiGuessResponse sortByProximity(MultiGuessRequest request) {
 
         String roomId = request.getRoomId();
         String playerId = request.getPlayerId();
         List<String> currentWordList = request.getCurrentWordList();
         String guessWord = request.getGuessWord();
+        String targetWord = request.getTargetWord();
 
         //TODO 예외처리 존재하지 않는 roomId
         //TODO 예외처리 존재하지 않는 playerId, roomId에 속하지 않는 playerId
 
+
         //유사도 요청
-        DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
-                .guessWord(request.getGuessWord())
-                .currentWordList(request.getCurrentWordList())
-                .build();
-        DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(dataGuessWordRequest);
-        String[][] sortedWordList = dataGuessWordResponse.getSortedWordList();
-        for(String[] arr : sortedWordList) {
-            System.out.println(arr[0] + arr[1]);
-        }
+        String[][] sortedWordList = getSortedWordList(guessWord, currentWordList);
+        log.info("sortedWordList {}", Arrays.deepToString(sortedWordList));
+
+
         //TODO 점수 계산, 삭제 후 전달해야 할 데이터 정리
 
+        
+
         //단어가 부족한 경우, 추가 단어 요청
-        DataWordListRequest dataWordListRequest = DataWordListRequest.builder()
-                .type("target")
-                .category(Category.POLITICS)
-                .amount(30)
-                .build();
-        DataWordListResponse dataWordListResponse = dataServiceImpl.sendWordListRequest(dataWordListRequest);
-        List<String> wordList = dataWordListResponse.getWordList();
-        System.out.println("target " + wordList.toString());
-        System.out.println("------------------");
-
-        DataWordListRequest dataWordListRequest2 = DataWordListRequest.builder()
-                .type("sub")
-                .category(Category.ECONOMY)
-                .amount(20)
-                .build();
-        DataWordListResponse dataWordListResponse2 = dataServiceImpl.sendWordListRequest(dataWordListRequest2);
-        List<String> wordList2 = dataWordListResponse.getWordList();
-        System.out.println("sub " + wordList2.toString());
-        System.out.println("------------------");
-
-        DataWordListRequest dataWordListRequest3 = DataWordListRequest.builder()
-                .type("level")
-                .category(Category.SOCIETY)
-                .amount(15)
-                .build();
-        DataWordListResponse dataWordListResponse3 = dataServiceImpl.sendWordListRequest(dataWordListRequest3);
-        List<String> wordList3 = dataWordListResponse.getWordList();
-        System.out.println("level " + wordList3.toString());
-        System.out.println("------------------");
+        WordType wordType = WordType.TARGET;
+        Category category = Category.POLITICS;
+        
+        if(true) {  // TODO 어떤 단어가 부족한지 확인하는 조건으로 변경하기
+            List<String> wordList = getDataWordList(wordType, category, AMOUNT);
+            log.info("type {} {} ", wordType, wordList.toString());
+        }
 
 
         List<String> newSubWordList = new ArrayList<>();
@@ -87,4 +68,27 @@ public class MultiRoomServiceImpl {
 
         return multiGuessResponse;
     }
+
+    private String[][] getSortedWordList(String guessWord, List<String> currentWordList) {
+        DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
+                .guessWord(guessWord)
+                .currentWordList(currentWordList)
+                .build();
+        DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(dataGuessWordRequest);
+        return dataGuessWordResponse.getData().getCalWordList();
+    }
+
+
+    // data api 에서 단어 리스트 불러오기
+    private List<String> getDataWordList(WordType wordType, Category category, int amount) {
+        DataWordListRequest dataWordListRequest = DataWordListRequest.builder()
+                .type(wordType)
+                .category(category.getCode())
+                .amount(amount)
+                .build();
+        DataWordListResponse dataWordListResponse = dataServiceImpl.sendWordListRequest(dataWordListRequest);
+        return dataWordListResponse.getData().getWordList();
+    }
+
+
 }
