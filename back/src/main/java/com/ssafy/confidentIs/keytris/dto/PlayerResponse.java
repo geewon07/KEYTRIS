@@ -15,12 +15,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PlayerResponse {
   // 단어 변동 시 보낼 것 -> 현재 미사용
-
-  private UUID playerId;
+  private String playerId;
   private PlayerStatus playerStatus;
   private String targetWord;
   private List<String> subWordList;
-
 
   public PlayerResponse makeSinglePlayer(SinglePlayer player) {
     return PlayerResponse.builder()

@@ -21,9 +21,9 @@ public class StatusResponse {
 //private PlayerResponse playerInfo;
 //private RoomResponse roomInfo;
 
-  private UUID playerId;
+  private String playerId;
   private PlayerStatus playerStatus;
-  private UUID roomId;
+  private String roomId;
   private RoomStatus roomStatus;
 
   public StatusResponse idStatus(SinglePlayer player, Room room) {

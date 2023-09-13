@@ -2,7 +2,6 @@ package com.ssafy.confidentIs.keytris.model;
 
 import java.util.UUID;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -13,13 +12,13 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class BasePlayer {
 
-  protected UUID playerId;
+  protected String playerId;
   protected PlayerStatus playerStatus;
-  protected long score;
+  protected Long score;
   protected int targetWordIndex;
   protected int subWordIndex;
 
-  public BasePlayer(UUID playerId, PlayerStatus playerStatus, long score) {
+  public BasePlayer(String playerId, PlayerStatus playerStatus, Long score) {
     this.playerId = playerId;
     this.playerStatus = playerStatus;
     this.score = score;
@@ -34,7 +33,7 @@ public class BasePlayer {
     this.playerStatus = playerStatus;
   }
 
-  public void updateScore(long score) {
+  public void updateScore(Long score) {
     this.score = score;
   }
 

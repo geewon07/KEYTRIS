@@ -1,5 +1,6 @@
 package com.ssafy.confidentIs.keytris.service;
 
+import com.ssafy.confidentIs.keytris.dto.GuessRequest;
 import com.ssafy.confidentIs.keytris.dto.StartResponse;
 import com.ssafy.confidentIs.keytris.dto.StatusResponse;
 import com.ssafy.confidentIs.keytris.dto.WordListResponse;
@@ -16,21 +17,19 @@ public interface RoomService {
   StatusResponse createRoom(int category);
 
   //게임 시작
-  StartResponse startRoom(UUID roomId);
+  StartResponse startRoom(String roomId);
 
-  WordListResponse enterWord(UUID roomId, List<String> currentWordList, String guess);
+  WordListResponse enterWord(GuessRequest request);
 
-  void gameOver(UUID roomId,String lastWord,long score);
+  void gameOver(String roomId,String lastWord,Long score);
 
   //게임 상태 변경 준비->시작->
-  void updateRoomStatus(UUID roomId, RoomStatus rStatus);
+  void updateRoomStatus(String roomId, RoomStatus rStatus);
 
   //레디 확인
   Boolean checkReady(RoomStatus rStatus, PlayerStatus pStatus);
 
   //플레이어 상태변경 + 플레이어
   void updatePlayerStatus(Room room, SinglePlayer player, String step);
-
-  void updatePlayerWordIndex(Room room, SinglePlayer player, String step, int toDelete);
 
 }

@@ -8,7 +8,8 @@ import lombok.ToString;
 @ToString
 @Getter
 public class GuessRequest {
-  private UUID roomId;
+  private String roomId;
   private List<String> currentWordList;
   private String guessWord;
+  private String targetWord;
 }

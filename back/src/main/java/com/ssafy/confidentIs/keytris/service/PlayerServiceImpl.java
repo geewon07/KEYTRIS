@@ -17,16 +17,10 @@ public class PlayerServiceImpl implements PlayerService {
   @Override
   public SinglePlayer initialPlayer() {
     return SinglePlayer.builder()
-        .playerId(UUID.randomUUID())
+        .playerId(UUID.randomUUID().toString())
         .playerStatus(PlayerStatus.READY)
-        .score(0)
+        .score(0L)
         .build();
   }
-
-//  @Override
-//  public SinglePlayer updatePlayerStatus(SinglePlayer player, String pStatus) {
-//    return null;
-//  }
-
 
 }

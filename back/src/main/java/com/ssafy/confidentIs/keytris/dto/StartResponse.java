@@ -20,9 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 public class StartResponse {
 
   private Timestamp startTime;
-  private String targetWord;
-  private List<String> subWordList;
-
+  //  private String targetWord;
+//  private List<String> subWordList;
   StatusResponse statusResponse;
   WordListResponse wordListResponse;
 
@@ -32,13 +31,11 @@ public class StartResponse {
     StatusResponse sResponse = new StatusResponse();
     WordListResponse wResponse = new WordListResponse();
 //    log.info("response params, room:{},player:{}",room,player);
-    sResponse = sResponse.idStatus(player, room);
-    wResponse.start(subWordList, targetWord, 0);
-//    log.info("startResponse statusResponse:{}",sResponse.toString());
+    log.info("startResponse wordList:{}", wResponse.toString());
     return StartResponse.builder()
         .startTime(room.getStartTime())
-        .wordListResponse(wResponse)
-        .statusResponse(sResponse)
+        .wordListResponse(wResponse.start(subWordList, targetWord, 0L))
+        .statusResponse(sResponse.idStatus(player, room))
         .build();
   }
 }

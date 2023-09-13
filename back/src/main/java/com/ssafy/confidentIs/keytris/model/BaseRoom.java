@@ -8,14 +8,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@SuperBuilder
 public class BaseRoom {
-  protected UUID roomId; //TODO: UUID나 ID 생성 추가 필요
+
+  protected String roomId;
   protected int category;
   protected RoomStatus roomStatus;
   protected Timestamp startTime;
@@ -23,7 +26,7 @@ public class BaseRoom {
   protected List<String> subWordList;
   protected Queue<String> levelWordList;
 
-  public BaseRoom(UUID roomId, int category, RoomStatus roomStatus, List<String> targetWordList,
+  public BaseRoom(String roomId, int category, RoomStatus roomStatus, List<String> targetWordList,
       List<String> subWordList, Queue<String> levelWordList) {
     this.roomId = roomId;
     this.category = category;
@@ -33,15 +36,11 @@ public class BaseRoom {
     this.levelWordList = levelWordList;
   }
 
-
   public void updateStatus(RoomStatus roomStatus) {
     this.roomStatus = roomStatus;
   }
 
-  //TODO: 싱글플레이어 라 유저목록이 없음, 합친다면 멀티플레이어 방식으로, 그냥이라면 이대로
-
   public void updateStartTime(Timestamp startTime) {
     this.startTime = startTime;
   }
-
 }

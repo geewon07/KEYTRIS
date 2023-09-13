@@ -8,8 +8,8 @@ import lombok.Getter;
 @Getter
 public class StartRequest {
 
-  private UUID playerId;
+  private String playerId;
   private PlayerStatus playerStatus;
-  private UUID roomId;
+  private String roomId;
   private RoomStatus roomStatus;
 }

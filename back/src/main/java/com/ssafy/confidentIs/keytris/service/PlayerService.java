@@ -7,10 +7,4 @@ import java.util.List;
 public interface PlayerService {
 
   SinglePlayer initialPlayer();
-
-//  SinglePlayer updatePlayerIndex(SinglePlayer player, int subWordIndex, int targetWordIndex);
-//
-//  SinglePlayer updatePlayerStatus(SinglePlayer player, String pStatus);
-
-
 }

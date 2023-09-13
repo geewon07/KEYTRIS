@@ -7,10 +7,10 @@ public interface RoomManager {
 
   void addRoom(Room room);
 
-  Room getRoom(UUID roomId);
+  Room getRoom(String roomId);
 
-  void updateRoom(UUID roomId, Room updated);
+  void updateRoom(String roomId, Room updated);
 
-  void removeRoom(UUID roomId);
+  void removeRoom(String roomId);
 
 }
