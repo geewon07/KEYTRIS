@@ -1,14 +1,17 @@
 package com.ssafy.confidentIs.keytris.dto;
 
-import com.ssafy.confidentIs.keytris.model.Player;
+import com.ssafy.confidentIs.keytris.model.SinglePlayer;
 import com.ssafy.confidentIs.keytris.model.PlayerStatus;
 import com.ssafy.confidentIs.keytris.model.Room;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Getter
 @Builder
 @AllArgsConstructor
@@ -18,12 +21,12 @@ public class StatusResponse {
 //private PlayerResponse playerInfo;
 //private RoomResponse roomInfo;
 
-  private String playerId;
+  private UUID playerId;
   private PlayerStatus playerStatus;
-  private String roomId;
+  private UUID roomId;
   private RoomStatus roomStatus;
 
-  public StatusResponse idStatus(Player player,Room room){
+  public StatusResponse idStatus(SinglePlayer player, Room room) {
     return StatusResponse.builder()
         .playerId(player.getPlayerId())
         .playerStatus(player.getPlayerStatus())

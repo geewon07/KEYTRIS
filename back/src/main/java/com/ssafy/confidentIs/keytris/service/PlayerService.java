@@ -1,20 +1,16 @@
 package com.ssafy.confidentIs.keytris.service;
 
-import com.ssafy.confidentIs.keytris.model.Player;
-import com.ssafy.confidentIs.keytris.model.PlayerStatus;
+import com.ssafy.confidentIs.keytris.model.SinglePlayer;
 import java.util.List;
 
 
 public interface PlayerService {
 
-  Player initialPlayer();
+  SinglePlayer initialPlayer();
 
-  Player updatePlayerWords(Player player, List<String> subWordList, List<String> targetWordList,
-      List<String> currentWordList);
-
-  Player updatePlayerIndex(Player player, int subWordIndex, int targetWordIndex);
-
-  Player updatePlayerStatus(Player player, String pStatus);
+//  SinglePlayer updatePlayerIndex(SinglePlayer player, int subWordIndex, int targetWordIndex);
+//
+//  SinglePlayer updatePlayerStatus(SinglePlayer player, String pStatus);
 
 
 }

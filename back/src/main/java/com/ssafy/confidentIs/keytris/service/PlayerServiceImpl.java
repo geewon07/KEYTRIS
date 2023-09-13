@@ -1,8 +1,10 @@
 package com.ssafy.confidentIs.keytris.service;
 
-import com.ssafy.confidentIs.keytris.model.Player;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators.UUIDGenerator;
+import com.ssafy.confidentIs.keytris.model.SinglePlayer;
 import com.ssafy.confidentIs.keytris.model.PlayerStatus;
 import java.util.List;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,35 +15,18 @@ public class PlayerServiceImpl implements PlayerService {
   private final WordService wordService;
 
   @Override
-  public Player initialPlayer() {
-
-    return Player.builder()
-        .playerId("testerPlayer")
+  public SinglePlayer initialPlayer() {
+    return SinglePlayer.builder()
+        .playerId(UUID.randomUUID())
         .playerStatus(PlayerStatus.READY)
         .score(0)
-        .streak(0)
         .build();
   }
 
-  @Override
-  public Player updatePlayerWords(Player player, List<String> subWordList,
-      List<String> targetWordList, List<String> currentWordList) {
-    player.updateWords(player.getSubWordList(), player.getTargetWord(),
-        player.getCurrentWordList());
-    return player;
-  }
-
-  @Override
-  public Player updatePlayerIndex(Player player, int subWordIndex, int targetWordIndex) {
-    player.updateIndex(player.getSubWordIndex(), player.getTargetWordIndex());
-    return player;
-  }
-
-  @Override
-  public Player updatePlayerStatus(Player player, String pStatus) {
-    player.updateStatus(PlayerStatus.valueOf(pStatus));
-    return player;
-  }
+//  @Override
+//  public SinglePlayer updatePlayerStatus(SinglePlayer player, String pStatus) {
+//    return null;
+//  }
 
 
 }
