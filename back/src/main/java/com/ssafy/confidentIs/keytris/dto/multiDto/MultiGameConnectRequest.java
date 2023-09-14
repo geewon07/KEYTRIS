@@ -14,7 +14,4 @@ public class MultiGameConnectRequest {
     @Size(max = 15, message = "닉네임은 최대 15byte 까지 입력 가능합니다.")
     private String nickname;
 
-    @NotNull(message = "게임 코드는 필수 값입니다.")
-    private String roomId;
-
 }

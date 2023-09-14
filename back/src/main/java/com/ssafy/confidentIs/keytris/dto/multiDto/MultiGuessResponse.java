@@ -12,6 +12,7 @@ import java.util.TreeMap;
 @ToString
 public class MultiGuessResponse {
 
+    private String playerId;
     private String[][] sortedWordList;
     private double newScore;
     private String newTargetWord;

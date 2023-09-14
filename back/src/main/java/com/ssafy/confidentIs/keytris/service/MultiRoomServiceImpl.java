@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @Slf4j
@@ -56,6 +57,7 @@ public class MultiRoomServiceImpl {
                 .build();
 
         room.getPlayerList().add(currentPlayer);
+        room.updateMaster(currentPlayer);
 
         log.info("roomId {}", room.getRoomId());
         log.info("TARGET {}", room.getTargetWordList().toString());
@@ -79,9 +81,8 @@ public class MultiRoomServiceImpl {
     - 접근 가능한 방인지 확인 (방 존재 여부, 방 상태, 제한 인원)
     - 플레이어 등록
      */
-    public MultiGameConnectResponse connectMultiGame(MultiGameConnectRequest request) {
+    public MultiGameConnectResponse connectMultiGame(String roomId, MultiGameConnectRequest request) {
 
-        String roomId = request.getRoomId();
         if (multiRoomManager.getRoom(roomId) == null) {
             // TODO 예외처리. 존재하지 않는 roomId
         }
@@ -107,6 +108,38 @@ public class MultiRoomServiceImpl {
 
 
 
+    public void startMultiGame(String roomId, MultiGamePlayerRequest request) {
+        if (multiRoomManager.getRoom(roomId) == null) {
+            // TODO 예외처리. 존재하지 않는 roomId
+        }
+
+        MultiRoom room = multiRoomManager.getRoom(roomId);
+
+        if(!room.getRoomStatus().equals(RoomStatus.PREPARED) || room.getPlayerList().size() < 2) {
+            System.out.println("시작할 수 없는 방 상태");
+            // TODO 방 상태, 방 인원 예외처리
+        }
+
+        if(!room.getMaster().getPlayerId().equals(request.getPlayerId())) {
+            // TODO player의 방장 여부 확인
+            System.out.println("방장이 아님");
+        }
+
+        // 모든 플레이어의 상태를 gaming으로 업데이트
+        for(MultiPlayer player : room.getPlayerList()) {
+            player.updateStatus(PlayerStatus.GAMING);
+        }
+
+        // 방 상태를 ongoing으로 업데이트, 시작 시간 업데이트
+        room.updateStatus(RoomStatus.ONGOING);
+        room.updateStartTime(new Timestamp(new Date().getTime()));
+
+        log.info("Room: {}", room);
+    }
+
+
+
+
     public MultiGuessResponse sortByProximity(MultiGuessRequest request) {
 
         String roomId = request.getRoomId();
@@ -115,8 +148,12 @@ public class MultiRoomServiceImpl {
         String guessWord = request.getGuessWord();
         String targetWord = request.getTargetWord();
 
-        //TODO 예외처리 존재하지 않는 roomId
-        //TODO 예외처리 존재하지 않는 playerId, roomId에 속하지 않는 playerId
+        if (multiRoomManager.getRoom(roomId) == null) {
+            // TODO 예외처리. 존재하지 않는 roomId
+        }
+        MultiRoom room = multiRoomManager.getRoom(roomId);
+
+        MultiPlayer currentPlayer = ensurePlayerExists(room, playerId);
 
 
         //유사도 요청
@@ -124,8 +161,9 @@ public class MultiRoomServiceImpl {
         log.info("sortedWordList {}", Arrays.deepToString(sortedWordList));
 
 
-        //TODO 점수 계산, 삭제 후 전달해야 할 데이터 정리
-
+        // TODO 점수 계산, 삭제 후 전달해야 할 데이터 정리
+        // Long score = 0L;
+        // 서버의 player idx 정보 등도 업데이트 한다.
         
 
         //단어가 부족한 경우, 추가 단어 요청
@@ -137,15 +175,19 @@ public class MultiRoomServiceImpl {
             log.info("type {} {} ", wordType, wordList.toString());
         }
 
-
         List<String> newSubWordList = new ArrayList<>();
 
         MultiGuessResponse multiGuessResponse = MultiGuessResponse.builder()
+                .playerId(playerId)
                 .sortedWordList(sortedWordList)
                 .newScore(100)
                 .newTargetWord("새 타겟 단어")
                 .newSubWordList(newSubWordList)
                 .build();
+
+
+
+
 
         return multiGuessResponse;
     }
@@ -188,5 +230,16 @@ public class MultiRoomServiceImpl {
                 .displayWordList(null)
                 .build();
     }
+
+
+
+    private MultiPlayer ensurePlayerExists(MultiRoom room, String playerId) {
+        return room.getPlayerList().stream()
+                .filter(player -> playerId.equals(player.getPlayerId()))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Player with ID " + playerId + " does not exist in the room."));
+        //TODO 예외 처리 필요
+    }
+
 
 }

@@ -9,10 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 
@@ -26,7 +24,7 @@ public class MultiGameController {
 
     private final MultiRoomServiceImpl multiRoomServiceImpl;
 
-    private SimpMessagingTemplate messagingTemplate;
+    private final SimpMessagingTemplate messagingTemplate;
 
 
     @PostMapping
@@ -43,17 +41,42 @@ public class MultiGameController {
     }
 
 
-    @PostMapping("/connect")
-    public ResponseEntity<?> connectMultiGame(@RequestBody MultiGameConnectRequest request, Errors errors) {
+    @PostMapping("/{roomId}")
+    public ResponseEntity<?> connectMultiGame(@PathVariable String roomId,
+                                              @RequestBody @Validated MultiGameConnectRequest request, Errors errors) {
 
         if(errors.hasErrors()) {
             // TODO 예외처리
         }
-        log.info("request: {}", request);
+        log.info("roomId: {}, request: {}", roomId , request);
 
-        ResponseDto responseDto = new ResponseDto(success, "멀티모드 게임 생성",
-                Collections.singletonMap("gameInfo", multiRoomServiceImpl.connectMultiGame(request)));
+        ResponseDto responseDto = new ResponseDto(success, "멀티모드 게임 접속",
+                Collections.singletonMap("gameInfo", multiRoomServiceImpl.connectMultiGame(roomId, request)));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+
+    // 플레이어 상태를 업데이트 하는 api
+    @PutMapping("/{roomId}/players/{playerId}/status")
+    public ResponseEntity<?> updatePlayerStatus(@PathVariable String roomId, @PathVariable String playerId) {
+        return null;
+    }
+
+
+    // 방장이 게임을 시작하는 api
+    @PutMapping("/{roomId}/start")
+    public ResponseEntity<?> startMultiGame(@PathVariable String roomId,
+                                            @RequestBody @Validated MultiGamePlayerRequest request, Errors errors) {
+        if(errors.hasErrors()) {
+            // TODO 예외처리
+        }
+        log.info("roomId: {}, request: {}",roomId , request);
+
+//        // TODO 초기 단어 리스트를 지금 보내줄 것인가? 입장하면 각자에게 보내줄 것인가? 결정 필요
+//        MultiGameInfoRespone response = multiRoomServiceImpl.startMultiGame(roomId, request);
+//        messagingTemplate.convertAndSend("/topic/multigames" + roomId, response);
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
 
