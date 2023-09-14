@@ -4,8 +4,8 @@ import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
 import com.ssafy.confidentIs.keytris.dto.CreateRequest;
 import com.ssafy.confidentIs.keytris.dto.GuessRequest;
 import com.ssafy.confidentIs.keytris.dto.OverRequest;
-import com.ssafy.confidentIs.keytris.dto.OverResponse;
 import com.ssafy.confidentIs.keytris.dto.StartRequest;
+import com.ssafy.confidentIs.keytris.dto.WordListResponse;
 import com.ssafy.confidentIs.keytris.service.PlayerService;
 import com.ssafy.confidentIs.keytris.service.RoomService;
 import com.ssafy.confidentIs.keytris.service.WordService;
@@ -54,9 +54,17 @@ public class GameController {
   @PostMapping("/guess-word")
   public ResponseEntity<?> enter(@RequestBody GuessRequest request) {
 //    log.info("null TS, request:{}",request);
-    ResponseDto responseDto = new ResponseDto("success", "유사도 정렬",
-        Collections.singletonMap("sortedWordListResponse",
-            roomService.enterWord(request)));
+    ResponseDto responseDto;
+    WordListResponse wordListResponse = roomService.enterWord(request);
+    if(wordListResponse.getSortedWordList()==null){
+      responseDto = new ResponseDto("fail", "유사도 정렬");
+    }else{
+      responseDto = new ResponseDto("success", "유사도 정렬",
+          Collections.singletonMap("sortedWordListResponse",
+              roomService.enterWord(request)));
+    }
+
+
     return new ResponseEntity<>(responseDto, HttpStatus.OK);
   }
 
@@ -91,8 +99,8 @@ public class GameController {
 
   @PostMapping("/ranking")
   public ResponseEntity<?> newRecord(@RequestBody String nickname, @RequestBody String roomId) {
-    log.info("new record, score:{}, name:{}", nickname);//랭킹 redis 저장 대체
-    ResponseDto responseDto = new ResponseDto("success", "신기록 등록", Collections.singletonMap("NewRanking",
+    log.info("new record, name:{}", nickname);//랭킹 redis 저장 대체
+    ResponseDto responseDto = new ResponseDto("success", "신기록 등록", Collections.singletonMap("RankingResponse",
         roomService.addHighscore(nickname,roomId)));
     return new ResponseEntity<>(responseDto, HttpStatus.OK);
   }

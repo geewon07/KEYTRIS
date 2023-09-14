@@ -20,4 +20,14 @@ public class Room extends BaseRoom {
     this.playerList.set(0, player);
   }
 
+  public void updateSubWordList(List<String> refill){
+    this.subWordList.addAll(refill);
+  }
+  public void updateTargetWordList(List<String> refill){
+    this.targetWordList.addAll(refill);
+  }
+  public void updateLevelWordList(List<String> refill){
+    this.levelWordList.addAll(refill);
+  }
+
 }
