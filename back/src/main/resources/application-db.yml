@@ -17,7 +17,8 @@ spring:
   data:
     redis:
       host: j9a401.p.ssafy.io
-      port: 6379
+      port: 6380
+      username: develop
       password: "ssafy@a401"
 
 --- # prod 설정
@@ -29,4 +30,5 @@ spring:
     redis:
       host: j9a401.p.ssafy.io
       port: 6379
+      username: develop
       password: "ssafy@a401"
