@@ -20,6 +20,8 @@ public class PlayerServiceImpl implements PlayerService {
         .playerId(UUID.randomUUID().toString())
         .playerStatus(PlayerStatus.READY)
         .score(0L)
+        .targetWordIndex(0)
+        .subWordIndex(0)
         .build();
   }
 

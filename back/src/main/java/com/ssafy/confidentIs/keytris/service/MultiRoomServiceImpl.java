@@ -5,17 +5,16 @@ import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListResponse;
-import com.ssafy.confidentIs.keytris.dto.multiDto.MultiGuessRequest;
-import com.ssafy.confidentIs.keytris.dto.multiDto.MultiGuessResponse;
-import com.ssafy.confidentIs.keytris.model.Category;
-import com.ssafy.confidentIs.keytris.model.WordType;
+import com.ssafy.confidentIs.keytris.dto.multiDto.*;
+import com.ssafy.confidentIs.keytris.model.*;
+import com.ssafy.confidentIs.keytris.model.multiModel.MultiPlayer;
+import com.ssafy.confidentIs.keytris.model.multiModel.MultiRoom;
+import com.ssafy.confidentIs.keytris.repository.MultiRoomManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -24,7 +23,89 @@ public class MultiRoomServiceImpl {
 
     private final DataServiceImpl dataServiceImpl;
 
-    private static final int AMOUNT = 10;
+    private final MultiRoomManager multiRoomManager;
+
+    private static final int TARGET_AMOUNT = 5; // TARGET 단어 받아오는 단위
+    private static final int AMOUNT = 10; // SUB, LEVEL 단어 받어오는 단위
+
+
+    // 멀티 게임 방 만들기
+    public MultiGameConnectResponse createMultiGame(MultiGameCreateRequest request) {
+
+        int category = request.getCategory();
+
+        // 메서드 분리 할 것
+        Queue<String> levelWordList = new LinkedList<>();
+        List<String> tempWordList = getDataWordList(WordType.LEVEL, category, AMOUNT);
+        for(String word : tempWordList) {
+            levelWordList.add(word);
+        }
+
+        MultiPlayer currentPlayer = initialMultiPlayer(request.getNickname(), PlayerStatus.READY, true);
+        log.info("플레이어 생성 완료");
+        
+        MultiRoom room = MultiRoom.builder()
+                .roomId(UUID.randomUUID().toString())
+                .category(request.getCategory())
+                .roomStatus(RoomStatus.PREPARING)
+                .targetWordList(getDataWordList(WordType.TARGET, category, TARGET_AMOUNT))
+                .subWordList(getDataWordList(WordType.SUB, category, AMOUNT))
+                .levelWordList(levelWordList)
+                .limit(4)
+                .playerList(new ArrayList<>())
+                .build();
+
+        room.getPlayerList().add(currentPlayer);
+
+        log.info("roomId {}", room.getRoomId());
+        log.info("TARGET {}", room.getTargetWordList().toString());
+        log.info("SUB {}", room.getSubWordList().toString());
+        log.info("LEVEL {}", room.getLevelWordList());
+        log.info("limit {}", room.getLimit());
+        log.info("playerList {}", room.getPlayerList().toString());
+
+        multiRoomManager.addRoom(room);
+
+        Collection<MultiRoom> allRooms = multiRoomManager.getAllRooms();
+        for(MultiRoom r : allRooms) {
+            System.out.println(r);
+        }
+
+        return new MultiGameConnectResponse(room, currentPlayer.getPlayerId());
+    }
+
+
+    /* 멀티 게임 방 입장하기
+    - 접근 가능한 방인지 확인 (방 존재 여부, 방 상태, 제한 인원)
+    - 플레이어 등록
+     */
+    public MultiGameConnectResponse connectMultiGame(MultiGameConnectRequest request) {
+
+        String roomId = request.getRoomId();
+        if (multiRoomManager.getRoom(roomId) == null) {
+            // TODO 예외처리. 존재하지 않는 roomId
+        }
+
+        MultiRoom room = multiRoomManager.getRoom(roomId);
+
+        if(room.getRoomStatus().equals(RoomStatus.ONGOING) || room.getRoomStatus().equals(RoomStatus.FINISHED)) {
+            // TODO 예외처리. 입장할 수 없는 방 상태
+        }
+
+        if(room.getPlayerList().size() >= room.getLimit()) {
+            // TODO 예외처리. 입장할 수 없는 방 상태
+        }
+
+        MultiPlayer currentPlayer = initialMultiPlayer(request.getNickname(), PlayerStatus.UNREADY, false);
+        log.info("player: {}", currentPlayer.toString());
+
+        room.getPlayerList().add(currentPlayer);
+        log.info("room: {}", room);
+
+        return new MultiGameConnectResponse(room, currentPlayer.getPlayerId());
+    }
+
+
 
     public MultiGuessResponse sortByProximity(MultiGuessRequest request) {
 
@@ -52,7 +133,7 @@ public class MultiRoomServiceImpl {
         Category category = Category.POLITICS;
         
         if(true) {  // TODO 어떤 단어가 부족한지 확인하는 조건으로 변경하기
-            List<String> wordList = getDataWordList(wordType, category, AMOUNT);
+            List<String> wordList = getDataWordList(wordType, category.getCode(), AMOUNT);
             log.info("type {} {} ", wordType, wordList.toString());
         }
 
@@ -69,6 +150,8 @@ public class MultiRoomServiceImpl {
         return multiGuessResponse;
     }
 
+    
+    // data api 에서 단어 유사도 확인하기
     private String[][] getSortedWordList(String guessWord, List<String> currentWordList) {
         DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
                 .guessWord(guessWord)
@@ -80,15 +163,30 @@ public class MultiRoomServiceImpl {
 
 
     // data api 에서 단어 리스트 불러오기
-    private List<String> getDataWordList(WordType wordType, Category category, int amount) {
+    private List<String> getDataWordList(WordType wordType, int category, int amount) {
         DataWordListRequest dataWordListRequest = DataWordListRequest.builder()
                 .type(wordType)
-                .category(category.getCode())
+                .category(category)
                 .amount(amount)
                 .build();
         DataWordListResponse dataWordListResponse = dataServiceImpl.sendWordListRequest(dataWordListRequest);
         return dataWordListResponse.getData().getWordList();
     }
 
+
+    // === 공통 코드 ===
+    private MultiPlayer initialMultiPlayer(String nickname, PlayerStatus playerStatus, Boolean isMaster) {
+        return MultiPlayer.builder()
+                .playerId(UUID.randomUUID().toString())
+                .playerStatus(playerStatus)
+                .score(0L)
+                .targetWordIndex(0)
+                .subWordIndex(0)
+                .nickname(nickname)
+                .isMaster(isMaster)
+                .overTime(null)
+                .displayWordList(null)
+                .build();
+    }
 
 }
