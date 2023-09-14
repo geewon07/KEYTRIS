@@ -5,12 +5,16 @@ spring:
     group:
       local:
         - data-local
+        - db-local
       dev:
         - data-dev
+        - db-dev
       prod:
         - data-prod
+        - db-prod
     include:
       - data
+      - db
 
 server:
   port: 8765

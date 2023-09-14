@@ -1,0 +1,34 @@
+--- # local 설정
+spring:
+  config:
+    activate:
+      on-profile: "db-local"
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+
+--- # dev 설정
+spring:
+  config:
+    activate:
+      on-profile: "db-dev"
+  data:
+    redis:
+      host: j9a401.p.ssafy.io
+      port: 6380
+      username: develop
+      password: "ssafy@a401"
+
+--- # prod 설정
+spring:
+  config:
+    activate:
+      on-profile: "db-prod"
+  data:
+    redis:
+      host: j9a401.p.ssafy.io
+      port: 6379
+      username: develop
+      password: "ssafy@a401"

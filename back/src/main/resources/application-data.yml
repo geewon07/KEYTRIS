@@ -11,7 +11,7 @@ spring:
     activate:
       on-profile: "data-dev"
 data:
-  url: "http://j9a401a.p.ssafy.io:8765/api/data"
+  url: "http://j9a401a.p.ssafy.io:8766/api/data"
 
 ---
 spring:
