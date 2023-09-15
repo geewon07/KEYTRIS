@@ -16,6 +16,5 @@ public class MultiPlayer extends BasePlayer {
     private String nickname;
     private Boolean isMaster;
     private Timestamp overTime;
-    private List<String> displayWordList;
 
 }

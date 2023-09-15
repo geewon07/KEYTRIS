@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.util.List;
-import java.util.TreeMap;
 
 @Getter
 @Builder
@@ -14,7 +13,7 @@ public class MultiGuessResponse {
 
     private String playerId;
     private String[][] sortedWordList;
-    private double newScore;
+    private Long newScore;
     private String newTargetWord;
     private List<String> newSubWordList;
 

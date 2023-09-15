@@ -177,16 +177,16 @@ public class MultiRoomServiceImpl {
 
         List<String> newSubWordList = new ArrayList<>();
 
+
+
+
         MultiGuessResponse multiGuessResponse = MultiGuessResponse.builder()
                 .playerId(playerId)
                 .sortedWordList(sortedWordList)
-                .newScore(100)
+                .newScore(100L)
                 .newTargetWord("새 타겟 단어")
                 .newSubWordList(newSubWordList)
                 .build();
-
-
-
 
 
         return multiGuessResponse;
@@ -227,7 +227,6 @@ public class MultiRoomServiceImpl {
                 .nickname(nickname)
                 .isMaster(isMaster)
                 .overTime(null)
-                .displayWordList(null)
                 .build();
     }
 
@@ -242,4 +241,27 @@ public class MultiRoomServiceImpl {
     }
 
 
+    // 플레이어 상태를 Ready로 변경하는 메서드
+    public UpdatedPlayerResponse updatePlayerToReady(String roomId, String playerId) {
+        MultiRoom room = multiRoomManager.getRoom(roomId);
+        MultiPlayer updatedPlayer = ensurePlayerExists(room, playerId);
+
+        updatedPlayer.updateStatus(PlayerStatus.READY);
+
+        return new UpdatedPlayerResponse(playerId, PlayerStatus.READY);
+    }
+
+
+    // 플레이어 상태를 Over로 변경하는 메서드
+    public UpdatedPlayerResponse updatePlayerToOver(String roomId, String playerId) {
+        MultiRoom room = multiRoomManager.getRoom(roomId);
+        MultiPlayer updatedPlayer = ensurePlayerExists(room, playerId);
+
+        updatedPlayer.updateStatus(PlayerStatus.OVER);
+
+        // TODO 한 명 빼고 모두 OVER 된 경우 game status update
+
+
+        return new UpdatedPlayerResponse(playerId, PlayerStatus.OVER);
+    }
 }
