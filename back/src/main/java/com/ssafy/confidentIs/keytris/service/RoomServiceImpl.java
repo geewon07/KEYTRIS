@@ -64,7 +64,7 @@ public class RoomServiceImpl implements RoomService {
     Room created = Room.builder()
         .category(category)
         .roomId(UUID.randomUUID().toString())
-        .roomStatus(RoomStatus.PREPARED)
+        .roomStatus(RoomStatus.PREPARING)
         .playerList(playerList)
         .subWordList(subWords.getData().getWordList())
         .targetWordList(targetWords.getData().getWordList())
@@ -84,6 +84,19 @@ public class RoomServiceImpl implements RoomService {
   }
 
   @Override
+  public StatusResponse enterRoom(String roomId) {
+    Room room = roomManager.getRoom(roomId);
+    SinglePlayer player = room.getPlayerList().get(0);
+    if(!checkReady(room.getRoomStatus(),player.getPlayerStatus())){
+      updatePlayerStatus(room,player,PlayerStatus.READY);
+      updateRoomStatus(roomId,RoomStatus.PREPARED);
+    }else{
+      log.info("error with status");
+    }
+    return new StatusResponse(player.getPlayerId(),player.getPlayerStatus(),roomId,room.getRoomStatus());
+  }
+
+  @Override
   public StartResponse startRoom(String roomId) {
     Room room = roomManager.getRoom(roomId);
     SinglePlayer player = room.getPlayerList().get(0);
@@ -98,7 +111,7 @@ public class RoomServiceImpl implements RoomService {
       if (checkReady(room.getRoomStatus(), player.getPlayerStatus())) {
         //상태 변화
         updateRoomStatus(roomId, RoomStatus.ONGOING);
-        updatePlayerStatus(room, player, "start");
+        updatePlayerStatus(room, player, PlayerStatus.GAMING);
         //단어 가져오기
         targetWord = room.getTargetWordList().get(0);
         subWordList = new ArrayList<>(room.getSubWordList().subList(0, 9));
@@ -165,9 +178,9 @@ public class RoomServiceImpl implements RoomService {
 
     player.updateIndex(player.getSubWordIndex() + toDelete,
         player.getTargetWordIndex() + toDelete > 0 ? 1 : 0);
-    player.updateScore(player.getScore()+score);
+    player.updateScore(player.getScore() + score);
     room.updatePlayer(player);
-    log.info("after score :{}",player);
+    log.info("after score :{}", player);
     //삭제 성공시 추가될 단어
     target = room.getTargetWordList().get(player.getTargetWordIndex());
     subWordList = new ArrayList<>(
@@ -187,7 +200,7 @@ public class RoomServiceImpl implements RoomService {
 
     Room room = roomManager.getRoom(request.getRoomId());
     SinglePlayer player = room.getPlayerList().get(0);
-    log.info("score discrepansy? server:{},player:{}",player.getScore(),request.getScore());
+    log.info("score discrepancy? server:{},player:{}", player.getScore(), request.getScore());
     updateRoomStatus(room.getRoomId(), RoomStatus.FINISHED);
     player.updateStatus(PlayerStatus.OVER);
     room.updatePlayer(player);
@@ -223,20 +236,11 @@ public class RoomServiceImpl implements RoomService {
   }
 
   @Override
-  public void updatePlayerStatus(Room room, SinglePlayer player, String step) {
-    switch (step) {
-      case "start":
-        player.updateStatus(PlayerStatus.GAMING);
-        break;
-      case "over":
-        player.updateStatus(PlayerStatus.OVER);
-        break;
-    }
+  public void updatePlayerStatus(Room room, SinglePlayer player,PlayerStatus playerStatus) {
+    player.updateStatus(playerStatus);
     room.updatePlayer(player);
     roomManager.updateRoom(room.getRoomId(), room);
   }
-
-
 
   public void checkRefill(Room room, WordType type) {
     DataWordListRequest dataWordListRequest;

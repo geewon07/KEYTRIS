@@ -16,6 +16,8 @@ public interface RoomService {
   //게임(방 생성)
   StatusResponse createRoom(int category);
 
+  StatusResponse enterRoom(String roomId);
+
   //게임 시작
   StartResponse startRoom(String roomId);
 
@@ -30,7 +32,7 @@ public interface RoomService {
   Boolean checkReady(RoomStatus rStatus, PlayerStatus pStatus);
 
   //플레이어 상태변경 + 플레이어
-  void updatePlayerStatus(Room room, SinglePlayer player, String step);
+  void updatePlayerStatus(Room room, SinglePlayer player, PlayerStatus playerStatus);
 
 //  List<RankingResponse> addHighscore(String nickname, String roomId);
 }

@@ -13,7 +13,7 @@ public class PlayerServiceImpl implements PlayerService {
   public SinglePlayer initialPlayer() {
     return SinglePlayer.builder()
         .playerId(UUID.randomUUID().toString())
-        .playerStatus(PlayerStatus.READY)
+        .playerStatus(PlayerStatus.UNREADY)
         .score(0L)
         .build();
   }

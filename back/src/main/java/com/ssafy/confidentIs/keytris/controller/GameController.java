@@ -15,6 +15,8 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,11 +33,14 @@ public class GameController {
   private final RoomService roomService;
   private final ScoreService scoreService;
 
+  private final SimpMessagingTemplate messagingTemplate;
+
+  @MessageMapping("")
   @PostMapping
   public ResponseEntity<?> create(@RequestBody CreateRequest request) {
     log.info("create singlePlayer & room, category: {}", request.getCategory());
     ResponseDto responseDto = new ResponseDto("success", "방만들기 성공",
-        Collections.singletonMap("statusResponse",
+        Collections.singletonMap("StatusResponse",
             roomService.createRoom(request.getCategory())));//101 ~105
     log.info("created :{}", responseDto);
     return new ResponseEntity<>(responseDto, HttpStatus.OK);
