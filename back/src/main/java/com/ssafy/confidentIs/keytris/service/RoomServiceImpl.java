@@ -1,5 +1,6 @@
 package com.ssafy.confidentIs.keytris.service;
 
+import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
 import com.ssafy.confidentIs.keytris.dto.GuessRequest;
 import com.ssafy.confidentIs.keytris.dto.OverRequest;
 import com.ssafy.confidentIs.keytris.dto.OverResponse;
@@ -18,18 +19,15 @@ import com.ssafy.confidentIs.keytris.model.SinglePlayer;
 import com.ssafy.confidentIs.keytris.model.WordType;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ZSetOperations;
-import org.springframework.data.redis.core.ZSetOperations.TypedTuple;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -38,12 +36,13 @@ import org.springframework.stereotype.Service;
 public class RoomServiceImpl implements RoomService {
 
   private final RoomManager roomManager;
-  private final WordService wordService;
+  private final ScoreService scoreService;
   private final PlayerService playerService;
   private final DataServiceImpl dataServiceImpl;
   private final RedisTemplate redisTemplate;
 
   private static final int AMOUNT = 10;
+
   //TODO: 주석처리한 부분 정리하기
   @Override
   public StatusResponse createRoom(int category) {
@@ -73,6 +72,13 @@ public class RoomServiceImpl implements RoomService {
         .build();
 
     roomManager.addRoom(created);
+    //TESTING REDIS
+    scoreService.resetRanking();
+    scoreService.setRanking();
+    String response = redisTemplate.getConnectionFactory().getConnection().ping();
+    log.info("REDIS CONNECTION TEST :{}", response);
+//    redisTemplate.
+    scoreService.getRanking(-1);
     StatusResponse statusResponse = new StatusResponse();
     return statusResponse.idStatus(player, created);
   }
@@ -117,9 +123,8 @@ public class RoomServiceImpl implements RoomService {
 
   //TODO : 전부다 산산조각내서 별도의 메소드로 만들고 싶은 어떤 마음,,,
   @Override
-  public WordListResponse enterWord(GuessRequest request) {
+  public ResponseDto enterWord(GuessRequest request) {
 //    log.info("null troubleshoot currWL:{}",currentWordList);
-
     Room room = roomManager.getRoom(request.getRoomId());
     SinglePlayer player = room.getPlayerList().get(0);
     String target = request.getTargetWord();
@@ -131,51 +136,49 @@ public class RoomServiceImpl implements RoomService {
         .build();
     DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(
         dataGuessWordRequest);
-    if (dataGuessWordResponse.getSuccess().equals("success")) {
+    String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
 
-      String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
-
-      //점수
-      //TODO : index -1 일때 없을 때 제외 시켜야..
+    //점수
+    //TODO : index -1 일때 없을 때 제외 시켜야..
 //      int index = wordService.getIndex(target, sortedWordList);
-      int index = -1;
-      for (int i = 0; i < sortedWordList.length; i++) {
-        String[] wordData = sortedWordList[i];
-        if (wordData[0].equals(target)) {
-          index = i;
-          break;// Return the index if the word is found.
-        }
+    int index = -1;
+    for (int i = 0; i < sortedWordList.length; i++) {
+      String[] wordData = sortedWordList[i];
+      if (wordData[0].equals(target)) {
+        index = i;
+        break;// Return the index if the word is found.
       }
-      Long score = 0L;
-      int toDelete = 0;
-      if (index >= 0 && index <= 3) {
-        score = (4 - index) * 10L + 15;
-        toDelete = 3 - index;
-      }
-      if(score==0)
-        log.info("score 0 failed to guess");
-      //TODO 0 점 반환될때 부정적인 모션 흔들림 같은.
-      checkRefill(room,WordType.SUB);
-      checkRefill(room,WordType.TARGET);
-      checkRefill(room,WordType.LEVEL);
-
-      player.updateIndex(player.getSubWordIndex() + toDelete, player.getTargetWordIndex() + toDelete>0?1:0);
-      room.updatePlayer(player);
-      //삭제 성공시 추가될 단어
-      target = room.getTargetWordList().get(player.getTargetWordIndex());
-      subWordList = new ArrayList<>(
-          room.getSubWordList()
-              .subList(player.getSubWordIndex(), player.getSubWordIndex() + toDelete));
-      player.updateIndex(player.getSubWordIndex() + toDelete, player.getTargetWordIndex() + 1);
-
-      log.info("after word process, player:{}", player);
-
-      return new WordListResponse().result(sortedWordList, subWordList, target, room, score);
-    } else if(dataGuessWordResponse.getMessage().equals("fail")) {
-      log.info("fail message:{}",dataGuessWordResponse.getMessage());
-      return new WordListResponse();
     }
-    return new WordListResponse();
+    Long score = 0L;
+    int toDelete = 0;
+    if (index >= 0 && index <= 3) {
+      score = (4 - index) * 10L + 15;
+      toDelete = 3 - index;
+    }
+    if (score == 0) {
+      log.info("score 0 failed to guess");
+    }
+    //TODO 0 점 반환될때 부정적인 모션 흔들림 같은.
+    checkRefill(room, WordType.SUB);
+    checkRefill(room, WordType.TARGET);
+    checkRefill(room, WordType.LEVEL);
+
+    player.updateIndex(player.getSubWordIndex() + toDelete,
+        player.getTargetWordIndex() + toDelete > 0 ? 1 : 0);
+    player.updateScore(player.getScore()+score);
+    room.updatePlayer(player);
+    log.info("after score :{}",player);
+    //삭제 성공시 추가될 단어
+    target = room.getTargetWordList().get(player.getTargetWordIndex());
+    subWordList = new ArrayList<>(
+        room.getSubWordList()
+            .subList(player.getSubWordIndex(), player.getSubWordIndex() + toDelete));
+    player.updateIndex(player.getSubWordIndex() + toDelete, player.getTargetWordIndex() + 1);
+
+    log.info("after word process, player:{}", player);
+    return new ResponseDto("success", dataGuessWordResponse.getMessage(),
+        Collections.singletonMap("SortedWordListResponse",
+            new WordListResponse().result(sortedWordList, subWordList, target, room, score)));
   }
 
   @Override
@@ -184,6 +187,7 @@ public class RoomServiceImpl implements RoomService {
 
     Room room = roomManager.getRoom(request.getRoomId());
     SinglePlayer player = room.getPlayerList().get(0);
+    log.info("score discrepansy? server:{},player:{}",player.getScore(),request.getScore());
     updateRoomStatus(room.getRoomId(), RoomStatus.FINISHED);
     player.updateStatus(PlayerStatus.OVER);
     room.updatePlayer(player);
@@ -195,8 +199,9 @@ public class RoomServiceImpl implements RoomService {
     roomManager.updateRoom(request.getRoomId(), room);
     //TODO: redis-> 5위점수 < score
     boolean isRecord;
-    List<RankingResponse> rankingList = getRanking();
-    if (request.getScore() > rankingList.get(4).getScore()) {
+    List<RankingResponse> rankingList = scoreService.getRanking(4);
+//    List<RankingResponse> rankingList = new ArrayList<>();
+    if (player.getScore() > rankingList.get(4).getScore()) {
       log.info("score higher than 5th place -> add to redis");
       isRecord = true;
     } else {
@@ -231,56 +236,42 @@ public class RoomServiceImpl implements RoomService {
     roomManager.updateRoom(room.getRoomId(), room);
   }
 
-  public List<RankingResponse> getRanking() {
-    String key = "ranking";
-    ZSetOperations<String, String> stringStringZSetOperations = redisTemplate.opsForZSet();
-    Set<TypedTuple<String>> typedTuples = stringStringZSetOperations.reverseRangeWithScores(key, 0,
-        4);
-    //TODO null의 경우 생각하기 -> 초기 레벨로 랭킹값 만들기?
-    List<RankingResponse> toList = typedTuples.stream().map(RankingResponse::convert).collect(
-        Collectors.toList());
-    return toList;
-  }
 
-  ;
 
-  public List<RankingResponse> addHighscore(String nickname, String roomId) {
-    Long score = roomManager.getRoom(roomId).getPlayerList().get(0).getScore();
-    redisTemplate.opsForZSet().add("ranking", nickname, score);
-    return getRanking();
-  }
-
-  public void checkRefill (Room room, WordType type){
+  public void checkRefill(Room room, WordType type) {
     DataWordListRequest dataWordListRequest;
     DataWordListResponse dataWordListResponse;
-    dataWordListRequest = new DataWordListRequest(type, room.getCategory(),AMOUNT);
+    dataWordListRequest = new DataWordListRequest(type, room.getCategory(), AMOUNT);
     dataWordListResponse = dataServiceImpl.sendWordListRequest(dataWordListRequest);
-    switch (type){
+    switch (type) {
       case SUB:
-        if(room.getPlayerList().get(0).getSubWordIndex() + 10 > room.getSubWordList().size()){
-          if(dataWordListResponse.getSuccess().equals("success")){
+        if (room.getPlayerList().get(0).getSubWordIndex() + 10 > room.getSubWordList().size()) {
+          if (dataWordListResponse.getSuccess().equals("success")) {
             room.updateSubWordList(dataWordListResponse.getData().getWordList());
-          }else {
+          } else {
             log.info("refill sub fail");
           }
           //TODO: FAIL 일때 예외처리 어떻게 해줄 것인지, return 타입을 컨트롤러 단에서 부터 고쳐서 메세지가 통하게 만들 것인지
         }
         break;
       case TARGET:
-        if(room.getPlayerList().get(0).getTargetWordIndex() + 10 > room.getTargetWordList().size()){
-          if(dataWordListResponse.getSuccess().equals("success")){
+        if (room.getPlayerList().get(0).getTargetWordIndex() + 10 > room.getTargetWordList()
+            .size()) {
+          if (dataWordListResponse.getSuccess().equals("success")) {
             room.updateTargetWordList(dataWordListResponse.getData().getWordList());
-          }else {
+          } else {
             log.info("refill target fail");
-          }}
+          }
+        }
         break;
       case LEVEL:
-        if(10 > room.getLevelWordList().size()){
-          if(dataWordListResponse.getSuccess().equals("success")){
+        if (10 > room.getLevelWordList().size()) {
+          if (dataWordListResponse.getSuccess().equals("success")) {
             room.updateLevelWordList(dataWordListResponse.getData().getWordList());
-          }else {
+          } else {
             log.info("refill level fail");
-          }}
+          }
+        }
         break;
     }
     roomManager.updateRoom(room.getRoomId(), room);
