@@ -17,7 +17,7 @@ spring:
   data:
     redis:
       host: j9a401.p.ssafy.io
-      port: 6380
+      port: 8380
       username: develop
       password: "ssafy@a401"
 
@@ -29,6 +29,6 @@ spring:
   data:
     redis:
       host: j9a401.p.ssafy.io
-      port: 6379
+      port: 8379
       username: develop
       password: "ssafy@a401"
