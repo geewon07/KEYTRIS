@@ -54,6 +54,7 @@ public class MultiRoomServiceImpl {
                 .levelWordList(levelWordList)
                 .limit(4)
                 .playerList(new ArrayList<>())
+                .overPlayerCnt(0)
                 .build();
 
         room.getPlayerList().add(currentPlayer);
@@ -146,9 +147,8 @@ public class MultiRoomServiceImpl {
 
 
 
-    public MultiGuessResponse sortByProximity(MultiGuessRequest request) {
+    public MultiGuessResponse sortByProximity(String roomId, MultiGuessRequest request) {
 
-        String roomId = request.getRoomId();
         String playerId = request.getPlayerId();
         List<String> currentWordList = request.getCurrentWordList();
         String guessWord = request.getGuessWord();
@@ -159,7 +159,7 @@ public class MultiRoomServiceImpl {
         }
         MultiRoom room = multiRoomManager.getRoom(roomId);
 
-        MultiPlayer currentPlayer = ensurePlayerExists(room, playerId);
+//        MultiPlayer currentPlayer = ensurePlayerExists(room, playerId);
 
 
         //유사도 요청
@@ -211,7 +211,7 @@ public class MultiRoomServiceImpl {
 
 
     // data api 에서 단어 리스트 불러오기
-    private List<String> getDataWordList(WordType wordType, int category, int amount) {
+    public List<String> getDataWordList(WordType wordType, int category, int amount) {
         DataWordListRequest dataWordListRequest = DataWordListRequest.builder()
                 .type(wordType)
                 .category(category)
@@ -223,7 +223,7 @@ public class MultiRoomServiceImpl {
 
 
     // === 공통 코드 ===
-    private MultiPlayer initialMultiPlayer(String nickname, PlayerStatus playerStatus, Boolean isMaster) {
+    public MultiPlayer initialMultiPlayer(String nickname, PlayerStatus playerStatus, Boolean isMaster) {
         return MultiPlayer.builder()
                 .playerId(UUID.randomUUID().toString())
                 .playerStatus(playerStatus)
@@ -264,10 +264,18 @@ public class MultiRoomServiceImpl {
         MultiPlayer updatedPlayer = ensurePlayerExists(room, playerId);
 
         updatedPlayer.updateStatus(PlayerStatus.OVER);
+        room.updateOverPlayerCnt();
 
-        // TODO 한 명 빼고 모두 OVER 된 경우 game status update
+        UpdatedPlayerResponse response = UpdatedPlayerResponse.builder()
+                .playerId(playerId)
+                .playerStatus(PlayerStatus.OVER)
+                .build();
 
-
-        return new UpdatedPlayerResponse(playerId, PlayerStatus.OVER);
+        // 한 명 제외하고 모두 OVER 된 경우 game status update
+        if(room.getOverPlayerCnt() == room.getPlayerList().size()-1) {
+            room.updateStatus(RoomStatus.FINISHED);
+            response.updateRoomStatus(RoomStatus.FINISHED);
+        }
+        return response;
     }
 }
