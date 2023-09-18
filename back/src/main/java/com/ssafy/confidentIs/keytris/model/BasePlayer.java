@@ -4,12 +4,14 @@ import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @Getter
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class BasePlayer {
 
   protected String playerId;
