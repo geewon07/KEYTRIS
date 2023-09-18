@@ -108,7 +108,7 @@ public class MultiRoomServiceImpl {
 
 
 
-    public void startMultiGame(String roomId, MultiGamePlayerRequest request) {
+    public MultiGameInfoResponse startMultiGame(String roomId, MultiGamePlayerRequest request) {
         if (multiRoomManager.getRoom(roomId) == null) {
             // TODO 예외처리. 존재하지 않는 roomId
         }
@@ -135,6 +135,12 @@ public class MultiRoomServiceImpl {
         room.updateStartTime(new Timestamp(new Date().getTime()));
 
         log.info("Room: {}", room);
+
+        // 시작 단어 리스트 업데이트
+        MultiGameInfoResponse response = new MultiGameInfoResponse(room);
+        response.getStartWordList().updateStartWordList(room);
+
+        return response;
     }
 
 

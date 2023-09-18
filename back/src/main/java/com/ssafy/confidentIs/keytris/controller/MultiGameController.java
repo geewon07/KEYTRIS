@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 
 @Slf4j
 @RestController
@@ -31,7 +34,6 @@ public class MultiGameController {
 
     @PostMapping
     public ResponseEntity<?> createMultiGame(@RequestBody MultiGameCreateRequest request, Errors errors) {
-
         if(errors.hasErrors()) {
             // TODO 예외처리
         }
@@ -46,40 +48,26 @@ public class MultiGameController {
     @PostMapping("/{roomId}")
     public ResponseEntity<?> connectMultiGame(@PathVariable String roomId,
                                               @RequestBody @Validated MultiGameConnectRequest request, Errors errors) {
-
         if(errors.hasErrors()) {
             // TODO 예외처리
         }
         log.info("roomId: {}, request: {}", roomId , request);
 
+        MultiGameConnectResponse response = multiRoomServiceImpl.connectMultiGame(roomId, request);
+
+        messagingTemplate.convertAndSend("/topic/multi/" + roomId, response);
+
+        ChatMessage chatMessage = ChatMessage.builder()
+                .roomId(roomId)
+                .playerId("notification")
+                .content(request.getNickname()+"님이 입장했습니다.")
+                .timestamp(new Date().toString())
+                .build();
+        messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/chat", chatMessage);
+
         ResponseDto responseDto = new ResponseDto(success, "멀티모드 게임 접속",
-                Collections.singletonMap("gameInfo", multiRoomServiceImpl.connectMultiGame(roomId, request)));
+                Collections.singletonMap("gameInfo", response));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
-    }
-
-
-    // 플레이어 상태를 업데이트 하는 api
-    @PutMapping("/{roomId}/player-status")
-    public ResponseEntity<?> updatePlayerStatus(@PathVariable String roomId,
-                                                @RequestBody UpdatePlayerRequest request) {
-
-        String playerId = request.getPlayerId();
-        PlayerStatus newStatus = request.getNewStatus();
-
-        UpdatedPlayerResponse response = new UpdatedPlayerResponse();
-
-        switch (newStatus) {
-            case READY:
-                response = multiRoomServiceImpl.updatePlayerToReady(roomId, playerId);
-                break;
-            case OVER:
-                response = multiRoomServiceImpl.updatePlayerToOver(roomId, playerId);
-                break;
-        }
-
-        messagingTemplate.convertAndSend("/topic/multigames/" + roomId, response);
-
-        return null;
     }
 
 
@@ -92,13 +80,33 @@ public class MultiGameController {
         }
         log.info("roomId: {}, request: {}",roomId , request);
 
-//        // TODO 초기 단어 리스트를 지금 보내줄 것인가? 입장하면 각자에게 보내줄 것인가? 결정 필요
-//        MultiGameInfoRespone response = multiRoomServiceImpl.startMultiGame(roomId, request);
-//        messagingTemplate.convertAndSend("/topic/multigames/" + roomId, response);
+        MultiGameInfoResponse response = multiRoomServiceImpl.startMultiGame(roomId, request);
+        messagingTemplate.convertAndSend("/topic/multi/" + roomId, response);
 
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+    // 플레이어 상태를 ready로 업데이트 하는 api
+    @PutMapping("/{roomId}/players/{playerId}/ready")
+    public ResponseEntity<?> updatePlayerToReady(@PathVariable String roomId, @PathVariable String playerId) {
+
+        UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToReady(roomId, playerId);
+        messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/player-status", response);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+    // 플레이어 상태를 over로 업데이트 하는 api
+    @PutMapping("/{roomId}/players/{playerId}/over")
+    public ResponseEntity<?> updatePlayerToOver(@PathVariable String roomId, @PathVariable String playerId) {
+
+        UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToOver(roomId, playerId);
+        messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/player-status", response);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 
     @PostMapping("/guess-word")
@@ -116,10 +124,12 @@ public class MultiGameController {
 
 
     // 채팅 메시지 전달
-    @PostMapping("/{roomId}/send-message")
-    public void sendMessage(@RequestBody ChatMessage message) {
+    @MessageMapping("/multi/chat/{roomId}")
+    public void sendMessage(@DestinationVariable String roomId, @RequestBody ChatMessage message) {
+        log.info("message.content: {}", message.getContent());
         message.updateTime(LocalDateTime.now().toString());
-        messagingTemplate.convertAndSend("/topic/multi/" + message.getRoomId(), message);
+        log.info("timeStamp {}", message.getTimestamp());
+        messagingTemplate.convertAndSend("/topic/multi/chat/" + message.getRoomId(), message);
     }
 
 
