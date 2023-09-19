@@ -23,7 +23,7 @@ public class dataController {
 
   private final DataService dataService;
 
-  @PostMapping
+  @PostMapping("/guess-words")
   public ResponseEntity<?> guess(@RequestBody GuessRequest guessRequest) {
 
     // 단어 유사도 검사 요청
@@ -46,7 +46,7 @@ public class dataController {
     return new ResponseEntity<>(responseDto, HttpStatus.OK);
   }
 
-  @PostMapping("/start")
+  @PostMapping("/get-words")
   public ResponseEntity<?> refill(@RequestBody RefillRequest refillRequest) {
     //모두 하나의 API로 처리하자
     //

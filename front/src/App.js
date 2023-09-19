@@ -12,13 +12,17 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/singleGame" element={<SingleGame />}>
+        <Route path="/single-game" element={<SingleGame />}>
+          {/* single-game 페이지의 기본 경로인 /single-game에 대한 라우트 */}
           <Route index element={<SingleGame />} />
-          <Route path="singleGameResult" element={<SingleGameResult />} />
+          {/* single-game-result 페이지에 대한 라우트 */}
+          <Route path="result" element={<SingleGameResult />} />
         </Route>
-        <Route path="/multiGame" element={<MultiGame />}>
+        <Route path="/multi-game" element={<MultiGame />}>
+          {/* multi-game 페이지의 기본 경로인 /multi-game에 대한 라우트 */}
           <Route index element={<MultiGame />} />
-          <Route path="multiGameResult" element={<MultiGameResult />} />
+          {/* multi-game-result 페이지에 대한 라우트 */}
+          <Route path="result" element={<MultiGameResult />} />
         </Route>
       </Routes>
     </div>
