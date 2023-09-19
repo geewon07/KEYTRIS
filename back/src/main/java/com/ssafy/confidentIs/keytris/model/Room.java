@@ -2,11 +2,13 @@ package com.ssafy.confidentIs.keytris.model;
 
 import java.util.List;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 
 @SuperBuilder
 @Getter
+@ToString(callSuper=true)
 public class Room extends BaseRoom {
 
   private List<SinglePlayer> playerList;
@@ -18,6 +20,16 @@ public class Room extends BaseRoom {
 
   public void updatePlayer(SinglePlayer player) {
     this.playerList.set(0, player);
+  }
+
+  public void updateSubWordList(List<String> refill){
+    this.subWordList.addAll(refill);
+  }
+  public void updateTargetWordList(List<String> refill){
+    this.targetWordList.addAll(refill);
+  }
+  public void updateLevelWordList(List<String> refill){
+    this.levelWordList.addAll(refill);
   }
 
 }

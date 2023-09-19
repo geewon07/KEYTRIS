@@ -1,13 +1,12 @@
 package com.ssafy.confidentIs.keytris.model;
 
 import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@ToString
 @SuperBuilder
 public class BaseRoom {
 
@@ -42,5 +42,9 @@ public class BaseRoom {
 
   public void updateStartTime(Timestamp startTime) {
     this.startTime = startTime;
+  }
+
+  public String getLevelWord() {
+    return this.levelWordList.poll();
   }
 }
