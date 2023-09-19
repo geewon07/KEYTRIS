@@ -2,6 +2,7 @@ package com.ssafy.confidentIs.keytris.controller;
 
 import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
 import com.ssafy.confidentIs.keytris.dto.multiDto.*;
+import com.ssafy.confidentIs.keytris.model.RoomStatus;
 import com.ssafy.confidentIs.keytris.service.MultiRoomServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -96,14 +97,16 @@ public class MultiGameController {
 
 
     // 플레이어 상태를 over로 업데이트 하는 api
-//    @PutMapping("/{roomId}/players/{playerId}/over")
     @MessageMapping("/multi/player-over/{roomId}")
     public void updatePlayerToOver(@DestinationVariable String roomId, @RequestBody MultiGamePlayerRequest request) {
         log.info("roomId: {}, playerId: {}", roomId, request.getPlayerId());
         UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToOver(roomId, request.getPlayerId());
         messagingTemplate.convertAndSend("/topic/multi/player-over/"+roomId, response);
 
-//        return new ResponseEntity<>(response, HttpStatus.OK);
+        if(response.getRoomStatus().equals(RoomStatus.FINISHED)) {
+            MultiGameResultResponse resultResponse = multiRoomServiceImpl.getGameResult(roomId);
+            messagingTemplate.convertAndSend("/topic/multi/end/"+roomId, resultResponse);
+        }
     }
 
 
