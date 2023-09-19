@@ -1,13 +1,47 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: NeoDunggeunmo Pro;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: NeoDunggeunmo Pro;
+}
+
+/* CSS for the modal container */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1000; /* Ensure it appears above other content */
+}
+
+/* CSS for the modal content */
+.modal-content {
+  width: 45vw;
+height: 50vh;
+flex-shrink: 0;
+  background-color: #fff;
+  padding: 20px;
+  /* border-radius: 8px; */
+  border: 3px solid #FFF;
+background: #5523BD;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  max-width: 80%; /* Adjust as needed */
+}
+
+/* CSS for the close button */
+.modal-close-button {
+  /* position: absolute;
+  top: 10px;
+  right: 10px; */
+  item-align:end;
+  cursor: pointer;
 }
