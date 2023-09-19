@@ -119,10 +119,23 @@ public class MultiGameController {
 
         MultiGuessResponse response = multiRoomServiceImpl.sortByProximity(roomId, request);
 
-        messagingTemplate.convertAndSend("/topic/multi/play/" + roomId, Collections.singletonMap("guess-word-response", response));
+        messagingTemplate.convertAndSend("/topic/multi/play/" + roomId, response);
 
         ResponseDto responseDto = new ResponseDto(success, "guess-word", Collections.singletonMap("response", response));
 //        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+
+    // 단어 입력 api
+    @PostMapping("/guess-word/{roomId}")
+    public ResponseEntity<?> guessWord2(@PathVariable String roomId, @RequestBody MultiGuessRequest request) {
+        log.info("roomId: {}, playerId: {}, guessWord: {}, targetWord: {}, currentWordList: {}",
+                roomId, request.getPlayerId(), request.getGuessWord(), request.getTargetWord(), request.getCurrentWordList());
+
+        MultiGuessResponse response = multiRoomServiceImpl.sortByProximity(roomId, request);
+
+        ResponseDto responseDto = new ResponseDto(success, "guess-word", Collections.singletonMap("response", response));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 
