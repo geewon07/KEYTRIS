@@ -185,6 +185,30 @@ public class MultiRoomServiceImpl {
     }
 
 
+    // 멀티 게임 최종 결과 계산
+    public MultiGameResultResponse getGameResult(String roomId) {
+        MultiRoom room = multiRoomManager.getRoom(roomId);
+
+        // TODO 종료 시간 별 점수 보너스 지급
+
+        MultiGameResultResponse response = MultiGameResultResponse.builder()
+                .playerResultList(new ArrayList<>())
+                .build();
+
+        for(MultiPlayer player : room.getPlayerList()) {
+            MultiGameResultResponse.PlayerResult playerResult = MultiGameResultResponse.PlayerResult.builder()
+                    .playerId(player.getPlayerId())
+                    .nickname(player.getNickname())
+                    .score(player.getScore())
+                    .build();
+
+            response.getPlayerResultList().add(playerResult);
+        }
+
+        return response;
+    }
+
+
     
     // data api 에서 단어 유사도 확인하기
     private String[][] getSortedWordList(String guessWord, List<String> currentWordList) {
@@ -293,4 +317,6 @@ public class MultiRoomServiceImpl {
         }
         return originalWordList;
     }
+
+
 }
