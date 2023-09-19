@@ -66,12 +66,36 @@ public class TestController {
                 .overPlayerCnt(0)
                 .build();
 
+        multiRoomManager.addRoom(room);
+
         for(int i=0; i<4; i++) {
-            MultiPlayer currentPlayer = multiRoomServiceImpl.initialMultiPlayer("nickname" + i, PlayerStatus.READY, true);
+            MultiPlayer currentPlayer;
+            if(i==0) {
+                currentPlayer = MultiPlayer.builder()
+                        .playerId("playerId" + i)
+                        .playerStatus(PlayerStatus.READY)
+                        .score(0L)
+                        .targetWordIndex(0)
+                        .subWordIndex(0)
+                        .nickname("nickname" + i)
+                        .isMaster(true)
+                        .overTime(null)
+                        .build();
+                room.updateMaster(currentPlayer);
+            } else {
+                currentPlayer = MultiPlayer.builder()
+                        .playerId("playerId" + i)
+                        .playerStatus(PlayerStatus.UNREADY)
+                        .score(0L)
+                        .targetWordIndex(0)
+                        .subWordIndex(0)
+                        .nickname("nickname" + i)
+                        .isMaster(false)
+                        .overTime(null)
+                        .build();
+            }
             room.getPlayerList().add(currentPlayer);
         }
-
-        multiRoomManager.addRoom(room);
 
         return new ResponseEntity<>(room, HttpStatus.OK);
     }
@@ -81,8 +105,18 @@ public class TestController {
     @GetMapping("/multigames/{roomId}")
     public ResponseEntity<?> findById(@PathVariable String roomId) {
         MultiRoom room = multiRoomManager.getRoom(roomId);
-        log.info("room {}: ", room);
+        log.info("room: {} ", room);
         return new ResponseEntity<>(room, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/multigames/rooms")
+    public ResponseEntity<?> findAllRooms() {
+        Collection<MultiRoom> rooms = multiRoomManager.getAllRooms();
+        for(MultiRoom room : rooms) {
+            log.info("room: {}", room);
+        }
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 
 
