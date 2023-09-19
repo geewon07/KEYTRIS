@@ -9,7 +9,6 @@ import com.ssafy.confidentIs.keytris.repository.MultiRoomManager;
 import com.ssafy.confidentIs.keytris.service.MultiRoomServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ import java.util.*;
 @RequestMapping("/api/test")
 @Slf4j // 로그 찍기
 @RequiredArgsConstructor // private final 타입 의존성 주입을 자동으로 해줌
-public class TestController {
+public class TestController2 {
 
     private final MultiRoomManager multiRoomManager;
     private final MultiRoomServiceImpl multiRoomServiceImpl;
