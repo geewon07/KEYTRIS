@@ -38,7 +38,6 @@ public class ScoreServiceImpl implements ScoreService {
     Set<TypedTuple<String>> typedTuples = stringStringZSetOperations.reverseRangeWithScores(KEY, 0,
         limit);
     log.info("get ranking result :{}", typedTuples.toString());
-    //TODO null의 경우 생각하기 -> 초기 레벨로 랭킹값 만들기?
     List<RankingResponse> toList = typedTuples.stream().map(RankingResponse::convert).collect(
         Collectors.toList());
     log.info("convert rank to list :{}", toList);

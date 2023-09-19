@@ -20,12 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 public class StartResponse {
 
   private Timestamp startTime;
-  //  private String targetWord;
-//  private List<String> subWordList;
   StatusResponse statusResponse;
   WordListResponse wordListResponse;
 
-  //TODO: roomManager-> 방의 정보 가져오기
   public StartResponse startRoom(Room room, String targetWord, List<String> subWordList) {
     SinglePlayer player = room.getPlayerList().get(0);
     StatusResponse sResponse = new StatusResponse();

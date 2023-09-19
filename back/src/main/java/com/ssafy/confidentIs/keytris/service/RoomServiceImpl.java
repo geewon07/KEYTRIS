@@ -25,9 +25,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -39,8 +45,7 @@ public class RoomServiceImpl implements RoomService {
   private final ScoreService scoreService;
   private final PlayerService playerService;
   private final DataServiceImpl dataServiceImpl;
-  private final RedisTemplate redisTemplate;
-
+  private final SessionMethodService sessionMethodService;
   private static final int AMOUNT = 10;
 
   //TODO: 주석처리한 부분 정리하기
@@ -72,13 +77,6 @@ public class RoomServiceImpl implements RoomService {
         .build();
 
     roomManager.addRoom(created);
-    //TESTING REDIS
-    scoreService.resetRanking();
-    scoreService.setRanking();
-    String response = redisTemplate.getConnectionFactory().getConnection().ping();
-    log.info("REDIS CONNECTION TEST :{}", response);
-//    redisTemplate.
-    scoreService.getRanking(-1);
     StatusResponse statusResponse = new StatusResponse();
     return statusResponse.idStatus(player, created);
   }
@@ -87,13 +85,15 @@ public class RoomServiceImpl implements RoomService {
   public StatusResponse enterRoom(String roomId) {
     Room room = roomManager.getRoom(roomId);
     SinglePlayer player = room.getPlayerList().get(0);
-    if(!checkReady(room.getRoomStatus(),player.getPlayerStatus())){
-      updatePlayerStatus(room,player,PlayerStatus.READY);
-      updateRoomStatus(roomId,RoomStatus.PREPARED);
-    }else{
+    log.info("roomSTATUS:{}, pSTATUS:{}", room.getRoomStatus(), player.getPlayerStatus());
+    if (!checkReady(room.getRoomStatus(), player.getPlayerStatus())) {
+      updatePlayerStatus(room, player, PlayerStatus.READY);
+      updateRoomStatus(roomId, RoomStatus.PREPARED);
+    } else {
       log.info("error with status");
     }
-    return new StatusResponse(player.getPlayerId(),player.getPlayerStatus(),roomId,room.getRoomStatus());
+    return new StatusResponse(player.getPlayerId(), player.getPlayerStatus(), roomId,
+        room.getRoomStatus());
   }
 
   @Override
@@ -125,15 +125,20 @@ public class RoomServiceImpl implements RoomService {
         room.updateStartTime(timestamp);
         //저장
         roomManager.updateRoom(roomId, room);
+        //2초마다 단어보내주기 시작
+        sessionMethodService.startSessionMethod(roomId);
       } else {
 //        responseDto = new ResponseDto("fail", "게임 시작 실패, 준비안됨");
         log.info("failed to start: not ready");
       }
     }
     StartResponse startResponse = new StartResponse();
+//    addLevelWords(roomId);
+
     return startResponse.startRoom(room, targetWord, subWordList);
   }
 
+  //@Scheduled
   //TODO : 전부다 산산조각내서 별도의 메소드로 만들고 싶은 어떤 마음,,,
   @Override
   public ResponseDto enterWord(GuessRequest request) {
@@ -152,8 +157,6 @@ public class RoomServiceImpl implements RoomService {
     String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
 
     //점수
-    //TODO : index -1 일때 없을 때 제외 시켜야..
-//      int index = wordService.getIndex(target, sortedWordList);
     int index = -1;
     for (int i = 0; i < sortedWordList.length; i++) {
       String[] wordData = sortedWordList[i];
@@ -204,13 +207,8 @@ public class RoomServiceImpl implements RoomService {
     updateRoomStatus(room.getRoomId(), RoomStatus.FINISHED);
     player.updateStatus(PlayerStatus.OVER);
     room.updatePlayer(player);
-
-    //TODO : news API
-    // URL :https://openapi.naver.com/v1/search/news.json
-    // method : GET
-
+    sessionMethodService.stopSessionMethod(request.getRoomId());
     roomManager.updateRoom(request.getRoomId(), room);
-    //TODO: redis-> 5위점수 < score
     boolean isRecord;
     List<RankingResponse> rankingList = scoreService.getRanking(4);
 //    List<RankingResponse> rankingList = new ArrayList<>();
@@ -236,7 +234,7 @@ public class RoomServiceImpl implements RoomService {
   }
 
   @Override
-  public void updatePlayerStatus(Room room, SinglePlayer player,PlayerStatus playerStatus) {
+  public void updatePlayerStatus(Room room, SinglePlayer player, PlayerStatus playerStatus) {
     player.updateStatus(playerStatus);
     room.updatePlayer(player);
     roomManager.updateRoom(room.getRoomId(), room);
