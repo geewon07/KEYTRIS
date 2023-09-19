@@ -9,7 +9,6 @@ import java.util.List;
 @ToString
 public class MultiGuessRequest {
 
-    private String roomId;
     private String playerId;
     private List<String> currentWordList;
     private String guessWord;

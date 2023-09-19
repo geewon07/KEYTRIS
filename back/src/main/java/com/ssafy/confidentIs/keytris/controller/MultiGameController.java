@@ -2,7 +2,6 @@ package com.ssafy.confidentIs.keytris.controller;
 
 import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
 import com.ssafy.confidentIs.keytris.dto.multiDto.*;
-import com.ssafy.confidentIs.keytris.model.PlayerStatus;
 import com.ssafy.confidentIs.keytris.service.MultiRoomServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +62,7 @@ public class MultiGameController {
                 .content(request.getNickname()+"님이 입장했습니다.")
                 .timestamp(new Date().toString())
                 .build();
-        messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/chat", chatMessage);
+        messagingTemplate.convertAndSend("/topic/multi/chat/" + roomId, chatMessage);
 
         ResponseDto responseDto = new ResponseDto(success, "멀티모드 게임 접속",
                 Collections.singletonMap("gameInfo", response));
@@ -72,54 +71,55 @@ public class MultiGameController {
 
 
     // 방장이 게임을 시작하는 api
-    @PutMapping("/{roomId}/start")
-    public ResponseEntity<?> startMultiGame(@PathVariable String roomId,
-                                            @RequestBody @Validated MultiGamePlayerRequest request, Errors errors) {
-        if(errors.hasErrors()) {
-            // TODO 예외처리
-        }
+//    @PutMapping("/{roomId}/start")
+    @MessageMapping("/multi/start/{roomId}")
+    public void startMultiGame(@DestinationVariable String roomId, @RequestBody @Validated MultiGamePlayerRequest request) {
         log.info("roomId: {}, request: {}",roomId , request);
 
         MultiGameInfoResponse response = multiRoomServiceImpl.startMultiGame(roomId, request);
-        messagingTemplate.convertAndSend("/topic/multi/" + roomId, response);
+        messagingTemplate.convertAndSend("/topic/multi/start/" + roomId, response);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
     // 플레이어 상태를 ready로 업데이트 하는 api
-    @PutMapping("/{roomId}/players/{playerId}/ready")
-    public ResponseEntity<?> updatePlayerToReady(@PathVariable String roomId, @PathVariable String playerId) {
+//    @PutMapping("/{roomId}/players/{playerId}/ready")
+    @MessageMapping("/multi/player-ready/{roomId}")
+    public void updatePlayerToReady(@DestinationVariable String roomId, @RequestBody MultiGamePlayerRequest request) {
+        log.info("roomId: {}, playerId: {}", roomId, request.getPlayerId());
+        UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToReady(roomId, request.getPlayerId());
+        messagingTemplate.convertAndSend("/topic/multi/player-ready/"+roomId, response);
 
-        UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToReady(roomId, playerId);
-        messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/player-status", response);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
     // 플레이어 상태를 over로 업데이트 하는 api
-    @PutMapping("/{roomId}/players/{playerId}/over")
-    public ResponseEntity<?> updatePlayerToOver(@PathVariable String roomId, @PathVariable String playerId) {
+//    @PutMapping("/{roomId}/players/{playerId}/over")
+    @MessageMapping("/multi/player-over/{roomId}")
+    public void updatePlayerToOver(@DestinationVariable String roomId, @RequestBody MultiGamePlayerRequest request) {
+        log.info("roomId: {}, playerId: {}", roomId, request.getPlayerId());
+        UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToOver(roomId, request.getPlayerId());
+        messagingTemplate.convertAndSend("/topic/multi/player-over/"+roomId, response);
 
-        UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToOver(roomId, playerId);
-        messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/player-status", response);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+//        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
-    @PostMapping("/guess-word")
-    public ResponseEntity<?> guessWord(@RequestBody MultiGuessRequest request) {
-        log.info("roomId: {}, playerId: {}, guessWord: {}", request.getRoomId(), request.getPlayerId(), request.getGuessWord());
-        MultiGuessResponse response = multiRoomServiceImpl.sortByProximity(request);
+    // 단어 입력 api
+    //    @PostMapping("/guess-word")
+    @MessageMapping("/multi/play/{roomId}")
+    public void guessWord(@DestinationVariable String roomId, @RequestBody MultiGuessRequest request) {
+        log.info("roomId: {}, playerId: {}, guessWord: {}, targetWord: {}, currentWordList: {}",
+                roomId, request.getPlayerId(), request.getGuessWord(), request.getTargetWord(), request.getCurrentWordList());
 
+        MultiGuessResponse response = multiRoomServiceImpl.sortByProximity(roomId, request);
 
-        // socket으로 변경되는 점수 모두에게 전송
-        messagingTemplate.convertAndSend("/topic/multi/" + request.getRoomId(), Collections.singletonMap("guess-word-response", response));
+        messagingTemplate.convertAndSend("/topic/multi/play/" + roomId, Collections.singletonMap("guess-word-response", response));
 
         ResponseDto responseDto = new ResponseDto(success, "guess-word", Collections.singletonMap("response", response));
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+//        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 

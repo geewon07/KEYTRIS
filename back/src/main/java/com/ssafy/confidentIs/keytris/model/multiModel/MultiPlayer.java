@@ -17,4 +17,8 @@ public class MultiPlayer extends BasePlayer {
     private Boolean isMaster;
     private Timestamp overTime;
 
+    public void updateOverTime() {
+        this.overTime = new Timestamp(System.currentTimeMillis());
+    }
+
 }
