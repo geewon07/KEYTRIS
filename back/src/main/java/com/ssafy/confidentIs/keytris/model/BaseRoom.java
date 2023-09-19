@@ -43,4 +43,8 @@ public class BaseRoom {
   public void updateStartTime(Timestamp startTime) {
     this.startTime = startTime;
   }
+
+  public String getLevelWord() {
+    return this.levelWordList.poll();
+  }
 }
