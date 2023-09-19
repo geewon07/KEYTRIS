@@ -16,8 +16,14 @@ public class MultiRoom extends BaseRoom {
     private int limit;
     private List<MultiPlayer> playerList;
     private MultiPlayer master;
+    private int overPlayerCnt;
 
     public void updateMaster(MultiPlayer currentPlayer) {
         this.master = currentPlayer;
     }
+
+    public void updateOverPlayerCnt() {
+        this.overPlayerCnt += 1;
+    }
+
 }
