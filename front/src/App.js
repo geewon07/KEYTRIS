@@ -2,14 +2,19 @@ import './App.css';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from './pages/home/Home';
-import { SingleGame } from './pages/singleGame/SingleGame';
-import { SingleGameResult } from './pages/singleGame/SingleGameResult';
-import { MultiGame } from './pages/multiGame/MultiGame';
-import { MultiGameResult } from './pages/multiGame/MultiGameResult';
+import { SingleGame } from './pages/singleGame/singleGame';
+import { SingleGameResult } from './pages/singleGame/singleGameResult';
+import { MultiGame } from './pages/multiGame/multiGame';
+import { MultiGameResult } from './pages/multiGame/multiGameResult';
+import styled, {keyframes} from 'styled-components';
 
 function App() {
+
   return (
     <div className="App">
+      <div id='stars' />
+      <div id='stars2' />
+      <div id='stars3' />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/singleGame" element={<SingleGame />}>
@@ -24,5 +29,7 @@ function App() {
     </div>
   );
 };
+
+
 
 export default App;
