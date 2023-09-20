@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState} from "react";
 import { Outlet } from "react-router-dom";
 import { 
   startGame,
   insertWord,
-  overGame,
-  outRoom
+  overGame
 } from "../../api/singleGame/singleGameApi.js";
+import { connect, disconnect , subscribe } from "../../api/stompClient.js";
 
 
 export const SingleGame = () => {
@@ -22,13 +22,43 @@ export const SingleGame = () => {
   const [sortedWordList, setSortedWordList] = useState([]);
   const [score, setScore] = useState(0);
 
+  useEffect(() => {
+    let subscription;
+
+    if (roomId !== null) {
+      console.log("ddddd");
+      connect();
+
+      // const destination = '/your/destination';
+      // const body = { room_id: roomId };
+      
+      // sendMsg(destination, body);
+
+      const callback = (messageBody) => {
+        console.log(messageBody);
+      };
+
+      subscription = subscribe(`/topic/room/level-word/${roomId}`, callback);
+    }
+
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+    }
+    
+    if (roomId !== null) {
+        disconnect();
+    }
+    };
+  }, [roomId]);
+
   const handleStartGame = async (statusRequestDto) => { //게임시작api
     try {
       const res = await startGame(statusRequestDto);
       const startResponseDto = res.data.data.StartResponse;
       // 게임방 만들어질 때 playerId, roomId 넘겨받음 => 이 api에서는 playerStatus, roomStatus만 변경
-      setPlayerId(startResponseDto.statusResponse.playerStatus);
-      setRoomId(startResponseDto.statusResponse.roomStatus);
+      setPlayerStatus(startResponseDto.statusResponse.playerStatus);
+      setRoomStatus(startResponseDto.statusResponse.roomStatus);
 
       setSubWordList(startResponseDto.wordListResponse.subWordList);
       setTargetWord(startResponseDto.wordListResponse.targetWord);
@@ -46,12 +76,12 @@ export const SingleGame = () => {
     "roomStatus" : roomStatus
   }
 
-  // useEffect(() => {
-  //  setPlayerId("983ff30d-8bc2-46b4-9f79-f97069de0754");
-  //  setRoomId("e1bceba5-2213-4e1a-bcf6-c76992476c69");
-  //  setPlayerStatus("READY");
-  //  setRoomStatus("PREPARED");
-  // },[]);
+  useEffect(() => {
+   setPlayerId("2d0820eb-8af5-49a6-96d0-72ecdc542850");
+   setRoomId("87866696-83e2-4c4a-b9b4-f2da141488c4");
+   setPlayerStatus("READY");
+   setRoomStatus("PREPARED");
+  },[]);
 
   // useEffect(() => {
   //   console.log(subWordList); // subWordList가 변경될 때마다 이 로그가 출력
