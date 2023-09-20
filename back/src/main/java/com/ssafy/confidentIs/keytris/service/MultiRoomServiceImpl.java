@@ -212,13 +212,13 @@ public class MultiRoomServiceImpl {
     private void checkAndAddWords(MultiPlayer currentPlayer, MultiRoom room, int category) {
         // 타겟어 추가
         if (room.getTargetWordList().size() - currentPlayer.getTargetWordIndex() <= TARGET_ADD_STANDARD) {
-            addWords(room.getTargetWordList(), WordType.TARGET, category, TARGET_AMOUNT);
+            refillWords(room.getTargetWordList(), WordType.TARGET, category, TARGET_AMOUNT);
             log.info("TARGET wordList 단어 추가");
         }
 
         // 서브어 추가
         if (room.getSubWordList().size() - currentPlayer.getSubWordIndex() <= SUB_ADD_STANDARD) {
-            addWords(room.getSubWordList(), WordType.SUB, category, SUB_AMOUNT);
+            refillWords(room.getSubWordList(), WordType.SUB, category, SUB_AMOUNT);
             log.info("SUB wordList 단어 추가");
         }
     }
@@ -257,7 +257,7 @@ public class MultiRoomServiceImpl {
 
         updatedPlayer.updateStatus(PlayerStatus.READY);
 
-        return new UpdatedPlayerResponse(playerId, PlayerStatus.READY);
+        return new UpdatedPlayerResponse(playerId, PlayerStatus.READY, room.getRoomStatus());
     }
 
 
@@ -273,6 +273,7 @@ public class MultiRoomServiceImpl {
         UpdatedPlayerResponse response = UpdatedPlayerResponse.builder()
                 .playerId(playerId)
                 .playerStatus(PlayerStatus.OVER)
+                .roomStatus(room.getRoomStatus())
                 .build();
 
         // 한 명 제외하고 모두 OVER 된 경우 game status update
@@ -321,7 +322,7 @@ public class MultiRoomServiceImpl {
     }
 
     // 타겟어, 서브어를 추가로 가져오는 메서드
-    private List<String> addWords(List<String> originalWordList, WordType wordType, int category, int amount) {
+    private List<String> refillWords(List<String> originalWordList, WordType wordType, int category, int amount) {
         List<String> tempWordList = getDataWordList(wordType, category, amount);
         for(String word : tempWordList) {
             originalWordList.add(word);

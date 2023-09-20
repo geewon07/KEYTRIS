@@ -1,16 +1,10 @@
 package com.ssafy.confidentIs.keytris.controller;
 
-import com.ssafy.confidentIs.keytris.dto.StatusResponse;
-import com.ssafy.confidentIs.keytris.model.Room;
-import com.ssafy.confidentIs.keytris.model.SinglePlayer;
-import com.ssafy.confidentIs.keytris.service.RoomManager;
 import com.ssafy.confidentIs.keytris.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
