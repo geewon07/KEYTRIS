@@ -2,15 +2,17 @@ import './App.css';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from './pages/home/Home';
-import { SingleGame } from './pages/singleGame/SingleGame';
 import { SingleGameResult } from './pages/singleGame/SingleGameResult';
 import { MultiGame } from './pages/multiGame/MultiGame';
 import { MultiGameResult } from './pages/multiGame/MultiGameResult';
+import { SingleGame } from './pages/singleGame/SingleGame';
+
 
 function App() {
   return (
     <div className="App">
       <Routes>
+        <Route path="/game" element={<SingleGame></SingleGame>}></Route>
         <Route path="/" element={<Home />} />
         <Route path="/singleGame" element={<SingleGame />}>
           <Route index element={<SingleGame />} />
