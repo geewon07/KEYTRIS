@@ -6,7 +6,6 @@ import { SingleGame } from './pages/singleGame/SingleGame';
 import { SingleGameResult } from './pages/singleGame/SingleGameResult';
 import { MultiGame } from './pages/multiGame/MultiGame';
 import { MultiGameResult } from './pages/multiGame/MultiGameResult';
-import { GameTest } from './components/game/GameTest';
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
         <Route path="/multiGame" element={<MultiGame />} />
         <Route path="/multiGameResult" element={<MultiGameResult />} />
       </Routes>
-      <GameTest />
     </div>
   );
 };
