@@ -7,7 +7,7 @@ import {
   overGame,
   outRoom,
   createRoom,
-} from "../../api/singleGame/singleGameApi.js";
+} from "../../api/singleGame/SingleGameApi.js";
 import SockJS from "sockjs-client";
 import axios from "axios";
 
@@ -86,7 +86,7 @@ export const Single = (props) => {
       setRoomStatus(startResponseDto.statusResponse.roomStatus);
       
       setSubWordList(startResponseDto.wordListResponse.subWordList);
-      setCurrentWordList(subWordList);
+      setCurrentWordList(wordListResponse.subWordList);
       setTargetWord(startResponseDto.wordListResponse.targetWord);
      
       setCurrentWordList((prev) => [...prev,startResponseDto.wordListResponse.targetWord]);
@@ -170,8 +170,8 @@ export const Single = (props) => {
 
   const handleOverGame = async () => {
     try {
-      const res = await overGame(overRequestDto);
-      const OverResponseDto = res.data.data.OverResponse;
+      // const res = await overGame(overRequestDto);
+      // const OverResponseDto = res.data.data.OverResponse;
       // 페이지 화면 전환
       // 페이지 result로 전환되면서 데이터 넘겨주기? 우선 넘겨줄거를 overResultDto로 만들게요
       // 근데 그냥 위에 overResponseDto 넘겨주는게 나을 것 같아서 그냥 안만들었습니다.
