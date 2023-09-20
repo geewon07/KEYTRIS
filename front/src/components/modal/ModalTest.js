@@ -12,8 +12,17 @@ export const Modal = (props) => {
     alignItems: "center", // This doesn't apply to text elements
     width: "60%",
     wordBreak: "break-all",
-    marginBottom: "90px",
+    marginBottom: "3rem",
   };
+
+  const contentStyle = {
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "start",
+    width: "70%",
+    gap: "3rem",
+  };
+
   return (
     <>
       <div hidden={!modalShow}>
@@ -27,17 +36,21 @@ export const Modal = (props) => {
 
             <div style={titleStyle}>{title}</div>
 
-            <CategorySelect></CategorySelect>
+            <div style={contentStyle}>
+              <CategorySelect></CategorySelect>
+              <ModalButton label={"게임 시작하기"}>게임 시작하기</ModalButton>
+            </div>
           </div>
         </div>
       </div>
     </>
   );
 };
+
 export const CategorySelect = () => {
   return (
     <>
-      <div style={{ textAlign: "start", width: "70%" }}>
+      <div>
         <label for="category">뉴스 카테고리</label>
         <form>
           <select
@@ -59,6 +72,20 @@ export const CategorySelect = () => {
             <option value={105}>IT/과학</option>
           </select>
         </form>
+      </div>
+    </>
+  );
+};
+
+export const ModalButton = (props) => {
+  const { label } = props;
+  return (
+    <>
+      <div className="modal-button-layout">
+        {/* <button className="modal-button-style" type={buttonType} onClick={func}> */}
+        <button className="modal-button-style">
+          <span className="modal-button-text">{label}</span>
+        </button>
       </div>
     </>
   );
