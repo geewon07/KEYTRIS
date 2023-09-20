@@ -25,15 +25,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.UUID;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
+
+import com.ssafy.confidentIs.keytris.repository.RoomManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -120,8 +115,7 @@ public class RoomServiceImpl implements RoomService {
         player.updateIndex(9, 1);
         room.updatePlayer(player);
         //시작 시간 설정
-        Date currentDate = new Date();// Convert the Date object to a Timestamp
-        Timestamp timestamp = new Timestamp(currentDate.getTime());
+        Timestamp timestamp = new Timestamp(new Date().getTime());
         room.updateStartTime(timestamp);
         //저장
         roomManager.updateRoom(roomId, room);
