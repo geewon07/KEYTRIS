@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import keytrisLogo from '../../assets/logo_1.svg'
-import style from './Home.css'
+import {Modal} from '../../components/modal/ModalTest'
+import './Home.css'
+
+
 
 export const Home = () => {
+  const [modal, setModal] = useState(false);
+
   return (
     // <div id="keytris_title" className="keytris_main_gradient">
     <div id="keytris_title">
@@ -23,7 +28,7 @@ export const Home = () => {
                   </text>
                 </div>
                 <div>
-                  <button className="main_selection_button">
+                  <button className="main_selection_button" onClick={() => {setModal(true);}}>
                       새 게임
                   </button>
                 </div>
@@ -51,6 +56,7 @@ export const Home = () => {
           </tr>
         </table>
       </div>
+      {modal && <Modal modalShow="single" setModal={setModal} title="어떤 분야의 뉴스 키워드로 게임을 진행하시겠어요?" desc="single play!"/>}
     </div>
   );
   

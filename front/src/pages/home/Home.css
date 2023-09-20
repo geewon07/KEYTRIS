@@ -67,3 +67,10 @@
     -webkit-text-stroke: 2px #FFF;
 
 }
+
+.test {
+    z-index: 9999;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
