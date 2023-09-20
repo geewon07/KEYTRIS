@@ -4,15 +4,16 @@ import { Modal } from "../../components/modal/ModalTest";
 export const Home = () => {
   const [modal, setModal] = useState(false);
   const [multigameModal, setMModal] = useState(false);
+  const singleDesc ="어떤 분야의 뉴스 키워드로 게임을 진행하시겠어요?"
 
   return (
     <div>
       <Modal
         modalShow={modal}
         setModal={setModal}
-        title={"카테고리 선택"}
+        title={singleDesc}
         desc={"뉴스 카테고리"}
-        children={<CategorySelect />}
+      
       ></Modal>
       <Modal
         modalShow={multigameModal}
@@ -38,21 +39,5 @@ export const Home = () => {
         친구와 함께
       </button>
     </div>
-  );
-};
-export const CategorySelect = () => {
-  return (
-    <>
-      <form>
-        <select form="category" style={{b}}>
-          <option value={100}>정치</option>
-          <option value={101}>경제</option>
-          <option value={102}>사회</option>
-          <option value={103}>생활/문화</option>
-          <option value={104}>세계</option>
-          <option value={105}>IT/과학</option>
-        </select>
-      </form>
-    </>
   );
 };
