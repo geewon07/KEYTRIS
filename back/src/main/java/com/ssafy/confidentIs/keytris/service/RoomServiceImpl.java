@@ -77,6 +77,7 @@ public class RoomServiceImpl implements RoomService {
         .build();
 
     roomManager.addRoom(created);
+    enterRoom(created.getRoomId());
     StatusResponse statusResponse = new StatusResponse();
     return statusResponse.idStatus(player, created);
   }

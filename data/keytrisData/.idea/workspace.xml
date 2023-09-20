@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4b8f85f-025d-4ca9-885a-5ceaf964dcb2" name="Changes" comment="WIP about to upload to gitlab">
-      <change beforePath="$PROJECT_DIR$/../../back/src/main/resources/application-data.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/resources/application-data.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/service/RoomServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/service/RoomServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ssafy/confidentIs/keytrisData/controller/dataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ssafy/confidentIs/keytrisData/controller/dataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../front/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../front/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../front/src/pages/home/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/src/pages/home/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../front/src/pages/singleGame/singleGame.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/src/pages/singleGame/singleGame.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/src/api/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../front/src/api/singleGame/singleGameApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/src/api/singleGame/singleGameApi.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,7 +159,7 @@
       <workItem from="1694483006217" duration="86000" />
       <workItem from="1694484975680" duration="16000" />
       <workItem from="1694485326535" duration="121000" />
-      <workItem from="1695098356602" duration="1792000" />
+      <workItem from="1695098356602" duration="5894000" />
     </task>
     <task id="LOCAL-00001" summary="testing lombok and slf4j">
       <option name="closed" value="true" />
