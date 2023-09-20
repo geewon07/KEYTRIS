@@ -12,6 +12,7 @@ import com.ssafy.confidentIs.keytris.model.multiModel.MultiRoom;
 import com.ssafy.confidentIs.keytris.repository.MultiRoomManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -25,6 +26,8 @@ public class MultiRoomServiceImpl {
     private final DataServiceImpl dataServiceImpl;
 
     private final MultiRoomManager multiRoomManager;
+
+    private final SimpMessagingTemplate messagingTemplate;
 
     private static final int TARGET_AMOUNT = 5; // TARGET 단어 받아오는 단위
     private static final int SUB_AMOUNT = 15; // SUB 단어 받어오는 단위
@@ -145,7 +148,13 @@ public class MultiRoomServiceImpl {
 
 
         // 유사도 조회
-        String[][] sortedWordList = getSortedWordList(guessWord, currentWordList);
+        DataGuessWordResponse dataGuessWordResponse = getWordGuessResult(guessWord, currentWordList);
+        if(dataGuessWordResponse.getSuccess().equals("error")) {
+            // TODO 입력 할 수 없는 단어 예외처리.
+            log.info("입력할 수 없는 단어입니다.");
+            messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/" + currentPlayer.getPlayerId(), guessWord+"는 입력할 수 없는 단어입니다.");
+        }
+        String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
         log.info("sortedWordList {}", Arrays.deepToString(sortedWordList));
 
 
@@ -291,13 +300,12 @@ public class MultiRoomServiceImpl {
     // ========================== 공통 코드 ==========================
 
     // data api 에서 단어 유사도 확인하기
-    private String[][] getSortedWordList(String guessWord, List<String> currentWordList) {
+    private DataGuessWordResponse getWordGuessResult(String guessWord, List<String> currentWordList) {
         DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
                 .guessWord(guessWord)
                 .currentWordList(currentWordList)
                 .build();
-        DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(dataGuessWordRequest);
-        return dataGuessWordResponse.getData().getCalWordList();
+        return dataServiceImpl.sendGuessWordRequest(dataGuessWordRequest);
     }
 
     // data api 에서 단어 리스트 불러오기
