@@ -45,3 +45,141 @@ background: #5523BD;
   item-align:end;
   cursor: pointer;
 }
+
+
+/* 색상 */
+
+.pointColor {
+  color: #CCFF00;
+}
+
+.selectColor {
+  color:#8F00FF;
+}
+
+.errorColor {
+ color: #EB5757;
+}
+
+.secondaryColor {
+  color:#5523BD;
+}
+
+.bgColor {
+  color: #26154A;
+}
+
+.black {
+  color: #333333;
+}
+
+.white {
+  color: #FFFFFF;
+}
+
+.gray1 {
+  color: #555555;
+}
+
+.gray2 {
+  color: #888888;
+}
+
+.gray3 {
+  color: #BCBCBC;
+}
+
+.gray4 {
+  color: #DDDDDD;
+}
+
+.gray5 {
+  color: #F4F4F4;
+}
+
+
+/* 폰트 크기 */
+
+.heading1 {
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 41.6px;
+}
+
+.heading2 {
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32.2px;
+}
+
+.heading3 {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 31.2px;
+}
+
+.heading4 {
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 30.8px;
+}
+
+.heading5 {
+  font-size: 19px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26.6px; 
+}
+
+.body1 {
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 23.8px; 
+}
+
+.body2 {
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.body3 {
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.body4 {
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.buttonText {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.textfields {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.smallbutton {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
