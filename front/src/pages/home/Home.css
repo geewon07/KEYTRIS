@@ -1,0 +1,69 @@
+.main_logo_image {
+    margin-top: 5%;
+}
+.main_selection_div {
+    margin: 0 auto;
+}
+
+
+.main_selection_table {
+    margin-left: auto;
+    margin-right: auto;
+    /* margin-top: 5%; */
+    border-spacing: 5vw;   /* 사이 간격 */
+    text-align: center;
+}
+
+.main_selection_table_td {
+    border: 3px solid #FFF;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(217, 217, 217, 0.00) 100%);
+    text-align: center;
+    font-family: NeoDunggeunmo Pro;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: inherit;
+}
+
+.main_selection_desc {
+    color: #CBCBCB;
+    text-align: center;
+    font-family: NeoDunggeunmo;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.main_selection_button {
+    display: flex;
+    color: #FFF;
+    text-align: center;
+    width: 320px;
+    height: 60px;
+    padding: 10% 10% ;
+    margin: 4vw 5vh;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border: 2px solid #FFF;
+    background-color: transparent;
+    font-family: NeoDunggeunmo Pro;
+    
+}
+
+.main_selection_text {
+    color: transparent;
+    text-align: center;
+    margin-top: 200px;
+    font-family: NeoDunggeunmo Pro;
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 2px;
+    paint-order: stroke fill;
+    -webkit-text-stroke: 2px #FFF;
+
+}
