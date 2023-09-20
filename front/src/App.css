@@ -44,6 +44,10 @@ select#category option {
   font-family: NeoDunggeunmo Pro;
   backgroundColor: transparent;
 }
+
+.targetWord::marker{
+  content:"▶";
+}
 /* CSS for the modal container */
 .modal {
   display: flex;

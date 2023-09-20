@@ -5,22 +5,28 @@ import { Home } from './pages/home/Home';
 import { SingleGameResult } from './pages/singleGame/SingleGameResult';
 import { MultiGame } from './pages/multiGame/MultiGame';
 import { MultiGameResult } from './pages/multiGame/MultiGameResult';
-import { SingleGame } from './pages/singleGame/SingleGame';
+import { SingleGame } from './pages/singleGame/SingleGameTest';
+import {Single} from './pages/singleGame/SingleGame';
 
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/game" element={<SingleGame></SingleGame>}></Route>
+      <Route path="/game" element={<Single></Single>}></Route>
+        <Route path="/test" element={<SingleGame></SingleGame>}></Route>
         <Route path="/" element={<Home />} />
-        <Route path="/singleGame" element={<SingleGame />}>
+        <Route path="/single-game" element={<SingleGame />}>
+          {/* single-game 페이지의 기본 경로인 /single-game에 대한 라우트 */}
           <Route index element={<SingleGame />} />
-          <Route path="singleGameResult" element={<SingleGameResult />} />
+          {/* single-game-result 페이지에 대한 라우트 */}
+          <Route path="result" element={<SingleGameResult />} />
         </Route>
-        <Route path="/multiGame" element={<MultiGame />}>
+        <Route path="/multi-game" element={<MultiGame />}>
+          {/* multi-game 페이지의 기본 경로인 /multi-game에 대한 라우트 */}
           <Route index element={<MultiGame />} />
-          <Route path="multiGameResult" element={<MultiGameResult />} />
+          {/* multi-game-result 페이지에 대한 라우트 */}
+          <Route path="result" element={<MultiGameResult />} />
         </Route>
       </Routes>
     </div>

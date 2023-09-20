@@ -38,6 +38,6 @@ export const Home = () => {
       >
         친구와 함께
       </button>
-    </div>
-  );
+    </div>);
+  
 };
