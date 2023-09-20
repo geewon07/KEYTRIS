@@ -2,6 +2,7 @@ package com.ssafy.confidentIs.keytris.controller;
 
 import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
 import com.ssafy.confidentIs.keytris.dto.multiDto.*;
+import com.ssafy.confidentIs.keytris.model.RoomStatus;
 import com.ssafy.confidentIs.keytris.service.MultiRoomServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -84,7 +85,7 @@ public class MultiGameController {
 
 
     // 플레이어 상태를 ready로 업데이트 하는 api
-//    @PutMapping("/{roomId}/players/{playerId}/ready")
+//    @PutMapping("/{roomId}/player-ready")
     @MessageMapping("/multi/player-ready/{roomId}")
     public void updatePlayerToReady(@DestinationVariable String roomId, @RequestBody MultiGamePlayerRequest request) {
         log.info("roomId: {}, playerId: {}", roomId, request.getPlayerId());
@@ -96,19 +97,20 @@ public class MultiGameController {
 
 
     // 플레이어 상태를 over로 업데이트 하는 api
-//    @PutMapping("/{roomId}/players/{playerId}/over")
     @MessageMapping("/multi/player-over/{roomId}")
     public void updatePlayerToOver(@DestinationVariable String roomId, @RequestBody MultiGamePlayerRequest request) {
         log.info("roomId: {}, playerId: {}", roomId, request.getPlayerId());
         UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToOver(roomId, request.getPlayerId());
         messagingTemplate.convertAndSend("/topic/multi/player-over/"+roomId, response);
 
-//        return new ResponseEntity<>(response, HttpStatus.OK);
+        if(response.getRoomStatus().equals(RoomStatus.FINISHED)) {
+            MultiGameResultResponse resultResponse = multiRoomServiceImpl.getGameResult(roomId);
+            messagingTemplate.convertAndSend("/topic/multi/end/"+roomId, resultResponse);
+        }
     }
 
 
     // 단어 입력 api
-    //    @PostMapping("/guess-word")
     @MessageMapping("/multi/play/{roomId}")
     public void guessWord(@DestinationVariable String roomId, @RequestBody MultiGuessRequest request) {
         log.info("roomId: {}, playerId: {}, guessWord: {}, targetWord: {}, currentWordList: {}",
@@ -116,10 +118,20 @@ public class MultiGameController {
 
         MultiGuessResponse response = multiRoomServiceImpl.sortByProximity(roomId, request);
 
-        messagingTemplate.convertAndSend("/topic/multi/play/" + roomId, Collections.singletonMap("guess-word-response", response));
+        messagingTemplate.convertAndSend("/topic/multi/play/" + roomId, response);
+    }
+
+
+    // 단어 입력 api http 버전
+    @PostMapping("/{roomId}/guess-word")
+    public ResponseEntity<?> guessWord2(@PathVariable String roomId, @RequestBody MultiGuessRequest request) {
+        log.info("roomId: {}, playerId: {}, guessWord: {}, targetWord: {}, currentWordList: {}",
+                roomId, request.getPlayerId(), request.getGuessWord(), request.getTargetWord(), request.getCurrentWordList());
+
+        MultiGuessResponse response = multiRoomServiceImpl.sortByProximity(roomId, request);
 
         ResponseDto responseDto = new ResponseDto(success, "guess-word", Collections.singletonMap("response", response));
-//        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
 
@@ -129,7 +141,7 @@ public class MultiGameController {
         log.info("message.content: {}", message.getContent());
         message.updateTime(LocalDateTime.now().toString());
         log.info("timeStamp {}", message.getTimestamp());
-        messagingTemplate.convertAndSend("/topic/multi/chat/" + message.getRoomId(), message);
+        messagingTemplate.convertAndSend("/topic/multi/chat/" + roomId, message);
     }
 
 

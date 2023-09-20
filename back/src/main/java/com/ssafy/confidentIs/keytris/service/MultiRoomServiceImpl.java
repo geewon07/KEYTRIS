@@ -27,8 +27,10 @@ public class MultiRoomServiceImpl {
     private final MultiRoomManager multiRoomManager;
 
     private static final int TARGET_AMOUNT = 5; // TARGET 단어 받아오는 단위
-    private static final int AMOUNT = 10; // SUB, LEVEL 단어 받어오는 단위
-    private static final int ADD_AMOUNT = 30; // 단어를 추가로 받아오는 기준
+    private static final int SUB_AMOUNT = 15; // SUB 단어 받어오는 단위
+    private static final int LEVEL_AMOUNT = 10; // LEVEL 단어 받아오는 단위
+    private static final int TARGET_ADD_STANDARD = 3; // TARGET 단어를 추가로 받아오는 기준
+    private static final int SUB_ADD_STANDARD = 5; // SUB 단어를 추가로 받아오는 기준
 
 
     // 멀티 게임 방 만들기
@@ -47,8 +49,8 @@ public class MultiRoomServiceImpl {
                 .category(request.getCategory())
                 .roomStatus(RoomStatus.PREPARING)
                 .targetWordList(getDataWordList(WordType.TARGET, category, TARGET_AMOUNT))
-                .subWordList(getDataWordList(WordType.SUB, category, AMOUNT))
-                .levelWordList(addLevelWords(levelWordList, WordType.LEVEL, category, AMOUNT))
+                .subWordList(getDataWordList(WordType.SUB, category, SUB_AMOUNT))
+                .levelWordList(addLevelWords(levelWordList, WordType.LEVEL, category, LEVEL_AMOUNT))
                 .limit(4)
                 .playerList(new ArrayList<>())
                 .master(currentPlayer)
@@ -147,99 +149,105 @@ public class MultiRoomServiceImpl {
         log.info("sortedWordList {}", Arrays.deepToString(sortedWordList));
 
 
-        // TODO 점수 계산, 삭제 후 전달해야 할 데이터 정리
-        // Long score = 0L;
-        // 서버의 player idx 정보 등도 업데이트 한다.
+        // == 유사도 순위에 따라 점수 계산, 새 단어 정리 ==
+
+        // 타겟어의 유사도 순위 계산
+        int targetWordRank = -1;
+        for(int i=0; i<sortedWordList.length; i++) {
+            if(sortedWordList[i][0].equals(targetWord)) {
+                targetWordRank = i;
+            }
+        }
+        log.info("targetWordRank: {}", targetWordRank);
 
         List<String> newSubWordList = new ArrayList<>();
+        String newTargetWord = null;
 
+        // 타겟어 유사도가 순위권 내인 경우
+        if (0 <= targetWordRank && targetWordRank < 4) {
+            // 플레이어 점수, 단어 idx 업데이트 및 새롭게 클라이언트에 전달할 단어 추출
+            newSubWordList = updatePlayerBasedOnRank(targetWordRank, currentPlayer, room);
+            newTargetWord = room.getTargetWordList().get(currentPlayer.getTargetWordIndex());
 
-        // 단어가 부족한 경우, 추가 단어 요청
+            // Room의 여분 타겟어, 서브어가 부족한 경우, 추가 단어 요청
+            checkAndAddWords(currentPlayer, room, category);
+        }
 
+        /* TODO 레벨어는 추가는 스케쥴링에서 처리하자
         // 레벨어 추가
         if(room.getLevelWordList().size() <= ADD_AMOUNT) {
-            addLevelWords(room.getLevelWordList(), WordType.LEVEL, category, AMOUNT);
+            addLevelWords(room.getLevelWordList(), WordType.LEVEL, category, LEVEL_AMOUNT);
         }
-        
-        // 타겟어 추가
-        if (room.getTargetWordList().size() - currentPlayer.getTargetWordIndex() <= ADD_AMOUNT) {
-            addWords(room.getTargetWordList(), WordType.TARGET, category, TARGET_AMOUNT);
-            log.info("TARGET wordList 단어 추가");
-        }
-
-        // 서브어 추가
-        if (room.getSubWordList().size() - currentPlayer.getSubWordIndex() <= 100) {
-            addWords(room.getSubWordList(), WordType.SUB, category, AMOUNT);
-            log.info("SUB wordList 단어 추가");
-        }
+        */
 
         MultiGuessResponse multiGuessResponse = MultiGuessResponse.builder()
                 .playerId(playerId)
                 .sortedWordList(sortedWordList)
-                .newScore(100L)
-                .newTargetWord("새 타겟 단어")
-                .newSubWordList(newSubWordList)
+                .newScore(currentPlayer.getScore())
+                .newTargetWord(newTargetWord)   // 유사도 순위 낮은 경우, null 반환
+                .newSubWordList(newSubWordList) // 유사도 순위 낮은 경우, 빈 리스트 반환
                 .build();
+
+        log.info("multiGuessResponse: {}", multiGuessResponse);
 
         return multiGuessResponse;
     }
 
 
+    // 단어 입력 유사도 확인 -> 타겟어 유사도 순위가 높은 경우 점수, 단어 인덱스 갱신 후 newSubWordList를 반환하는 메서드
+    private List<String> updatePlayerBasedOnRank(int targetWordRank, MultiPlayer currentPlayer, MultiRoom room) {
+        int[] scoreUpdates = {55, 45, 35, 25};
+        int[] subWordIndexUpdates = {3, 2, 1, 0};
+
+        List<String> newSubWordList = room.getSubWordList().subList(currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subWordIndexUpdates[targetWordRank]);
+        log.info("새 서브워드 범위: {}부터 {}이전", currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subWordIndexUpdates[targetWordRank]);
+        currentPlayer.updateIndex(currentPlayer.getSubWordIndex()+subWordIndexUpdates[targetWordRank], currentPlayer.getTargetWordIndex()+1);
+        currentPlayer.updateScore(currentPlayer.getScore() + scoreUpdates[targetWordRank]);
+
+        log.info("단어 유사도 순위로 플레이어 정보 업데이트 완료: {}", currentPlayer);
+        return newSubWordList;
+    }
     
-    // data api 에서 단어 유사도 확인하기
-    private String[][] getSortedWordList(String guessWord, List<String> currentWordList) {
-        DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
-                .guessWord(guessWord)
-                .currentWordList(currentWordList)
+    // 단어 입력 유사도 확인 -> 타겟어 유사도 순위가 높은 경우, 여분 타겟어, 서브어가 부족한 지 확인 후 추가하는 메서드
+    private void checkAndAddWords(MultiPlayer currentPlayer, MultiRoom room, int category) {
+        // 타겟어 추가
+        if (room.getTargetWordList().size() - currentPlayer.getTargetWordIndex() <= TARGET_ADD_STANDARD) {
+            addWords(room.getTargetWordList(), WordType.TARGET, category, TARGET_AMOUNT);
+            log.info("TARGET wordList 단어 추가");
+        }
+
+        // 서브어 추가
+        if (room.getSubWordList().size() - currentPlayer.getSubWordIndex() <= SUB_ADD_STANDARD) {
+            addWords(room.getSubWordList(), WordType.SUB, category, SUB_AMOUNT);
+            log.info("SUB wordList 단어 추가");
+        }
+    }
+
+
+
+    // 멀티 게임 최종 결과 계산
+    public MultiGameResultResponse getGameResult(String roomId) {
+        MultiRoom room = multiRoomManager.getRoom(roomId);
+
+        // TODO 종료 시간 별 점수 보너스 지급
+
+        MultiGameResultResponse response = MultiGameResultResponse.builder()
+                .playerResultList(new ArrayList<>())
                 .build();
-        DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(dataGuessWordRequest);
-        return dataGuessWordResponse.getData().getCalWordList();
+
+        for(MultiPlayer player : room.getPlayerList()) {
+            MultiGameResultResponse.PlayerResult playerResult = MultiGameResultResponse.PlayerResult.builder()
+                    .playerId(player.getPlayerId())
+                    .nickname(player.getNickname())
+                    .score(player.getScore())
+                    .build();
+
+            response.getPlayerResultList().add(playerResult);
+        }
+
+        return response;
     }
 
-
-    // data api 에서 단어 리스트 불러오기
-    public List<String> getDataWordList(WordType wordType, int category, int amount) {
-        DataWordListRequest dataWordListRequest = DataWordListRequest.builder()
-                .type(wordType)
-                .category(category)
-                .amount(amount)
-                .build();
-        DataWordListResponse dataWordListResponse = dataServiceImpl.sendWordListRequest(dataWordListRequest);
-        return dataWordListResponse.getData().getWordList();
-    }
-
-
-
-    // ============= 공통 코드 =============
-
-    // TODO 커스텀 예외 처리 필요
-    private MultiRoom findByRoomId(String roomId) {
-        return Optional.ofNullable(multiRoomManager.getRoom(roomId))
-                .orElseThrow(() -> new RuntimeException("Room with ID " + roomId + " does not exist."));
-    }
-
-
-    private MultiPlayer findByPlayerId(MultiRoom room, String playerId) {
-        return room.getPlayerList().stream()
-                .filter(player -> playerId.equals(player.getPlayerId()))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Player with ID " + playerId + " does not exist in the room."));
-    }
-
-
-    // 플레이어를 생성하는 메서드
-    public MultiPlayer initialMultiPlayer(String nickname, PlayerStatus playerStatus, Boolean isMaster) {
-        return MultiPlayer.builder()
-                .playerId(UUID.randomUUID().toString())
-                .playerStatus(playerStatus)
-                .score(0L)
-                .targetWordIndex(0)
-                .subWordIndex(0)
-                .nickname(nickname)
-                .isMaster(isMaster)
-                .overTime(null)
-                .build();
-    }
 
 
     // 플레이어 상태를 Ready로 변경하는 메서드
@@ -275,6 +283,33 @@ public class MultiRoomServiceImpl {
         return response;
     }
 
+    
+
+
+
+    // ========================== 공통 코드 ==========================
+
+    // data api 에서 단어 유사도 확인하기
+    private String[][] getSortedWordList(String guessWord, List<String> currentWordList) {
+        DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
+                .guessWord(guessWord)
+                .currentWordList(currentWordList)
+                .build();
+        DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(dataGuessWordRequest);
+        return dataGuessWordResponse.getData().getCalWordList();
+    }
+
+    // data api 에서 단어 리스트 불러오기
+    public List<String> getDataWordList(WordType wordType, int category, int amount) {
+        DataWordListRequest dataWordListRequest = DataWordListRequest.builder()
+                .type(wordType)
+                .category(category)
+                .amount(amount)
+                .build();
+        DataWordListResponse dataWordListResponse = dataServiceImpl.sendWordListRequest(dataWordListRequest);
+        return dataWordListResponse.getData().getWordList();
+    }
+
 
     // 레벨어를 추가하는 메서드
     private Queue<String> addLevelWords(Queue<String> levelWordList, WordType wordType, int category, int amount) {
@@ -293,4 +328,35 @@ public class MultiRoomServiceImpl {
         }
         return originalWordList;
     }
+
+
+    // roomId로 Room을 반환하는 메서드. TODO 커스텀 예외 처리 필요
+    private MultiRoom findByRoomId(String roomId) {
+        return Optional.ofNullable(multiRoomManager.getRoom(roomId))
+                .orElseThrow(() -> new RuntimeException("Room with ID " + roomId + " does not exist."));
+    }
+
+    // playerId로 Player를 반환하는 메서드. TODO 커스텀 예외 처리 필요
+    private MultiPlayer findByPlayerId(MultiRoom room, String playerId) {
+        return room.getPlayerList().stream()
+                .filter(player -> playerId.equals(player.getPlayerId()))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("Player with ID " + playerId + " does not exist in the room."));
+    }
+
+    // 플레이어를 생성하는 메서드
+    public MultiPlayer initialMultiPlayer(String nickname, PlayerStatus playerStatus, Boolean isMaster) {
+        return MultiPlayer.builder()
+                .playerId(UUID.randomUUID().toString())
+                .playerStatus(playerStatus)
+                .score(0L)
+                .targetWordIndex(0)
+                .subWordIndex(9)
+                .nickname(nickname)
+                .isMaster(isMaster)
+                .overTime(null)
+                .build();
+    }
+
+
 }
