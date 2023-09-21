@@ -40,6 +40,13 @@ public class RoomServiceImpl implements RoomService {
   private final SessionMethodService sessionMethodService;
   private static final int AMOUNT = 10;
 
+  private static final int TARGET_AMOUNT = 5; // TARGET 단어 받아오는 단위
+  private static final int SUB_AMOUNT = 15; // SUB 단어 받어오는 단위
+  private static final int LEVEL_AMOUNT = 10; // LEVEL 단어 받아오는 단위
+  private static final int TARGET_ADD_STANDARD = 3; // TARGET 단어를 추가로 받아오는 기준
+  private static final int SUB_ADD_STANDARD = 5; // SUB 단어를 추가로 받아오는 기준
+
+
   //TODO: 주석처리한 부분 정리하기
   @Override
   public StatusResponse createRoom(int category) {
@@ -69,6 +76,8 @@ public class RoomServiceImpl implements RoomService {
         .build();
 
     roomManager.addRoom(created);
+    log.info("rooms: {}", roomManager.getAllRooms());
+
     enterRoom(created.getRoomId());
     StatusResponse statusResponse = new StatusResponse();
     return statusResponse.idStatus(player, created);
@@ -110,7 +119,7 @@ public class RoomServiceImpl implements RoomService {
         subWordList = new ArrayList<>(room.getSubWordList().subList(0, 9));
         log.info("start, target:{}, subWordList:{}", targetWord, subWordList);
         //인덱스 업데이트
-        player.updateIndex(9, 1);
+        player.updateIndex(8, 0);
         room.updatePlayer(player);
         //시작 시간 설정
         Timestamp timestamp = new Timestamp(new Date().getTime());
@@ -136,9 +145,9 @@ public class RoomServiceImpl implements RoomService {
   public ResponseDto enterWord(GuessRequest request) {
 //    log.info("null troubleshoot currWL:{}",currentWordList);
     Room room = roomManager.getRoom(request.getRoomId());
-    SinglePlayer player = room.getPlayerList().get(0);
+    log.info("room : {}", room);
+    SinglePlayer currentPlayer = room.getPlayerList().get(0);
     String target = request.getTargetWord();
-    List<String> subWordList;
 
     DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
         .guessWord(request.getGuessWord())
@@ -148,45 +157,54 @@ public class RoomServiceImpl implements RoomService {
         dataGuessWordRequest);
     String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
 
-    //점수
-    int index = -1;
-    for (int i = 0; i < sortedWordList.length; i++) {
-      String[] wordData = sortedWordList[i];
-      if (wordData[0].equals(target)) {
-        index = i;
-        break;// Return the index if the word is found.
+
+    // == 유사도 순위에 따라 점수 계산, 새 단어 정리 ==
+
+    // 타겟어의 유사도 순위 계산
+    int targetWordRank = -1;
+    for(int i=0; i<sortedWordList.length; i++) {
+      if(sortedWordList[i][0].equals(target)) {
+        targetWordRank = i;
+        break;
       }
     }
-    Long score = 0L;
-    int toDelete = 0;
-    if (index >= 0 && index <= 3) {
-      score = (4 - index) * 10L + 15;
-      toDelete = 3 - index;
-    }
-    if (score == 0) {
-      log.info("score 0 failed to guess");
-    }
-    //TODO 0 점 반환될때 부정적인 모션 흔들림 같은.
-    checkRefill(room, WordType.SUB);
-    checkRefill(room, WordType.TARGET);
+    log.info("targetWordRank: {}", targetWordRank);
 
-    player.updateIndex(player.getSubWordIndex() + toDelete,
-        player.getTargetWordIndex() + toDelete > 0 ? 1 : 0);
-    player.updateScore(player.getScore() + score);
-    room.updatePlayer(player);
-    log.info("after score :{}", player);
-    //삭제 성공시 추가될 단어
-    target = room.getTargetWordList().get(player.getTargetWordIndex());
-    subWordList = new ArrayList<>(
-        room.getSubWordList()
-            .subList(player.getSubWordIndex(), player.getSubWordIndex() + toDelete));
-    player.updateIndex(player.getSubWordIndex() + toDelete, player.getTargetWordIndex() + 1);
+    List<String> newSubWordList = new ArrayList<>();
+    String newTargetWord = null;
 
-    log.info("after word process, player:{}", player);
+    // 타겟어 유사도가 순위권 내인 경우
+    if (0 <= targetWordRank && targetWordRank < 4) {
+      // 플레이어 점수, 단어 idx 업데이트 및 새롭게 클라이언트에 전달할 단어 추출
+      newSubWordList = updatePlayerBasedOnRank(targetWordRank, currentPlayer, room);
+      newTargetWord = room.getTargetWordList().get(currentPlayer.getTargetWordIndex());
+
+      // Room의 여분 타겟어, 서브어가 부족한 경우, 추가 단어 요청
+      checkRefill(room, WordType.SUB);
+      checkRefill(room, WordType.TARGET);
+    }
+
+    log.info("after word process, player: {}", currentPlayer);
     return new ResponseDto("success", dataGuessWordResponse.getMessage(),
         Collections.singletonMap("SortedWordListResponse",
-            new WordListResponse().result(sortedWordList, subWordList, target, room, score)));
+            new WordListResponse().result(sortedWordList, newSubWordList, newTargetWord, room, currentPlayer.getScore())));
   }
+
+  // 단어 입력 유사도 확인 -> 타겟어 유사도 순위가 높은 경우 점수, 단어 인덱스 갱신 후 newSubWordList를 반환하는 메서드
+  private List<String> updatePlayerBasedOnRank(int targetWordRank, SinglePlayer currentPlayer, Room room) {
+    int[] scoreUpdates = {55, 45, 35, 25};
+    int[] subWordIndexUpdates = {3, 2, 1, 0};
+
+    List<String> newSubWordList = room.getSubWordList().subList(currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subWordIndexUpdates[targetWordRank]);
+    log.info("새 서브워드 범위: {}부터 {}이전", currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subWordIndexUpdates[targetWordRank]);
+    currentPlayer.updateIndex(currentPlayer.getSubWordIndex()+subWordIndexUpdates[targetWordRank], currentPlayer.getTargetWordIndex()+1);
+    currentPlayer.updateScore(currentPlayer.getScore() + scoreUpdates[targetWordRank]);
+
+    log.info("단어 유사도 순위로 플레이어 정보 업데이트 완료: {}", currentPlayer);
+    return newSubWordList;
+  }
+
+
 
   @Override
   public OverResponse gameOver(OverRequest request) {
@@ -241,6 +259,7 @@ public class RoomServiceImpl implements RoomService {
         if (room.getPlayerList().get(0).getSubWordIndex() + 10 > room.getSubWordList().size()) {
           if (dataWordListResponse.getSuccess().equals("success")) {
             room.updateSubWordList(dataWordListResponse.getData().getWordList());
+            log.info("SUB wordList 단어 추가: {}", room.getSubWordList());
           } else {
             log.info("refill sub fail");
           }
@@ -252,6 +271,7 @@ public class RoomServiceImpl implements RoomService {
             .size()) {
           if (dataWordListResponse.getSuccess().equals("success")) {
             room.updateTargetWordList(dataWordListResponse.getData().getWordList());
+            log.info("TARGET wordList 단어 추가: {}", room.getSubWordList());
           } else {
             log.info("refill target fail");
           }

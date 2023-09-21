@@ -56,6 +56,7 @@ public class SessionMethodService {
       room = roomManager.getRoom(roomId);
       nextWord = room.getLevelWord();
       messagingTemplate.convertAndSend("/topic/room/level-word/" + roomId, nextWord);
+      // TODO : (임시) 시작한지 특정 시간이 지나면 멈추기로 함. if(room.getStartTime() )
     } else {
       room = multiRoomManager.getRoom(roomId);
       nextWord = room.getLevelWord();
@@ -68,7 +69,7 @@ public class SessionMethodService {
       log.info("레벨어 부족으로 추가. 추가 후: {}", room.getLevelWordList());
     }
 
-    log.info(nextWord + " :Session " + roomId + " method is running every 2 seconds...");
+//    log.info(nextWord + " :Session " + roomId + " method is running every 2 seconds...");
   }
 
 
