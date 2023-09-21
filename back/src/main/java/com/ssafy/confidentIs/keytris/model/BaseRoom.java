@@ -45,6 +45,10 @@ public class BaseRoom {
   }
 
   public String getLevelWord() {
-    return this.levelWordList.poll();
+    if(!this.levelWordList.isEmpty()) {
+      return this.levelWordList.poll();
+    } else {
+      return "단어";
+    }
   }
 }
