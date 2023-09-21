@@ -2,18 +2,17 @@ import "./App.css";
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/home/Home";
-import { SingleGame } from "./pages/singleGame/SingleGame";
-import { SingleGameResult } from "./pages/singleGame/SingleGameResult";
-import { MultiGame } from "./pages/multiGame/MultiGame";
-import { MultiGameResult } from "./pages/multiGame/MultiGameResult";
-import { QuickMenu } from "./components/quickmenu/quickMenuTest";
+import { SingleGame } from "./pages/singleGame/singleGame.js";
+import { SingleGameResult } from "./pages/singleGame/singleGameResult.js";
+import { MultiGame } from "./pages/multiGame/multiGame.js";
+import { MultiGameResult } from "./pages/multiGame/multiGameResult.js";
+import { QuickMenu } from "./components/quickmenu/quickMenuTest.js";
+import { Star } from "./components/star.js";
 
 function App() {
   return (
     <div className="App">
-      <div id="stars" />
-      <div id="stars2" />
-      <div id="stars3" />
+      <Star/>
       <QuickMenu />
       <Routes>
         <Route path="/" element={<Home />} />

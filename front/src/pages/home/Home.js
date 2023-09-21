@@ -11,7 +11,9 @@ export const Home = () => {
   return (
     // <div id="keytris_title" className="keytris_main_gradient">
     <div id="keytris_title">
-      <img className="main_logo_image" alt="logo_1" src={keytrisLogo} />
+      {/* <div className="main-logo-layout">
+      </div> */}
+        <img className="main_logo_image" alt="logo_1" src={keytrisLogo} />
       <div className="main_selection_div">
         <div>
           <div className="main_selection_desc">
@@ -71,7 +73,7 @@ export const Home = () => {
           </tbody>
         </table>
       </div>
-      <div style={{ backgroundColor: "#26154A" }}>
+      {/* <div style={{ backgroundColor: "#26154A" }}>
         <Modal
           modalShow={modal}
           setModal={setModal}
@@ -86,7 +88,7 @@ export const Home = () => {
           buttonLabel="게임 만들기"
           desc={"닉네임, 뉴스카테고리"}
         ></Modal>
-      </div>
+      </div> */}
     </div>
   );
 };
