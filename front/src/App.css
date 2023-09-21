@@ -1,8 +1,8 @@
-/* .App {
+.App {
   text-align: center;
 }
 
-.App-logo {
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -36,23 +36,28 @@
     transform: rotate(360deg);
   }
 } */
-.Neo{
+.Neo {
   font-family: NeoDunggeunmo Pro;
 }
 
 select#category option {
   font-family: NeoDunggeunmo Pro;
-  backgroundColor: transparent;
+  background-color: transparent;
+}
+
+.targetWord::marker{
+  content:"▶";
 }
 /* CSS for the modal container */
 .modal {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: fixed;
   top: 0;
   left: 0;
+  padding: 15px;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
@@ -62,21 +67,23 @@ select#category option {
 /* CSS for the modal content */
 .modal-content {
   width: 45vw;
-  height: 50vh;
+  max-width: 400px;
+  /* overflow: hidden; */
   flex-shrink: 0;
   background-color: #fff;
-  padding: 20px;
+  padding: 30px;
   font-size: 30px;
-  color: #FFF;
-  display:flex;
-  flex-direction:column;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
   /* justify-content: center; */
   align-items: center;
   /* border-radius: 8px; */
   border: 3px solid #fff;
   background: #5523bd;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-  max-width: 80%; /* Adjust as needed */
+  max-width: 100%;
+  height: auto;
 }
 
 /* CSS for the close button */
@@ -84,6 +91,43 @@ select#category option {
   /* position: absolute;
   top: 10px;
   right: 10px; */
-  item-align: end;
+  align-items: end;
   cursor: pointer;
+}
+
+/* CSS for modal button */
+.modal-button-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+.modal-button-style {
+  border-radius: 10px;
+  border: 1px solid #fff;
+  padding: 1rem;
+  width: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+.modal-button-text {
+  color: #fff;
+  text-align: center;
+  font-family: NeoDunggeunmo Pro;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 3px;
+}
+.modal-button-style:hover {
+  opacity: 0.7;
+  cursor: pointer;
+  /* background: linear-gradient(
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 100%
+  ); */
 }

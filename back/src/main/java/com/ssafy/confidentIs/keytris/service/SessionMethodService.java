@@ -45,7 +45,6 @@ public class SessionMethodService {
     Room room = roomManager.getRoom(roomId);
     String nextWord = room.getLevelWord();
     messagingTemplate.convertAndSend("/topic/room/level-word/" + roomId, nextWord);
-//    roomService.checkRefill(room, WordType.LEVEL);
     System.out.println(nextWord + " :Session " + roomId + " method is running every 2 seconds...");
   }
 }
