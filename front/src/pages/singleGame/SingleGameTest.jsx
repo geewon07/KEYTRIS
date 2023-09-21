@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 
-export const SingleGame = () => {
+export const SingleGameTest = () => {
   const AXIOS_BASE_URL = "http://localhost:8765/api";
   const [sockJS, setSockJS] = useState();
   const [player, setPlayer] = useState();

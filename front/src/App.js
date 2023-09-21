@@ -1,23 +1,24 @@
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from './pages/home/Home';
+import { SingleGame } from './pages/singleGame/SingleGame';
 import { SingleGameResult } from './pages/singleGame/SingleGameResult';
 import { MultiGame } from './pages/multiGame/MultiGame';
 import { MultiGameResult } from './pages/multiGame/MultiGameResult';
-import { SingleGame } from './pages/singleGame/SingleGameTest';
-import {Single} from './pages/singleGame/SingleGame';
-
+import { QuickMenu } from './components/quickmenu/quickMenuTest'
 
 function App() {
+
   return (
     <div className="App">
+      <div id='stars' />
+      <div id='stars2' />
+      <div id='stars3' />
+      <QuickMenu />
       <Routes>
-      <Route path="/game" element={<Single></Single>}></Route>
-        <Route path="/test" element={<SingleGame></SingleGame>}></Route>
-        <Route path="/" element={<Home />} />
-        <Route path="/single-game" element={<SingleGame />}>
-          {/* single-game 페이지의 기본 경로인 /single-game에 대한 라우트 */}
+        <Route path="/" element={<Home />}/>
+        <Route path="/singleGame" element={<SingleGame />}>
           <Route index element={<SingleGame />} />
           {/* single-game-result 페이지에 대한 라우트 */}
           <Route path="result" element={<SingleGameResult />} />
@@ -32,5 +33,7 @@ function App() {
     </div>
   );
 };
+
+
 
 export default App;

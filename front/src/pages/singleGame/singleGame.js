@@ -9,7 +9,7 @@ import {
 } from "../../api/singleGame/singleGameApi.js";
 import { connect, disconnect, subscribe } from "../../api/stompClient.js";
 
-export const Single = (props) => {
+export const SingleGame = (props) => {
   // const { category } = props;
   // const [streak, setStreak] = useState(null);
   const [playerId, setPlayerId] = useState(null);
