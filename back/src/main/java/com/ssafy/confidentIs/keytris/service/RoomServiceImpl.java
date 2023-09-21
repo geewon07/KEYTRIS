@@ -12,11 +12,8 @@ import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListResponse;
-import com.ssafy.confidentIs.keytris.model.PlayerStatus;
-import com.ssafy.confidentIs.keytris.model.Room;
-import com.ssafy.confidentIs.keytris.model.RoomStatus;
-import com.ssafy.confidentIs.keytris.model.SinglePlayer;
-import com.ssafy.confidentIs.keytris.model.WordType;
+import com.ssafy.confidentIs.keytris.model.*;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -121,7 +118,7 @@ public class RoomServiceImpl implements RoomService {
         //저장
         roomManager.updateRoom(roomId, room);
         //2초마다 단어보내주기 시작
-        sessionMethodService.startSessionMethod(roomId);
+        sessionMethodService.startSessionMethod(roomId, RoomType.SINGLE);
       } else {
 //        responseDto = new ResponseDto("fail", "게임 시작 실패, 준비안됨");
         log.info("failed to start: not ready");
@@ -172,7 +169,6 @@ public class RoomServiceImpl implements RoomService {
     //TODO 0 점 반환될때 부정적인 모션 흔들림 같은.
     checkRefill(room, WordType.SUB);
     checkRefill(room, WordType.TARGET);
-    checkRefill(room, WordType.LEVEL);
 
     player.updateIndex(player.getSubWordIndex() + toDelete,
         player.getTargetWordIndex() + toDelete > 0 ? 1 : 0);
