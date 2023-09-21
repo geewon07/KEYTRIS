@@ -1,5 +1,5 @@
 export const Modal = (props) => {
-  let { modalShow, setModal, title, desc, children } = props;
+  let { modalShow, setModal, title, buttonLabel, desc, children } = props;
 
   const titleStyle = {
     color: "#FFF", // Note: Color should be enclosed in quotes
@@ -10,34 +10,52 @@ export const Modal = (props) => {
     lineHeight: "50px",
     letterSpacing: "3px",
     alignItems: "center", // This doesn't apply to text elements
-    width: "60%",
+    width: "70%",
     wordBreak: "break-all",
-    marginBottom: "90px",
+    marginBottom: "3rem",
   };
+
+  const contentStyle = {
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "start",
+    width: "70%",
+    gap: "3rem",
+    marginBottom: "2rem",
+  };
+
   return (
     <>
       <div hidden={!modalShow}>
         <div className="modal">
           <div className="modal-content">
             <div style={{ alignSelf: "end" }}>
-              <button onClick={() => setModal(false)} style={{}}>
+              <button
+                className="modal-close-button"
+                onClick={() => setModal(false)}
+                style={{}}
+              >
                 X
               </button>
             </div>
 
             <div style={titleStyle}>{title}</div>
 
-            <CategorySelect></CategorySelect>
+            <div style={contentStyle}>
+              <CategorySelect></CategorySelect>
+              <ModalButton label={buttonLabel}></ModalButton>
+            </div>
           </div>
         </div>
       </div>
     </>
   );
 };
+
 export const CategorySelect = () => {
   return (
     <>
-      <div style={{ textAlign: "start", width: "70%" }}>
+      <div>
         <label for="category">뉴스 카테고리</label>
         <form>
           <select
@@ -59,6 +77,20 @@ export const CategorySelect = () => {
             <option value={105}>IT/과학</option>
           </select>
         </form>
+      </div>
+    </>
+  );
+};
+
+export const ModalButton = (props) => {
+  const { label } = props;
+  return (
+    <>
+      <div className="modal-button-layout">
+        {/* <button className="modal-button-style" type={buttonType} onClick={func}> */}
+        <button className="modal-button-style">
+          <span className="modal-button-text">{label}</span>
+        </button>
       </div>
     </>
   );
