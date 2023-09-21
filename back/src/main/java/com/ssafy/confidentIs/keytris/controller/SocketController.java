@@ -18,8 +18,7 @@ public class SocketController {
 
   @MessageMapping("/games/room/{roomId}")//{roomId}
   public void enterRoom(@DestinationVariable String roomId) {//@DestinationVariable String roomId
-//    log.info("room socket:{}",roomId);
-    System.out.println("when does it call "+roomId);
+    log.info("when does it call {}", roomId);
     messagingTemplate.convertAndSend("/topic/games/room/" + roomId, roomService.enterRoom(roomId));
   }
 }

@@ -1,11 +1,13 @@
 package com.ssafy.confidentIs.keytris.controller;
 
 import com.ssafy.confidentIs.keytris.model.PlayerStatus;
+import com.ssafy.confidentIs.keytris.model.Room;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
 import com.ssafy.confidentIs.keytris.model.WordType;
 import com.ssafy.confidentIs.keytris.model.multiModel.MultiPlayer;
 import com.ssafy.confidentIs.keytris.model.multiModel.MultiRoom;
 import com.ssafy.confidentIs.keytris.repository.MultiRoomManager;
+import com.ssafy.confidentIs.keytris.repository.RoomManager;
 import com.ssafy.confidentIs.keytris.service.DataServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ import java.util.*;
 public class TestController2 {
 
     private final MultiRoomManager multiRoomManager;
+    private final RoomManager roomManager;
     private final DataServiceImpl dataService;
 
     @GetMapping
@@ -110,5 +113,21 @@ public class TestController2 {
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 
+    @GetMapping("/games/rooms")
+    public ResponseEntity<?> findAllSingleRooms() {
+        Collection<Room> rooms = roomManager.getAllRooms();
+        for(Room room : rooms) {
+            log.info("room: {}", room);
+        }
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
+    }
+
+
+//    @PostMapping("/single/insertData")
+//    public ResponseEntity<?> dummyDataInsertSingle() {
+//
+//
+//        return new ResponseEntity<>();
+//    }
 
 }
