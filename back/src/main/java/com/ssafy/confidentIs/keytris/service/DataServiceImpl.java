@@ -5,12 +5,16 @@ import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListResponse;
 import com.ssafy.confidentIs.keytris.dto.multiDto.MultiGuessRequest;
+import com.ssafy.confidentIs.keytris.model.WordType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+import java.util.Queue;
 
 @Slf4j
 @Service
@@ -26,7 +30,6 @@ public class DataServiceImpl {
     // 단어 유사도 확인 및 정렬된 데이터 요청
     public DataGuessWordResponse sendGuessWordRequest(DataGuessWordRequest dataGuessWordRequest) {
         String serverBUrl = dataServerUrl + "/guess-words";
-//        String serverBUrl = dataServerUrl;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -40,7 +43,6 @@ public class DataServiceImpl {
 
     public DataWordListResponse sendWordListRequest(DataWordListRequest dataWordListRequest) {
         String serverBUrl = dataServerUrl + "/get-words";
-//        String serverBUrl = dataServerUrl + "/start";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -52,7 +54,36 @@ public class DataServiceImpl {
         return response.getBody();
     }
 
-    // 추가 단어 요청
+
+    // data api 에서 단어 유사도 확인하기
+    public DataGuessWordResponse getWordGuessResult(String guessWord, List<String> currentWordList) {
+        DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
+                .guessWord(guessWord)
+                .currentWordList(currentWordList)
+                .build();
+        return sendGuessWordRequest(dataGuessWordRequest);
+    }
+
+    // data api 에서 단어 리스트 불러오기
+    public List<String> getDataWordList(WordType wordType, int category, int amount) {
+        DataWordListRequest dataWordListRequest = DataWordListRequest.builder()
+                .type(wordType)
+                .category(category)
+                .amount(amount)
+                .build();
+        DataWordListResponse dataWordListResponse = sendWordListRequest(dataWordListRequest);
+        return dataWordListResponse.getData().getWordList();
+    }
+
+
+    // 레벨어를 추가하는 메서드
+    protected Queue<String> addLevelWords(Queue<String> levelWordList, WordType wordType, int category, int amount) {
+        List<String> tempWordList = getDataWordList(wordType, category, amount);
+        for(String word : tempWordList) {
+            levelWordList.add(word);
+        }
+        return levelWordList;
+    }
 
 
 }
