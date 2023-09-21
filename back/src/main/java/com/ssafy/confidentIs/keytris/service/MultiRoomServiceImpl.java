@@ -12,6 +12,7 @@ import com.ssafy.confidentIs.keytris.model.multiModel.MultiRoom;
 import com.ssafy.confidentIs.keytris.repository.MultiRoomManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -25,6 +26,8 @@ public class MultiRoomServiceImpl {
     private final DataServiceImpl dataServiceImpl;
 
     private final MultiRoomManager multiRoomManager;
+
+    private final SimpMessagingTemplate messagingTemplate;
 
     private static final int TARGET_AMOUNT = 5; // TARGET 단어 받아오는 단위
     private static final int SUB_AMOUNT = 15; // SUB 단어 받어오는 단위
@@ -145,7 +148,13 @@ public class MultiRoomServiceImpl {
 
 
         // 유사도 조회
-        String[][] sortedWordList = getSortedWordList(guessWord, currentWordList);
+        DataGuessWordResponse dataGuessWordResponse = getWordGuessResult(guessWord, currentWordList);
+        if(dataGuessWordResponse.getSuccess().equals("error")) {
+            // TODO 입력 할 수 없는 단어 예외처리.
+            log.info("입력할 수 없는 단어입니다.");
+            messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/" + currentPlayer.getPlayerId(), guessWord+"는 입력할 수 없는 단어입니다.");
+        }
+        String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
         log.info("sortedWordList {}", Arrays.deepToString(sortedWordList));
 
 
@@ -212,13 +221,13 @@ public class MultiRoomServiceImpl {
     private void checkAndAddWords(MultiPlayer currentPlayer, MultiRoom room, int category) {
         // 타겟어 추가
         if (room.getTargetWordList().size() - currentPlayer.getTargetWordIndex() <= TARGET_ADD_STANDARD) {
-            addWords(room.getTargetWordList(), WordType.TARGET, category, TARGET_AMOUNT);
+            refillWords(room.getTargetWordList(), WordType.TARGET, category, TARGET_AMOUNT);
             log.info("TARGET wordList 단어 추가");
         }
 
         // 서브어 추가
         if (room.getSubWordList().size() - currentPlayer.getSubWordIndex() <= SUB_ADD_STANDARD) {
-            addWords(room.getSubWordList(), WordType.SUB, category, SUB_AMOUNT);
+            refillWords(room.getSubWordList(), WordType.SUB, category, SUB_AMOUNT);
             log.info("SUB wordList 단어 추가");
         }
     }
@@ -257,7 +266,7 @@ public class MultiRoomServiceImpl {
 
         updatedPlayer.updateStatus(PlayerStatus.READY);
 
-        return new UpdatedPlayerResponse(playerId, PlayerStatus.READY);
+        return new UpdatedPlayerResponse(playerId, PlayerStatus.READY, room.getRoomStatus());
     }
 
 
@@ -273,6 +282,7 @@ public class MultiRoomServiceImpl {
         UpdatedPlayerResponse response = UpdatedPlayerResponse.builder()
                 .playerId(playerId)
                 .playerStatus(PlayerStatus.OVER)
+                .roomStatus(room.getRoomStatus())
                 .build();
 
         // 한 명 제외하고 모두 OVER 된 경우 game status update
@@ -290,13 +300,12 @@ public class MultiRoomServiceImpl {
     // ========================== 공통 코드 ==========================
 
     // data api 에서 단어 유사도 확인하기
-    private String[][] getSortedWordList(String guessWord, List<String> currentWordList) {
+    private DataGuessWordResponse getWordGuessResult(String guessWord, List<String> currentWordList) {
         DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
                 .guessWord(guessWord)
                 .currentWordList(currentWordList)
                 .build();
-        DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(dataGuessWordRequest);
-        return dataGuessWordResponse.getData().getCalWordList();
+        return dataServiceImpl.sendGuessWordRequest(dataGuessWordRequest);
     }
 
     // data api 에서 단어 리스트 불러오기
@@ -321,7 +330,7 @@ public class MultiRoomServiceImpl {
     }
 
     // 타겟어, 서브어를 추가로 가져오는 메서드
-    private List<String> addWords(List<String> originalWordList, WordType wordType, int category, int amount) {
+    private List<String> refillWords(List<String> originalWordList, WordType wordType, int category, int amount) {
         List<String> tempWordList = getDataWordList(wordType, category, amount);
         for(String word : tempWordList) {
             originalWordList.add(word);

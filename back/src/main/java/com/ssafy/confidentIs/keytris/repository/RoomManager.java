@@ -1,4 +1,4 @@
-package com.ssafy.confidentIs.keytris.service;
+package com.ssafy.confidentIs.keytris.repository;
 
 import com.ssafy.confidentIs.keytris.model.Room;
 import java.util.UUID;

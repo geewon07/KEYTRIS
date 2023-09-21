@@ -72,27 +72,21 @@ public class MultiGameController {
 
 
     // 방장이 게임을 시작하는 api
-//    @PutMapping("/{roomId}/start")
     @MessageMapping("/multi/start/{roomId}")
     public void startMultiGame(@DestinationVariable String roomId, @RequestBody @Validated MultiGamePlayerRequest request) {
         log.info("roomId: {}, request: {}",roomId , request);
 
         MultiGameInfoResponse response = multiRoomServiceImpl.startMultiGame(roomId, request);
         messagingTemplate.convertAndSend("/topic/multi/start/" + roomId, response);
-
-//        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
     // 플레이어 상태를 ready로 업데이트 하는 api
-//    @PutMapping("/{roomId}/player-ready")
     @MessageMapping("/multi/player-ready/{roomId}")
     public void updatePlayerToReady(@DestinationVariable String roomId, @RequestBody MultiGamePlayerRequest request) {
         log.info("roomId: {}, playerId: {}", roomId, request.getPlayerId());
         UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToReady(roomId, request.getPlayerId());
         messagingTemplate.convertAndSend("/topic/multi/player-ready/"+roomId, response);
-
-//        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

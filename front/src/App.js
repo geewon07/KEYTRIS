@@ -1,23 +1,22 @@
-import './App.css';
-import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { Home } from './pages/home/Home';
-import { SingleGame } from './pages/singleGame/SingleGame';
-import { SingleGameResult } from './pages/singleGame/SingleGameResult';
-import { MultiGame } from './pages/multiGame/MultiGame';
-import { MultiGameResult } from './pages/multiGame/MultiGameResult';
-import { QuickMenu } from './components/quickmenu/quickMenuTest'
+import "./App.css";
+import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { Home } from "./pages/home/Home";
+import { SingleGame } from "./pages/singleGame/SingleGame";
+import { SingleGameResult } from "./pages/singleGame/SingleGameResult";
+import { MultiGame } from "./pages/multiGame/MultiGame";
+import { MultiGameResult } from "./pages/multiGame/MultiGameResult";
+import { QuickMenu } from "./components/quickmenu/quickMenuTest";
 
 function App() {
-
   return (
     <div className="App">
-      <div id='stars' />
-      <div id='stars2' />
-      <div id='stars3' />
+      <div id="stars" />
+      <div id="stars2" />
+      <div id="stars3" />
       <QuickMenu />
       <Routes>
-        <Route path="/" element={<Home />}/>
+        <Route path="/" element={<Home />} />
         <Route path="/singleGame" element={<SingleGame />}>
           <Route index element={<SingleGame />} />
           {/* single-game-result 페이지에 대한 라우트 */}
@@ -32,8 +31,6 @@ function App() {
       </Routes>
     </div>
   );
-};
-
-
+}
 
 export default App;

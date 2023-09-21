@@ -1,7 +1,7 @@
 package com.ssafy.confidentIs.keytris.service;
 
 import com.ssafy.confidentIs.keytris.model.Room;
-import com.ssafy.confidentIs.keytris.model.WordType;
+import com.ssafy.confidentIs.keytris.repository.RoomManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
