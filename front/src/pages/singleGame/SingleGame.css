@@ -1,0 +1,50 @@
+.listcontainer {
+  width: 30%;
+  min-width: 25%;
+  display:flex;
+  flex-direction:row-reverse;
+}
+.wordlist {
+  background: #26154A;
+  /* background: #fff; */
+  width: 90%;
+  z-index: 1000;
+
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: flex-end;
+  align=self:end;
+  text-align: start;
+}
+.endbar {
+  background: #d9d9d9;
+  width: 100%;
+}
+
+input.inputcase {
+  width: auto;
+
+  font-size: 16px; /* Set the font size */
+  border: none;
+  background-color: #f4f4f4; /* Set the background color */
+  color: #333; /* Set the text color */
+  font-size: 16px;
+  color: blue;
+  background-color: #ccff00 !important;
+  /* margin: 5px; */
+  padding: 10px;
+}
+li.wordline {
+  font-size: 16px;
+  color: #FFF!important;
+  /* background-color: #ccff00; */
+  margin: 5px;
+  padding: 10px;
+  display: flex; /* Use flexbox to control layout */
+  justify-content: space-between!important; /* Align items to either side */
+  align-items: center; /* Vertically center the content */
+  padding: 10px; /* Add some spacing */
+  /* border: 1px solid #ccc;  */
+}

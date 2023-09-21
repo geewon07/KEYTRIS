@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Stomp } from "@stomp/stompjs";
-import { Outlet } from "react-router-dom";
+import "./SingleGame.css";
 import {
   startGame,
   createRoom,
@@ -8,6 +7,7 @@ import {
   overGame,
 } from "../../api/singleGame/singleGameApi.js";
 import { connect, disconnect, subscribe } from "../../api/stompClient.js";
+import { QuickMenu } from "../../components/quickmenu/quickMenuTest";
 
 export const SingleGame = (props) => {
   // const { category } = props;
@@ -30,7 +30,6 @@ export const SingleGame = (props) => {
   const callback = (messageBody) => {
     console.log(messageBody);
   };
-
   useEffect(() => {
     let subscription;
 
@@ -43,7 +42,7 @@ export const SingleGame = (props) => {
     // sendMsg(destination, body);
 
     const callback = (messageBody) => {
-      // console.log(messageBody);
+      console.log(messageBody);
     };
 
     subscription = subscribe(`/topic/room/level-word/${roomId}`, callback);
@@ -87,29 +86,25 @@ export const SingleGame = (props) => {
     //게임시작api
     try {
       const res = await startGame(statusRequestDto);
-      console.log(res);
       const startResponseDto = res.data.data.StartResponse;
       const statusResponse = startResponseDto.statusResponse;
       const wordListResponse = startResponseDto.wordListResponse;
       // console.log(startResponseDto);
-      console.log("problem"+wordListResponse);
-      console.log(wordListResponse.newScore)
+      // console.log(wordListResponse);
       setPlayerStatus(startResponseDto.statusResponse.playerStatus);
       setRoomStatus(startResponseDto.statusResponse.roomStatus);
 
       setSubWordList(startResponseDto.wordListResponse.subWordList);
-      setCurrentWordList([
-        wordListResponse.newSubWordList,
-        wordListResponse.newTargetWord,
-      ]);
+      setCurrentWordList(wordListResponse.subWordList);
       setTargetWord(startResponseDto.wordListResponse.targetWord);
-      setScore(wordListResponse.newScore);
-      // setCurrentWordList((prev) => [
-      //   ...prev,
 
-      // ]);
+      setCurrentWordList((prev) => [
+        ...prev,
+        startResponseDto.wordListResponse.targetWord,
+      ]);
+      setScore(startResponseDto.wordListResponse.score);
 
-      console.log(wordListResponse.currentWordList);
+      console.log(currentWordList);
       // currentWordList 저장해야함 -> 어떻게 저장?? subWordList에 TargetWord뒤에 추가???
     } catch (error) {
       console.error(error);
@@ -124,7 +119,7 @@ export const SingleGame = (props) => {
       //흔들리는 모션
       setCurrentWordList(newList);
     } else {
-      const toDelete = newList.find(targetWord);
+      const toDelete = newList.findIndex((word) => word === targetWord);
       setCurrentWordList(...newList.slice(0, toDelete), newList.slice(4));
     }
     console.log(newList);
@@ -207,15 +202,37 @@ export const SingleGame = (props) => {
   //     console.error(error);
   //   }
   // };
-
+  const renderWordList = (list) => {
+    return list.map((item, index) => {
+      if (Array.isArray(item)) {
+        // This is a 2D array with points
+        const [word, point] = item;
+        return (
+          <li key={index} className={word === targetWord ? "targetWord wordline" : "wordline" }
+          >>
+            <div className="left">{word}</div>
+            <div className="right">{point} points</div>
+          </li>
+        );
+      } else {
+        // This is a simple string
+        return (
+          <li key={index} className={item === targetWord ? "targetWord wordline" : "wordline" }>
+            <div className="left">{item}</div>
+            {/* No point value for this type */}
+          </li>
+        );
+      }
+    });
+  };
   const listing = currentWordList
     ?.slice()
     .reverse()
     .map((value, index) => (
       <li
         key={index}
-        style={{ lineHeight: "1.5rem" }}
-        className={value === targetWord ? "targetWord" : ""}
+        style={{ lineHeight: "1.5rem",color:"white" }}
+        className={value === targetWord ? "targetWord wordline" : "wordline" }
       >
         {value}+{currentWordList.length - index}
       </li>
@@ -251,7 +268,7 @@ export const SingleGame = (props) => {
           flexDirection: "row",
         }}
       >
-        <div style={{ width: "45%" }}>
+        <div style={{ width: "35%" }}>
           <h5>
             player :{playerId} , room :{roomId}
           </h5>
@@ -283,41 +300,42 @@ export const SingleGame = (props) => {
               게임 시작
             </button>
             <button onClick={handleOverGame}>게임 종료/소켓 종료</button>
-            {listing}
           </div>
         </div>
-
-        <div
-          className="wordlist"
-          style={{
-            height: "100vh",
-            display: "flex",
-            width: "25%",
-            flexDirection: "column",
-            // alignItems:"center",
-            justifyContent: "flex-end",
-            textAlign: "start",
-          }}
-        >
-          <ul style={{ listStyle: "none" }}>{listing}</ul>
-          <input
-            type="text"
-            placeholder="입력하세요"
-            value={guessWord}
-            onChange={handleInputChange}
-          ></input>
-        </div>
-
-        <div>
+        <div className="listcontainer" style={{}}>
+          <div className="wordlist">
+            <ul className="" style={{ listStyle: "none" }}>
+              {renderWordList(currentWordList)}
+            </ul>
+            <input
+              className="inputcase"
+              type="text"
+              placeholder="입력하세요"
+              value={guessWord}
+              onChange={handleInputChange}
+              onKeyDown={(e) => {
+                if (e.key === "Enter"){
+                  
+                } e.preventDefault();
+                handleInsertWord();
+              }}
+            ></input>
+          </div>
+        </div>{" "}
+        <div style={{ width: "35%" }}>
+          <QuickMenu />
           <form
-            onKeyDown={(e) => {
-              if (e.key === "Enter") e.preventDefault();
-              handleInsertWord();
-            }}
-            // onSubmit={enterWord}
+
+          // onSubmit={enterWord}
           >
             {/* <button type="submit">버튼</button> */}
           </form>
+          <ul>
+            <li sytle={{ display: "flex", flexDirection: "row" }}>
+              <div style={{}}>단어</div>
+              <div>유사도</div>
+            </li>
+          </ul>
         </div>
       </div>
     </>
