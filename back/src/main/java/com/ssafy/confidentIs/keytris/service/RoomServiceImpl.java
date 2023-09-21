@@ -169,7 +169,6 @@ public class RoomServiceImpl implements RoomService {
     //TODO 0 점 반환될때 부정적인 모션 흔들림 같은.
     checkRefill(room, WordType.SUB);
     checkRefill(room, WordType.TARGET);
-    checkRefill(room, WordType.LEVEL);
 
     player.updateIndex(player.getSubWordIndex() + toDelete,
         player.getTargetWordIndex() + toDelete > 0 ? 1 : 0);
