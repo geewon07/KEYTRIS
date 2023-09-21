@@ -58,7 +58,7 @@ public class RoomServiceImpl implements RoomService {
 
     DataWordListRequest subWordRequest = new DataWordListRequest(WordType.SUB, category, 20);
     DataWordListRequest targetWordRequest = new DataWordListRequest(WordType.TARGET, category, 10);
-    DataWordListRequest levelWordRequest = new DataWordListRequest(WordType.LEVEL, category, 10);
+    DataWordListRequest levelWordRequest = new DataWordListRequest(WordType.LEVEL, category, 30);
 
     DataWordListResponse subWords = dataServiceImpl.sendWordListRequest(subWordRequest);
     DataWordListResponse targetWords = dataServiceImpl.sendWordListRequest(targetWordRequest);

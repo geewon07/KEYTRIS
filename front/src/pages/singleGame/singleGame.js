@@ -3,13 +3,11 @@ import { Stomp } from "@stomp/stompjs";
 import { Outlet } from "react-router-dom";
 import {
   startGame,
+  createRoom,
   insertWord,
   overGame,
-  outRoom,
-  createRoom,
-} from "../../api/singleGame/SingleGameApi.js";
-import SockJS from "sockjs-client";
-import axios from "axios";
+} from "../../api/singleGame/singleGameApi.js";
+import { connect, disconnect, subscribe } from "../../api/stompClient.js";
 
 export const Single = (props) => {
   // const { category } = props;
@@ -28,30 +26,46 @@ export const Single = (props) => {
   const [sortedWordList, setSortedWordList] = useState([]);
   const [score, setScore] = useState(0);
 
-  const [sockJS, setSockJS] = useState();
-  const sock = new SockJS("http:localhost:8765/keytris");
-  const stomp = Stomp.over(sock);
-
+  const [levelWord, setLevelWord] = useState();
+  const callback = (messageBody) => {
+    console.log(messageBody);
+  };
   useEffect(() => {
-    if (roomId != null)
-      stomp.connect({}, () => {
-        stomp.send("/app/games/room/" + roomId);
-        stomp.subscribe("/topic/room/level-word/" + roomId, (message) => {
-          console.log(message.body);
-          const msg = message.body;//JSON.parse(message.body);
-          setPlayerStatus(msg.playerStatus);
-          setRoomStatus(msg.roomStatus);
-         
-        });
-      });
+    let subscription;
+
+   
+      console.log("ddddd");
+      connect();
+
+      // const destination = '/your/destination';
+      // const body = { room_id: roomId };
+      
+      // sendMsg(destination, body);
+
+      const callback = (messageBody) => {
+        console.log(messageBody);
+      };
+
+      subscription = subscribe(`/topic/room/level-word/${roomId}`, callback);
+    
+
+    // return () => {
+    //   if (subscription) {
+    //     subscription.unsubscribe();
+    // }
+    
+    // if (roomId !== null) {
+    //     disconnect();
+    // }
+    // };
   }, [roomId]);
 
   const handleCreate = async () => {
     try {
       const category = 101;
       const res = await createRoom({ category: 101 });
-      console.log(category)
-      setSockJS(sock);
+      console.log(category);
+      // setSockJS(sock);
       const statusResponseDto = res.data.data.StatusResponse;
       console.log(statusResponseDto);
       // 게임방 만들어질 때 playerId, roomId 넘겨받음 => 이 api에서는 playerStatus, roomStatus만 변경
@@ -59,10 +73,7 @@ export const Single = (props) => {
       setRoomStatus(statusResponseDto.roomStatus);
       setPlayerId(statusResponseDto.playerId);
       setRoomId(statusResponseDto.roomId);
-      setSubWordList(statusResponseDto.subWordList);
-      setTargetWord(statusResponseDto.wordListResponse.targetWord);
-
-      console.log(roomId);
+      console.log("roomID SET");
     } catch (error) {
       console.error(error);
     }
@@ -80,16 +91,19 @@ export const Single = (props) => {
       const startResponseDto = res.data.data.StartResponse;
       const statusResponse = startResponseDto.statusResponse;
       const wordListResponse = startResponseDto.wordListResponse;
-      console.log(startResponseDto);
-      console.log(wordListResponse);
+      // console.log(startResponseDto);
+      // console.log(wordListResponse);
       setPlayerStatus(startResponseDto.statusResponse.playerStatus);
       setRoomStatus(startResponseDto.statusResponse.roomStatus);
-      
+
       setSubWordList(startResponseDto.wordListResponse.subWordList);
       setCurrentWordList(wordListResponse.subWordList);
       setTargetWord(startResponseDto.wordListResponse.targetWord);
-     
-      setCurrentWordList((prev) => [...prev,startResponseDto.wordListResponse.targetWord]);
+
+      setCurrentWordList((prev) => [
+        ...prev,
+        startResponseDto.wordListResponse.targetWord,
+      ]);
       setScore(startResponseDto.wordListResponse.score);
 
       console.log(currentWordList);
@@ -113,12 +127,6 @@ export const Single = (props) => {
     console.log(newList);
     console.log(currentWordList);
   };
-  // useEffect(() => {
-  //  setPlayerId("983ff30d-8bc2-46b4-9f79-f97069de0754");
-  //  setRoomId("e1bceba5-2213-4e1a-bcf6-c76992476c69");
-  //  setPlayerStatus("READY");
-  //  setRoomStatus("PREPARED");
-  // },[]);
 
   // useEffect(() => {
   //   console.log(subWordList); // subWordList가 변경될 때마다 이 로그가 출력
@@ -149,8 +157,7 @@ export const Single = (props) => {
       setScore(newScore);
       setSubWordList(SortedWordResponseDto.subWordList);
       setTargetWord(SortedWordResponseDto.targetWord);
-      setCurrentWordList((prev)=>[...prev, subWordList,targetWord]);
-    
+      setCurrentWordList((prev) => [...prev, subWordList, targetWord]);
     } catch (error) {
       console.error(error);
     }
@@ -175,7 +182,8 @@ export const Single = (props) => {
       // 페이지 화면 전환
       // 페이지 result로 전환되면서 데이터 넘겨주기? 우선 넘겨줄거를 overResultDto로 만들게요
       // 근데 그냥 위에 overResponseDto 넘겨주는게 나을 것 같아서 그냥 안만들었습니다.
-      stomp.disconnect();
+      // stomp.disconnect();
+      disconnect();
     } catch (error) {
       console.error(error);
     }
@@ -229,7 +237,6 @@ export const Single = (props) => {
 
   //   return () => clearInterval(interval); // Cleanup on unmount
   // }, [words.length]);
-
 
   return (
     <>

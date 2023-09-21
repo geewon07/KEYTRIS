@@ -66,15 +66,16 @@ select#category option {
 /* CSS for the modal content */
 .modal-content {
   width: 45vw;
-  height: 50vh;
+  /* height: 50vh; */
+  height:auto;
   flex-shrink: 0;
   background-color: #fff;
-  padding: 20px;
+  padding: 30px;
   font-size: 30px;
   color: #FFF;
   display:flex;
   flex-direction:column;
-  /* justify-content: center; */
+  justify-content: space-between;
   align-items: center;
   /* border-radius: 8px; */
   border: 3px solid #fff;
