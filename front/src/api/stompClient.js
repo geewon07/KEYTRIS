@@ -29,10 +29,10 @@ export const disconnect = () => {
  }
 };
 
-export const sendMsg = (destination, body={}) => { 
- if(stompClient && stompClient.connected) { 
-   stompClient.send(destination, {}, JSON.stringify(body));
- }
+export const sendMsg = (destination, body) => {
+  if (stompClient && stompClient.connected) {
+    stompClient.send(destination, {}, JSON.stringify(body));
+  }
 };
 
 export const subscribe = (destination, callback) => {

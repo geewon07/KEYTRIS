@@ -6,6 +6,7 @@ export const Home = () => {
     <div>
       Home
       <Link to="/single-game">Go to Single Game</Link>
+      <Link to="/multi-game">Go to Multi Game</Link>
     </div>
   );
 }; 

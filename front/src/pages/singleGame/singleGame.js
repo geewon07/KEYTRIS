@@ -41,15 +41,15 @@ export const SingleGame = () => {
       subscription = subscribe(`/topic/room/level-word/${roomId}`, callback);
     }
 
-    return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-    }
+    // return () => {
+    //   if (subscription) {
+    //     subscription.unsubscribe();
+    // }
     
-    if (roomId !== null) {
-        disconnect();
-    }
-    };
+    // if (roomId !== null) {
+    //     disconnect();
+    // }
+    // };
   }, [roomId]);
 
   const handleStartGame = async (statusRequestDto) => { //게임시작api
@@ -77,8 +77,8 @@ export const SingleGame = () => {
   }
 
   useEffect(() => {
-   setPlayerId("2d0820eb-8af5-49a6-96d0-72ecdc542850");
-   setRoomId("87866696-83e2-4c4a-b9b4-f2da141488c4");
+   setPlayerId("f41c4135-78b4-436e-824a-9e6ff19a54a5");
+   setRoomId("27d4216f-c5e2-413a-8252-71e737e1c7ea");
    setPlayerStatus("READY");
    setRoomStatus("PREPARED");
   },[]);
