@@ -1,11 +1,13 @@
-import './App.css';
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { Home } from './pages/home/Home';
-import { SingleGame } from './pages/singleGame/SingleGame';
-import { SingleGameResult } from './pages/singleGame/SingleGameResult';
-import { MultiGame } from './pages/multiGame/MultiGame';
-import { MultiGameResult } from './pages/multiGame/MultiGameResult';
+import "./App.css";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import { Home } from "./pages/home/Home";
+import { SingleGame } from "./pages/singleGame/singleGame";
+import { SingleGameResult } from "./pages/singleGame/singleGameResult";
+import { MultiGame } from "./pages/multiGame/multiGame";
+import { MultiGameResult } from "./pages/multiGame/multiGameResult";
+
+import { TestJisoo } from "./pages/test/testJisoo";
 
 function App() {
   return (
@@ -20,9 +22,10 @@ function App() {
           <Route index element={<MultiGame />} />
           <Route path="multiGameResult" element={<MultiGameResult />} />
         </Route>
+        <Route path="/testJisoo" element={<TestJisoo />} />
       </Routes>
     </div>
   );
-};
+}
 
 export default App;

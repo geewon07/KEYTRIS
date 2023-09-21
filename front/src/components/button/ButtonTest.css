@@ -59,8 +59,12 @@
   -webkit-text-stroke: 1px white;
 }
 .large-button-style:hover {
-  border-color: #ccff00;
-}
-.large-button-text:hover {
-  -webkit-text-stroke: 1px #ccff00;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.04) 100%
+    ),
+    #5523bd;
+  border: 1px solid #8f00ff;
+  cursor: pointer;
 }

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Modal } from "../../components/modal/ModalTest";
+import { Button } from "../../components/button/ButtonTest";
 
-export const Home = () => {
+export const TestJisoo = () => {
   const [modal, setModal] = useState(true);
   const [multigameModal, setMModal] = useState(false);
   const singleDesc = "어떤 분야의 뉴스 키워드로 게임을 진행하시겠어요?";
@@ -39,6 +40,10 @@ export const Home = () => {
       >
         친구와 함께
       </button>
+
+      <div>
+        <Button label="시작하기">시작하기</Button>
+      </div>
     </div>
   );
 };

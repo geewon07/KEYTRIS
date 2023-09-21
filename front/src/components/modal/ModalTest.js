@@ -1,5 +1,5 @@
 export const Modal = (props) => {
-  let { modalShow, setModal, title, desc, children } = props;
+  let { modalShow, setModal, title, buttonLabel, desc, children } = props;
 
   const titleStyle = {
     color: "#FFF", // Note: Color should be enclosed in quotes
@@ -10,7 +10,7 @@ export const Modal = (props) => {
     lineHeight: "50px",
     letterSpacing: "3px",
     alignItems: "center", // This doesn't apply to text elements
-    width: "60%",
+    width: "70%",
     wordBreak: "break-all",
     marginBottom: "3rem",
   };
@@ -21,6 +21,7 @@ export const Modal = (props) => {
     textAlign: "start",
     width: "70%",
     gap: "3rem",
+    marginBottom: "2rem",
   };
 
   return (
@@ -29,7 +30,11 @@ export const Modal = (props) => {
         <div className="modal">
           <div className="modal-content">
             <div style={{ alignSelf: "end" }}>
-              <button onClick={() => setModal(false)} style={{}}>
+              <button
+                className="modal-close-button"
+                onClick={() => setModal(false)}
+                style={{}}
+              >
                 X
               </button>
             </div>
@@ -38,7 +43,7 @@ export const Modal = (props) => {
 
             <div style={contentStyle}>
               <CategorySelect></CategorySelect>
-              <ModalButton label={"게임 시작하기"}>게임 시작하기</ModalButton>
+              <ModalButton label={buttonLabel}></ModalButton>
             </div>
           </div>
         </div>
