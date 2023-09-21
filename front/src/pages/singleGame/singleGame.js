@@ -6,6 +6,7 @@ import {
   overGame
 } from "../../api/singleGame/singleGameApi.js";
 import { connect, disconnect , subscribe } from "../../api/stompClient.js";
+import TextChatting from "../../components/chatting/ChatTest.js"
 
 
 export const SingleGame = () => {
@@ -158,6 +159,7 @@ export const SingleGame = () => {
   return (
     <div> 
       <button onClick={() => handleStartGame(statusRequestDto)}></button>
+      <TextChatting></TextChatting>
       <Outlet />
     </div>
   );

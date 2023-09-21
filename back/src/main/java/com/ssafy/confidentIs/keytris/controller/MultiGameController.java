@@ -77,6 +77,7 @@ public class MultiGameController {
         log.info("roomId: {}, request: {}",roomId , request);
 
         MultiGameInfoResponse response = multiRoomServiceImpl.startMultiGame(roomId, request);
+        System.out.println(roomId);
         messagingTemplate.convertAndSend("/topic/multi/start/" + roomId, response);
 
 //        return new ResponseEntity<>(response, HttpStatus.OK);

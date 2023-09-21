@@ -22,21 +22,50 @@ export const MultiGame = () => {
       connect();
 
 
-      const enterPlayerInfo = (messageBody) => {
+      const enterPlayer = (messageBody) => {
         const content = JSON.parse(messageBody);
         const gameInfo = content.gameInfo;
         console.log(gameInfo.roomId);
       };
 
-      subscribe(`/topic/multi/${roomId}`, enterPlayerInfo);
+      subscribe(`/topic/multi/${roomId}`, enterPlayer);
 
-      const startGameInfo = (messageBody) => {
+      const enterChat = (messageBody) => {
         const content = JSON.parse(messageBody);
-        const gameInfo = content.gameInfo;
-        console.log(gameInfo.roomId);
       };
 
-      subscribe(`/topic/multi/start/${roomId}`, startGameInfo);
+      subscribe(`/topic/multi/chat/${roomId}`, enterChat);
+
+      const startGame = (messageBody) => {
+        const startGameInfo = JSON.parse(messageBody);
+        console.log(startGameInfo.roomId);
+      };
+
+      subscribe(`/topic/multi/start/${roomId}`, startGame);
+
+      const playerReady = (messageBody) => {
+        const playerReadyInfo = JSON.parse(messageBody);
+      };
+
+      subscribe(`/topic/multi/player-ready/${roomId}`, playerReady);
+
+      const playerOverInfo = (messageBody) => {
+        const playerOverInfo = JSON.parse(messageBody);
+      };
+
+      subscribe(`/topic/multi/player-ready/${roomId}`, playerOverInfo);
+
+      const play = (messageBody) => {
+        const playInfo = JSON.parse(messageBody);
+      };
+
+      subscribe(`/topic/multi/play/${roomId}`, play);
+
+      const chat = (messageBody) => {
+        const chatMessage = JSON.parse(messageBody);
+      };
+
+      subscribe(`/topic/multi/play/${roomId}`, chat);
       
 
     // return () => {
@@ -50,9 +79,36 @@ export const MultiGame = () => {
     // };
   });
 
+
   const startGame = () => {
     const body = { "playerId": playerId };
     sendMsg(`/app/multi/start/${roomId}`,body);
+  }
+
+  const updatePlayerToReady = () => {
+    const body = { "playerId": playerId };
+    sendMsg(`/app/multi/player-ready/${roomId}`,body);
+  }
+  
+  const updatePlayerToOver = () => {
+    const body = { "playerId": playerId };
+    sendMsg(`/app/multi/player-over/${roomId}`,body);
+  }
+
+  const insertWord = () => {
+    const body = { "playerId": playerId,
+                   "currentWordList" : currentWordList,
+                   "guessWord" : guessWord,
+                   "targetWord" : targetWord
+                  };
+    sendMsg(`/app/multi/play/${roomId}`,body);
+  }
+
+  const insertChatMessage = () => {
+    const body = { "playerId": playerId,
+                   "content" : "채팅메시징"
+                  };
+    sendMsg(`/app/multi/play/${roomId}`,body);
   }
   
   useEffect(() => {
