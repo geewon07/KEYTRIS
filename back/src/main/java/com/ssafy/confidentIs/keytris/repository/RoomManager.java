@@ -1,7 +1,8 @@
 package com.ssafy.confidentIs.keytris.repository;
 
 import com.ssafy.confidentIs.keytris.model.Room;
-import java.util.UUID;
+
+import java.util.Collection;
 
 public interface RoomManager {
 
@@ -12,5 +13,7 @@ public interface RoomManager {
   void updateRoom(String roomId, Room updated);
 
   void removeRoom(String roomId);
+
+  Collection<Room> getAllRooms();
 
 }

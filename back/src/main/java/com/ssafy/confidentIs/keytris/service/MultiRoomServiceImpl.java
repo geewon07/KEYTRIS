@@ -170,6 +170,7 @@ public class MultiRoomServiceImpl {
         for(int i=0; i<sortedWordList.length; i++) {
             if(sortedWordList[i][0].equals(targetWord)) {
                 targetWordRank = i;
+                break;
             }
         }
         log.info("targetWordRank: {}", targetWordRank);
