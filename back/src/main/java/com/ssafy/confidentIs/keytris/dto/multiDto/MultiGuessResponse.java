@@ -17,4 +17,6 @@ public class MultiGuessResponse {
     private String newTargetWord;
     private List<String> newSubWordList;
 
+    private String success;
+
 }

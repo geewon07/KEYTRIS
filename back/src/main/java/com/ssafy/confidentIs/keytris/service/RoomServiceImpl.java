@@ -1,6 +1,8 @@
 package com.ssafy.confidentIs.keytris.service;
 
 import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
+import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
+import com.ssafy.confidentIs.keytris.common.exception.customException.InvalidWordException;
 import com.ssafy.confidentIs.keytris.dto.GuessRequest;
 import com.ssafy.confidentIs.keytris.dto.OverRequest;
 import com.ssafy.confidentIs.keytris.dto.OverResponse;
@@ -143,7 +145,6 @@ public class RoomServiceImpl implements RoomService {
   //TODO : 전부다 산산조각내서 별도의 메소드로 만들고 싶은 어떤 마음,,,
   @Override
   public ResponseDto enterWord(GuessRequest request) {
-//    log.info("null troubleshoot currWL:{}",currentWordList);
     Room room = roomManager.getRoom(request.getRoomId());
     log.info("room : {}", room);
     SinglePlayer currentPlayer = room.getPlayerList().get(0);
@@ -155,10 +156,18 @@ public class RoomServiceImpl implements RoomService {
         .build();
     DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(
         dataGuessWordRequest);
+    log.info("dataGuessWordResponse : {}", dataGuessWordResponse);
+    if(dataGuessWordResponse.getSuccess().equals("fail")) {
+      throw new InvalidWordException("입력할 수 없는 단어", ErrorCode.INVALID_WORD);
+    }
+
+
     String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
 
-
     // == 유사도 순위에 따라 점수 계산, 새 단어 정리 ==
+
+    // currentList 의 개수
+    int currentListSize = request.getCurrentWordList().size();
 
     // 타겟어의 유사도 순위 계산
     int targetWordRank = -1;
@@ -176,7 +185,7 @@ public class RoomServiceImpl implements RoomService {
     // 타겟어 유사도가 순위권 내인 경우
     if (0 <= targetWordRank && targetWordRank < 4) {
       // 플레이어 점수, 단어 idx 업데이트 및 새롭게 클라이언트에 전달할 단어 추출
-      newSubWordList = updatePlayerBasedOnRank(targetWordRank, currentPlayer, room);
+      newSubWordList = updatePlayerBasedOnRank(targetWordRank, currentPlayer, room, currentListSize);
       newTargetWord = room.getTargetWordList().get(currentPlayer.getTargetWordIndex());
 
       // Room의 여분 타겟어, 서브어가 부족한 경우, 추가 단어 요청
@@ -191,14 +200,24 @@ public class RoomServiceImpl implements RoomService {
   }
 
   // 단어 입력 유사도 확인 -> 타겟어 유사도 순위가 높은 경우 점수, 단어 인덱스 갱신 후 newSubWordList를 반환하는 메서드
-  private List<String> updatePlayerBasedOnRank(int targetWordRank, SinglePlayer currentPlayer, Room room) {
+  private List<String> updatePlayerBasedOnRank(int targetWordRank, SinglePlayer currentPlayer, Room room, int currentListSize) {
     int[] scoreUpdates = {55, 45, 35, 25};
-    int[] subWordIndexUpdates = {3, 2, 1, 0};
+    int[] deletedSubWordCnt = {3, 2, 1, 0};
 
-    List<String> newSubWordList = room.getSubWordList().subList(currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subWordIndexUpdates[targetWordRank]);
-    log.info("새 서브워드 범위: {}부터 {}이전", currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subWordIndexUpdates[targetWordRank]);
-    currentPlayer.updateIndex(currentPlayer.getSubWordIndex()+subWordIndexUpdates[targetWordRank], currentPlayer.getTargetWordIndex()+1);
+    // 점수 업데이트
     currentPlayer.updateScore(currentPlayer.getScore() + scoreUpdates[targetWordRank]);
+
+    int listSize = currentListSize - deletedSubWordCnt[targetWordRank];
+    List<String> newSubWordList = new ArrayList<>();
+
+    // 삭제 후 남은 서브어 개수가 10개 미만인 경우 서브어 돌려줌
+    if(listSize < 10) {
+      int subIdx = Math.min((10-listSize), deletedSubWordCnt[targetWordRank]); // 서브어 총 개수 9개에 맞춤
+      newSubWordList = room.getSubWordList().subList(currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subIdx);
+      currentPlayer.updateIndex(currentPlayer.getSubWordIndex()+subIdx, currentPlayer.getTargetWordIndex()+1);
+    } else { // 10개 이상인 경우 서브어 돌려주지 않음
+      currentPlayer.updateIndex(currentPlayer.getSubWordIndex(), currentPlayer.getTargetWordIndex()+1);
+    }
 
     log.info("단어 유사도 순위로 플레이어 정보 업데이트 완료: {}", currentPlayer);
     return newSubWordList;

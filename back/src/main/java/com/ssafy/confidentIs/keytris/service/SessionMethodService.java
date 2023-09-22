@@ -64,9 +64,9 @@ public class SessionMethodService {
     }
 
     if(room.getLevelWordList().size() < LEVEL_ADD_STANDARD) {
-      log.info("레벨어 부족으로 추가. 추가 전: {}", room.getLevelWordList());
+//      log.info("레벨어 부족으로 추가. 추가 전: {}", room.getLevelWordList());
       dataServiceImpl.addLevelWords(room.getLevelWordList(), WordType.LEVEL, room.getCategory(), LEVEL_AMOUNT);
-      log.info("레벨어 부족으로 추가. 추가 후: {}", room.getLevelWordList());
+//      log.info("레벨어 부족으로 추가. 추가 후: {}", room.getLevelWordList());
     }
 
 //    log.info(nextWord + " :Session " + roomId + " method is running every 2 seconds...");
