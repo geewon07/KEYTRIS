@@ -8,12 +8,11 @@ import { MultiGame } from "./pages/multiGame/multiGame.js";
 import { MultiGameResult } from "./pages/multiGame/multiGameResult.js";
 import { QuickMenu } from "./components/quickmenu/quickMenuTest.js";
 import { Star } from "./components/star.js";
-import { TestJisoo } from "./pages/test/testJisoo.js";
 
 function App() {
   return (
     <div className="App">
-      <Star />
+      <Star/>
       <QuickMenu />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -28,7 +27,6 @@ function App() {
           {/* multi-game-result 페이지에 대한 라우트 */}
           <Route path="result" element={<MultiGameResult />} />
         </Route>
-        <Route path="/testJisoo" element={<TestJisoo />} />
       </Routes>
     </div>
   );
