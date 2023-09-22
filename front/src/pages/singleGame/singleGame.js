@@ -5,7 +5,7 @@ import {
   createRoom,
   insertWord,
   overGame,
-} from "../../api/singleGame/singleGameApi.js";
+} from "../../api/singleGame/SingleGameApi.js";
 import { connect, disconnect, subscribe } from "../../api/stompClient.js";
 import { QuickMenu } from "../../components/quickmenu/quickMenuTest";
 
@@ -88,8 +88,7 @@ export const SingleGame = (props) => {
 
       // setSubWordList(wordListResponse.newSubWordList);
       setCurrentWordList([
-        ...wordListResponse.newSubWordList,
-        wordListResponse.newTargetWord,
+        ...wordListResponse.sortedWordList
       ]);
       setTargetWord(wordListResponse.newTargetWord);
       setScore(startResponseDto.wordListResponse.newScore);
@@ -109,7 +108,7 @@ export const SingleGame = (props) => {
     });
   }
 
-  const handleScoring = (newList, newScore) => {
+  const handleScoring = (newList, newScore,SortedWordResponseDto) => {
     //여기서 새값 들어오기전에 먼저 효과를 주기
     //TODO: 1 단어정렬, 2 점수 효과, 3 득점X 효과
     if (newScore === score) {
@@ -125,6 +124,13 @@ export const SingleGame = (props) => {
       console.log("toDelete "+ toDelete);
       setCurrentWordList([...newList.slice(0, toDelete), ...newList.slice(4)]);
       }, 5000);
+      setTimeout(()=>{
+        setCurrentWordList((prev)=>[...prev,...SortedWordResponseDto.newSubWordList,SortedWordResponseDto.newTargetWord,...levelWord])
+      },6000);
+      setSubWordList(SortedWordResponseDto.newSubWordList);
+      setTargetWord(SortedWordResponseDto.newTargetWord);
+      //새 단어 주기적으로 추가되는 부분-> 실제 리스트에 포함 시키기
+      
     }
     console.log("current "+currentWordList);
   };
@@ -165,13 +171,14 @@ export const SingleGame = (props) => {
         console.log("sorted "+SortedWordResponseDto);
         const sorted = SortedWordResponseDto.sortedWordList;
         const newScore = SortedWordResponseDto.newScore;
-        handleScoring(sorted, newScore);
+        handleScoring(sorted, newScore,SortedWordResponseDto);
         //효과를 다 하고 쓰세여~
 
         setSortedWordList([...sorted]);
         setScore(newScore);
-        setSubWordList(SortedWordResponseDto.newSubWordList);
-        setTargetWord(SortedWordResponseDto.newTargetWord);
+
+        // setSubWordList(SortedWordResponseDto.newSubWordList);
+        // setTargetWord(SortedWordResponseDto.newTargetWord);
       }
       // setCurrentWordList((prev) => [...prev, subWordList, targetWord]);
     } catch (error) {
@@ -238,7 +245,7 @@ export const SingleGame = (props) => {
             >
               <div className="left">{word}</div>
               <div className="right">
-                {point} points
+                {point}
               </div>
             </li>
           );
@@ -270,12 +277,6 @@ export const SingleGame = (props) => {
         {value}+{currentWordList.length - index}
       </li>
     ));
-  // console.log(target);
-
-  //   sockJS.onmessage = function (e) {
-  //     //   setReceivedData(e.data)
-  //     console.log(e.data);
-  //   };
 
   // useEffect(() => {
   //   const interval = setInterval(() => {

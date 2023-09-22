@@ -1,12 +1,14 @@
 package com.ssafy.confidentIs.keytris.controller;
 
 import com.ssafy.confidentIs.keytris.model.PlayerStatus;
+import com.ssafy.confidentIs.keytris.model.Room;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
 import com.ssafy.confidentIs.keytris.model.WordType;
 import com.ssafy.confidentIs.keytris.model.multiModel.MultiPlayer;
 import com.ssafy.confidentIs.keytris.model.multiModel.MultiRoom;
 import com.ssafy.confidentIs.keytris.repository.MultiRoomManager;
-import com.ssafy.confidentIs.keytris.service.MultiRoomServiceImpl;
+import com.ssafy.confidentIs.keytris.repository.RoomManager;
+import com.ssafy.confidentIs.keytris.service.DataServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,21 +24,14 @@ import java.util.*;
 public class TestController2 {
 
     private final MultiRoomManager multiRoomManager;
-    private final MultiRoomServiceImpl multiRoomServiceImpl;
+    private final RoomManager roomManager;
+    private final DataServiceImpl dataService;
 
     @GetMapping
     public ResponseEntity<?> test(){//@PathVariable String enterWord
         String[] s = {"하잉","언니"};
         return ResponseEntity.ok(s);
     }
-
-//    @PutMapping("/{enterWord}")
-//    public ResponseEntity<?> exchange(@PathVariable String enterWord, @RequestBody String[] words){
-//        System.out.println("get called "+enterWord);
-//        String[] s = {"하잉","언니"};
-//        Arrays.sort(words);
-//        return ResponseEntity.ok(words);
-//    }
 
     
     // 테스트용 더미데이터 생성
@@ -48,7 +43,7 @@ public class TestController2 {
         int AMOUNT = 10; // SUB, LEVEL 단어 받어오는 단위
 
         Queue<String> levelWordList = new LinkedList<>();
-        List<String> tempWordList = multiRoomServiceImpl.getDataWordList(WordType.LEVEL, category, AMOUNT);
+        List<String> tempWordList = dataService.getDataWordList(WordType.LEVEL, category, AMOUNT);
         for(String word : tempWordList) {
             levelWordList.add(word);
         }
@@ -57,8 +52,8 @@ public class TestController2 {
                 .roomId("tempRoomId")
                 .category(category)
                 .roomStatus(RoomStatus.PREPARING)
-                .targetWordList(multiRoomServiceImpl.getDataWordList(WordType.TARGET, category, TARGET_AMOUNT))
-                .subWordList(multiRoomServiceImpl.getDataWordList(WordType.SUB, category, AMOUNT))
+                .targetWordList(dataService.getDataWordList(WordType.TARGET, category, TARGET_AMOUNT))
+                .subWordList(dataService.getDataWordList(WordType.SUB, category, AMOUNT))
                 .levelWordList(levelWordList)
                 .limit(4)
                 .playerList(new ArrayList<>())
@@ -118,5 +113,21 @@ public class TestController2 {
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 
+    @GetMapping("/games/rooms")
+    public ResponseEntity<?> findAllSingleRooms() {
+        Collection<Room> rooms = roomManager.getAllRooms();
+        for(Room room : rooms) {
+            log.info("room: {}", room);
+        }
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
+    }
+
+
+//    @PostMapping("/single/insertData")
+//    public ResponseEntity<?> dummyDataInsertSingle() {
+//
+//
+//        return new ResponseEntity<>();
+//    }
 
 }

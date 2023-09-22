@@ -16,7 +16,7 @@ public class MultiRoomManager {
         multiRoomRegistry.put(room.getRoomId(), room);
     }
 
-    public MultiRoom getRoom(String roomId) {
+    static public MultiRoom getRoom(String roomId) {
         return multiRoomRegistry.get(roomId);
     }
 

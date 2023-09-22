@@ -40,7 +40,6 @@
   padding: 1rem 3rem;
   width: 100%;
   background: linear-gradient(
-      180deg,
       rgba(255, 255, 255, 0.2) 0%,
       rgba(255, 255, 255, 0.04) 100%
     ),
@@ -60,7 +59,6 @@
 }
 .large-button-style:hover {
   background: linear-gradient(
-      180deg,
       rgba(255, 255, 255, 0.2) 0%,
       rgba(255, 255, 255, 0.04) 100%
     ),

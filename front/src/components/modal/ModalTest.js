@@ -40,7 +40,6 @@ export const Modal = (props) => {
             </div>
 
             <div style={titleStyle}>{title}</div>
-
             <div style={contentStyle}>
               <CategorySelect></CategorySelect>
               <ModalButton label={buttonLabel}></ModalButton>

@@ -1,12 +1,14 @@
 package com.ssafy.confidentIs.keytris.service;
 
 
-import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordRequest;
+import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
+import com.ssafy.confidentIs.keytris.common.exception.customException.InvalidWordException;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
-import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListRequest;
-import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListResponse;
 import com.ssafy.confidentIs.keytris.dto.multiDto.*;
-import com.ssafy.confidentIs.keytris.model.*;
+import com.ssafy.confidentIs.keytris.model.PlayerStatus;
+import com.ssafy.confidentIs.keytris.model.RoomStatus;
+import com.ssafy.confidentIs.keytris.model.RoomType;
+import com.ssafy.confidentIs.keytris.model.WordType;
 import com.ssafy.confidentIs.keytris.model.multiModel.MultiPlayer;
 import com.ssafy.confidentIs.keytris.model.multiModel.MultiRoom;
 import com.ssafy.confidentIs.keytris.repository.MultiRoomManager;
@@ -28,6 +30,8 @@ public class MultiRoomServiceImpl {
     private final MultiRoomManager multiRoomManager;
 
     private final SimpMessagingTemplate messagingTemplate;
+
+    private final SessionMethodService sessionMethodService;
 
     private static final int TARGET_AMOUNT = 5; // TARGET 단어 받아오는 단위
     private static final int SUB_AMOUNT = 15; // SUB 단어 받어오는 단위
@@ -51,9 +55,9 @@ public class MultiRoomServiceImpl {
                 .roomId(UUID.randomUUID().toString())
                 .category(request.getCategory())
                 .roomStatus(RoomStatus.PREPARING)
-                .targetWordList(getDataWordList(WordType.TARGET, category, TARGET_AMOUNT))
-                .subWordList(getDataWordList(WordType.SUB, category, SUB_AMOUNT))
-                .levelWordList(addLevelWords(levelWordList, WordType.LEVEL, category, LEVEL_AMOUNT))
+                .targetWordList(dataServiceImpl.getDataWordList(WordType.TARGET, category, TARGET_AMOUNT))
+                .subWordList(dataServiceImpl.getDataWordList(WordType.SUB, category, SUB_AMOUNT))
+                .levelWordList(dataServiceImpl.addLevelWords(levelWordList, WordType.LEVEL, category, LEVEL_AMOUNT))
                 .limit(4)
                 .playerList(new ArrayList<>())
                 .master(currentPlayer)
@@ -130,6 +134,9 @@ public class MultiRoomServiceImpl {
                 .startWordList(new MultiGameInfoResponse.StartWordList(room))
                 .build();
 
+        // 2초마다 레벨어 보내주기 시작
+        sessionMethodService.startSessionMethod(roomId, RoomType.MULTI);
+
         return response;
     }
 
@@ -148,11 +155,14 @@ public class MultiRoomServiceImpl {
 
 
         // 유사도 조회
-        DataGuessWordResponse dataGuessWordResponse = getWordGuessResult(guessWord, currentWordList);
-        if(dataGuessWordResponse.getSuccess().equals("error")) {
-            // TODO 입력 할 수 없는 단어 예외처리.
+        DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.getWordGuessResult(guessWord, currentWordList);
+        log.info("dataGuessWordResponse: {}", dataGuessWordResponse);
+        if(dataGuessWordResponse.getSuccess().equals("fail")) {
+            // TODO 입력 할 수 없는 단어 커스텀 예외처리.
             log.info("입력할 수 없는 단어입니다.");
-            messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/" + currentPlayer.getPlayerId(), guessWord+"는 입력할 수 없는 단어입니다.");
+            return MultiGuessResponse.builder()
+                    .success("fail")
+                    .build();
         }
         String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
         log.info("sortedWordList {}", Arrays.deepToString(sortedWordList));
@@ -160,11 +170,16 @@ public class MultiRoomServiceImpl {
 
         // == 유사도 순위에 따라 점수 계산, 새 단어 정리 ==
 
+        // currentList 의 개수
+        int currentListSize = request.getCurrentWordList().size();
+
+
         // 타겟어의 유사도 순위 계산
         int targetWordRank = -1;
         for(int i=0; i<sortedWordList.length; i++) {
             if(sortedWordList[i][0].equals(targetWord)) {
                 targetWordRank = i;
+                break;
             }
         }
         log.info("targetWordRank: {}", targetWordRank);
@@ -175,21 +190,15 @@ public class MultiRoomServiceImpl {
         // 타겟어 유사도가 순위권 내인 경우
         if (0 <= targetWordRank && targetWordRank < 4) {
             // 플레이어 점수, 단어 idx 업데이트 및 새롭게 클라이언트에 전달할 단어 추출
-            newSubWordList = updatePlayerBasedOnRank(targetWordRank, currentPlayer, room);
+            newSubWordList = updatePlayerBasedOnRank(targetWordRank, currentPlayer, room, currentListSize);
             newTargetWord = room.getTargetWordList().get(currentPlayer.getTargetWordIndex());
 
             // Room의 여분 타겟어, 서브어가 부족한 경우, 추가 단어 요청
             checkAndAddWords(currentPlayer, room, category);
         }
 
-        /* TODO 레벨어는 추가는 스케쥴링에서 처리하자
-        // 레벨어 추가
-        if(room.getLevelWordList().size() <= ADD_AMOUNT) {
-            addLevelWords(room.getLevelWordList(), WordType.LEVEL, category, LEVEL_AMOUNT);
-        }
-        */
-
         MultiGuessResponse multiGuessResponse = MultiGuessResponse.builder()
+                .success("success")
                 .playerId(playerId)
                 .sortedWordList(sortedWordList)
                 .newScore(currentPlayer.getScore())
@@ -204,14 +213,24 @@ public class MultiRoomServiceImpl {
 
 
     // 단어 입력 유사도 확인 -> 타겟어 유사도 순위가 높은 경우 점수, 단어 인덱스 갱신 후 newSubWordList를 반환하는 메서드
-    private List<String> updatePlayerBasedOnRank(int targetWordRank, MultiPlayer currentPlayer, MultiRoom room) {
+    private List<String> updatePlayerBasedOnRank(int targetWordRank, MultiPlayer currentPlayer, MultiRoom room, int currentListSize) {
         int[] scoreUpdates = {55, 45, 35, 25};
-        int[] subWordIndexUpdates = {3, 2, 1, 0};
+        int[] deletedSubWordCnt = {3, 2, 1, 0};
 
-        List<String> newSubWordList = room.getSubWordList().subList(currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subWordIndexUpdates[targetWordRank]);
-        log.info("새 서브워드 범위: {}부터 {}이전", currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subWordIndexUpdates[targetWordRank]);
-        currentPlayer.updateIndex(currentPlayer.getSubWordIndex()+subWordIndexUpdates[targetWordRank], currentPlayer.getTargetWordIndex()+1);
+        // 점수 업데이트
         currentPlayer.updateScore(currentPlayer.getScore() + scoreUpdates[targetWordRank]);
+
+        int listSize = currentListSize - deletedSubWordCnt[targetWordRank];
+        List<String> newSubWordList = new ArrayList<>();
+
+        // 삭제 후 남은 서브어 개수가 10개 미만인 경우 서브어 돌려줌
+        if(listSize < 10) {
+            int subIdx = Math.min((10-listSize), deletedSubWordCnt[targetWordRank]); // 서브어 총 개수 9개에 맞춤
+            newSubWordList = room.getSubWordList().subList(currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subIdx);
+            currentPlayer.updateIndex(currentPlayer.getSubWordIndex()+subIdx, currentPlayer.getTargetWordIndex()+1);
+        } else { // 10개 이상인 경우 서브어 돌려주지 않음
+            currentPlayer.updateIndex(currentPlayer.getSubWordIndex(), currentPlayer.getTargetWordIndex()+1);
+        }
 
         log.info("단어 유사도 순위로 플레이어 정보 업데이트 완료: {}", currentPlayer);
         return newSubWordList;
@@ -266,6 +285,16 @@ public class MultiRoomServiceImpl {
 
         updatedPlayer.updateStatus(PlayerStatus.READY);
 
+        // 모든 플레이어가 Ready 상태이면 방 상태 Prepared로 변경
+        Boolean isAllReady = true;
+        for(MultiPlayer player : room.getPlayerList()) {
+            if(!player.getPlayerStatus().equals(PlayerStatus.READY)) {
+                isAllReady = false;
+                break;
+            }
+        }
+        if(isAllReady) room.updateStatus(RoomStatus.PREPARED);
+
         return new UpdatedPlayerResponse(playerId, PlayerStatus.READY, room.getRoomStatus());
     }
 
@@ -290,6 +319,10 @@ public class MultiRoomServiceImpl {
             room.updateStatus(RoomStatus.FINISHED);
             response.updateRoomStatus(RoomStatus.FINISHED);
         }
+
+        // 레벨어 전송 중단
+        sessionMethodService.stopSessionMethod(roomId);
+
         return response;
     }
 
@@ -299,39 +332,9 @@ public class MultiRoomServiceImpl {
 
     // ========================== 공통 코드 ==========================
 
-    // data api 에서 단어 유사도 확인하기
-    private DataGuessWordResponse getWordGuessResult(String guessWord, List<String> currentWordList) {
-        DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
-                .guessWord(guessWord)
-                .currentWordList(currentWordList)
-                .build();
-        return dataServiceImpl.sendGuessWordRequest(dataGuessWordRequest);
-    }
-
-    // data api 에서 단어 리스트 불러오기
-    public List<String> getDataWordList(WordType wordType, int category, int amount) {
-        DataWordListRequest dataWordListRequest = DataWordListRequest.builder()
-                .type(wordType)
-                .category(category)
-                .amount(amount)
-                .build();
-        DataWordListResponse dataWordListResponse = dataServiceImpl.sendWordListRequest(dataWordListRequest);
-        return dataWordListResponse.getData().getWordList();
-    }
-
-
-    // 레벨어를 추가하는 메서드
-    private Queue<String> addLevelWords(Queue<String> levelWordList, WordType wordType, int category, int amount) {
-        List<String> tempWordList = getDataWordList(wordType, category, amount);
-        for(String word : tempWordList) {
-            levelWordList.add(word);
-        }
-        return levelWordList;
-    }
-
     // 타겟어, 서브어를 추가로 가져오는 메서드
     private List<String> refillWords(List<String> originalWordList, WordType wordType, int category, int amount) {
-        List<String> tempWordList = getDataWordList(wordType, category, amount);
+        List<String> tempWordList = dataServiceImpl.getDataWordList(wordType, category, amount);
         for(String word : tempWordList) {
             originalWordList.add(word);
         }

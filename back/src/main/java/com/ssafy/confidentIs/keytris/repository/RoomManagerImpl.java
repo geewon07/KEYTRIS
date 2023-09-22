@@ -1,9 +1,11 @@
 package com.ssafy.confidentIs.keytris.repository;
 
 import com.ssafy.confidentIs.keytris.model.Room;
-import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,5 +32,10 @@ public class RoomManagerImpl implements RoomManager {
   @Override
   public void removeRoom(String roomId) {
     roomRegistry.remove(roomId);
+  }
+
+  @Override
+  public Collection<Room> getAllRooms() {
+    return roomRegistry.values();
   }
 }

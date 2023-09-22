@@ -18,7 +18,7 @@ public class DataServiceImpl implements DataService {
     @Override
     public Boolean existWord(String guess) {
         int randomNum = (int)(Math.random() * 100 ) + 1;
-        if(randomNum >= 98) {
+        if(guess.equals("없는단어")) {
             return false;
         } else {
             return true;
