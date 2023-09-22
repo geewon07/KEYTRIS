@@ -1,12 +1,14 @@
 import "./App.css";
-import React, { useState } from "react";
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/home/Home";
-import { SingleGame } from "./pages/singleGame/SingleGame";
-import { SingleGameResult } from "./pages/singleGame/SingleGameResult";
-import { MultiGame } from "./pages/multiGame/MultiGame";
-import { MultiGameResult } from "./pages/multiGame/MultiGameResult";
+import { SingleGame } from "./pages/singleGame/singleGame";
+import { SingleGameResult } from "./pages/singleGame/singleGameResult";
+import { MultiGame } from "./pages/multiGame/multiGame"
+import { MultiGameResult } from "./pages/multiGame/multiGameResult";
 import { QuickMenu } from "./components/quickmenu/quickMenuTest";
+
+import { GameTest } from "./components/game/GameTest";
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
           <Route path="result" element={<MultiGameResult />} />
         </Route>
       </Routes>
+      <GameTest />
     </div>
   );
 }

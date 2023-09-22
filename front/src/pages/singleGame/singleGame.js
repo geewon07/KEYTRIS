@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import React from "react";
-=======
 import React, { useState, useEffect } from "react";
 import { Stomp } from "@stomp/stompjs";
-import { Outlet } from "react-router-dom";
 import {
   startGame,
   createRoom,
@@ -240,16 +236,8 @@ export const SingleGame = (props) => {
 
   //   return () => clearInterval(interval); // Cleanup on unmount
   // }, [words.length]);
->>>>>>> 119b7804eb8b0fb34b45dc82d6fc654825fc7b35
 
   return (
-<<<<<<< HEAD
-    <div>
-
-    </div>
-  )  
-}; 
-=======
     <>
       <div
         style={{
@@ -330,4 +318,3 @@ export const SingleGame = (props) => {
     </>
   );
 };
->>>>>>> 119b7804eb8b0fb34b45dc82d6fc654825fc7b35

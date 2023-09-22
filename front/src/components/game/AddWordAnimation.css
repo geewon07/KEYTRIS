@@ -1,0 +1,8 @@
+@keyframes slideInAnimation {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(var(--bottom));
+  }
+}
