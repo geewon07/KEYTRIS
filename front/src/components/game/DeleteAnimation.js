@@ -28,7 +28,7 @@ const AnimatedRow = styled(Row)`
   }
 `;
 
-export const Test1 = () => {
+export const DeleteAnimation = () => {
   const initialLetterList = ["타겟", "문자1", "문자2", "문자3", "문자4", "문자5", "문자6", "문자7", "문자8", "문자9"];
   const [letterList, setLetterList] = useState(initialLetterList.reverse());
 
