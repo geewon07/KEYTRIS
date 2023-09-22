@@ -1,6 +1,8 @@
 package com.ssafy.confidentIs.keytris.controller;
 
+import com.ssafy.confidentIs.keytris.common.dto.response.ErrorResponseDto;
 import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
+import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
 import com.ssafy.confidentIs.keytris.dto.multiDto.*;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
 import com.ssafy.confidentIs.keytris.service.MultiRoomServiceImpl;
@@ -112,7 +114,12 @@ public class MultiGameController {
 
         MultiGuessResponse response = multiRoomServiceImpl.sortByProximity(roomId, request);
 
-        messagingTemplate.convertAndSend("/topic/multi/play/" + roomId, response);
+        if(response.getSuccess().equals("fail")) {
+            messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/" + request.getPlayerId(),
+                    new ErrorResponseDto(ErrorCode.INVALID_WORD));
+        } else {
+            messagingTemplate.convertAndSend("/topic/multi/play/" + roomId, response);
+        }
     }
 
 
