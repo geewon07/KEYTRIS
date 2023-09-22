@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal } from "../../components/modal/ModalTest";
-import { Button } from "../../components/button/ButtonTest";
+import { Button } from "../../components/button/buttonTest";
 
 export const TestJisoo = () => {
   const [modal, setModal] = useState(true);
