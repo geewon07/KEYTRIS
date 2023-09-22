@@ -30,10 +30,10 @@ public class WordListResponse {
         .newScore(score)
         .build();
   }
-  public WordListResponse start(List<String> subWordList, String targetWord, Long score){
+  public WordListResponse start(String[][] initialWordList, String targetWord, Long score){
     return WordListResponse.builder()
         .newScore(score)
-        .newSubWordList(subWordList)
+            .sortedWordList(initialWordList)
         .newTargetWord(targetWord)
         .build();
   }

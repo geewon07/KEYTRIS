@@ -17,13 +17,8 @@ import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListResponse;
 import com.ssafy.confidentIs.keytris.model.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.ssafy.confidentIs.keytris.repository.RoomManager;
 import lombok.RequiredArgsConstructor;
@@ -105,6 +100,7 @@ public class RoomServiceImpl implements RoomService {
     Room room = roomManager.getRoom(roomId);
     SinglePlayer player = room.getPlayerList().get(0);
     List<String> subWordList = new ArrayList<>();
+    String[][] twoDArray = new String[10][2];
     String targetWord = "";
     if (player.getPlayerId() == null || room.getRoomId() == null) {
       //TODO: ID 없을때 예외처리
@@ -119,6 +115,10 @@ public class RoomServiceImpl implements RoomService {
         //단어 가져오기
         targetWord = room.getTargetWordList().get(0);
         subWordList = new ArrayList<>(room.getSubWordList().subList(0, 9));
+        subWordList.add(targetWord);
+        twoDArray = subWordList.stream()
+                .map(word -> new String[]{word, ""})
+                .toArray(String[][]::new);
         log.info("start, target:{}, subWordList:{}", targetWord, subWordList);
         //인덱스 업데이트
         player.updateIndex(8, 0);
@@ -138,7 +138,7 @@ public class RoomServiceImpl implements RoomService {
     StartResponse startResponse = new StartResponse();
 //    addLevelWords(roomId);
 
-    return startResponse.startRoom(room, targetWord, subWordList);
+    return startResponse.startRoom(room, targetWord, twoDArray );
   }
 
   //@Scheduled
@@ -150,9 +150,13 @@ public class RoomServiceImpl implements RoomService {
     SinglePlayer currentPlayer = room.getPlayerList().get(0);
     String target = request.getTargetWord();
 
+    List<String> toListString = Arrays.stream(request.getCurrentWordList())
+            .map(row -> row[0])
+            .collect(Collectors.toList());
+    log.info("2d array to list string :{}",toListString);
     DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
         .guessWord(request.getGuessWord())
-        .currentWordList(request.getCurrentWordList())
+        .currentWordList(toListString)
         .build();
     DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(
         dataGuessWordRequest);
@@ -167,7 +171,7 @@ public class RoomServiceImpl implements RoomService {
     // == 유사도 순위에 따라 점수 계산, 새 단어 정리 ==
 
     // currentList 의 개수
-    int currentListSize = request.getCurrentWordList().size();
+    int currentListSize = toListString.size();
 
     // 타겟어의 유사도 순위 계산
     int targetWordRank = -1;
