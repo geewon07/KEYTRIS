@@ -1,5 +1,12 @@
+import React, { useState } from 'react';
+
 export const Modal = (props) => {
-  let { modalShow, setModal, title, buttonLabel, desc, children } = props;
+  let { modalShow, setModal, title, buttonLabel, func, desc, type } = props;
+  // console.log(props);
+
+  const [category, setCategory] = useState(100);
+  const [nickname, setNickname] = useState("");
+  const [gameCode, setGamecode] = useState("");
 
   const titleStyle = {
     color: "#FFF", // Note: Color should be enclosed in quotes
@@ -40,9 +47,42 @@ export const Modal = (props) => {
             </div>
 
             <div style={titleStyle}>{title}</div>
+
             <div style={contentStyle}>
-              <CategorySelect></CategorySelect>
-              <ModalButton label={buttonLabel}></ModalButton>
+
+            { (type === "createSingle" || type === "createMulti") && 
+            <CategorySelect
+              selectedCategory = {category}
+              onChange={(e) => setCategory(e.target.value)}
+            />
+            }
+
+            { (type === "createMulti" || type === "enterMulti") && 
+              <NicknameInput 
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+              />
+            }
+
+            {type === "enterMulti" &&
+              <GameCodeInput 
+                value={gameCode}
+                readOnly={false}
+                onChange={(e) => setGamecode(e.target.value)}
+              />
+            }
+
+            {type === 'inviteMulti' &&
+              <GameCodeInput 
+                value={gameCode}
+                readOnly={true}
+              />
+            }
+
+            <ModalButton 
+              label={buttonLabel}
+              func={() => func({ category, nickname, gameCode })}
+            />
             </div>
           </div>
         </div>
@@ -51,7 +91,12 @@ export const Modal = (props) => {
   );
 };
 
-export const CategorySelect = () => {
+function getByteLength(str) {
+  return new Blob([str]).size;
+}
+
+export const CategorySelect = (props) => {
+  const { selectedCategory, onChange } = props;
   return (
     <>
       <div>
@@ -67,6 +112,8 @@ export const CategorySelect = () => {
               width: "100%",
             }}
             className="Neo"
+            value={selectedCategory}
+            onChange={onChange}
           >
             <option value={100}>정치</option>
             <option value={101}>경제</option>
@@ -81,13 +128,77 @@ export const CategorySelect = () => {
   );
 };
 
+export const NicknameInput = (props) => {
+  const { value, onChange } = props;
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+    if(getByteLength(inputValue) <= 15) {
+      onChange(e);
+    }
+  }
+
+  return (
+    <>
+      <div>
+        <label id="nicknameInput">닉네임</label>
+        <form>
+          <input 
+            style={{              
+              backgroundColor: "#5523BD",
+              color: "white",
+              fontSize: "30px",
+              height: "40px",
+              width: "100%",
+            }}
+            className="Neo"
+            type="text" 
+            id="nicknameInput"
+            placeholder="닉네임을 입력해주세요."
+            value={value} 
+            onChange={handleInputChange} 
+          />
+        </form>
+      </div>
+    </>
+  );
+};
+
+export const GameCodeInput = (props) => {
+  const { value, onChange, readOnly } = props;
+  return (
+    <>
+      <div>
+        <label id="gameCodeInput">게임 코드</label>
+        <form>
+          <input 
+            style={{              
+              backgroundColor: "#5523BD",
+              color: "white",
+              fontSize: "30px",
+              height: "40px",
+              width: "100%",
+            }}
+            className="Neo"
+            type="text" 
+            id="gameCodeInput"
+            placeholder="게임 코드를 입력하세요"
+            value={value} 
+            readOnly={readOnly}
+            onChange={readOnly ? null : onChange}
+          />
+        </form>
+      </div>
+    </>
+  );
+};
+
 export const ModalButton = (props) => {
-  const { label } = props;
+  const { label, func, buttonType } = props;
   return (
     <>
       <div className="modal-button-layout">
-        {/* <button className="modal-button-style" type={buttonType} onClick={func}> */}
-        <button className="modal-button-style">
+        <button className="modal-button-style" onClick={func} type={buttonType}>
           <span className="modal-button-text">{label}</span>
         </button>
       </div>
