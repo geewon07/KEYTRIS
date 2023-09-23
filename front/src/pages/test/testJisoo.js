@@ -1,6 +1,15 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
+
 import { Modal } from "../../components/modal/ModalTest";
 import { Button } from "../../components/button/buttonTest";
+
+import {
+  createRoom
+} from "../../api/singleGame/singleGameApi.js";
+import {
+  createMultiRoom, connectMultiRoom
+} from "../../api/multiGame/multiGameApi.js";
 
 export const TestJisoo = () => {
   const [modal, setModal] = useState(false);
@@ -10,29 +19,90 @@ export const TestJisoo = () => {
 
   const singleDesc = "어떤 분야의 뉴스 키워드로 게임을 진행하시겠어요?";
 
-  const makeSingleGame = ({category}) => {
-    console.log("게임 시작 버튼 클릭");
+  const makeSingleGame = async ({category}) => {
     console.log(category);
-    alert("게임을 시작합니다");
+    
+    try {
+      const response = await createRoom({ category });
+      console.log(response);
+
+      if(response.data.data) {
+        alert("게임을 만들었습니다");
+        // 소켓 연결하기
+
+        // 만들어진 게임으로 이동하기       
+
+      } else {
+        alert("게임 만들기 실패");
+      }
+    } catch (error) {
+      console.error("오류 발생:", error);
+    }    
   }
 
-  const makeMultiGame = ({category, nickname}) => {
-    console.log("멀티 게임 시작 버튼 클릭");
+  const makeMultiGame = async ({category, nickname}) => {
     console.log(category + " " + nickname);
-    alert("멀티 게임 방을 만듭니다");
+
+    try {
+      const MultiGameCreateRequest = { category, nickname };
+      const response = await createMultiRoom(MultiGameCreateRequest);
+      console.log(response);
+
+      if(response.data.data) {
+        alert("멀티 게임을 만들었습니다");
+        // 소켓 연결하기
+        
+        // 만들어진 게임으로 이동하기 + 친구 초대 모달 열림
+
+      } else {
+        alert("게임 만들기 실패");
+      }
+    } catch (error) {
+      console.error("오류 발생:", error);
+    } 
+    
   }
 
-  const enterMultiGame = ({nickname, gameCode}) => {
-    console.log("멀티 게임 입장 버튼 클릭");
+  const enterMultiGame = async ({nickname, gameCode}) => {
     console.log(nickname + " " + gameCode);
-    alert("멀티 게임에 입장합니다");
+
+    if(!nickname || !gameCode) {
+      alert("닉네임과 게임 모드는 필수 항목입니다.");
+      return;
+    } 
+
+    try {
+      const MultiGameCreateRequest = { nickname };
+      const response = await connectMultiRoom(gameCode, MultiGameCreateRequest);
+      console.log(response);
+
+      if(response.data.data) {
+        alert("멀티 게임에 입장했습니다");
+        // 소켓 연결하기
+
+        // 접속한 페이지로 이동하기
+
+      } else {
+        alert("게임 입장 실패");
+      }
+    } catch (error) {
+      console.error("오류 발생:", error);
+    }
   }
 
   const copyCode = ({gameCode}) => {
-    console.log("멀티 게임 초대 코드 복사");
     console.log(gameCode);
     alert("코드를 복사했습니다. 친구에게 전달해주세요.");
   }
+
+
+  const navigate = useNavigate();
+
+  const handleButtonClickToGO = (path = '/') => {
+    console.log("페이지 이동 경로:", path);
+    navigate(path);
+  };
+
 
   return (
     <div style={{ backgroundColor: "#26154A" }}>
@@ -121,6 +191,11 @@ export const TestJisoo = () => {
 
       <div>
         <Button label="시작하기">시작하기</Button>
+      </div>
+
+      <div>
+        <div>페이지 이동 테스트 버튼</div>
+        <Button label="메인으로" onClick={() => handleButtonClickToGO('/')} />
       </div>
     </div>
   );

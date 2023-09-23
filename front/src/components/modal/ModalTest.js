@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export const Modal = (props) => {
-  let { modalShow, setModal, title, buttonLabel, func, desc, type } = props;
+  let { modalShow, setModal, title, buttonLabel, func, type } = props;
   // console.log(props);
 
   const [category, setCategory] = useState(100);
   const [nickname, setNickname] = useState("");
   const [gameCode, setGamecode] = useState("");
+
+  useEffect(() => {
+    if (modalShow && type === "enterMulti") {
+      setGamecode("");  // 모달이 enterMulti 타입으로 열릴 때마다 gameCode 초기화
+    }
+  }, [modalShow, type]); // modalShow 또는 type이 변경될 때마다 useEffect 실행
+  
 
   const titleStyle = {
     color: "#FFF", // Note: Color should be enclosed in quotes
