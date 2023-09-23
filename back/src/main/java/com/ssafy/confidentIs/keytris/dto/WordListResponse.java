@@ -17,26 +17,9 @@ public class WordListResponse {
 
   private Long newScore;
   private String[][] sortedWordList;
-  private List<String> newSubWordList;
-  private String newTargetWord;
-
-  //TODO: 이렇게 주면 새로운 값을 받는게 되는데 이거 버퍼 FE에서 생각해야함
-  public WordListResponse result(String[][] sortedList, List<String> subWordList,
-      String targetWord, Room room, Long score) {
-    return WordListResponse.builder()
-        .sortedWordList(sortedList)
-        .newSubWordList(subWordList)
-        .newTargetWord(targetWord)
-        .newScore(score)
-        .build();
-  }
-  public WordListResponse start(List<String> subWordList, String targetWord, Long score){
-    return WordListResponse.builder()
-        .newScore(score)
-        .newSubWordList(subWordList)
-        .newTargetWord(targetWord)
-        .build();
-  }
-
+  private String[][] newSubWordList;
+  private String[][] newTargetWord;
+  private int[] sortedIndex; // 정렬 후 기존 단어가 이동되는 지점을 담는 배열
+  private int targetWordRank; // sortedWordlist 내 targetWord의 위치
 
 }
