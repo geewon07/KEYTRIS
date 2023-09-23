@@ -17,27 +17,9 @@ public class WordListResponse {
 
   private Long newScore;
   private String[][] sortedWordList;
-  private List<String> newSubWordList;
-  private String targetWord;
-  private int targetWordRank; // 정렬된 리스트의 타겟어 인덱스 위치
-
-  public WordListResponse result(String[][] sortedList, List<String> subWordList,
-      String targetWord, Long score, int targetWordRank) {
-    return WordListResponse.builder()
-        .newScore(score)
-        .sortedWordList(sortedList)
-        .newSubWordList(subWordList)
-        .targetWord(targetWord)
-        .targetWordRank(targetWordRank)
-        .build();
-  }
-  public WordListResponse start(List<String> subWordList, String targetWord, Long score){
-    return WordListResponse.builder()
-        .newScore(score)
-        .newSubWordList(subWordList)
-        .targetWord(targetWord)
-        .build();
-  }
-
+  private String[][] newSubWordList;
+  private String[][] newTargetWord;
+  private int[] sortedIndex; // 정렬 후 기존 단어가 이동되는 지점을 담는 배열
+  private int targetWordRank; // sortedWordlist 내 targetWord의 위치
 
 }

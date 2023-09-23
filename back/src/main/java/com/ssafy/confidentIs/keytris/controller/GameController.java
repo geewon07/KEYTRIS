@@ -57,11 +57,9 @@ public class GameController {
 
   @PostMapping("/guess-word")
   public ResponseEntity<?> enter(@RequestBody GuessRequest request) {
-//    log.info("null TS, request:{}",request);
+    log.info("GuessRequest: {}",request);
     return new ResponseEntity<>(roomService.enterWord(request), HttpStatus.OK);
   }
-
-  //TODO: 소켓으로 알아서 모자라면 보내주는 것으로 바꿔 만들어야 함, 어떨때 체크해야 할까?
 
   @PostMapping("/over")
   public ResponseEntity<?> gameOver(@RequestBody OverRequest request) {
