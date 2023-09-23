@@ -120,6 +120,9 @@ public class RoomServiceImpl implements RoomService {
         targetWord = room.getTargetWordList().get(0);
         subWordList = new ArrayList<>(room.getSubWordList().subList(0, 9));
         log.info("start, target:{}, subWordList:{}", targetWord, subWordList);
+
+
+
         //인덱스 업데이트
         player.updateIndex(8, 0);
         room.updatePlayer(player);
@@ -180,13 +183,12 @@ public class RoomServiceImpl implements RoomService {
     log.info("targetWordRank: {}", targetWordRank);
 
     List<String> newSubWordList = new ArrayList<>();
-    String newTargetWord = null;
 
     // 타겟어 유사도가 순위권 내인 경우
     if (0 <= targetWordRank && targetWordRank < 4) {
       // 플레이어 점수, 단어 idx 업데이트 및 새롭게 클라이언트에 전달할 단어 추출
       newSubWordList = updatePlayerBasedOnRank(targetWordRank, currentPlayer, room, currentListSize);
-      newTargetWord = room.getTargetWordList().get(currentPlayer.getTargetWordIndex());
+      target = room.getTargetWordList().get(currentPlayer.getTargetWordIndex());
 
       // Room의 여분 타겟어, 서브어가 부족한 경우, 추가 단어 요청
       checkRefill(room, WordType.SUB);
@@ -196,7 +198,7 @@ public class RoomServiceImpl implements RoomService {
     log.info("after word process, player: {}", currentPlayer);
     return new ResponseDto("success", dataGuessWordResponse.getMessage(),
         Collections.singletonMap("SortedWordListResponse",
-            new WordListResponse().result(sortedWordList, newSubWordList, newTargetWord, room, currentPlayer.getScore())));
+            new WordListResponse().result(sortedWordList, newSubWordList, target, currentPlayer.getScore(), targetWordRank)));
   }
 
   // 단어 입력 유사도 확인 -> 타겟어 유사도 순위가 높은 경우 점수, 단어 인덱스 갱신 후 newSubWordList를 반환하는 메서드

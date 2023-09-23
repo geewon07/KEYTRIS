@@ -18,23 +18,24 @@ public class WordListResponse {
   private Long newScore;
   private String[][] sortedWordList;
   private List<String> newSubWordList;
-  private String newTargetWord;
+  private String targetWord;
+  private int targetWordRank; // 정렬된 리스트의 타겟어 인덱스 위치
 
-  //TODO: 이렇게 주면 새로운 값을 받는게 되는데 이거 버퍼 FE에서 생각해야함
   public WordListResponse result(String[][] sortedList, List<String> subWordList,
-      String targetWord, Room room, Long score) {
+      String targetWord, Long score, int targetWordRank) {
     return WordListResponse.builder()
+        .newScore(score)
         .sortedWordList(sortedList)
         .newSubWordList(subWordList)
-        .newTargetWord(targetWord)
-        .newScore(score)
+        .targetWord(targetWord)
+        .targetWordRank(targetWordRank)
         .build();
   }
   public WordListResponse start(List<String> subWordList, String targetWord, Long score){
     return WordListResponse.builder()
         .newScore(score)
         .newSubWordList(subWordList)
-        .newTargetWord(targetWord)
+        .targetWord(targetWord)
         .build();
   }
 
