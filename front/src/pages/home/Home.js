@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import keytrisLogo from "../../assets/logo_1.svg";
 import { Modal } from "../../components/modal/ModalTest";
 import "./Home.css";
+import { QuickMenu } from "../../components/quickmenu/quickMenuTest";
 
 export const Home = () => {
-  const [modal, setModal] = useState(true);
+  const [modal, setModal] = useState(false);
   const [multigameModal, setMModal] = useState(false);
   const singleDesc = "어떤 분야의 뉴스 키워드로 게임을 진행하시겠어요?";
 
