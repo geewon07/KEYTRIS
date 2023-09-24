@@ -1,11 +1,11 @@
 .gamecontainer {
   width: 30%;
   min-width: 25%;
-  display:flex;
-  flex-direction:row-reverse;
+  display: flex;
+  flex-direction: row-reverse;
 }
 .bglist {
-  background: #26154A;
+  background: #26154a;
   /* background: #fff; */
   width: 90%;
   z-index: 1000;
@@ -15,24 +15,36 @@
   flex-direction: column;
   /* align-items: center; */
   justify-content: flex-end;
-  align=self:end;
+  align=self: end;
   text-align: start;
 }
-.wordlist{
-  margin:0;
+.wordlist {
+  margin: 0;
+  list-style: none;
 }
+/* .targetWord::marker {
+  content: "▶";
+} */
+.targetWord {
+  color: var(--primary, #cf0);
+}
+/* .indexlist li.targetWord::after {
+  content: "▶";
+  padding: 0.2rem;
+  font-size: 1rem;
+} */
 .endbar {
   background: #d9d9d9;
   width: 100%;
 }
-.guessbox{
+.guessbox {
   width: auto;
   font-size: 16px;
   background: var(--gray2, #888);
-  color: var(--gray4, #DDD);
+  color: var(--gray4, #ddd);
   font-size: 16px;
   padding: 10px;
-  z-index:3333;
+  z-index: 3333;
   border: none;
 }
 input.inputcase {
@@ -47,26 +59,25 @@ input.inputcase {
   background-color: #ccff00 !important;
   /* margin: 5px; */
   padding: 10px;
-  z-index:3333;
+  z-index: 3333;
 }
-.points{
+.points {
   font-size: 0.5rem;
-  
 }
-input.inputcase:focus{
-outline:none!important;
+input.inputcase:focus {
+  outline: none !important;
 }
-.targetWord::marker{
-  content:"▶"!important;
+.wordlist .targetWord::marker {
+  content: "▶" !important;
 }
 li.wordline {
   font-size: 16px;
-  color: #FFF!important;
+  color: #fff !important;
   /* background-color: #ccff00; */
   /* margin: 10px!important; */
   padding: 0.25rem;
   display: flex; /* Use flexbox to control layout */
-  justify-content: space-between!important; /* Align items to either side */
+  justify-content: space-between !important; /* Align items to either side */
   align-items: center; /* Vertically center the content */
   /* padding: 4px; Add some spacing */
   /* border: 1px solid #ccc;  */
@@ -74,33 +85,62 @@ li.wordline {
 @media (min-height: 600px) {
   /* Adjust font size for screens up to 768px wide */
   li {
-    font-size: 1rem!important;
+    font-size: 1.5rem !important;
+  }
+  .indexlist {
+    position: absolute;
+    margin-bottom: 4.3rem;
+    padding: 0;
+  }
+  .indexlist li {
+    list-style-type: none;
+    font-size: 0.5rem !important;
+    padding: 0.51rem;
+    color: var(--gray3, #bcbcbc);
+    font-style: normal;
+    line-height: 1rem !important;
   }
 }
 
 @media (min-height: 750px) {
   /* Adjust font size for screens up to 576px wide */
   li {
-    font-size: 1.5rem!important;
+    font-size: 1.5rem !important;
   }
-  .overlaybox{
-    height: 12.4rem!important;
-    width:26.5%;
-    top:auto;
-    right:auto;
+  .overlaybox {
+    height: 12.4rem !important;
+    width: 26.5%;
+    top: auto;
+    right: auto;
     position: absolute;
-    border-top: 3px solid var(--primary, #CF0);
-    background: rgba(204, 255, 0, 0.20);
-    z-index:3333;
+    border-top: 3px solid var(--primary, #cf0);
+    background: rgba(204, 255, 0, 0.2);
+    z-index: 3333;
   }
 }
-.overlaybox{
-  height: 12.4rem!important;
-  width:26.5%;
-  top:auto;
-  right:auto;
+.overlaybox {
+  height: 12.4rem !important;
+  width: 26.5%;
+  top: auto;
+  right: auto;
   position: absolute;
-  border-top: 3px solid var(--primary, #CF0);
-  background: rgba(204, 255, 0, 0.20);
-  z-index:3333;
+  border-top: 3px solid var(--primary, #cf0);
+  background: rgba(204, 255, 0, 0.2);
+  z-index: 3333;
+}
+.score {
+  position: absolute;
+  text-align: center;
+  top: 20%;
+  left: 52%;
+  font-size: 96px;
+  color: #fff;
+  /* left: 52%; Center horizontally by moving the left to the middle */
+  transform: translate(-50%, -50%);
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.startbutton {
 }
