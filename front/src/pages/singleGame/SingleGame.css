@@ -78,11 +78,12 @@ li.wordline {
   }
 }
 .overlaybox{
-  height: 9rem;
-  /* width: 27%; */
-
-  /* position: relative; */
+  height: 12rem;
+  width:26.5%;
+  top:auto;
+  right:auto;
+  position: absolute;
   border-top: 3px solid var(--primary, #CF0);
   background: rgba(204, 255, 0, 0.20);
-  z-index:2222;
+  z-index:3333;
 }

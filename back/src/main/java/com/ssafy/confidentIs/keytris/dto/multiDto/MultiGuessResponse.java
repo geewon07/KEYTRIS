@@ -16,6 +16,7 @@ public class MultiGuessResponse {
     private Long newScore;
     private String newTargetWord;
     private List<String> newSubWordList;
+    private int targetWordRank; // 정렬된 리스트의 타겟어 인덱스 위치
 
     private String success;
 

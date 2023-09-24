@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 public class GuessRequest {
   private String roomId;
-  private String[][] currentWordList;
   private String guessWord;
-  private String targetWord;
+  private String[][] targetWord;
+  private String[][] currentWordList;
 }

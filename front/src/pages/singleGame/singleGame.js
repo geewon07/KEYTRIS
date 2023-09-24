@@ -34,24 +34,36 @@ export const SingleGame = (props) => {
   // const callback = (messageBody) => {
   //   console.log(messageBody);
   // };
-  const callback = (messageBody) => {
-    console.log(messageBody);
-    const toTwoD = [messageBody, ""];
-    setLevelWord((prev) => [...prev, ...toTwoD]);
-  };
-  const subscription = useEffect(() => {
+  useEffect(() => {
+    let subscription;
     if (roomId !== null) {
       connect();
     }
+      const callback = (messageBody) => {
+        console.log(messageBody);
+      };
 
-    // subscribe(`/topic/room/level-word/${roomId}`, callback);
-    return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
-      if (roomId != null) disconnect();
-    };
+      subscription = subscribe(`/topic/room/level-word/${roomId}`, callback);
   }, [roomId]);
+
+  // useEffect(() => {
+  //   if (roomId !== null) {
+  //     connect();
+  //   }
+  //   const callback = (messageBody) => {
+  //     console.log(messageBody);
+  //     const toTwoD = [messageBody, ""];
+  //     setLevelWord((prev) => [...prev, ...toTwoD]);
+  //   };
+  //   console.log("try to sub")
+  //   subscribe(`/topic/room/level-word/${roomId}`, callback);
+  //   // return () => {
+  //   // if (subscription) {
+  //   //   subscription.unsubscribe();
+  //   // }
+  //   //   if (roomId != null) disconnect();
+  //   // };
+  // }, [roomId]);
 
   const handleCreate = async () => {
     try {
@@ -78,6 +90,11 @@ export const SingleGame = (props) => {
   };
   const handleStartGame = async () => {
     //게임시작api
+    //newScore:0
+    //newTargetWord
+    //subWordList null
+    //sortedIndex null
+    //targetRank 9
     try {
       const res = await startGame(statusRequestDto);
       const startResponseDto = res.data.data.StartResponse;
@@ -88,15 +105,12 @@ export const SingleGame = (props) => {
       setTargetWord(wordListResponse.newTargetWord);
       setTargetWordSet(true);
       setPlayerStatus(startResponseDto.statusResponse.playerStatus);
+      setRoomId(statusResponse.roomId);
       setRoomStatus(startResponseDto.statusResponse.roomStatus);
 
-      // setSubWordList(wordListResponse.newSubWordList);
       setCurrentWordList([...wordListResponse.sortedWordList]);
 
       setScore(startResponseDto.wordListResponse.newScore);
-
-      console.log(currentWordList);
-      // currentWordList 저장해야함 -> 어떻게 저장?? subWordList에 TargetWord뒤에 추가???
     } catch (error) {
       console.error(error);
     }
@@ -108,7 +122,6 @@ export const SingleGame = (props) => {
       renderWordList(currentWordList);
     }
   }, [targetWordSet, currentWordList]);
-  
 
   function delayMethod(method, delayInMilliseconds) {
     return new Promise((resolve) => {
@@ -124,31 +137,45 @@ export const SingleGame = (props) => {
     //TODO: 1 단어정렬, 2 점수 효과, 3 득점X 효과
     if (newScore === score) {
       console.log("did not score");
-      //흔들리는 모션
+      //입력창 흔들리는 모션
+      // 정렬 모션
       setCurrentWordList([...newList]);
     } else {
       console.log("scored" + newList);
-      setScore(newScore);
+
       setCurrentWordList([...newList]);
       setTimeout(() => {
-        const toDelete = newList.findIndex((line) => line[0] === targetWord);
+        const toDelete = SortedWordResponseDto.targetWordRank;
         console.log("toDelete " + toDelete);
         setCurrentWordList([
           ...newList.slice(0, toDelete),
           ...newList.slice(4),
         ]);
-      }, 5000);
+        setDeleteList([...newList.slice(0, toDelete), ...newList.slice(4)]);
+      }, 1000);
+      // 삭제 모션
       setTimeout(() => {
-        setCurrentWordList((prev) => [
-          ...prev,
-          ...SortedWordResponseDto.newSubWordList,
-          ...SortedWordResponseDto.newTargetWord,
-          ...levelWord,
-        ]);
-      }, 6000);
+        if (SortedWordResponseDto.newSubWordList !== null) {
+          setCurrentWordList((prev) => [
+            ...prev,
+            ...SortedWordResponseDto.newSubWordList,
+            ...SortedWordResponseDto.newTargetWord,
+            ...levelWord,
+          ]);
+        } else {
+          setCurrentWordList((prev) => [
+            ...prev,
+            ...SortedWordResponseDto.newTargetWord,
+            ...levelWord,
+          ]);
+        }
+      }, 2000);
+      // setScore(newScore);// 단어 삭제 모션 있고 난 다음에 변경
       setSubWordList(SortedWordResponseDto.newSubWordList);
       setTargetWord(SortedWordResponseDto.newTargetWord);
       console.log("new target " + SortedWordResponseDto.newTargetWord);
+
+      setScore(newScore);
       //새 단어 주기적으로 추가되는 부분-> 실제 리스트에 포함 시키기
     }
     console.log("current " + currentWordList);
@@ -198,7 +225,7 @@ export const SingleGame = (props) => {
         //효과를 다 하고 쓰세여~
 
         setSortedWordList([...sorted]);
-        setScore(newScore);
+        // 단어 삭제 모션 있고 난 다음에 변경
 
         // setSubWordList(SortedWordResponseDto.newSubWordList);
         // setTargetWord(SortedWordResponseDto.newTargetWord);
@@ -221,16 +248,15 @@ export const SingleGame = (props) => {
   };
   const handleOverGame = async () => {
     try {
-      // const res = await overGame(overRequestDto);
-      // const OverResponseDto = res.data.data.OverResponse;
+      const res = await overGame(overRequestDto);
+      const OverResponseDto = res.data.data.OverResponse;
       // 페이지 화면 전환
       // 페이지 result로 전환되면서 데이터 넘겨주기? 우선 넘겨줄거를 overResultDto로 만들게요
       // 근데 그냥 위에 overResponseDto 넘겨주는게 나을 것 같아서 그냥 안만들었습니다.
       // stomp.disconnect();
       disconnect();
-      if (subscription !== null) {
-        subscription.unsubscribe();
-      }
+      console.log(OverResponseDto);
+      // subscription.unsubscribe();
     } catch (error) {
       console.error(error);
     }
@@ -256,7 +282,9 @@ export const SingleGame = (props) => {
         return (
           <li
             key={currentWordList.length - index - 1}
-            className={word === targetWord[0] ? "targetWord wordline" : "wordline"}
+            className={
+              word === targetWord[0] ? "targetWord wordline" : "wordline"
+            }
           >
             <div className="left">{word}</div>
             <div className="right">
@@ -326,10 +354,11 @@ export const SingleGame = (props) => {
         </div>
         <div className="gamecontainer" style={{}}>
           <div className="bglist">
+            <div className="overlaybox"></div>
             <ul className="wordlist" style={{ listStyle: "none" }}>
               {renderWordList(currentWordList)}
             </ul>
-            <div className="overlaybox"></div>
+
             <input className="guessbox Neo" value={lastGuess} disabled></input>
             <input
               className="inputcase Neo"
@@ -351,9 +380,8 @@ export const SingleGame = (props) => {
           <ul>
             <li sytle={{ display: "flex", flexDirection: "row" }}>
               <div style={{}}>타겟 단어: {targetWord}</div>
-              <div>유사도</div>
             </li>
-            <li>{sortedWordList}</li>
+            <li>levelWord: {levelWord}</li>
             <li>next up</li>
             <li>{subWordList}</li>
           </ul>

@@ -59,8 +59,8 @@ public class RoomServiceImpl implements RoomService {
     DataWordListResponse subWords = dataServiceImpl.sendWordListRequest(subWordRequest);
     DataWordListResponse targetWords = dataServiceImpl.sendWordListRequest(targetWordRequest);
     Queue<String> levelWords = new LinkedList<>(
-        dataServiceImpl.sendWordListRequest(levelWordRequest).getData()
-            .getWordList());
+            dataServiceImpl.sendWordListRequest(levelWordRequest).getData()
+                    .getWordList());
 
     Room created = Room.builder()
         .category(category)
@@ -92,37 +92,33 @@ public class RoomServiceImpl implements RoomService {
       log.info("error with status");
     }
     return new StatusResponse(player.getPlayerId(), player.getPlayerStatus(), roomId,
-        room.getRoomStatus());
+            room.getRoomStatus());
   }
 
   @Override
   public StartResponse startRoom(String roomId) {
     Room room = roomManager.getRoom(roomId);
-    SinglePlayer player = room.getPlayerList().get(0);
+    SinglePlayer currentPlayer = room.getPlayerList().get(0);
     List<String> subWordList = new ArrayList<>();
-    String[][] twoDArray = new String[10][2];
-    String targetWord = "";
-    if (player.getPlayerId() == null || room.getRoomId() == null) {
+    String target = "";
+
+    if (currentPlayer.getPlayerId() == null || room.getRoomId() == null) {
       //TODO: ID 없을때 예외처리
       //      responseDto = new ResponseDto("fail", "게임 시작 실패, 신원미상");
       //-> ID 배정
-      log.info("null id, player:{},room:{}", player.getPlayerId(), room.getRoomId());
+      log.info("null id, player:{},room:{}", currentPlayer.getPlayerId(), room.getRoomId());
     } else {
-      if (checkReady(room.getRoomStatus(), player.getPlayerStatus())) {
+      if (checkReady(room.getRoomStatus(), currentPlayer.getPlayerStatus())) {
         //상태 변화
         updateRoomStatus(roomId, RoomStatus.ONGOING);
-        updatePlayerStatus(room, player, PlayerStatus.GAMING);
+        updatePlayerStatus(room, currentPlayer, PlayerStatus.GAMING);
         //단어 가져오기
-        targetWord = room.getTargetWordList().get(0);
+        target = room.getTargetWordList().get(0);
         subWordList = new ArrayList<>(room.getSubWordList().subList(0, 9));
-        subWordList.add(targetWord);
-        twoDArray = subWordList.stream()
-                .map(word -> new String[]{word, ""})
-                .toArray(String[][]::new);
-        log.info("start, target:{}, subWordList:{}", targetWord, subWordList);
+        log.info("start, target:{}, subWordList:{}", target, subWordList);
         //인덱스 업데이트
-        player.updateIndex(8, 0);
-        room.updatePlayer(player);
+        currentPlayer.updateIndex(8, 0);
+        room.updatePlayer(currentPlayer);
         //시작 시간 설정
         Timestamp timestamp = new Timestamp(new Date().getTime());
         room.updateStartTime(timestamp);
@@ -135,43 +131,84 @@ public class RoomServiceImpl implements RoomService {
         log.info("failed to start: not ready");
       }
     }
-    StartResponse startResponse = new StartResponse();
-//    addLevelWords(roomId);
 
-    return startResponse.startRoom(room, targetWord, twoDArray );
+    // 이차원 배열로 반환하기 위해 전환
+    String[][] sortedWordList = new String[10][2];
+
+    for(int i=0; i<sortedWordList.length; i++) {
+      sortedWordList[i][1] = "";
+    }
+
+    for(int i=0; i<subWordList.size(); i++) {
+      sortedWordList[i][0] = subWordList.get(i);
+    }
+    sortedWordList[9][0] = target;
+
+    String[][] newTargetWord = new String[1][2];
+    newTargetWord[0][0] = target;
+    newTargetWord[0][1] = "";
+
+//    int[] sortedIndex = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    WordListResponse wordListResponse = WordListResponse.builder()
+        .newScore(currentPlayer.getScore())
+        .sortedWordList(sortedWordList)
+        .newSubWordList(null)
+        .newTargetWord(newTargetWord)
+        .sortedIndex(null)
+        .targetWordRank(9)
+        .build();
+
+    log.info("WordListResponse", wordListResponse);
+
+    StartResponse startResponse = new StartResponse();;
+    return startResponse.startRoom(room, wordListResponse);
   }
 
-  //@Scheduled
-  //TODO : 전부다 산산조각내서 별도의 메소드로 만들고 싶은 어떤 마음,,,
+
   @Override
   public ResponseDto enterWord(GuessRequest request) {
     Room room = roomManager.getRoom(request.getRoomId());
     log.info("room : {}", room);
     SinglePlayer currentPlayer = room.getPlayerList().get(0);
-    String target = request.getTargetWord();
+    String[][] newTargetWord = request.getTargetWord();
+    String target = newTargetWord[0][0];
 
-    List<String> toListString = Arrays.stream(request.getCurrentWordList())
+    String[][] currentWordList = request.getCurrentWordList();
+    int currentListSize = currentWordList.length; // currentList 단어 개수
+
+    // 단어 유사도 받아오기
+    List<String> wordOnlyList = Arrays.stream(currentWordList)
             .map(row -> row[0])
             .collect(Collectors.toList());
-    log.info("2d array to list string :{}",toListString);
-    DataGuessWordRequest dataGuessWordRequest = DataGuessWordRequest.builder()
-        .guessWord(request.getGuessWord())
-        .currentWordList(toListString)
-        .build();
+
     DataGuessWordResponse dataGuessWordResponse = dataServiceImpl.sendGuessWordRequest(
-        dataGuessWordRequest);
+            DataGuessWordRequest.builder()
+                    .guessWord(request.getGuessWord())
+                    .currentWordList(wordOnlyList)
+                    .build());
     log.info("dataGuessWordResponse : {}", dataGuessWordResponse);
     if(dataGuessWordResponse.getSuccess().equals("fail")) {
       throw new InvalidWordException("입력할 수 없는 단어", ErrorCode.INVALID_WORD);
     }
 
-
     String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
 
-    // == 유사도 순위에 따라 점수 계산, 새 단어 정리 ==
+    // 단어가 정렬 후 어느 위치로 이동했는 지 계산
+    int[] sortedIndex = new int[currentListSize];
 
-    // currentList 의 개수
-    int currentListSize = toListString.size();
+    // sortedWordList의 원소 위치를 해시맵에 저장
+    Map<String, Integer> positionMap = new HashMap<>();
+    for (int i = 0; i < sortedWordList.length; i++) {
+      positionMap.put(sortedWordList[i][0], i);
+    }
+
+    // currentWordList의 각 원소 위치를 찾아 sortedIndex에 저장
+    for (int i = 0; i < currentWordList.length; i++) {
+      sortedIndex[i] = positionMap.get(currentWordList[i][0]);
+    }
+
+    // == 유사도 순위에 따라 점수 계산, 새 단어 정리 ==
 
     // 타겟어의 유사도 순위 계산
     int targetWordRank = -1;
@@ -183,24 +220,46 @@ public class RoomServiceImpl implements RoomService {
     }
     log.info("targetWordRank: {}", targetWordRank);
 
-    List<String> newSubWordList = new ArrayList<>();
-    String newTargetWord = null;
+    List<String> subWordList = new ArrayList<>();
 
     // 타겟어 유사도가 순위권 내인 경우
     if (0 <= targetWordRank && targetWordRank < 4) {
       // 플레이어 점수, 단어 idx 업데이트 및 새롭게 클라이언트에 전달할 단어 추출
-      newSubWordList = updatePlayerBasedOnRank(targetWordRank, currentPlayer, room, currentListSize);
-      newTargetWord = room.getTargetWordList().get(currentPlayer.getTargetWordIndex());
+      subWordList = updatePlayerBasedOnRank(targetWordRank, currentPlayer, room, currentListSize);
+      target = room.getTargetWordList().get(currentPlayer.getTargetWordIndex());
 
       // Room의 여분 타겟어, 서브어가 부족한 경우, 추가 단어 요청
       checkRefill(room, WordType.SUB);
       checkRefill(room, WordType.TARGET);
     }
+    log.info("subWordList: {}", subWordList);
+
+    // 이차원 배열로 반환하기 위해 전환
+    String[][] newSubWordList = null;
+    if(subWordList != null && !subWordList.isEmpty()) {
+      newSubWordList = new String[subWordList.size()][2];
+      for (int i = 0; i < subWordList.size(); i++) {
+        newSubWordList[i][0] = subWordList.get(i);
+        newSubWordList[i][1] = "";
+      }
+    }
+
+    newTargetWord[0][0] = target;
+    newTargetWord[0][1] = "";
+
+    WordListResponse response = WordListResponse.builder()
+      .newScore(currentPlayer.getScore())
+      .sortedWordList(sortedWordList)
+      .newSubWordList(newSubWordList)
+      .newTargetWord(newTargetWord)
+      .sortedIndex(sortedIndex)
+      .targetWordRank(targetWordRank)
+      .build();
 
     log.info("after word process, player: {}", currentPlayer);
+
     return new ResponseDto("success", dataGuessWordResponse.getMessage(),
-        Collections.singletonMap("SortedWordListResponse",
-            new WordListResponse().result(sortedWordList, newSubWordList, newTargetWord, room, currentPlayer.getScore())));
+            Collections.singletonMap("SortedWordListResponse", response));
   }
 
   // 단어 입력 유사도 확인 -> 타겟어 유사도 순위가 높은 경우 점수, 단어 인덱스 갱신 후 newSubWordList를 반환하는 메서드
@@ -212,19 +271,19 @@ public class RoomServiceImpl implements RoomService {
     currentPlayer.updateScore(currentPlayer.getScore() + scoreUpdates[targetWordRank]);
 
     int listSize = currentListSize - deletedSubWordCnt[targetWordRank];
-    List<String> newSubWordList = new ArrayList<>();
+    List<String> subWordList = new ArrayList<>();
 
     // 삭제 후 남은 서브어 개수가 10개 미만인 경우 서브어 돌려줌
     if(listSize < 10) {
       int subIdx = Math.min((10-listSize), deletedSubWordCnt[targetWordRank]); // 서브어 총 개수 9개에 맞춤
-      newSubWordList = room.getSubWordList().subList(currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subIdx);
+      subWordList = new ArrayList<>(room.getSubWordList().subList(currentPlayer.getSubWordIndex()+1, currentPlayer.getSubWordIndex()+1+subIdx));
       currentPlayer.updateIndex(currentPlayer.getSubWordIndex()+subIdx, currentPlayer.getTargetWordIndex()+1);
     } else { // 10개 이상인 경우 서브어 돌려주지 않음
       currentPlayer.updateIndex(currentPlayer.getSubWordIndex(), currentPlayer.getTargetWordIndex()+1);
     }
 
     log.info("단어 유사도 순위로 플레이어 정보 업데이트 완료: {}", currentPlayer);
-    return newSubWordList;
+    return subWordList;
   }
 
 
@@ -291,7 +350,7 @@ public class RoomServiceImpl implements RoomService {
         break;
       case TARGET:
         if (room.getPlayerList().get(0).getTargetWordIndex() + 10 > room.getTargetWordList()
-            .size()) {
+                .size()) {
           if (dataWordListResponse.getSuccess().equals("success")) {
             room.updateTargetWordList(dataWordListResponse.getData().getWordList());
             log.info("TARGET wordList 단어 추가: {}", room.getSubWordList());
