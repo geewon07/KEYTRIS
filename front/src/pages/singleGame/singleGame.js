@@ -18,7 +18,7 @@ export const SingleGame = (props) => {
   const [roomStatus, setRoomStatus] = useState(null);
 
   const [subWordList, setSubWordList] = useState([]); //levelword
-  const [targetWord, setTargetWord] = useState(null);
+  const [targetWord, setTargetWord] = useState("");
 
   const [guessWord, setGuessWord] = useState("");
   const [lastGuess, setLastGuess] = useState("");
@@ -35,35 +35,28 @@ export const SingleGame = (props) => {
   //   console.log(messageBody);
   // };
   useEffect(() => {
-    let subscription;
-    if (roomId !== null) {
-      connect();
-    }
-      const callback = (messageBody) => {
-        console.log(messageBody);
-      };
+    const connectAndSubscribe = async () => {
+        if (roomId !== null) {
+            await connect(); // Wait for the connect function to complete
+            const callback = (messageBody) => {
+              console.log(messageBody);
+              const toTwoD = [messageBody, ""];
+              setLevelWord((prev) => [...prev, toTwoD]);
+            };
+            subscribe(`/topic/room/level-word/${roomId}`, callback);
+        }
+    };
 
-      subscription = subscribe(`/topic/room/level-word/${roomId}`, callback);
-  }, [roomId]);
+    connectAndSubscribe();
+}, [roomId]);
+useEffect(() => {
+  if(levelWord.length>0){
+      setCurrentWordList((prev)=>[...prev,...levelWord]);
+  setLevelWord([]);
+  }
 
-  // useEffect(() => {
-  //   if (roomId !== null) {
-  //     connect();
-  //   }
-  //   const callback = (messageBody) => {
-  //     console.log(messageBody);
-  //     const toTwoD = [messageBody, ""];
-  //     setLevelWord((prev) => [...prev, ...toTwoD]);
-  //   };
-  //   console.log("try to sub")
-  //   subscribe(`/topic/room/level-word/${roomId}`, callback);
-  //   // return () => {
-  //   // if (subscription) {
-  //   //   subscription.unsubscribe();
-  //   // }
-  //   //   if (roomId != null) disconnect();
-  //   // };
-  // }, [roomId]);
+}, [levelWord]);
+
 
   const handleCreate = async () => {
     try {
@@ -181,9 +174,12 @@ export const SingleGame = (props) => {
     console.log("current " + currentWordList);
   };
 
-  // useEffect(() => {
-  //   console.log(subWordList); // subWordList가 변경될 때마다 이 로그가 출력
-  // }, [subWordList]);
+  useEffect(() => {
+
+if(currentWordList.length>=21){
+  handleOverGame();
+}    // subWordList가 변경될 때마다 이 로그가 출력
+  }, [currentWordList]);
 
   // useEffect(() => {
 
@@ -250,6 +246,8 @@ export const SingleGame = (props) => {
     try {
       const res = await overGame(overRequestDto);
       const OverResponseDto = res.data.data.OverResponse;
+      setPlayerStatus(OverResponseDto.playerStatus);
+      setRoomStatus(OverResponseDto.roomStatus);
       // 페이지 화면 전환
       // 페이지 result로 전환되면서 데이터 넘겨주기? 우선 넘겨줄거를 overResultDto로 만들게요
       // 근데 그냥 위에 overResponseDto 넘겨주는게 나을 것 같아서 그냥 안만들었습니다.
@@ -261,7 +259,7 @@ export const SingleGame = (props) => {
       console.error(error);
     }
   };
-
+  
   // 사라짐...
   // const handleOutRoom = async (statusRequestDto) => { // 위에 dto있음!
   //   try {
@@ -283,18 +281,19 @@ export const SingleGame = (props) => {
           <li
             key={currentWordList.length - index - 1}
             className={
-              word === targetWord[0] ? "targetWord wordline" : "wordline"
+              word === targetWord ? "targetWord wordline" : "wordline"
             }
           >
             <div className="left">{word}</div>
-            <div className="right">
-              {point} index {currentWordList.length - index - 1}
+            <div className="right points">
+              {point} 
             </div>
           </li>
         );
         // }
       });
   };
+  // index {currentWordList.length - index - 1}
   const listing = currentWordList
     ?.slice()
     .reverse()
@@ -355,7 +354,8 @@ export const SingleGame = (props) => {
         <div className="gamecontainer" style={{}}>
           <div className="bglist">
             <div className="overlaybox"></div>
-            <ul className="wordlist" style={{ listStyle: "none" }}>
+            <ul></ul>
+            <ul className="wordlist" style={{}}>
               {renderWordList(currentWordList)}
             </ul>
 
@@ -385,7 +385,7 @@ export const SingleGame = (props) => {
             <li>next up</li>
             <li>{subWordList}</li>
           </ul>
-          <ul>{renderWordList(deleteList)}</ul>
+          <ul></ul>
         </div>
       </div>
     </>

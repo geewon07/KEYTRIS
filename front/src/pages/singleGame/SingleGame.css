@@ -18,6 +18,9 @@
   align=self:end;
   text-align: start;
 }
+.wordlist{
+  margin:0;
+}
 .endbar {
   background: #d9d9d9;
   width: 100%;
@@ -46,6 +49,10 @@ input.inputcase {
   padding: 10px;
   z-index:3333;
 }
+.points{
+  font-size: 0.5rem;
+  
+}
 input.inputcase:focus{
 outline:none!important;
 }
@@ -56,29 +63,39 @@ li.wordline {
   font-size: 16px;
   color: #FFF!important;
   /* background-color: #ccff00; */
-  margin: 10px;
-  /* padding: 10px; */
+  /* margin: 10px!important; */
+  padding: 0.25rem;
   display: flex; /* Use flexbox to control layout */
   justify-content: space-between!important; /* Align items to either side */
   align-items: center; /* Vertically center the content */
   /* padding: 4px; Add some spacing */
   /* border: 1px solid #ccc;  */
 }
-@media (max-height: 600px) {
+@media (min-height: 600px) {
   /* Adjust font size for screens up to 768px wide */
   li {
-    font-size: 12px!important;
+    font-size: 1rem!important;
   }
 }
 
-@media (max-height: 750px) {
+@media (min-height: 750px) {
   /* Adjust font size for screens up to 576px wide */
   li {
-    font-size: 16px!important;
+    font-size: 1.5rem!important;
+  }
+  .overlaybox{
+    height: 12.4rem!important;
+    width:26.5%;
+    top:auto;
+    right:auto;
+    position: absolute;
+    border-top: 3px solid var(--primary, #CF0);
+    background: rgba(204, 255, 0, 0.20);
+    z-index:3333;
   }
 }
 .overlaybox{
-  height: 12rem;
+  height: 12.4rem!important;
   width:26.5%;
   top:auto;
   right:auto;
