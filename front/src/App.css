@@ -47,9 +47,6 @@ select#category option {
   background-color: transparent;
 }
 
-.targetWord::marker{
-  content:"▶";
-}
 /* CSS for the modal container */
 .modal {
   display: flex;

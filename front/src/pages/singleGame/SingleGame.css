@@ -49,6 +49,9 @@ input.inputcase {
 input.inputcase:focus{
 outline:none!important;
 }
+.targetWord::marker{
+  content:"▶"!important;
+}
 li.wordline {
   font-size: 16px;
   color: #FFF!important;
