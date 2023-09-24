@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import keytrisLogo from "../../assets/logo_1.svg";
-import { Modal } from "../../components/modal/ModalTest";
+import {Modal} from '../../components/modal/ModalTest'
+import { Modal2 } from '../../components/modal/Modal2'
 import "./Home.css";
-import { QuickMenu } from "../../components/quickmenu/quickMenuTest";
 
 export const Home = () => {
   const [modal, setModal] = useState(false);
   const [multigameModal, setMModal] = useState(false);
   const singleDesc = "어떤 분야의 뉴스 키워드로 게임을 진행하시겠어요?";
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     // <div id="keytris_title" className="keytris_main_gradient">
@@ -15,7 +24,7 @@ export const Home = () => {
       {/* <div className="main-logo-layout">
       </div> */}
         <img className="main_logo_image" alt="logo_1" src={keytrisLogo} />
-      <div className="main_selection_div">
+      <div >
         <div>
           <div className="main_selection_desc">
             게임으로 배우는 오늘의 기사 키워드
@@ -29,7 +38,7 @@ export const Home = () => {
                   <div>
                     <div className="main_selection_div">1인모드</div>
                   </div>
-                  <div>
+                  <div className="button_box">
                     <button
                       className="main_selection_button"
                       onClick={() => {
@@ -44,13 +53,8 @@ export const Home = () => {
               <td className="main_selection_table_td">
                 <div>
                   <div>
-                    <div
-                      className="main_selection_div"
-                      onClick={() => {
-                        setMModal(true);
-                        setModal(false);
-                      }}
-                    >
+                    <div className="main_selection_div"
+>
                       친구와 함께
                     </div>
                   </div>
@@ -66,7 +70,13 @@ export const Home = () => {
                     </button>
                   </div>
                   <div>
-                    <button className="main_selection_button">게임 참여</button>
+                  <button
+                      className="main_selection_button"
+                      onClick={handleOpenModal}
+                    >
+                      게임 참여
+                    </button>
+                    <Modal2 isOpen={isModalOpen} onClose={handleCloseModal} />
                   </div>
                 </div>
               </td>
@@ -74,7 +84,8 @@ export const Home = () => {
           </tbody>
         </table>
       </div>
-      {/* <div style={{ backgroundColor: "#26154A" }}>
+      {/* {modal && <Modal modalShow={title} title={title} setModal={setModal} desc={title} />} */}
+      <div style={{ backgroundColor: "#26154A" }}>
         <Modal
           modalShow={modal}
           setModal={setModal}
@@ -89,7 +100,7 @@ export const Home = () => {
           buttonLabel="게임 만들기"
           desc={"닉네임, 뉴스카테고리"}
         ></Modal>
-      </div> */}
+      </div>
     </div>
   );
 };
