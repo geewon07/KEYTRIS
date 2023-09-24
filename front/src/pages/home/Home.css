@@ -1,16 +1,26 @@
 .main_logo_image {
     margin-top: 5%;
 }
-.main_selection_div {
-    margin: 0 auto;
-}
 
+.main_selection_div {
+    margin-top: 10%;
+    font-family: NeoDunggeunmo Pro;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: transparent;
+    -webkit-text-stroke: 2px white;
+    text-stroke: 2px white;
+
+}
 
 .main_selection_table {
     margin-left: auto;
     margin-right: auto;
-    /* margin-top: 5%; */
-    border-spacing: 5vw;   /* 사이 간격 */
+    /* margin-top: 5%; /
+    border-spacing: 5vw;
+    / 사이 간격 */
     text-align: center;
 }
 
@@ -33,24 +43,33 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    margin-bottom: 5%;
+}
+
+.button_box {
+    padding-top: 29%;
 }
 
 .main_selection_button {
     display: flex;
     color: #FFF;
-    text-align: center;
-    width: 320px;
-    height: 60px;
-    padding: 10% 10% ;
-    margin: 4vw 5vh;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    border: 2px solid #FFF;
-    background-color: transparent;
     font-family: NeoDunggeunmo Pro;
-    
+    text-align: center;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 3px;
+
+margin: 4vw 5vh;
+justify-content: center;
+align-items: center;
+gap: 10px;
+flex-shrink: 0;
+border: 2px solid #FFF;
+background-color: transparent;
+width: 320px;
+height: 60px;
 }
 
 .main_selection_text {
@@ -74,7 +93,6 @@
     left: 50%;
     top: 50%;
 }
-
 
 .main-logo-layout {
     margin-top: 1000px;
