@@ -1,4 +1,4 @@
-import './quickMenu.css'
+import './QuickMenu.css'
 import MuteIcon from '../../assets/mute.svg'
 // import {Modal} from '../modal/ModalTest'
 import { Modal3 } from '../modal/Modal3';

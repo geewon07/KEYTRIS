@@ -5,9 +5,9 @@ import {
   createRoom,
   insertWord,
   overGame,
-} from "../../api/singleGame/singleGameApi.js";
+} from "../../api/singleGame/SingleGameApi.js";
 import { connect, disconnect, subscribe } from "../../api/stompClient.js";
-import { QuickMenu } from "../../components/quickmenu/quickMenuTest";
+import { QuickMenu } from "../../components/quickmenu/QuickMenuTest";
 
 export const SingleGame = (props) => {
   // const { category } = props;

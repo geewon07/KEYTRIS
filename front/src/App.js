@@ -6,7 +6,7 @@ import { SingleGame } from "./pages/singleGame/SingleGame";
 import { SingleGameResult } from "./pages/singleGame/SingleGameResult";
 import { MultiGame } from "./pages/multiGame/MultiGame";
 import { MultiGameResult } from "./pages/multiGame/MultiGameResult";
-import { QuickMenu } from "./components/quickmenu/quickMenuTest.js";
+import { QuickMenu } from "./components/quickmenu/QuickMenuTest.js";
 import { Star } from "./components/star.js";
 import { TestJisoo } from "./pages/test/TestJisoo.js";
 

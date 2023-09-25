@@ -7,7 +7,7 @@ import {
   overGame,
 } from "../../api/singleGame/SingleGameApi.js";
 import { connect, disconnect, subscribe } from "../../api/stompClient.js";
-import { QuickMenu } from "../../components/quickmenu/quickMenuTest";
+import { QuickMenu } from "../../components/quickmenu/QuickMenuTest";
 import { Button } from "../../components/button/ButtonTest";
 
 export const SingleGame = (props) => {

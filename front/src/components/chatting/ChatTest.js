@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import "./chat.css";
+import "./Chat.css";
 import { Form, InputGroup } from "react-bootstrap";
 
 function TextChatting({ onSendMessage, chatContent, playerList, playerId }) {
