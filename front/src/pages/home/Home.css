@@ -18,9 +18,7 @@
 .main_selection_table {
     margin-left: auto;
     margin-right: auto;
-    /* margin-top: 5%; /
     border-spacing: 5vw;
-    / 사이 간격 */
     text-align: center;
 }
 
@@ -61,15 +59,15 @@
     line-height: normal;
     letter-spacing: 3px;
 
-margin: 4vw 5vh;
-justify-content: center;
-align-items: center;
-gap: 10px;
-flex-shrink: 0;
-border: 2px solid #FFF;
-background-color: transparent;
-width: 320px;
-height: 60px;
+    margin: 4vw 5vh;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border: 2px solid #FFF;
+    background-color: transparent;
+    width: 320px;
+    height: 60px;
 }
 
 .main_selection_text {

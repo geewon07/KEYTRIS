@@ -85,14 +85,14 @@ function Score() {
               <div className="record">
                 내 점수 &nbsp;{score}&nbsp;&nbsp;
                 {/* 닉네임 입력란 */}
-                <input
+                <input className="score-nickname-input"
                   type="text"
                   value={nickName}
                   onChange={handleNicknameChange}
                   onKeyPress={handleKeyPress}
                   placeholder="닉네임 입력"
                 />
-                <button onClick={handleSaveClick}>저장</button>
+                <button className="score-save-btn" onClick={handleSaveClick}>저장</button>
               </div>
             </>
           )}
