@@ -4,7 +4,6 @@ import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListResponse;
-import com.ssafy.confidentIs.keytris.dto.multiDto.MultiGuessRequest;
 import com.ssafy.confidentIs.keytris.model.WordType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
