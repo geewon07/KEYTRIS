@@ -1,16 +1,13 @@
 package com.ssafy.confidentIs.keytris.model;
 
-import com.ssafy.confidentIs.keytris.model.BasePlayer;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Getter
-@ToString(callSuper=true)
+@ToString(callSuper = true)
 public class MultiPlayer extends BasePlayer {
 
     private String nickname;
@@ -22,8 +19,8 @@ public class MultiPlayer extends BasePlayer {
     }
 
     @Builder
-    public MultiPlayer (String playerId,PlayerStatus playerStatus,Long score,int targetWordIndex,int subWordIndex,String nickname,Boolean isMaster,Timestamp overTime){
-        super(playerId, playerStatus,score,targetWordIndex,subWordIndex);
+    public MultiPlayer(String playerId, PlayerStatus playerStatus, Long score, int targetWordIndex, int subWordIndex, String nickname, Boolean isMaster, Timestamp overTime) {
+        super(playerId, playerStatus, score, targetWordIndex, subWordIndex);
         this.nickname = nickname;
         this.isMaster = isMaster;
         this.overTime = overTime;

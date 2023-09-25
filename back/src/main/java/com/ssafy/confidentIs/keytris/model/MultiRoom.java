@@ -11,7 +11,7 @@ import java.util.Queue;
 
 
 @Getter
-@ToString(callSuper=true)
+@ToString(callSuper = true)
 public class MultiRoom extends BaseRoom {
 
     private int limit;
@@ -20,8 +20,8 @@ public class MultiRoom extends BaseRoom {
     private int overPlayerCnt;
 
     @Builder
-    public MultiRoom (String roomId, int category, RoomStatus roomStatus, Timestamp startTime, List<String> targetWordList, List<String> subWordList, Queue<String> levelWordList,int limit,List<MultiPlayer> playerList,MultiPlayer master,int overPlayerCnt) {
-        super(roomId,category,roomStatus,startTime,targetWordList,subWordList,levelWordList);
+    public MultiRoom(String roomId, int category, RoomStatus roomStatus, Timestamp startTime, List<String> targetWordList, List<String> subWordList, Queue<String> levelWordList, int limit, List<MultiPlayer> playerList, MultiPlayer master, int overPlayerCnt) {
+        super(roomId, category, roomStatus, startTime, targetWordList, subWordList, levelWordList);
         this.limit = limit;
         this.playerList = playerList;
         this.master = master;
