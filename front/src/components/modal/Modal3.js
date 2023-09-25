@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 
 export const Modal3 = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
+ 
 
   const [address, setAddress] = useState('');
   
   useEffect(() => {
     setAddress(window.location.href);
   }, []);
-
+  if (!isOpen) return null;
   const copyAddress = () => {
     navigator.clipboard.writeText(address); 
     Swal.fire({

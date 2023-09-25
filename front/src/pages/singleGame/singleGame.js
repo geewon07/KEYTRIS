@@ -187,12 +187,6 @@ export const SingleGame = (props) => {
     console.log("current " + currentWordList);
   };
 
-  useEffect(() => {
-    
-    if (currentWordList.length >= 21) {
-      handleOverGame();
-    } // subWordList가 변경될 때마다 이 로그가 출력
-  }, [currentWordList]);
 
   // useEffect(() => {
 
@@ -273,6 +267,12 @@ export const SingleGame = (props) => {
       console.error(error);
     }
   };
+  useEffect(() => {
+    
+    if (currentWordList.length >= 21) {
+      handleOverGame();
+    } // subWordList가 변경될 때마다 이 로그가 출력
+  }, [currentWordList]);
 
   // 사라짐...
   // const handleOutRoom = async (statusRequestDto) => { // 위에 dto있음!
@@ -399,7 +399,6 @@ export const SingleGame = (props) => {
           </div>
         </div>
         <div style={{ width: "35%" }}>
-          <QuickMenu />
           <ul>
             <li sytle={{ display: "flex", flexDirection: "row" }}>
               <div style={{}}>
