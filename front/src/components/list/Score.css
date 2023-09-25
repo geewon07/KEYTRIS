@@ -23,8 +23,8 @@
   font-family: "NeoDunggeunmo Pro";
   font-size: 24px;
 }
-button,
-input[type="text"] {
+.score-save-btn,
+.score-nickname-input[type="text"] {
   -webkit-text-fill-color: black;
   color: black;
 }

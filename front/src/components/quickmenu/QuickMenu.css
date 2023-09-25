@@ -11,8 +11,12 @@ nav {
     stroke: #FFF;
     background: transparent;
     flex-shrink: 0;
-    font: "NeoDunggeunmo Pro";
+    font-family: NeoDunggeunmo Pro;
     color: #FFF;
     border-color: #FFF;
     flex-shrink: 0;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
