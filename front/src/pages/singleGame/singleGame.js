@@ -8,7 +8,7 @@ import {
 } from "../../api/singleGame/SingleGameApi.js";
 import { connect, disconnect, subscribe } from "../../api/stompClient.js";
 import { QuickMenu } from "../../components/quickmenu/quickMenuTest";
-import { Button } from "../../components/button/buttonTest";
+import { Button } from "../../components/button/ButtonTest";
 
 export const SingleGame = (props) => {
   // const { category } = props;

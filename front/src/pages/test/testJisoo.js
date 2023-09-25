@@ -6,10 +6,10 @@ import { Button } from "../../components/button/ButtonTest";
 
 import {
   createRoom
-} from "../../api/singleGame/singleGameApi.js";
+} from "../../api/singleGame/SingleGameApi.js";
 import {
   createMultiRoom, connectMultiRoom
-} from "../../api/multiGame/multiGameApi.js";
+} from "../../api/multiGame/MultiGameApi.js";
 
 export const TestJisoo = () => {
   const [modal, setModal] = useState(false);

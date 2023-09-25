@@ -8,7 +8,7 @@ import { MultiGame } from "./pages/multiGame/MultiGame";
 import { MultiGameResult } from "./pages/multiGame/MultiGameResult";
 import { QuickMenu } from "./components/quickmenu/quickMenuTest.js";
 import { Star } from "./components/star.js";
-import { TestJisoo } from "./pages/test/testJisoo.js";
+import { TestJisoo } from "./pages/test/TestJisoo.js";
 
 function App() {
   return (
