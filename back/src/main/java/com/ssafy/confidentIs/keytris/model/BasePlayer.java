@@ -14,11 +14,12 @@ import lombok.experimental.SuperBuilder;
 @ToString
 public class BasePlayer {
 
-  protected String playerId;
-  protected PlayerStatus playerStatus;
-  protected Long score;
-  protected int targetWordIndex;
-  protected int subWordIndex;
+  public String playerId;
+  public PlayerStatus playerStatus;
+  public Long score;
+  public int targetWordIndex;
+  public int subWordIndex;
+
 
   public BasePlayer(String playerId, PlayerStatus playerStatus, Long score) {
     this.playerId = playerId;
