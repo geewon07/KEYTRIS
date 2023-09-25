@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @Getter
 @ToString
-@SuperBuilder
 public class BaseRoom {
 
   protected String roomId;

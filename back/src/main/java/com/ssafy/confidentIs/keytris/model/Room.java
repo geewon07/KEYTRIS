@@ -1,18 +1,26 @@
 package com.ssafy.confidentIs.keytris.model;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Queue;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-
-@SuperBuilder
 @Getter
 @ToString(callSuper=true)
 public class Room extends BaseRoom {
 
   private List<SinglePlayer> playerList;
   private final String type = "Single";
+
+  @Builder
+  public Room (String roomId, int category, RoomStatus roomStatus, Timestamp startTime, List<String> targetWordList, List<String> subWordList, Queue<String> levelWordList,List<SinglePlayer> playerList) {
+    super(roomId,category,roomStatus,startTime,targetWordList,subWordList,levelWordList);
+    this.playerList = playerList;
+  }
 
   public void updatePlayerList(SinglePlayer player) {
     this.playerList.add(player);
