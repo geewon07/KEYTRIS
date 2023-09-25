@@ -143,4 +143,10 @@ public class TestController2 {
 //        return new ResponseEntity<>();
 //    }
 
+
+    @PostMapping("/builder")
+    public ResponseEntity<?> testBuilder() {
+        return new ResponseEntity<>(playerService.testBuilder(), HttpStatus.OK);
+    }
+
 }
