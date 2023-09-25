@@ -11,7 +11,7 @@ import java.util.List;
 @SuperBuilder
 @Getter
 @ToString(callSuper=true)
-public class MultiPlayer extends BasePlayer {
+public class MultiPlayer extends BasePlayer1 {
 
     private String nickname;
     private Boolean isMaster;
