@@ -1,6 +1,5 @@
-package com.ssafy.confidentIs.keytris.model.multiModel;
+package com.ssafy.confidentIs.keytris.model;
 
-import com.ssafy.confidentIs.keytris.model.BaseRoom;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;

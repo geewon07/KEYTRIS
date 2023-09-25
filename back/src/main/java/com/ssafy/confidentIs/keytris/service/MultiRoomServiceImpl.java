@@ -1,16 +1,14 @@
 package com.ssafy.confidentIs.keytris.service;
 
 
-import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
-import com.ssafy.confidentIs.keytris.common.exception.customException.InvalidWordException;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
 import com.ssafy.confidentIs.keytris.dto.multiDto.*;
 import com.ssafy.confidentIs.keytris.model.PlayerStatus;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
 import com.ssafy.confidentIs.keytris.model.RoomType;
 import com.ssafy.confidentIs.keytris.model.WordType;
-import com.ssafy.confidentIs.keytris.model.multiModel.MultiPlayer;
-import com.ssafy.confidentIs.keytris.model.multiModel.MultiRoom;
+import com.ssafy.confidentIs.keytris.model.MultiPlayer;
+import com.ssafy.confidentIs.keytris.model.MultiRoom;
 import com.ssafy.confidentIs.keytris.repository.MultiRoomManager;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

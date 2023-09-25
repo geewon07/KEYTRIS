@@ -1,8 +1,8 @@
 package com.ssafy.confidentIs.keytris.dto.multiDto;
 
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
-import com.ssafy.confidentIs.keytris.model.multiModel.MultiPlayer;
-import com.ssafy.confidentIs.keytris.model.multiModel.MultiRoom;
+import com.ssafy.confidentIs.keytris.model.MultiPlayer;
+import com.ssafy.confidentIs.keytris.model.MultiRoom;
 import lombok.*;
 
 import java.util.List;

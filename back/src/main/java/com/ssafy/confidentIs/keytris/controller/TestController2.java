@@ -4,11 +4,12 @@ import com.ssafy.confidentIs.keytris.model.PlayerStatus;
 import com.ssafy.confidentIs.keytris.model.Room;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
 import com.ssafy.confidentIs.keytris.model.WordType;
-import com.ssafy.confidentIs.keytris.model.multiModel.MultiPlayer;
-import com.ssafy.confidentIs.keytris.model.multiModel.MultiRoom;
+import com.ssafy.confidentIs.keytris.model.MultiPlayer;
+import com.ssafy.confidentIs.keytris.model.MultiRoom;
 import com.ssafy.confidentIs.keytris.repository.MultiRoomManager;
 import com.ssafy.confidentIs.keytris.repository.RoomManager;
 import com.ssafy.confidentIs.keytris.service.DataServiceImpl;
+import com.ssafy.confidentIs.keytris.service.PlayerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class TestController2 {
     private final MultiRoomManager multiRoomManager;
     private final RoomManager roomManager;
     private final DataServiceImpl dataService;
+    private final PlayerServiceImpl playerService;
 
     @GetMapping
     public ResponseEntity<?> test(){//@PathVariable String enterWord
@@ -120,6 +122,17 @@ public class TestController2 {
             log.info("room: {}", room);
         }
         return new ResponseEntity<>(rooms, HttpStatus.OK);
+    }
+
+
+    @PostMapping("/basePlayer")
+    public ResponseEntity<?> createBasePlayer() {
+        return new ResponseEntity<>(playerService.testBasePlayer(), HttpStatus.OK);
+    }
+
+    @PostMapping("/multiPlayer")
+    public ResponseEntity<?> creatMultiPlayer() {
+        return new ResponseEntity<>(playerService.testMultiPlayer(), HttpStatus.OK);
     }
 
 
