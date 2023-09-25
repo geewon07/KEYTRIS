@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public class CreateRequest {
-  private int category;
+    private int category;
 }

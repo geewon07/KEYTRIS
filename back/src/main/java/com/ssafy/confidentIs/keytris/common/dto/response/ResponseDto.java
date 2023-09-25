@@ -1,6 +1,7 @@
 package com.ssafy.confidentIs.keytris.common.dto.response;
 
 import java.util.Map;
+
 import lombok.Getter;
 import lombok.ToString;
 

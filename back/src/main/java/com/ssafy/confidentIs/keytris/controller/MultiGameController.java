@@ -37,7 +37,7 @@ public class MultiGameController {
 
     @PostMapping
     public ResponseEntity<?> createMultiGame(@RequestBody MultiGameCreateRequest request, Errors errors) {
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             // TODO 예외처리
         }
         log.info("nickname: {}", request);
@@ -51,10 +51,10 @@ public class MultiGameController {
     @PostMapping("/{roomId}")
     public ResponseEntity<?> connectMultiGame(@PathVariable String roomId,
                                               @RequestBody @Validated MultiGameConnectRequest request, Errors errors) {
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             // TODO 예외처리
         }
-        log.info("roomId: {}, request: {}", roomId , request);
+        log.info("roomId: {}, request: {}", roomId, request);
 
         MultiGameConnectResponse response = multiRoomServiceImpl.connectMultiGame(roomId, request);
 
@@ -63,7 +63,7 @@ public class MultiGameController {
         ChatMessage chatMessage = ChatMessage.builder()
                 .roomId(roomId)
                 .playerId("notification")
-                .content(request.getNickname()+"님이 입장했습니다.")
+                .content(request.getNickname() + "님이 입장했습니다.")
                 .timestamp(new Date().toString())
                 .build();
         messagingTemplate.convertAndSend("/topic/multi/chat/" + roomId, chatMessage);
@@ -77,7 +77,7 @@ public class MultiGameController {
     // 방장이 게임을 시작하는 api
     @MessageMapping("/multi/start/{roomId}")
     public void startMultiGame(@DestinationVariable String roomId, @RequestBody @Validated MultiGamePlayerRequest request) {
-        log.info("roomId: {}, request: {}",roomId , request);
+        log.info("roomId: {}, request: {}", roomId, request);
 
         MultiGameInfoResponse response = multiRoomServiceImpl.startMultiGame(roomId, request);
         messagingTemplate.convertAndSend("/topic/multi/start/" + roomId, response);
@@ -89,7 +89,7 @@ public class MultiGameController {
     public void updatePlayerToReady(@DestinationVariable String roomId, @RequestBody MultiGamePlayerRequest request) {
         log.info("roomId: {}, playerId: {}", roomId, request.getPlayerId());
         UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToReady(roomId, request.getPlayerId());
-        messagingTemplate.convertAndSend("/topic/multi/player-ready/"+roomId, response);
+        messagingTemplate.convertAndSend("/topic/multi/player-ready/" + roomId, response);
     }
 
 
@@ -98,11 +98,11 @@ public class MultiGameController {
     public void updatePlayerToOver(@DestinationVariable String roomId, @RequestBody MultiGamePlayerRequest request) {
         log.info("roomId: {}, playerId: {}", roomId, request.getPlayerId());
         UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToOver(roomId, request.getPlayerId());
-        messagingTemplate.convertAndSend("/topic/multi/player-over/"+roomId, response);
+        messagingTemplate.convertAndSend("/topic/multi/player-over/" + roomId, response);
 
-        if(response.getRoomStatus().equals(RoomStatus.FINISHED)) {
+        if (response.getRoomStatus().equals(RoomStatus.FINISHED)) {
             MultiGameResultResponse resultResponse = multiRoomServiceImpl.getGameResult(roomId);
-            messagingTemplate.convertAndSend("/topic/multi/end/"+roomId, resultResponse);
+            messagingTemplate.convertAndSend("/topic/multi/end/" + roomId, resultResponse);
         }
     }
 
@@ -115,7 +115,7 @@ public class MultiGameController {
 
         WordListResponse response = multiRoomServiceImpl.sortByProximity(roomId, request);
 
-        if(response.getSuccess().equals("fail")) {
+        if (response.getSuccess().equals("fail")) {
             messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/" + request.getPlayerId(),
                     new ErrorResponseDto(ErrorCode.INVALID_WORD));
         } else {

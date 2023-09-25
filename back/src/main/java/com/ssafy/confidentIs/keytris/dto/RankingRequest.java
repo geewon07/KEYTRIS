@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class RankingRequest {
-  private String roomId;
-  private String nickname;
+    private String roomId;
+    private String nickname;
 }

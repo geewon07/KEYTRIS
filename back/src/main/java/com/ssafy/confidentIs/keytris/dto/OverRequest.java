@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class OverRequest {
-  private String roomId;
-  private String[][] lastWord;
-  private Long score;
+    private String roomId;
+    private String[][] lastWord;
+    private Long score;
 }
