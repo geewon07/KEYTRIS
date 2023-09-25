@@ -2,7 +2,8 @@ import { useState } from "react";
 import "./ButtonTest.css";
 
 export const Button = (props) => {
-  const { label } = props;
+  const { label, onClick } = props;
+
   // const { label, action } = props;
   // const [buttonType, setType] = useState("button");
   // const [func, setFunction] = useState();
@@ -21,8 +22,7 @@ export const Button = (props) => {
   // }
   return (
     <div className="large-button-layout">
-      {/* <button className="modal-button-style" type={buttonType} onClick={func}> */}
-      <button className="large-button-style">
+      <button className="large-button-style" onClick={onClick}>
         <span className="large-button-text">{label}</span>
       </button>
     </div>

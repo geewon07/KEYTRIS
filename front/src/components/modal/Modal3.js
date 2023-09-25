@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 export const Modal3 = ({ isOpen, onClose }) => {
- 
+  const [address, setAddress] = useState("");
 
-  const [address, setAddress] = useState('');
-  
   useEffect(() => {
     setAddress(window.location.href);
   }, []);
+
   if (!isOpen) return null;
+
   const copyAddress = () => {
-    navigator.clipboard.writeText(address); 
+    navigator.clipboard.writeText(address);
     Swal.fire({
-      icon: 'success',
-      title: '주소 복사 완료',
-      text: '주소가 클립보드에 복사되었습니다.',
+      icon: "success",
+      title: "주소 복사 완료",
+      text: "주소가 클립보드에 복사되었습니다.",
     });
-  }
+  };
 
   const titleStyle = {
     color: "#FFF",
@@ -48,15 +48,14 @@ export const Modal3 = ({ isOpen, onClose }) => {
         <div className="modal">
           <div className="modal-content">
             <div style={{ alignSelf: "end" }}>
-              <button
-                className="modal-close-button"
-                onClick={onClose}
-              >
+              <button className="modal-close-button" onClick={onClose}>
                 X
               </button>
             </div>
 
-            <div style={titleStyle}>게임 코드를 복사하여 친구들에게 공유해주세요!</div>
+            <div style={titleStyle}>
+              게임 코드를 복사하여 친구들에게 공유해주세요!
+            </div>
             <div style={contentStyle}>
               <label htmlFor="gamecode">게임 코드</label>
               <input
