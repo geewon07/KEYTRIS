@@ -9,8 +9,6 @@ import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
 public class BasePlayer {
 
@@ -21,11 +19,11 @@ public class BasePlayer {
   public int subWordIndex;
 
 
-  public BasePlayer(String playerId, PlayerStatus playerStatus, Long score) {
-    this.playerId = playerId;
-    this.playerStatus = playerStatus;
-    this.score = score;
-  }
+  // public BasePlayer(String playerId, PlayerStatus playerStatus, Long score) {
+  //   this.playerId = playerId;
+  //   this.playerStatus = playerStatus;
+  //   this.score = score;
+  // }
 
   public void updateIndex(int subWordIndex, int targetWordIndex) {
     this.subWordIndex = subWordIndex;
