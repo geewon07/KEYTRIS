@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import "./Score.css";
 import { Button } from "../button/ButtonTest";
+import "./Score.css";
 
-function Score({}) {
+function Score() {
   const playerId = "playerId0";
   const playerResultList = [
     {

@@ -1,17 +1,13 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import keytrisLogo from "../../assets/logo_1.svg";
-
-import { Button } from "../../components/button/ButtonTest";
 import { Modal } from "../../components/modal/ModalTest";
-import { Modal2 } from "../../components/modal/Modal2";
 import "./Home.css";
 
-import { createRoom } from "../../api/singleGame/SingleGameApi.js";
 import {
-  createMultiRoom,
   connectMultiRoom,
+  createMultiRoom,
 } from "../../api/multiGame/MultiGameApi.js";
+import { createRoom } from "../../api/singleGame/SingleGameApi.js";
 
 export const Home = () => {
   const [modal, setModal] = useState(false);

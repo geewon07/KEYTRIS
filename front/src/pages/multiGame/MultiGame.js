@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Chat from "../../components/chatting/ChatTest";
 import {
   connect,
-  disconnect,
   sendMsg,
-  subscribe,
+  subscribe
 } from "../../api/stompClient.js";
+import Chat from "../../components/chatting/ChatTest";
 
 export const MultiGame = () => {
   // const [streak, setStreak] = useState(null);
-  const [nickname, setNickname] = useState(null);
+  // const [nickname, setNickname] = useState(null);
   const [playerId, setPlayerId] = useState(null);
   const [roomId, setRoomId] = useState(null);
   const [playerList, setPlayerList] = useState([]);
