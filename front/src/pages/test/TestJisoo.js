@@ -1,46 +1,44 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import { Modal } from "../../components/modal/ModalTest";
 import { Button } from "../../components/button/ButtonTest";
 
+import { createRoom } from "../../api/singleGame/SingleGameApi.js";
 import {
-  createRoom
-} from "../../api/singleGame/SingleGameApi.js";
-import {
-  createMultiRoom, connectMultiRoom
+  createMultiRoom,
+  connectMultiRoom,
 } from "../../api/multiGame/MultiGameApi.js";
 
 export const TestJisoo = () => {
   const [modal, setModal] = useState(false);
   const [multigameModal, setMModal] = useState(true);
-  const [multiEnterModal, setMMModal ] = useState(false);
-  const [inviteModal, setMMMModal ] = useState(false);
+  const [multiEnterModal, setMMModal] = useState(false);
+  const [inviteModal, setMMMModal] = useState(false);
 
   const singleDesc = "어떤 분야의 뉴스 키워드로 게임을 진행하시겠어요?";
 
-  const makeSingleGame = async ({category}) => {
+  const makeSingleGame = async ({ category }) => {
     console.log(category);
-    
+
     try {
       const response = await createRoom({ category });
       console.log(response);
 
-      if(response.data.data) {
+      if (response.data.data) {
         alert("게임을 만들었습니다");
         // 소켓 연결하기
 
-        // 만들어진 게임으로 이동하기       
-
+        // 만들어진 게임으로 이동하기
       } else {
         alert("게임 만들기 실패");
       }
     } catch (error) {
       console.error("오류 발생:", error);
-    }    
-  }
+    }
+  };
 
-  const makeMultiGame = async ({category, nickname}) => {
+  const makeMultiGame = async ({ category, nickname }) => {
     console.log(category + " " + nickname);
 
     try {
@@ -48,61 +46,56 @@ export const TestJisoo = () => {
       const response = await createMultiRoom(MultiGameCreateRequest);
       console.log(response);
 
-      if(response.data.data) {
+      if (response.data.data) {
         alert("멀티 게임을 만들었습니다");
         // 소켓 연결하기
-        
-        // 만들어진 게임으로 이동하기 + 친구 초대 모달 열림
 
+        // 만들어진 게임으로 이동하기 + 친구 초대 모달 열림
       } else {
         alert("게임 만들기 실패");
       }
     } catch (error) {
       console.error("오류 발생:", error);
-    } 
-    
-  }
+    }
+  };
 
-  const enterMultiGame = async ({nickname, gameCode}) => {
+  const enterMultiGame = async ({ nickname, gameCode }) => {
     console.log(nickname + " " + gameCode);
 
-    if(!nickname || !gameCode) {
+    if (!nickname || !gameCode) {
       alert("닉네임과 게임 모드는 필수 항목입니다.");
       return;
-    } 
+    }
 
     try {
       const MultiGameCreateRequest = { nickname };
       const response = await connectMultiRoom(gameCode, MultiGameCreateRequest);
       console.log(response);
 
-      if(response.data.data) {
+      if (response.data.data) {
         alert("멀티 게임에 입장했습니다");
         // 소켓 연결하기
 
         // 접속한 페이지로 이동하기
-
       } else {
         alert("게임 입장 실패");
       }
     } catch (error) {
       console.error("오류 발생:", error);
     }
-  }
+  };
 
-  const copyCode = ({gameCode}) => {
+  const copyCode = ({ gameCode }) => {
     console.log(gameCode);
     alert("코드를 복사했습니다. 친구에게 전달해주세요.");
-  }
-
+  };
 
   const navigate = useNavigate();
 
-  const handleButtonClickToGO = (path = '/') => {
+  const handleButtonClickToGO = (path = "/") => {
     console.log("페이지 이동 경로:", path);
     navigate(path);
   };
-
 
   return (
     <div style={{ backgroundColor: "#26154A" }}>
@@ -175,7 +168,7 @@ export const TestJisoo = () => {
       >
         친구와 함께 입장하기
       </button>
-      
+
       <br />
 
       <button
@@ -195,7 +188,7 @@ export const TestJisoo = () => {
 
       <div>
         <div>페이지 이동 테스트 버튼</div>
-        <Button label="메인으로" onClick={() => handleButtonClickToGO('/')} />
+        <Button label="메인으로" onClick={() => handleButtonClickToGO("/")} />
       </div>
     </div>
   );
