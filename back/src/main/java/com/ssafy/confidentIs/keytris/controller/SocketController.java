@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor // private final 타입 의존성 주입을 자동으로 해줌
 public class SocketController {
 
-  private final SimpMessagingTemplate messagingTemplate;
-  private final RoomService roomService;
+    private final SimpMessagingTemplate messagingTemplate;
+    private final RoomService roomService;
 
-  @MessageMapping("/games/room/{roomId}")//{roomId}
-  public void enterRoom(@DestinationVariable String roomId) {//@DestinationVariable String roomId
-    log.info("when does it call {}", roomId);
-    messagingTemplate.convertAndSend("/topic/games/room/" + roomId, roomService.enterRoom(roomId));
-  }
+    @MessageMapping("/games/room/{roomId}")//{roomId}
+    public void enterRoom(@DestinationVariable String roomId) {//@DestinationVariable String roomId
+        log.info("when does it call {}", roomId);
+        messagingTemplate.convertAndSend("/topic/games/room/" + roomId, roomService.enterRoom(roomId));
+    }
 }

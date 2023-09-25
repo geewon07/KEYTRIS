@@ -4,6 +4,7 @@ import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+
 //TODO: 에러 처리, 상황에 맞는 에러 지정
 @Getter
 public class ErrorResponseDto {
@@ -13,7 +14,7 @@ public class ErrorResponseDto {
     private String errorCode;
     private String message;
 
-    public ErrorResponseDto(ErrorCode errorCode){
+    public ErrorResponseDto(ErrorCode errorCode) {
         this.success = "FAIL";
         this.status = errorCode.getStatus();
         this.errorCode = errorCode.getErrorCode();
