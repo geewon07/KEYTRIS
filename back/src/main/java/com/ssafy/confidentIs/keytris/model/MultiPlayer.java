@@ -1,4 +1,4 @@
-package com.ssafy.confidentIs.keytris.model.multiModel;
+package com.ssafy.confidentIs.keytris.model;
 
 import com.ssafy.confidentIs.keytris.model.BasePlayer;
 import lombok.Getter;
