@@ -8,6 +8,7 @@ import {
 } from "../../api/singleGame/SingleGameApi.js";
 import { connect, disconnect, subscribe } from "../../api/stompClient.js";
 import { QuickMenu } from "../../components/quickmenu/quickMenuTest";
+import { Button } from "../../components/button/buttonTest";
 
 export const SingleGame = (props) => {
   // const { category } = props;
@@ -30,33 +31,32 @@ export const SingleGame = (props) => {
 
   const [levelWord, setLevelWord] = useState([]);
 
+  const [targetWordIndex, setTargetWordIndex] = useState(null);
   const [targetWordSet, setTargetWordSet] = useState(false);
   // const callback = (messageBody) => {
   //   console.log(messageBody);
   // };
   useEffect(() => {
     const connectAndSubscribe = async () => {
-        if (roomId !== null) {
-            await connect(); // Wait for the connect function to complete
-            const callback = (messageBody) => {
-              console.log(messageBody);
-              const toTwoD = [messageBody, ""];
-              setLevelWord((prev) => [...prev, toTwoD]);
-            };
-            subscribe(`/topic/room/level-word/${roomId}`, callback);
-        }
+      if (roomId !== null) {
+        await connect(); // Wait for the connect function to complete
+        const callback = (messageBody) => {
+          console.log(messageBody);
+          const toTwoD = [messageBody, ""];
+          setLevelWord((prev) => [...prev, toTwoD]);
+        };
+        subscribe(`/topic/room/level-word/${roomId}`, callback);
+      }
     };
 
     connectAndSubscribe();
-}, [roomId]);
-useEffect(() => {
-  if(levelWord.length>0){
-      setCurrentWordList((prev)=>[...prev,...levelWord]);
-  setLevelWord([]);
-  }
-
-}, [levelWord]);
-
+  }, [roomId]);
+  useEffect(() => {
+    if (levelWord.length > 0) {
+      setCurrentWordList((prev) => [...prev, ...levelWord]);
+      setLevelWord([]);
+    }
+  }, [levelWord]);
 
   const handleCreate = async () => {
     try {
@@ -97,6 +97,7 @@ useEffect(() => {
       console.log(wordListResponse);
       setTargetWord(wordListResponse.newTargetWord);
       setTargetWordSet(true);
+      setTargetWordIndex(9);
       setPlayerStatus(startResponseDto.statusResponse.playerStatus);
       setRoomId(statusResponse.roomId);
       setRoomStatus(startResponseDto.statusResponse.roomStatus);
@@ -115,6 +116,12 @@ useEffect(() => {
       renderWordList(currentWordList);
     }
   }, [targetWordSet, currentWordList]);
+  useEffect(() => {
+    const where = currentWordList.findIndex(
+      (line) => line[0] === targetWord
+    );
+    setTargetWordIndex(where);
+  }, [currentWordList, targetWord]);
 
   function delayMethod(method, delayInMilliseconds) {
     return new Promise((resolve) => {
@@ -163,6 +170,12 @@ useEffect(() => {
           ]);
         }
       }, 2000);
+      setTimeout(() => {
+        const where = currentWordList.findIndex(
+          (line) => line[0] === SortedWordResponseDto.newTargetWord
+        );
+        setTargetWordIndex(where);
+      }, 2100);
       // setScore(newScore);// 단어 삭제 모션 있고 난 다음에 변경
       setSubWordList(SortedWordResponseDto.newSubWordList);
       setTargetWord(SortedWordResponseDto.newTargetWord);
@@ -174,12 +187,6 @@ useEffect(() => {
     console.log("current " + currentWordList);
   };
 
-  useEffect(() => {
-
-if(currentWordList.length>=21){
-  handleOverGame();
-}    // subWordList가 변경될 때마다 이 로그가 출력
-  }, [currentWordList]);
 
   // useEffect(() => {
 
@@ -217,6 +224,7 @@ if(currentWordList.length>=21){
         console.log(SortedWordResponseDto);
         const sorted = SortedWordResponseDto.sortedWordList;
         const newScore = SortedWordResponseDto.newScore;
+
         handleScoring(sorted, newScore, SortedWordResponseDto);
         //효과를 다 하고 쓰세여~
 
@@ -246,8 +254,8 @@ if(currentWordList.length>=21){
     try {
       const res = await overGame(overRequestDto);
       const OverResponseDto = res.data.data.OverResponse;
-      setPlayerStatus(OverResponseDto.playerStatus);
-      setRoomStatus(OverResponseDto.roomStatus);
+      setPlayerStatus(OverResponseDto.statusResponse.playerStatus);
+      setRoomStatus(OverResponseDto.statusResponse.roomStatus);
       // 페이지 화면 전환
       // 페이지 result로 전환되면서 데이터 넘겨주기? 우선 넘겨줄거를 overResultDto로 만들게요
       // 근데 그냥 위에 overResponseDto 넘겨주는게 나을 것 같아서 그냥 안만들었습니다.
@@ -259,7 +267,13 @@ if(currentWordList.length>=21){
       console.error(error);
     }
   };
-  
+  useEffect(() => {
+    
+    if (currentWordList.length >= 21) {
+      handleOverGame();
+    } // subWordList가 변경될 때마다 이 로그가 출력
+  }, [currentWordList]);
+
   // 사라짐...
   // const handleOutRoom = async (statusRequestDto) => { // 위에 dto있음!
   //   try {
@@ -278,34 +292,28 @@ if(currentWordList.length>=21){
         // This is a 2D array with points
         const [word, point] = item;
         return (
-          <li
-            key={currentWordList.length - index - 1}
-            className={
-              word === targetWord ? "targetWord wordline" : "wordline"
-            }
-          >
-            <div className="left">{word}</div>
-            <div className="right points">
-              {point} 
-            </div>
+          <li key={currentWordList.length - index - 1} className={"wordline"}>
+            <div className={ targetWord[0][0] === word? "targetWord wordline left" : "wordline left"}>{word}</div>
+            <div className="right points">{point}</div>
           </li>
         );
         // }
       });
   };
   // index {currentWordList.length - index - 1}
-  const listing = currentWordList
-    ?.slice()
-    .reverse()
-    .map((value, index) => (
-      <li
-        key={index}
-        style={{ lineHeight: "1.5rem", color: "white" }}
-        className={value === targetWord ? "targetWord wordline" : "wordline"}
-      >
-        {value}+{currentWordList.length - index}
-      </li>
-    ));
+  const listIndexStandard = [
+    20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
+  ];
+  const listing = listIndexStandard?.slice().map((value, index) => (
+    <li
+      key={index}
+      className={
+        20 - index - 1 === targetWordIndex ? "targetWord wordline" : "wordline"
+      }
+    >
+      {value}
+    </li>
+  ));
 
   return (
     <>
@@ -353,11 +361,26 @@ if(currentWordList.length>=21){
         </div>
         <div className="gamecontainer" style={{}}>
           <div className="bglist">
+            <div className="score">
+              {roomStatus === "PREPARED" && (
+                <div
+                  className="startbutton"
+                  onClick={() => {
+                    handleStartGame();
+                  }}
+                >
+                  <Button label="START"></Button>
+                </div>
+              )}
+              {roomStatus !== "PREPARED" &&
+                roomStatus !== "UNPREPARED" &&
+                roomStatus !== null &&
+                score}
+            </div>
             <div className="overlaybox"></div>
-            <ul></ul>
-            <ul className="wordlist" style={{}}>
-              {renderWordList(currentWordList)}
-            </ul>
+
+            <ul className="indexlist">{listing}</ul>
+            <ul className="wordlist">{renderWordList(currentWordList)}</ul>
 
             <input className="guessbox Neo" value={lastGuess} disabled></input>
             <input
@@ -376,16 +399,17 @@ if(currentWordList.length>=21){
           </div>
         </div>
         <div style={{ width: "35%" }}>
-          <QuickMenu />
           <ul>
             <li sytle={{ display: "flex", flexDirection: "row" }}>
-              <div style={{}}>타겟 단어: {targetWord}</div>
+              <div style={{}}>
+                타겟 단어: {targetWordIndex}
+                {targetWord}
+              </div>
             </li>
             <li>levelWord: {levelWord}</li>
             <li>next up</li>
             <li>{subWordList}</li>
           </ul>
-          <ul></ul>
         </div>
       </div>
     </>
