@@ -15,19 +15,19 @@ export const MultiGame = () => {
   const [chatContent, setChatContent] = useState("");
 
   useEffect(() => {
-    if(roomId !== null) {
+    if (roomId !== null) {
       const enterChat = (messageBody) => {
         const context = messageBody;
         console.log(context);
         setChatContent(context);
       };
-  
+
       connect().then(() => {
         subscribe(`/topic/multi/chat/${roomId}`, enterChat);
       });
     }
-  },[roomId]);
-  
+  }, [roomId]);
+
 
   const handleSendMessage = (inputText) => {
     const body = { playerId: playerId, content: inputText };
@@ -80,13 +80,13 @@ export const MultiGame = () => {
       }
     ])
     // setPlayerId("ohohohooh");
-        console.log("Ddd");
+    console.log("Ddd");
     // connect();
   }, []);
 
   return (
     <div>
-    <button onClick={()=>setRoomId("f0eb6157-6ee9-4652-857e-30299f2ac5ef")}>fdgfgffgf</button>
+      <button onClick={() => setRoomId("f0eb6157-6ee9-4652-857e-30299f2ac5ef")}>fdgfgffgf</button>
       <Chat
         onSendMessage={handleSendMessage}
         chatContent={chatContent}
