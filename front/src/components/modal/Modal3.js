@@ -54,7 +54,7 @@ export const Modal3 = ({ isOpen, onClose }) => {
             </div>
 
             <div style={titleStyle}>
-              게임 코드를 복사하여 친구들에게 공유해주세요!
+              게임 코드를 복사하여<br></br> 친구들에게 공유해주세요!
             </div>
             <div style={contentStyle}>
               <label htmlFor="gamecode">게임 코드</label>
