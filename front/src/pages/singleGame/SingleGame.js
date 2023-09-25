@@ -34,7 +34,7 @@ export const SingleGame = (props) => {
   const [levelWord, setLevelWord] = useState([]);
 
   const [targetWordIndex, setTargetWordIndex] = useState(null);
-  const [targetWordSet, setTargetWordSet] = useState(false);
+  // const [targetWordSet, setTargetWordSet] = useState(false);
   // const callback = (messageBody) => {
   //   console.log(messageBody);
   // };
@@ -98,7 +98,7 @@ export const SingleGame = (props) => {
       // console.log(res);
       console.log(wordListResponse);
       setTargetWord(wordListResponse.newTargetWord);
-      setTargetWordSet(true);
+      // setTargetWordSet(true);
       setTargetWordIndex(9);
       setPlayerStatus(startResponseDto.statusResponse.playerStatus);
       setRoomId(statusResponse.roomId);
@@ -112,12 +112,12 @@ export const SingleGame = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (targetWordSet) {
-      // Render the word list with the appropriate class names
-      renderWordList(currentWordList);
-    }
-  }, [targetWordSet, currentWordList]);
+  // useEffect(() => {
+  //   if (targetWordSet) {
+  //     // Render the word list with the appropriate class names
+  //     renderWordList(currentWordList);
+  //   }
+  // }, [targetWordSet, currentWordList]);
   useEffect(() => {
     const where = currentWordList.findIndex(
       (line) => line[0] === targetWord
@@ -125,14 +125,14 @@ export const SingleGame = (props) => {
     setTargetWordIndex(where);
   }, [currentWordList, targetWord]);
 
-  function delayMethod(method, delayInMilliseconds) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        method();
-        resolve(); // Resolve the promise when the delay is complete
-      }, delayInMilliseconds);
-    });
-  }
+  // function delayMethod(method, delayInMilliseconds) {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       method();
+  //       resolve(); // Resolve the promise when the delay is complete
+  //     }, delayInMilliseconds);
+  //   });
+  // }
 
   const handleScoring = (newList, newScore, SortedWordResponseDto) => {
     //여기서 새값 들어오기전에 먼저 효과를 주기
@@ -274,6 +274,7 @@ export const SingleGame = (props) => {
     if (currentWordList.length >= 21) {
       handleOverGame();
     } // subWordList가 변경될 때마다 이 로그가 출력
+    // eslint-disable-next-line
   }, [currentWordList]);
 
   // 사라짐...
@@ -411,6 +412,10 @@ export const SingleGame = (props) => {
             <li>levelWord: {levelWord}</li>
             <li>next up</li>
             <li>{subWordList}</li>
+            <li>deleteList</li>
+            <li>{deleteList}</li>
+            <li>sorted {sortedWordList}</li>
+
           </ul>
         </div>
       </div>

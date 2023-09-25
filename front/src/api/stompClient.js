@@ -4,37 +4,41 @@ import SockJS from "sockjs-client";
 let stompClient = null;
 let socketConnect = null;
 
-export const connect = () => new Promise((resolve, reject) => {
-  const socketFactory = () => new SockJS(process.env.REACT_APP_SOCKET_BASE_URL);
-  socketConnect = socketFactory(); 
-  const client = Stomp.over(socketFactory);
+export const connect = () =>
+  new Promise((resolve, reject) => {
+    const socketFactory = () => new SockJS(process.env.REACT_APP_SOCKET_BASE_URL);
+    socketConnect = socketFactory();
+    const client = Stomp.over(socketFactory());
 
-
-  client.connect({}, () => {
-    stompClient = client;
-    resolve();
-  }, (error) => {
-    console.error("소켓 연결 실패 5초 후 재연결", error);
-    setTimeout(() => connect(process.env.REACT_APP_SOCKET_BASE_URL), 5000);
-    reject(error); 
+    client.connect(
+      {},
+      () => {
+        stompClient = client;
+        resolve();
+      },
+      (error) => {
+        console.error("소켓 연결 실패 5초 후 재연결", error);
+        setTimeout(() => connect(process.env.REACT_APP_SOCKET_BASE_URL), 5000);
+        reject(error);
+      }
+    );
   });
-});
 
 export const disconnect = () => {
   if (stompClient && stompClient.connected) {
     stompClient.disconnect();
   }
-  if (socketConnect && socketConnect.readyState === WebSocket.OPEN) { 
+  if (socketConnect && socketConnect.readyState === WebSocket.OPEN) {
     // WebSocket.OPEN으로 상태 확인
     socketConnect.close();
   }
- };
- 
- export const sendMsg = (destination, body={}) => { 
+};
+
+export const sendMsg = (destination, body={}) => { 
   if(stompClient && stompClient.connected) { 
     stompClient.send(destination, {}, JSON.stringify(body));
   }
- };
+};
 
 export const subscribe = (destination, callback) => {
   if (stompClient && stompClient.connected) {
@@ -50,4 +54,5 @@ export const subscribe = (destination, callback) => {
   }
 };
 
-export default { connect, disconnect, sendMsg , subscribe};
+const apiStomtModule= { connect, disconnect, sendMsg , subscribe};
+export default apiStomtModule;
