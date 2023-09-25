@@ -1,15 +1,13 @@
 package com.ssafy.confidentIs.keytris.model;
 
-import java.util.UUID;
-
-import lombok.*;
+import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@SuperBuilder
 @Getter
 @ToString
-public class BasePlayer {
+public class BasePlayer1 {
 
   public String playerId;
   public PlayerStatus playerStatus;
@@ -18,11 +16,11 @@ public class BasePlayer {
   public int subWordIndex;
 
 
-   public BasePlayer(String playerId, PlayerStatus playerStatus, Long score) {
-     this.playerId = playerId;
-     this.playerStatus = playerStatus;
-     this.score = score;
-   }
+  // public BasePlayer(String playerId, PlayerStatus playerStatus, Long score) {
+  //   this.playerId = playerId;
+  //   this.playerStatus = playerStatus;
+  //   this.score = score;
+  // }
 
   public void updateIndex(int subWordIndex, int targetWordIndex) {
     this.subWordIndex = subWordIndex;
