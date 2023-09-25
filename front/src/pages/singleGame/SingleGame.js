@@ -7,9 +7,11 @@ import {
   overGame,
 } from "../../api/singleGame/SingleGameApi.js";
 import { connect, disconnect, subscribe } from "../../api/stompClient.js";
-import { QuickMenu } from "../../components/quickmenu/QuickMenuTest";
+
 import { Button } from "../../components/button/ButtonTest";
 
+
+//TODO: 입력시 입력창 리셋
 export const SingleGame = (props) => {
   // const { category } = props;
   // const [streak, setStreak] = useState(null);
