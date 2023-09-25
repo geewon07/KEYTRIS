@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4b8f85f-025d-4ca9-885a-5ceaf964dcb2" name="Changes" comment="WIP about to upload to gitlab">
-      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/service/RoomServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/service/RoomServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/SinglePlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/SinglePlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../back/src/main/resources/application-db.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/resources/application-db.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../front/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../front/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/src/api/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../front/src/api/singleGame/singleGameApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../front/src/api/singleGame/singleGameApi.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,6 +158,7 @@
       <workItem from="1694484975680" duration="16000" />
       <workItem from="1694485326535" duration="121000" />
       <workItem from="1695098356602" duration="5894000" />
+      <workItem from="1695389934914" duration="3227000" />
     </task>
     <task id="LOCAL-00001" summary="testing lombok and slf4j">
       <option name="closed" value="true" />
