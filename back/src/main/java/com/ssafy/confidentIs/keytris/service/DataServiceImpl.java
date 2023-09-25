@@ -77,7 +77,7 @@ public class DataServiceImpl {
 
 
     // 레벨어를 추가하는 메서드
-    protected Queue<String> addLevelWords(Queue<String> levelWordList, WordType wordType, int category, int amount) {
+    public Queue<String> addLevelWords(Queue<String> levelWordList, WordType wordType, int category, int amount) {
         List<String> tempWordList = getDataWordList(wordType, category, amount);
         for(String word : tempWordList) {
             levelWordList.add(word);
