@@ -32,6 +32,7 @@
   align-self: flex-end;
   color:white;
   /* background: white; */
+  background:gray;
   z-index: 3332; /* Set a higher z-index for the displaylayer */
 }
 .wordlist {

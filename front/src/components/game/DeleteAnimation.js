@@ -39,6 +39,7 @@ export const DeleteAnimation = (props) => {
         const [word, point] = item;
         return (
           <AnimatedRow key={index} className="row-animation wordlist">
+            <li key={letterList.length - index - 1} className={"wordline"}>
             <div
               className={
                 targetWord === word
@@ -49,6 +50,7 @@ export const DeleteAnimation = (props) => {
               {word}
             </div>
             <div className="right points">{point}</div>
+            </li>
             {/* <li style={{ color: "white" }}>{item[0]}</li> */}
           </AnimatedRow>
         );
