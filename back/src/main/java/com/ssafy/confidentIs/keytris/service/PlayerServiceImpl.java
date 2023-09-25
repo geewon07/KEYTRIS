@@ -20,15 +20,15 @@ public class PlayerServiceImpl implements PlayerService {
         .build();
   }
 
-  public BasePlayer testBasePlayer() {
-    return BasePlayer.builder()
-            .playerId(UUID.randomUUID().toString())
-            .playerStatus(PlayerStatus.UNREADY)
-            .score(0L)
-            .targetWordIndex(0)
-            .subWordIndex(0)
-            .build();
-  }
+//  public BasePlayer testBasePlayer() {
+//    return BasePlayer.builder()
+//            .playerId(UUID.randomUUID().toString())
+//            .playerStatus(PlayerStatus.UNREADY)
+//            .score(0L)
+//            .targetWordIndex(0)
+//            .subWordIndex(0)
+//            .build();
+//  }
 
   public MultiPlayer testMultiPlayer() {
     return MultiPlayer.builder()
