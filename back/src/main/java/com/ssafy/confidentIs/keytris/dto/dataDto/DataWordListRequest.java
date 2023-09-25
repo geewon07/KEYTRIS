@@ -1,10 +1,7 @@
 package com.ssafy.confidentIs.keytris.dto.dataDto;
 
-import com.ssafy.confidentIs.keytris.model.Category;
 import com.ssafy.confidentIs.keytris.model.WordType;
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Builder

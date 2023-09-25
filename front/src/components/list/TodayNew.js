@@ -18,7 +18,7 @@ function TodayNew() {
     };
 
     try {
-      const response = await axios.get("naver/v1/search/news.json", {
+      const response = await axios.get("/naver/v1/search/news.json", {
         params: request_body,
         headers: {
           "X-Naver-Client-Id": client_id,
