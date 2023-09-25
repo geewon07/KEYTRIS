@@ -1,13 +1,14 @@
 .gamecontainer {
-  width: 30%;
+  width: 30%!important;
   min-width: 25%;
   display: flex;
+  /* align-self: center; */
   flex-direction: row-reverse;
 }
 .bglist {
   background: #26154a;
   /* background: #fff; */
-  width: 90%;
+  width: 90%!important;
   z-index: 1000;
 
   height: 100vh;
@@ -17,6 +18,21 @@
   justify-content: flex-end;
   align=self: end;
   text-align: start;
+}
+.displaylayer {
+  height: 80%;
+  width: 24.3%;
+  top: auto;
+  left: auto;
+  bottom:4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: absolute;
+  align-self: flex-end;
+  color:white;
+  /* background: white; */
+  z-index: 3332; /* Set a higher z-index for the displaylayer */
 }
 .wordlist {
   margin: 0;
