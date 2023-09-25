@@ -1,10 +1,13 @@
+
 import './QuickMenu.css';
-import MuteIcon from '../../assets/mute.svg';
 import { Modal3 } from '../modal/Modal3';
 import { Modal4 } from '../modal/Modal4';
 import { Modal5 } from '../modal/Modal5';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+
+import MuteIcon from '../../assets/mute.svg';
+// import {Modal} from '../modal/ModalTest'
 
 export const QuickMenu = () => {
   const [isModalOpen3, setIsModalOpen3] = useState(false);
@@ -40,7 +43,7 @@ export const QuickMenu = () => {
         <button className='nav-button' onClick={() => {
           console.log('음소거')
         }}>
-          <img src={MuteIcon} />
+          <img src={MuteIcon} alt='muteIcon'/>
         </button>
       </div> */}
       {isMultiPage && (

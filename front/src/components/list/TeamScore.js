@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import "./Score.css";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../button/ButtonTest";
+import "./Score.css";
 
-function Score({}) {
+function Score() {
   const playerId = "playerId0";
   const playerResultList = [
     {
@@ -26,6 +27,13 @@ function Score({}) {
       score: 1,
     },
   ];
+
+  const navigate = useNavigate();
+
+  const handleButtonClickToGO = (path = "/") => {
+    console.log("페이지 이동 경로:", path);
+    navigate(path);
+  };
 
   const listing = playerResultList?.map((value, index) => (
     <div key={index} style={{ lineHeight: "1.5rem" }} className="rank-index">
@@ -54,7 +62,10 @@ function Score({}) {
           </div>
         )}
 
-        <Button label="메인으로"></Button>
+        <Button
+          label="메인으로"
+          onClick={() => handleButtonClickToGO("/")}
+        ></Button>
       </div>
     </>
   );

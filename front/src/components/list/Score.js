@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Score.css";
 import { overGame, rankPlayer } from "../../api/singleGame/SingleGameApi.js";
 import { Button } from "../button/ButtonTest";
@@ -10,9 +11,18 @@ function Score() {
   const [isSaving, setIsSaving] = useState(false);
   const score = 3000;
 
+
   useEffect(() => {
     handleOverGame(overRequestDto);
+     // eslint-disable-next-line
   }, []);
+
+  const navigate = useNavigate();
+
+  const handleButtonClickToGO = (path = "/") => {
+    console.log("페이지 이동 경로:", path);
+    navigate(path);
+  };
 
   const overRequestDto = {
     roomId: "2fd4e586-a402-418c-916d-38f291758b72",
@@ -96,7 +106,10 @@ function Score() {
               </div>
             </>
           )}
-        <Button label="다시하기"></Button>
+        <Button
+          label="다시하기"
+          onClick={() => handleButtonClickToGO("/")}
+        ></Button>
       </div>
     </>
   );
