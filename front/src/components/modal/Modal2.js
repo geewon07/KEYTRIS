@@ -1,5 +1,4 @@
 export const Modal2 = ({ isOpen, onClose }) => {
-
   if (!isOpen) return null;
 
   const titleStyle = {
@@ -43,23 +42,35 @@ export const Modal2 = ({ isOpen, onClose }) => {
             <div style={titleStyle}></div>
             <div style={contentStyle}>
               <label for="nickname">닉네임</label>
-              <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력하세요" style={{
-                backgroundColor: "#5523BD",
-                color: "white",
-                fontSize: "30px",
-                height: "40px",
-                width: "100%",
-              }}
-                className="Neo" />
+              <input
+                type="text"
+                id="nickname"
+                name="nickname"
+                placeholder="닉네임을 입력하세요"
+                style={{
+                  backgroundColor: "#5523BD",
+                  color: "white",
+                  fontSize: "30px",
+                  height: "40px",
+                  width: "100%",
+                }}
+                className="Neo"
+              />
               <label for="gamecode">게임 코드</label>
-              <input type="text" id="gamecode" name="gamecode" placeholder="게임 코드를 입력하세요" style={{
-                backgroundColor: "#5523BD",
-                color: "white",
-                fontSize: "30px",
-                height: "40px",
-                width: "100%",
-              }}
-                className="Neo" />
+              <input
+                type="text"
+                id="gamecode"
+                name="gamecode"
+                placeholder="게임 코드를 입력하세요"
+                style={{
+                  backgroundColor: "#5523BD",
+                  color: "white",
+                  fontSize: "30px",
+                  height: "40px",
+                  width: "100%",
+                }}
+                className="Neo"
+              />
               <ModalButton></ModalButton>
             </div>
           </div>
@@ -70,7 +81,6 @@ export const Modal2 = ({ isOpen, onClose }) => {
 };
 
 export const ModalButton = () => {
-
   return (
     <>
       <div className="modal-button-layout">
