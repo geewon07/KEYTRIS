@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Getter
 @ToString(callSuper=true)
-@AllArgsConstructor
 public class SinglePlayer extends BasePlayer {
 
 }
