@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4b8f85f-025d-4ca9-885a-5ceaf964dcb2" name="Changes" comment="WIP about to upload to gitlab">
-      <change afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/BasePlayer1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/SinglePlayer1.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/controller/TestController2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/controller/TestController2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/BasePlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/BasePlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/BasePlayer1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/BaseRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/BaseRoom.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/MultiPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/MultiPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/SinglePlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/SinglePlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/service/PlayerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/service/PlayerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/MultiRoom.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/MultiRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/Room.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../back/src/main/java/com/ssafy/confidentIs/keytris/model/SinglePlayer1.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
