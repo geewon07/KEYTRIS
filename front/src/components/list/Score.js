@@ -11,8 +11,10 @@ function Score() {
   const [isSaving, setIsSaving] = useState(false);
   const score = 3000;
 
+
   useEffect(() => {
     handleOverGame(overRequestDto);
+     // eslint-disable-next-line
   }, []);
 
   const navigate = useNavigate();

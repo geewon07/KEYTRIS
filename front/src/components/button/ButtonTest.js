@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./ButtonTest.css";
 
 export const Button = (props) => {
