@@ -37,10 +37,10 @@ dependencies {
 	implementation 'ch.qos.logback:logback-classic:1.2.9'
 
 	//reduce boilerplate
-	compileOnly 'org.projectlombok:lombok'
+	compileOnly 'org.projectlombok:lombok:1.18.28'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok:1.18.28'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// no scheduler yet

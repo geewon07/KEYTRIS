@@ -36,6 +36,7 @@ public class SessionMethodService {
       ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(
           () -> executeSessionMethod(roomId, roomType), 10, 2, TimeUnit.SECONDS);
       sessionTasks.put(roomId, scheduledFuture);
+      log.info("레벨어 전송 시작 roomId: {}", roomId);
     }
   }
 
@@ -44,7 +45,7 @@ public class SessionMethodService {
     if (scheduledFuture != null) {
       scheduledFuture.cancel(true);
       sessionTasks.remove(roomId);
-      log.info("레벨어 전송 중단");
+      log.info("레벨어 전송 중단 roomId: {}", roomId);
     }
   }
 

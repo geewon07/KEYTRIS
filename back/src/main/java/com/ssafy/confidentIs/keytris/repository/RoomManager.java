@@ -6,14 +6,14 @@ import java.util.Collection;
 
 public interface RoomManager {
 
-  void addRoom(Room room);
+    void addRoom(Room room);
 
-  Room getRoom(String roomId);
+    Room getRoom(String roomId);
 
-  void updateRoom(String roomId, Room updated);
+    void updateRoom(String roomId, Room updated);
 
-  void removeRoom(String roomId);
+    void removeRoom(String roomId);
 
-  Collection<Room> getAllRooms();
+    Collection<Room> getAllRooms();
 
 }

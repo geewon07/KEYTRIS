@@ -4,7 +4,6 @@ import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListResponse;
-import com.ssafy.confidentIs.keytris.dto.multiDto.MultiGuessRequest;
 import com.ssafy.confidentIs.keytris.model.WordType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,7 +76,7 @@ public class DataServiceImpl {
 
 
     // 레벨어를 추가하는 메서드
-    protected Queue<String> addLevelWords(Queue<String> levelWordList, WordType wordType, int category, int amount) {
+    public Queue<String> addLevelWords(Queue<String> levelWordList, WordType wordType, int category, int amount) {
         List<String> tempWordList = getDataWordList(wordType, category, amount);
         for(String word : tempWordList) {
             levelWordList.add(word);

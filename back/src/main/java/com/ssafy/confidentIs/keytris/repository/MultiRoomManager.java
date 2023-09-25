@@ -1,6 +1,6 @@
 package com.ssafy.confidentIs.keytris.repository;
 
-import com.ssafy.confidentIs.keytris.model.multiModel.MultiRoom;
+import com.ssafy.confidentIs.keytris.model.MultiRoom;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
