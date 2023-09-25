@@ -8,6 +8,7 @@ import { MultiGame } from "./pages/multiGame/multiGame";
 import { MultiGameResult } from "./pages/multiGame/multiGameResult";
 import { QuickMenu } from "./components/quickmenu/quickMenuTest.js";
 import { Star } from "./components/star.js";
+import { TestJisoo } from "./pages/test/testJisoo.js";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/SingleGameResult" element={<SingleGameResult />} />
         <Route path="/MultiGame" element={<MultiGame />} />
         <Route path="/MultiGameResult" element={<MultiGameResult />} />
+        <Route path="/TestJisoo" element={<TestJisoo />} />
       </Routes>
     </div>
   );
