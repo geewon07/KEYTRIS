@@ -1,9 +1,7 @@
 package com.ssafy.confidentIs.keytris.service;
 
-import com.ssafy.confidentIs.keytris.model.BasePlayer;
-import com.ssafy.confidentIs.keytris.model.MultiPlayer;
-import com.ssafy.confidentIs.keytris.model.SinglePlayer;
-import com.ssafy.confidentIs.keytris.model.PlayerStatus;
+import com.ssafy.confidentIs.keytris.model.*;
+
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,6 +39,13 @@ public class PlayerServiceImpl implements PlayerService {
             .subWordIndex(0)
             .nickname("멀티플레이어 닉네임")
             .isMaster(true)
+            .build();
+  }
+
+  public LevelWord testBuilder() {
+    return LevelWord.builder()
+            .roomId("rooommmm")
+            .levelWord("테스트")
             .build();
   }
 
