@@ -28,6 +28,7 @@ function TextChatting({ onSendMessage, chatContent, playerList, playerId }) {
         { sender: "notification", text: chatContent.content },
       ]);
     }
+     // eslint-disable-next-line
   }, [chatContent]);
 
   const handleInputChange = (event) => {

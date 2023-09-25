@@ -3,6 +3,7 @@ import "./Score.css";
 import axios from "axios";
 
 function TodayNew() {
+   // eslint-disable-next-line
   const [lastWord, setLastWord] = useState("인공지능");
   const [newList, setNewList] = useState([]);
 
@@ -43,6 +44,7 @@ function TodayNew() {
 
   useEffect(() => {
     getNews();
+    // eslint-disable-next-line
   }, []);
 
   return (

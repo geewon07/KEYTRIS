@@ -1,10 +1,10 @@
-import './QuickMenu.css'
-import MuteIcon from '../../assets/mute.svg'
+import MuteIcon from '../../assets/mute.svg';
+import './QuickMenu.css';
 // import {Modal} from '../modal/ModalTest'
+import { useState } from 'react';
 import { Modal3 } from '../modal/Modal3';
 import { Modal4 } from '../modal/Modal4';
 import { Modal5 } from '../modal/Modal5';
-import { useState } from 'react';
 
 export const QuickMenu = () => {
   // const [modal, setModal] = useState(false);
@@ -44,7 +44,7 @@ export const QuickMenu = () => {
         <button className='nav-button' onClick={() => {
           console.log('음소거')
         }}>
-          <img src={MuteIcon} />
+          <img src={MuteIcon} alt='muteIcon'/>
         </button>
       </div>
       <div>
