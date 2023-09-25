@@ -23,7 +23,7 @@ export const Modal5 = ({ isOpen, onClose }) => {
     width: "70%",
     gap: "3rem",
     marginBottom: "2rem",
-    fontSize: "2rem",
+    fontSize: "1.5rem",
   };
 
   return (

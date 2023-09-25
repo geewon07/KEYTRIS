@@ -1,7 +1,5 @@
-@import "./colorSelector.css";
-
 .ChatArea {
-  background-color: rgb(241, 32, 32);
+  background-color: rgba(0, 0, 0, 0.3);
   width: auto;
   height: 100%;
   flex-grow: 1;
@@ -20,6 +18,7 @@
 
 .chatInput {
   display: flex;
+  background-color: rgba(255, 255, 255, 0.3);
   flex-shrink: 0; /* Prevent shrinking */
 }
 
@@ -90,14 +89,14 @@
 
 .inputBtn {
   background-color: var(--blue-500);
-  color: var(--white);
+  color: white;
   padding: var(--spacing-2);
   font-size: 16px;
   border-top-right-radius: 0px;
 }
 
 .chatWrapper {
-  background-color: rgb(241, 32, 32);
+  background-color: rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   height: 100%; 
