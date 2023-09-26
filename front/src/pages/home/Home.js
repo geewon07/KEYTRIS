@@ -83,106 +83,111 @@ export const Home = () => {
   };
 
   return (
-    // <div id="keytris_title" className="keytris_main_gradient">
-    <div id="keytris_title">
-      {/* <div className="main-logo-layout">
+
+    <div className="home-content-container">
+      {/* // <div id="keytris_title" className="keytris_main_gradient"> */}
+      <div id="keytris_title">
+        {/* <div className="main-logo-layout">
       </div> */}
-      <img className="main_logo_image" alt="logo_1" src={keytrisLogo} />
-      <div>
+        <img className="main_logo_image" alt="logo_1" src={keytrisLogo} />
         <div>
-          <div className="main_selection_desc">
-            게임으로 배우는 오늘의 기사 키워드
+          <div>
+            <div className="main_selection_desc">
+              게임으로 배우는 오늘의 기사 키워드
+            </div>
           </div>
+          <table className="main_selection_table">
+            <tbody>
+              <tr className="main_selection_table_tr">
+                <td className="main_selection_table_td">
+                  <div>
+                    <div>
+                      <div className="main_selection_div">1인모드</div>
+                    </div>
+                    <div className="button_box">
+                      <button
+                        className="main_selection_button"
+                        onClick={() => {
+                          setMMModal(false);
+                          setMModal(false);
+                          setModal(true);
+                        }}
+                      >
+                        새 게임
+                      </button>
+                    </div>
+                  </div>
+                </td>
+                <td className="main_selection_table_td">
+                  <div>
+                    <div>
+                      <div className="main_selection_div">친구와 함께</div>
+                    </div>
+                    <div>
+                      <button
+                        className="main_selection_button"
+                        onClick={() => {
+                          setMMModal(false);
+                          setMModal(true);
+                          setModal(false);
+                        }}
+                      >
+                        새 게임
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        className="main_selection_button"
+                        onClick={() => {
+                          setMMModal(true);
+                          setMModal(false);
+                          setModal(false);
+                        }}
+                      >
+                        게임 참여
+                      </button>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <table className="main_selection_table">
-          <tbody>
-            <tr className="main_selection_table_tr">
-              <td className="main_selection_table_td">
-                <div>
-                  <div>
-                    <div className="main_selection_div">1인모드</div>
-                  </div>
-                  <div className="button_box">
-                    <button
-                      className="main_selection_button"
-                      onClick={() => {
-                        setMMModal(false);
-                        setMModal(false);
-                        setModal(true);
-                      }}
-                    >
-                      새 게임
-                    </button>
-                  </div>
-                </div>
-              </td>
-              <td className="main_selection_table_td">
-                <div>
-                  <div>
-                    <div className="main_selection_div">친구와 함께</div>
-                  </div>
-                  <div>
-                    <button
-                      className="main_selection_button"
-                      onClick={() => {
-                        setMMModal(false);
-                        setMModal(true);
-                        setModal(false);
-                      }}
-                    >
-                      새 게임
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      className="main_selection_button"
-                      onClick={() => {
-                        setMMModal(true);
-                        setMModal(false);
-                        setModal(false);
-                      }}
-                    >
-                      게임 참여
-                    </button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {/* {modal && <Modal modalShow={title} title={title} setModal={setModal} desc={title} />} */}
-      <div style={{ backgroundColor: "#26154A" }}>
-        <Modal
-          modalShow={modal}
-          setModal={setModal}
-          title={singleDesc}
-          buttonLabel="게임 만들기"
-          func={makeSingleGame}
-          desc={"뉴스 카테고리"}
-          type="createSingle"
-        ></Modal>
+        {/* {modal && <Modal modalShow={title} title={title} setModal={setModal} desc={title} />} */}
+        <div style={{ backgroundColor: "#26154A" }}>
+          <Modal
+            modalShow={modal}
+            setModal={setModal}
+            title={singleDesc}
+            buttonLabel="게임 만들기"
+            func={makeSingleGame}
+            desc={"뉴스 카테고리"}
+            type="createSingle"
+          ></Modal>
 
-        <Modal
-          modalShow={multigameModal}
-          setModal={setMModal}
-          title={"게임 만들기"}
-          buttonLabel="게임 만들기"
-          func={makeMultiGame}
-          desc={"닉네임, 뉴스카테고리"}
-          type="createMulti"
-        ></Modal>
+          <Modal
+            modalShow={multigameModal}
+            setModal={setMModal}
+            title={"게임 만들기"}
+            buttonLabel="게임 만들기"
+            func={makeMultiGame}
+            desc={"닉네임, 뉴스카테고리"}
+            type="createMulti"
+          ></Modal>
 
-        <Modal
-          modalShow={multiEnterModal}
-          setModal={setMMModal}
-          title={"게임 입장하기"}
-          buttonLabel="게임 입장하기"
-          func={enterMultiGame}
-          desc={"닉네임, 게임코드"}
-          type="enterMulti"
-        ></Modal>
+          <Modal
+            modalShow={multiEnterModal}
+            setModal={setMMModal}
+            title={"게임 입장하기"}
+            buttonLabel="게임 입장하기"
+            func={enterMultiGame}
+            desc={"닉네임, 게임코드"}
+            type="enterMulti"
+          ></Modal>
+        </div>
       </div>
     </div>
+
   );
 };
+

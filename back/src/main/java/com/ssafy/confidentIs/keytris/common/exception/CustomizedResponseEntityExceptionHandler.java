@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+
     // 모든 예외 처리
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ErrorResponseDto> handleException(Exception ex) {
@@ -55,7 +56,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 
     @ExceptionHandler(PlayerNotFoundException.class)
-    public ResponseEntity<?> handlePlayerNotFoundException(PlayerNotFoundException ex){
+    public final ResponseEntity<?> handlePlayerNotFoundException(PlayerNotFoundException ex){
         log.error("handlePlayerNotFoundException", ex);
         ErrorResponseDto response = new ErrorResponseDto(ex.getErrorCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
@@ -63,8 +64,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
 
     @ExceptionHandler(RoomNotFoundException.class)
-    public ResponseEntity<ErrorResponseDto> handleRoomNotFoundException(RoomNotFoundException ex){
+    public final ResponseEntity<ErrorResponseDto> handleRoomNotFoundException(RoomNotFoundException ex){
         log.error("handleRoomNotFoundException", ex);
+        ErrorResponseDto response = new ErrorResponseDto(ex.getErrorCode());
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
+    }
+
+
+    @ExceptionHandler(InaccessibleGameException.class)
+    public final ResponseEntity<ErrorResponseDto> handleInaccessibleGameException(InaccessibleGameException ex){
+        log.error("handleInaccessibleGameException", ex);
         ErrorResponseDto response = new ErrorResponseDto(ex.getErrorCode());
         return new ResponseEntity<>(response, HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }

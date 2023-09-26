@@ -1,5 +1,11 @@
+.home-content-container {
+    height: 100vh;
+    overflow: hidden;
+    
+}
+
 .main_logo_image {
-    margin-top: 5%;
+    margin-top: 3%;
 }
 
 .main_selection_div {
@@ -41,7 +47,6 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    margin-bottom: 5%;
 }
 
 .button_box {
@@ -68,6 +73,11 @@
     background-color: transparent;
     width: 320px;
     height: 60px;
+    transition: background-image 0.3s;
+
+    &:hover {
+        background-image: linear-gradient(to right, rgba(205, 205, 205, 0.881), rgba(174, 174, 174, 0.751));
+    }
 }
 
 .main_selection_text {

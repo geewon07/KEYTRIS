@@ -1,6 +1,8 @@
 package com.ssafy.confidentIs.keytris.service;
 
 
+import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
+import com.ssafy.confidentIs.keytris.common.exception.customException.*;
 import com.ssafy.confidentIs.keytris.dto.WordListResponse;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
 import com.ssafy.confidentIs.keytris.dto.multiDto.*;
@@ -33,6 +35,7 @@ public class MultiRoomServiceImpl {
     private static final int LEVEL_AMOUNT = 10; // LEVEL 단어 받아오는 단위
     private static final int TARGET_ADD_STANDARD = 3; // TARGET 단어를 추가로 받아오는 기준
     private static final int SUB_ADD_STANDARD = 5; // SUB 단어를 추가로 받아오는 기준
+    private static final String SUCCESS = "success";
 
 
     // 멀티 게임 방 만들기
@@ -75,13 +78,11 @@ public class MultiRoomServiceImpl {
         MultiRoom room = findByRoomId(roomId);
 
         if(room.getRoomStatus().equals(RoomStatus.ONGOING) || room.getRoomStatus().equals(RoomStatus.FINISHED)) {
-            // TODO 예외처리. 입장할 수 없는 방 상태
-            log.info("입장할 수 없는 방입니다");
+            throw new InaccessibleGameException("입장할 수 없는 방입니다.", ErrorCode.INACCESSIBLE_GAME);
         }
 
         if(room.getPlayerList().size() >= room.getLimit()) {
-            // TODO 예외처리. 입장할 수 없는 방 상태
-            log.info("입장할 수 없는 방입니다");
+            throw new InaccessibleGameException("입장할 수 없는 방입니다.", ErrorCode.INACCESSIBLE_GAME);
         }
 
         // 플레이어 생성, 방에 등록
@@ -100,14 +101,14 @@ public class MultiRoomServiceImpl {
         // 시작 조건을 만족하는 지 확인
         MultiRoom room = findByRoomId(roomId);
 
+        // 방 상태, 방 인원이 시작할 수 없는 경우
         if(!room.getRoomStatus().equals(RoomStatus.PREPARED) || room.getPlayerList().size() < 2) {
-            // TODO 방 상태, 방 인원 예외처리
-            log.info("시작할 수 없는 방 상태");
+            throw new SocketInvalidStartException("시작할 수 없는 방 상태", ErrorCode.SOCKET_INVALID_START, request.getPlayerId(), roomId);
         }
-        
+
+        // 방장이 아닌 경우
         if(!room.getMaster().getPlayerId().equals(request.getPlayerId())) {
-            // TODO player의 방장 여부 확인
-            log.info("방장이 아님");
+            throw new SocketNotAuthorizedException("방장이 아니어서 시작할 수 없음", ErrorCode.SOCKET_NOT_AUTHORIZED, request.getPlayerId(), roomId);
         }
 
         // 모든 플레이어의 상태를 gaming으로 업데이트
@@ -131,7 +132,6 @@ public class MultiRoomServiceImpl {
         newTargetWord[0][1] = "";
 
         WordListResponse wordListResponse = WordListResponse.builder()
-                .success("success")
                 .playerId("master")
                 .newScore(0L)
                 .sortedWordList(sortedWordList)
@@ -180,11 +180,7 @@ public class MultiRoomServiceImpl {
         log.info("dataGuessWordResponse: {}", dataGuessWordResponse);
 
         if(dataGuessWordResponse.getSuccess().equals("fail")) {
-            // TODO 입력 할 수 없는 단어 커스텀 예외처리.
-            log.info("입력할 수 없는 단어입니다.");
-            return WordListResponse.builder()
-                    .success("fail")
-                    .build();
+            throw new SocketInvalidWordException("입력할 수 없는 단어입니다.", ErrorCode.SOCKET_INVALID_WORD, playerId, roomId);
         }
 
         String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
@@ -219,7 +215,6 @@ public class MultiRoomServiceImpl {
         newTargetWord[0][1] = "";
 
         WordListResponse wordListResponse = WordListResponse.builder()
-                .success("success")
                 .playerId(playerId)
                 .newScore(currentPlayer.getScore())
                 .sortedWordList(sortedWordList)
@@ -322,6 +317,7 @@ public class MultiRoomServiceImpl {
     }
 
 
+
     // 플레이어 상태를 Over로 변경하는 메서드
     public UpdatedPlayerResponse updatePlayerToOver(String roomId, String playerId) {
         MultiRoom room = multiRoomManager.getRoom(roomId);
@@ -341,10 +337,10 @@ public class MultiRoomServiceImpl {
         if(room.getOverPlayerCnt() == room.getPlayerList().size()-1) {
             room.updateStatus(RoomStatus.FINISHED);
             response.updateRoomStatus(RoomStatus.FINISHED);
-        }
 
-        // 레벨어 전송 중단
-        sessionMethodService.stopSessionMethod(roomId);
+            // 레벨어 전송 중단
+            sessionMethodService.stopSessionMethod(roomId);
+        }
 
         return response;
     }
@@ -368,7 +364,7 @@ public class MultiRoomServiceImpl {
     // roomId로 Room을 반환하는 메서드. TODO 커스텀 예외 처리 필요
     private MultiRoom findByRoomId(String roomId) {
         return Optional.ofNullable(multiRoomManager.getRoom(roomId))
-                .orElseThrow(() -> new RuntimeException("Room with ID " + roomId + " does not exist."));
+                .orElseThrow(() -> new RoomNotFoundException("Room with ID " + roomId + " does not exist.", ErrorCode.ROOM_NOT_FOUND));
     }
 
     // playerId로 Player를 반환하는 메서드. TODO 커스텀 예외 처리 필요
@@ -376,7 +372,7 @@ public class MultiRoomServiceImpl {
         return room.getPlayerList().stream()
                 .filter(player -> playerId.equals(player.getPlayerId()))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Player with ID " + playerId + " does not exist in the room."));
+                .orElseThrow(() -> new PlayerNotFoundException("Player with ID " + playerId + " does not exist in the room.",  ErrorCode.PLAYER_NOT_FOUND));
     }
 
     // 플레이어를 생성하는 메서드
