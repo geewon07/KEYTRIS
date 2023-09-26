@@ -7,12 +7,13 @@ import "./SingleGame.css";
 import { Button } from "react-bootstrap";
 import { SortAnimation } from "../../components/game/SortAnimation";
 import { AddAnimation } from "../../components/game/AddAnimation";
+import { AddWordAnimation } from "../../components/game/AddWordAnimation";
 export const SingleGameTest = () => {
   const [display, setDisplay] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [sorting, setSorting] = useState(false);
   const [adding, setAdding] = useState(false);
-  const [count,setCount]=useState(0);
+  const [count, setCount] = useState(0);
   const wordList = [
     ["집", ""],
     ["나무", ""],
@@ -25,7 +26,8 @@ export const SingleGameTest = () => {
     ["학교", ""],
     ["자동차", ""],
   ];
-  const addList = [
+  const addList = [];
+  const bufferList = [
     ["강아지", ""],
     ["고양이", ""],
     ["책", ""],
@@ -38,11 +40,11 @@ export const SingleGameTest = () => {
     ["해변", ""],
     ["음식", ""],
   ];
-  const handleAdd=()=>{
+  const handleAdd = () => {
     // setWordList((prev)=>[...prev,addList[count]]);
-    wordList.push(addList[count]);
-    setCount((prev)=>prev+1);
-  }
+    wordList.push(bufferList[count]);
+    setCount((prev) => prev + 1);
+  };
   const reverseIndex = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
   const [dTop, setDTop] = useState([["물", ""]]);
   const [dBottom, setDBottom] = useState([]);
@@ -93,12 +95,22 @@ export const SingleGameTest = () => {
         }}
       >
         <div className="gamecontainer" style={{ margin: 0 }}>
-          <div className="bglist">
-            {display && (
-              <div className="displaylayer">
-                {adding && <AddAnimation wordsToAdd={addList} targetWord="집"></AddAnimation>}
+          {/* <div className="displaylayer2"></div> */}
+
+          {display && (
+            <div className="displaylayer ">
+              {adding && (
+                <AddWordAnimation
+                  wordsToAdd={addList}
+                  targetWord="집"
+                ></AddWordAnimation>
+                // <AddAnimation
+                //   wordsToAdd={addList}
+                //   targetWord="집"
+                // ></AddAnimation>
+              )}
+              <ul className="wordlist">
                 {sorting && (
-                  
                   <SortAnimation
                     sendList={sendList.reverse()}
                     sortedIndex={reverseIndex}
@@ -107,10 +119,13 @@ export const SingleGameTest = () => {
                 {deleting && (
                   <DeleteAnimation
                     initialList={deleteList.reverse()}
+                    targetIndex={2}
                   ></DeleteAnimation>
                 )}
-              </div>
-            )}
+              </ul>
+            </div>
+          )}
+          <div className="bglist">
             <div className="score"></div>
             <div className="overlaybox"></div>
             <ul className="indexlist">{listing}</ul>
@@ -131,7 +146,7 @@ export const SingleGameTest = () => {
             ></input>
           </div>
         </div>
-        <div>
+        <div style={{ width: "300px" }}>
           <Button
             size="lg"
             onClick={() => {
@@ -140,14 +155,17 @@ export const SingleGameTest = () => {
           >
             레이어 토글
           </Button>
+          <br />
           <Button
             size="lg"
             onClick={() => {
-              setDeleting((prev) => !prev);
+              setDeleting(true);
+              setTimeout(() => setDeleting(false), 300);
             }}
           >
             삭제 모션
           </Button>
+          <br />
           <Button
             size="lg"
             onClick={() => {
@@ -156,15 +174,16 @@ export const SingleGameTest = () => {
           >
             정렬 모션
           </Button>
+          <br />
           <Button
             size="lg"
             onClick={() => {
-              
               setAdding((prev) => !prev);
             }}
           >
-            추가 토글
+            추가 토글 {adding.toString()}
           </Button>
+          <br />
           <Button
             size="lg"
             onClick={() => {

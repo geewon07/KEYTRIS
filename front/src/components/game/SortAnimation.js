@@ -18,11 +18,11 @@ const moveRow = keyframes`
     transform: translateY(var(--bottom));
   }
 `;
-
-const AnimatedRow = styled.ul`
+//2rem 인 이유는 현재  media min/max h 750 어쩌구 글자 높이가,
+const AnimatedRow = styled.li`
   &.row-animation {
     ${({ index, endpoint }) => css`
-      animation: ${moveRow} 2s ease-in-out forwards;
+      animation: ${moveRow} 0.5s ease-in-out forwards;
       --top: ${startpoint[index]}px;
       --bottom: ${-(startpoint[index] - endpoint[index]) * 2}rem;
     `}
@@ -30,7 +30,7 @@ const AnimatedRow = styled.ul`
 `;
 
 export const SortAnimation = (props) => {
-    const{sortedIndex, sendList}=props;
+    const{beforeIndex, sortedList}=props;
   const initialLetterList = [
     "타겟",
     "문자1",
@@ -44,25 +44,26 @@ export const SortAnimation = (props) => {
     "문자9",
   ];
   
-  const [letterList, setLetterList] = useState(sendList);
+  const [letterList, setLetterList] = useState(sortedList);
 
   return (
-    <Container>
-      {letterList.map((item, index) => {
+    <>
+      {letterList?.map((item, index) => {
         const [word,point] =item;
         return(
-        <AnimatedRow key={index} className="row-animation" index={index} endpoint={endpoint}>
-    
+        <AnimatedRow key={index} className="row-animation wordline" index={beforeIndex} endpoint={index}>
+   
           <div
             className={
-              "집" === word ? "targetWord wordline left" : "wordline left"
+              "집" === word ? "targetWord left" : " left"
             }
           >
             {word}
           </div>
           <div className="right points">{point}</div>
+  
         </AnimatedRow>
       )})}
-    </Container>
+    </>
   );
 };

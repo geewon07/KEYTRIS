@@ -13,33 +13,35 @@ const flashAndGrowAndShrink = keyframes`
   }
   50% {
     // transform:translateX(100%) scale(1.1);
-    opacity: 0.8;
+    opacity: 0.3;
   }
+  
   100% {
     transform:translateX(100%) scale(2);
     opacity: 0;
   }
 `;
 
-const AnimatedRow = styled.ul`
-  &.row-animation {
-    animation: ${flashAndGrowAndShrink} 2s;
+const AnimatedRow = styled.li`
+  &.delete-animation {
+    animation: ${flashAndGrowAndShrink} 0.3s;
     list-style: none;
     font-size:24px;
   }
 `;
 
 export const DeleteAnimation = (props) => {
-  const { initialList, targetWord } = props;
+  const { initialList, targetWord , targetIndex } = props;
   const [letterList, setLetterList] = useState(initialList);
 
+
   return (
-    <Container>
-      {letterList.map((item, index) => {
+    <>
+      {letterList?.map((item, index) => {
         const [word, point] = item;
         return (
-          <AnimatedRow key={index} className="row-animation wordlist">
-            <li key={letterList.length - index - 1} className={"wordline"}>
+          <AnimatedRow key={index} className="delete-animation wordline">
+            {/* <li key={letterList.length - index - 1} className={"wordline"}> */}
             <div
               className={
                 targetWord === word
@@ -50,11 +52,11 @@ export const DeleteAnimation = (props) => {
               {word}
             </div>
             <div className="right points">{point}</div>
-            </li>
+            {/* </li> */}
             {/* <li style={{ color: "white" }}>{item[0]}</li> */}
           </AnimatedRow>
         );
       })}
-    </Container>
+    </>
   );
 };
