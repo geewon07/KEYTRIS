@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { Modal } from "../../components/modal/ModalTest";
 import { Button } from "../../components/button/ButtonTest";
@@ -11,6 +11,11 @@ import {
 } from "../../api/multiGame/MultiGameApi.js";
 
 export const TestJisoo = () => {
+
+  const location = useLocation();
+  const responseData = location.state?.responseData;
+  console.log(responseData);
+
   const [modal, setModal] = useState(false);
   const [multigameModal, setMModal] = useState(true);
   const [multiEnterModal, setMMModal] = useState(false);
