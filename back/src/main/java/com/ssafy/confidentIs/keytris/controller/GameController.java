@@ -3,6 +3,7 @@ package com.ssafy.confidentIs.keytris.controller;
 import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
 import com.ssafy.confidentIs.keytris.dto.CreateRequest;
 import com.ssafy.confidentIs.keytris.dto.GuessRequest;
+import com.ssafy.confidentIs.keytris.dto.NewsRequest;
 import com.ssafy.confidentIs.keytris.dto.OverRequest;
 import com.ssafy.confidentIs.keytris.dto.RankingRequest;
 import com.ssafy.confidentIs.keytris.dto.StartRequest;
@@ -15,14 +16,19 @@ import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @ToString
 @Slf4j
@@ -36,6 +42,7 @@ public class GameController {
     private final ScoreService scoreService;
 
     private final SimpMessagingTemplate messagingTemplate;
+    private final RestTemplate restTemplate;
 
     @MessageMapping("")
     @PostMapping
@@ -77,6 +84,25 @@ public class GameController {
         log.info("new record, name:{}", request.getNickname());//랭킹 redis 저장 대체
         ResponseDto responseDto = new ResponseDto("success", "신기록 등록", Collections.singletonMap("RankingResponse",
                 scoreService.addHighscore(request.getNickname(), request.getRoomId())));
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/news")
+    public ResponseEntity<?> getNaverNews(@RequestBody NewsRequest request) {
+        log.info("뉴스 가져오기, lastWord:{}", request.getLastWord());
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.add("X-Naver-Client-Id", "yAKeqMoJi1FOsLskKCcc");
+        headers.add("X-Naver-Client-Secret", "ltjfU_TDwF");
+
+        HttpEntity<MultiValueMap<String, String>> newsRequest = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange("https://openapi.naver.com/v1/search/news.json?query=" + request.getLastWord() + "&display=3", HttpMethod.GET,
+            newsRequest, String.class);
+
+        ResponseDto responseDto = new ResponseDto("success", "뉴스 가져오기 성공", Collections.singletonMap("NewsResponse",
+            response.getBody()));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
