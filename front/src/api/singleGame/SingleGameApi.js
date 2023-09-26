@@ -31,3 +31,8 @@ export const rankPlayer = async (rankingRequestDto) => {
   const response = await axiosInstance.post("/ranking",rankingRequestDto);
   return response
 }
+
+export const getNews = async (getNewsRequestDto) => {
+  const response = await axiosInstance.post("games/news",getNewsRequestDto);
+  return response
+}
