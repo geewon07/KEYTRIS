@@ -9,7 +9,9 @@ import {
 import { connect, disconnect, subscribe } from "../../api/stompClient.js";
 
 import { Button } from "../../components/button/ButtonTest";
-
+import { AddWordAnimation } from "../../components/game/AddWordAnimation";
+import { SortAnimation } from "../../components/game/SortAnimation";
+import { DeleteAnimation } from "../../components/game/DeleteAnimation";
 
 //TODO: 입력시 입력창 리셋
 export const SingleGame = (props) => {
@@ -25,15 +27,23 @@ export const SingleGame = (props) => {
 
   const [guessWord, setGuessWord] = useState("");
   const [lastGuess, setLastGuess] = useState("");
+
   const [currentWordList, setCurrentWordList] = useState([]);
-  const [deleteList, setDeleteList] = useState([]);
 
   const [sortedWordList, setSortedWordList] = useState([]);
   const [score, setScore] = useState(0);
 
-  const [levelWord, setLevelWord] = useState([]);
-
   const [targetWordIndex, setTargetWordIndex] = useState(null);
+  const [sendList, setSendList] = useState([]);
+  const [levelWord, setLevelWord] = useState([]);
+  const [deleteList, setDeleteList] = useState([]);
+  // motion display ->  모션이 일어날때
+  const [sortedIndex, setSortedIndex] = useState([]);
+  const [display, setDisplay] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [sorting, setSorting] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [count, setCount] = useState(0);
   // const [targetWordSet, setTargetWordSet] = useState(false);
   // const callback = (messageBody) => {
   //   console.log(messageBody);
@@ -54,9 +64,26 @@ export const SingleGame = (props) => {
     connectAndSubscribe();
   }, [roomId]);
   useEffect(() => {
+    // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
+    // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
     if (levelWord.length > 0) {
-      setCurrentWordList((prev) => [...prev, ...levelWord]);
-      setLevelWord([]);
+      setDisplay(true);
+      setAdding(true);
+      setTimeout(() => {
+        
+      }, 200);
+
+      setTimeout(() => {
+        setCurrentWordList((prev) => [...prev, ...levelWord]);
+        setDisplay(false);
+        setAdding(false);
+        
+      },300);
+      setTimeout(() => {
+        // setCurrentWordList((prev) => [...prev, ...levelWord]);
+        setLevelWord([]);
+      }, 1200);
+     
     }
   }, [levelWord]);
 
@@ -112,16 +139,8 @@ export const SingleGame = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (targetWordSet) {
-  //     // Render the word list with the appropriate class names
-  //     renderWordList(currentWordList);
-  //   }
-  // }, [targetWordSet, currentWordList]);
   useEffect(() => {
-    const where = currentWordList.findIndex(
-      (line) => line[0] === targetWord
-    );
+    const where = currentWordList.findIndex((line) => line[0] === targetWord);
     setTargetWordIndex(where);
   }, [currentWordList, targetWord]);
 
@@ -189,7 +208,6 @@ export const SingleGame = (props) => {
     console.log("current " + currentWordList);
   };
 
-
   // useEffect(() => {
 
   //   handleStartGame(statusRequestDto);
@@ -216,11 +234,14 @@ export const SingleGame = (props) => {
     console.log(insertRequestDto);
     try {
       const res = await insertWord(insertRequestDto);
+      
+      setSendList(insertRequestDto.currentWordList);
       console.log("insert res ");
       console.log(res);
       if (res.data.success === "fail") {
         alert("no such word in db");
       } else {
+        // 정렬 성공시
         const SortedWordResponseDto = res.data.data.SortedWordListResponse;
         console.log("sorted ");
         console.log(SortedWordResponseDto);
@@ -270,7 +291,6 @@ export const SingleGame = (props) => {
     }
   };
   useEffect(() => {
-    
     if (currentWordList.length >= 21) {
       handleOverGame();
     } // subWordList가 변경될 때마다 이 로그가 출력
@@ -296,7 +316,15 @@ export const SingleGame = (props) => {
         const [word, point] = item;
         return (
           <li key={currentWordList.length - index - 1} className={"wordline"}>
-            <div className={ targetWord[0][0] === word? "targetWord wordline left" : "wordline left"}>{word}</div>
+            <div
+              className={
+                targetWord[0][0] === word
+                  ? "targetWord wordline left"
+                  : "wordline left"
+              }
+            >
+              {word}
+            </div>
             <div className="right points">{point}</div>
           </li>
         );
@@ -359,10 +387,59 @@ export const SingleGame = (props) => {
             >
               게임 시작
             </button>
-            <button onClick={handleOverGame}>게임 종료/소켓 종료</button>
+            <button onClick={handleOverGame}> 게임 종료/소켓 종료 </button>
+            <Button
+              label="레이어 토글"
+              onClick={() => {
+                setDisplay((prev) => !prev);
+              }}
+            >
+              레이어 토글
+            </Button>
+            <br />
+            <Button
+              label="삭제모션"
+              onClick={() => {
+                setDeleting(true);
+                setTimeout(() => setDeleting(false), 300);
+              }}
+            >
+              삭제 모션
+            </Button>
+            <br />
+            <Button
+              label="정렬 모션"
+              onClick={() => {
+                setSorting((prev) => !prev);
+              }}
+            >
+              정렬 모션
+            </Button>
+            <br />
+            <Button
+              label="추가토글"
+              onClick={() => {
+                setAdding((prev) => !prev);
+              }}
+            >
+              추가 토글 {adding.toString()}
+            </Button>
+            <br />
+            {/* <Button
+              label="추가모션"
+              onClick={() => {
+                setLevelWord(["테스트", ""]);
+              }}
+            >
+              추가 모션
+            </Button> */}
           </div>
         </div>
         <div className="gamecontainer" style={{}}>
+          {/* <div className="bglist displaylayer"> */}
+
+          {/* </div> */}
+
           <div className="bglist">
             <div className="score">
               {roomStatus === "PREPARED" && (
@@ -383,7 +460,40 @@ export const SingleGame = (props) => {
             <div className="overlaybox"></div>
 
             <ul className="indexlist">{listing}</ul>
-            <ul className="wordlist">{renderWordList(currentWordList)}</ul>
+            {!display && (
+              <ul className="wordlist">{renderWordList(currentWordList)}</ul>
+            )}
+
+            {display && (
+              // <div className="bglist2 ">
+              <>
+                {adding && (
+                  <>
+                    <AddWordAnimation
+                      bufferList={levelWord}
+                      // targetWord={targetWord}
+                    ></AddWordAnimation>
+                    <ul className="wordlist">
+                      {renderWordList(currentWordList)}
+                    </ul>
+                  </>
+                )}
+                <ul className="wordlist">
+                  {sorting && (
+                    <SortAnimation
+                      sendList={sendList.reverse()}
+                      sortedIndex={sortedIndex}
+                    ></SortAnimation>
+                  )}
+                  {deleting && (
+                    <DeleteAnimation
+                      initialList={deleteList.reverse()}
+                      targetIndex={2}
+                    ></DeleteAnimation>
+                  )}
+                </ul>
+              </>
+            )}
 
             <input className="guessbox Neo" value={lastGuess} disabled></input>
             <input
@@ -415,7 +525,6 @@ export const SingleGame = (props) => {
             <li>deleteList</li>
             <li>{deleteList}</li>
             <li>sorted {sortedWordList}</li>
-
           </ul>
         </div>
       </div>

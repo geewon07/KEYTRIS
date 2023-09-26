@@ -1,6 +1,6 @@
 .gamecontainer {
   width: 30%!important;
-  min-width: 25%;
+  min-width: 30%;
   display: flex;
   /* align-self: center; */
   flex-direction: row-reverse;
@@ -19,17 +19,33 @@
   align=self: end;
   text-align: start;
 }
+.bglist2 {
+  background: #26154a;
+  /* background: #fff; */
+  width: 90%!important;
+  z-index: 1000;
+
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: flex-end;
+  align=self: end;
+  text-align: start;
+}
 .displaylayer {
-  height: 80%;
-  width: 24.3%;
+  display:flex;
+  flex-direction:column;
+  height: 85%;
+  /* width: 24%; */
   top: auto;
   left: auto;
   bottom:4rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-end!important;
   position: absolute;
-  align-self: flex-end;
+  /* align-self: flex-end; */
   color:white;
   /* background: white; */
   background:gray;
