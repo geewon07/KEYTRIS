@@ -28,7 +28,7 @@ import java.util.Date;
 @RequestMapping("/api/multigames")
 public class MultiGameController {
 
-    private static final String success = "SUCCESS";
+    private static final String SUCCESS = "success";
 
     private final MultiRoomServiceImpl multiRoomServiceImpl;
 
@@ -42,7 +42,7 @@ public class MultiGameController {
         }
         log.info("nickname: {}", request);
 
-        ResponseDto responseDto = new ResponseDto(success, "멀티모드 게임 생성",
+        ResponseDto responseDto = new ResponseDto(SUCCESS, "멀티모드 게임 생성",
                 Collections.singletonMap("gameInfo", multiRoomServiceImpl.createMultiGame(request)));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -68,7 +68,7 @@ public class MultiGameController {
                 .build();
         messagingTemplate.convertAndSend("/topic/multi/chat/" + roomId, chatMessage);
 
-        ResponseDto responseDto = new ResponseDto(success, "멀티모드 게임 접속",
+        ResponseDto responseDto = new ResponseDto(SUCCESS, "멀티모드 게임 접속",
                 Collections.singletonMap("gameInfo", response));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -116,7 +116,7 @@ public class MultiGameController {
         WordListResponse response = multiRoomServiceImpl.sortByProximity(roomId, request);
 
         if (response.getSuccess().equals("fail")) {
-            messagingTemplate.convertAndSend("/topic/multi/" + roomId + "/" + request.getPlayerId(),
+            messagingTemplate.convertAndSend("/topic/multi/error" + roomId + "/" + request.getPlayerId(),
                     new ErrorResponseDto(ErrorCode.INVALID_WORD));
         } else {
             messagingTemplate.convertAndSend("/topic/multi/play/" + roomId, response);
@@ -132,7 +132,7 @@ public class MultiGameController {
 
         WordListResponse response = multiRoomServiceImpl.sortByProximity(roomId, request);
 
-        ResponseDto responseDto = new ResponseDto(success, "guess-word", Collections.singletonMap("response", response));
+        ResponseDto responseDto = new ResponseDto(SUCCESS, "guess-word", Collections.singletonMap("response", response));
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
