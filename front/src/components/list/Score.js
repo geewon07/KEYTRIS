@@ -83,7 +83,7 @@ function Score() {
 
   return (
     <>
-      <div>
+      <div className="my-score-display">
         <div className="list-title">점수</div>
         <hr />
         {overResponse && <div className="rank-list">{listing}</div>}
