@@ -76,6 +76,7 @@ input:-ms-input-placeholder {
 }
 
 .news {
+  margin: 5%;
 }
 
 .list-title,
@@ -89,4 +90,8 @@ input:-ms-input-placeholder {
 
 .highlight {
   color: #cf0;
+}
+
+.my-score-display {
+  margin: 5%;
 }

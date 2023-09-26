@@ -1,6 +1,7 @@
 
 import './QuickMenu.css';
 import { ModalGameCode } from '../modal/ModalGameCode';
+import { ModalGameRule } from '../modal/ModalGameRule';
 import { ModalGuide } from '../modal/ModalGuide';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -14,6 +15,14 @@ export const QuickMenu = () => {
   };
   const handleCloseModalGameCode = () => {
     setIsModalOpenGameCode(false);
+  };
+
+  const [isModalOpenGameRule, setIsModalOpenGameRule] = useState(false);
+  const handleOpenModalGameRule = () => {
+    setIsModalOpenGameRule(true);
+  };
+  const handleCloseModalGameRule = () => {
+    setIsModalOpenGameRule(false);
   };
 
   const [isModalOpenGuide, setIsModalOpenGuide] = useState(false);
@@ -30,6 +39,7 @@ export const QuickMenu = () => {
 
   const location = useLocation();
   const isMultiPage = location.pathname === '/MultiGame';
+  const isGamePage = ['/MultiGame', '/multiGame', '/multigame', '/SingleGame', '/singleGame', '/singlegame'].includes(location.pathname.toLowerCase());
 
   return (
     <div className='sidenav-container'>
@@ -52,15 +62,26 @@ export const QuickMenu = () => {
             <ModalGameCode isOpen={isModalOpenGameCode} onClose={handleCloseModalGameCode} />
           </div>
         )}
-        <div>
-          <button
-            className="nav-button"
-            onClick={handleOpenModalGuide}
-          >
-            가이드
-          </button>
-          <ModalGuide isOpen={isModalOpenGuide} onClose={handleCloseModalGuide} />
-        </div>
+        {isGamePage ? (
+          <div>
+            <button
+              className="nav-button"
+              onClick={handleOpenModalGameRule}
+            >
+              게임 규칙
+            </button>
+            <ModalGameRule isOpen={isModalOpenGameRule} onClose={handleCloseModalGameRule} />
+          </div>
+        ) : (
+          <div>
+            <button
+              className="nav-button"
+              onClick={handleOpenModalGuide}
+            >
+              가이드
+            </button>
+            <ModalGuide isOpen={isModalOpenGuide} onClose={handleCloseModalGuide} />
+          </div>)}
         <div>
           <button
             className="nav-button"
