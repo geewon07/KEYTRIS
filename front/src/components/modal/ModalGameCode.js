@@ -1,15 +1,33 @@
-export const Modal2 = ({ isOpen, onClose }) => {
+import React, { useState, useEffect } from "react";
+import Swal from "sweetalert2";
+
+export const ModalGameCode = ({ isOpen, onClose }) => {
+  const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    setAddress(window.location.href);
+  }, []);
+
   if (!isOpen) return null;
 
+  const copyAddress = () => {
+    navigator.clipboard.writeText(address);
+    Swal.fire({
+      icon: "success",
+      title: "주소 복사 완료",
+      text: "주소가 클립보드에 복사되었습니다.",
+    });
+  };
+
   const titleStyle = {
-    color: "#FFF", // Note: Color should be enclosed in quotes
+    color: "#FFF",
     textAlign: "center",
     fontSize: "30px",
     fontStyle: "normal",
     fontWeight: 400,
     lineHeight: "50px",
     letterSpacing: "3px",
-    alignItems: "center", // This doesn't apply to text elements
+    alignItems: "center",
     width: "70%",
     wordBreak: "break-all",
     marginBottom: "3rem",
@@ -30,38 +48,22 @@ export const Modal2 = ({ isOpen, onClose }) => {
         <div className="modal">
           <div className="modal-content">
             <div style={{ alignSelf: "end" }}>
-              <button
-                className="modal-close-button"
-                onClick={onClose}
-                style={{}}
-              >
+              <button className="modal-close-button" onClick={onClose}>
                 X
               </button>
             </div>
 
-            <div style={titleStyle}></div>
+            <div style={titleStyle}>
+              게임 코드를 복사하여<br></br> 친구들에게 공유해주세요!
+            </div>
             <div style={contentStyle}>
-              <label for="nickname">닉네임</label>
-              <input
-                type="text"
-                id="nickname"
-                name="nickname"
-                placeholder="닉네임을 입력하세요"
-                style={{
-                  backgroundColor: "#5523BD",
-                  color: "white",
-                  fontSize: "30px",
-                  height: "40px",
-                  width: "100%",
-                }}
-                className="Neo"
-              />
-              <label for="gamecode">게임 코드</label>
+              <label htmlFor="gamecode">게임 코드</label>
               <input
                 type="text"
                 id="gamecode"
                 name="gamecode"
-                placeholder="게임 코드를 입력하세요"
+                defaultValue={address}
+                readOnly
                 style={{
                   backgroundColor: "#5523BD",
                   color: "white",
@@ -71,7 +73,7 @@ export const Modal2 = ({ isOpen, onClose }) => {
                 }}
                 className="Neo"
               />
-              <ModalButton></ModalButton>
+              <ModalButton onClick={copyAddress}></ModalButton>
             </div>
           </div>
         </div>
@@ -80,13 +82,12 @@ export const Modal2 = ({ isOpen, onClose }) => {
   );
 };
 
-export const ModalButton = () => {
+export const ModalButton = ({ onClick }) => {
   return (
     <>
       <div className="modal-button-layout">
-        {/* <button className="modal-button-style" type={buttonType} onClick={func}> */}
-        <button className="modal-button-style">
-          <span className="modal-button-text">입장하기</span>
+        <button className="modal-button-style" onClick={onClick}>
+          <span className="modal-button-text">게임 코드 복사</span>
         </button>
       </div>
     </>

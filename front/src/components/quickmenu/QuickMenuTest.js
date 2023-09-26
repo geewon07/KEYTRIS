@@ -1,28 +1,27 @@
 
 import './QuickMenu.css';
-import { Modal3 } from '../modal/Modal3';
-import { Modal4 } from '../modal/Modal4';
-import { Modal5 } from '../modal/Modal5';
+import { ModalGameCode } from '../modal/ModalGameCode';
+import { ModalGuide } from '../modal/ModalGuide';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 // import MuteIcon from '../../assets/mute.svg';
 // import {Modal} from '../modal/ModalTest'
 
 export const QuickMenu = () => {
-  const [isModalOpen3, setIsModalOpen3] = useState(false);
-  const handleOpenModal3 = () => {
-    setIsModalOpen3(true);
+  const [isModalOpenGameCode, setIsModalOpenGameCode] = useState(false);
+  const handleOpenModalGameCode = () => {
+    setIsModalOpenGameCode(true);
   };
-  const handleCloseModal3 = () => {
-    setIsModalOpen3(false);
+  const handleCloseModalGameCode = () => {
+    setIsModalOpenGameCode(false);
   };
 
-  const [isModalOpen4, setIsModalOpen4] = useState(false);
-  const handleOpenModal4 = () => {
-    setIsModalOpen4(true);
+  const [isModalOpenGuide, setIsModalOpenGuide] = useState(false);
+  const handleOpenModalGuide = () => {
+    setIsModalOpenGuide(true);
   };
-  const handleCloseModal4 = () => {
-    setIsModalOpen4(false);
+  const handleCloseModalGuide = () => {
+    setIsModalOpenGuide(false);
   };
 
   const openLink = () => {
@@ -46,21 +45,21 @@ export const QuickMenu = () => {
           <div>
             <button
               className="nav-button"
-              onClick={handleOpenModal3}
+              onClick={handleOpenModalGameCode}
             >
               초대
             </button>
-            <Modal3 isOpen={isModalOpen3} onClose={handleCloseModal3} />
+            <ModalGameCode isOpen={isModalOpenGameCode} onClose={handleCloseModalGameCode} />
           </div>
         )}
         <div>
           <button
             className="nav-button"
-            onClick={handleOpenModal4}
+            onClick={handleOpenModalGuide}
           >
             가이드
           </button>
-          <Modal4 isOpen={isModalOpen4} onClose={handleCloseModal4} />
+          <ModalGuide isOpen={isModalOpenGuide} onClose={handleCloseModalGuide} />
         </div>
         <div>
           <button
