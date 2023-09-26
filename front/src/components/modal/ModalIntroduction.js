@@ -1,16 +1,16 @@
-export const Modal5 = ({ isOpen, onClose }) => {
+export const ModalIntroduction = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
   const titleStyle = {
-    color: "#FFF", // Note: Color should be enclosed in quotes
+    color: "#FFF", 
     textAlign: "center",
     fontSize: "30px",
     fontStyle: "normal",
     fontWeight: 400,
     lineHeight: "50px",
     letterSpacing: "3px",
-    alignItems: "center", // This doesn't apply to text elements
+    alignItems: "center", 
     width: "70%",
     wordBreak: "break-all",
     marginBottom: "3rem",
