@@ -313,7 +313,12 @@ public class MultiRoomServiceImpl {
         }
         if(isAllReady) room.updateStatus(RoomStatus.PREPARED);
 
-        return new UpdatedPlayerResponse(playerId, PlayerStatus.READY, room.getRoomStatus());
+        return UpdatedPlayerResponse.builder()
+                .roomStatus(room.getRoomStatus())
+                .player(updatedPlayer)
+                .build();
+
+//        return new UpdatedPlayerResponse(playerId, PlayerStatus.READY, room.getRoomStatus());
     }
 
 
@@ -328,9 +333,8 @@ public class MultiRoomServiceImpl {
         room.updateOverPlayerCnt();
 
         UpdatedPlayerResponse response = UpdatedPlayerResponse.builder()
-                .playerId(playerId)
-                .playerStatus(PlayerStatus.OVER)
                 .roomStatus(room.getRoomStatus())
+                .player(updatedPlayer)
                 .build();
 
         // 한 명 제외하고 모두 OVER 된 경우 game status update
