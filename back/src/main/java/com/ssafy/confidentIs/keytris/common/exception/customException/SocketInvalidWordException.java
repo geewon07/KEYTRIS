@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 public class SocketInvalidWordException extends SocketException {
 
-    private ErrorCode errorCode;
     public SocketInvalidWordException(String message, ErrorCode errorCode, String playerId, String roomId) {
         super(message, errorCode, playerId, roomId);
     }

@@ -115,12 +115,7 @@ public class MultiGameController {
 
         WordListResponse response = multiRoomServiceImpl.sortByProximity(roomId, request);
 
-        if (response.getSuccess().equals("fail")) {
-            messagingTemplate.convertAndSend("/topic/multi/error" + roomId + "/" + request.getPlayerId(),
-                    new ErrorResponseDto(ErrorCode.INVALID_WORD));
-        } else {
-            messagingTemplate.convertAndSend("/topic/multi/play/" + roomId, response);
-        }
+        messagingTemplate.convertAndSend("/topic/multi/play/" + roomId, response);
     }
 
 

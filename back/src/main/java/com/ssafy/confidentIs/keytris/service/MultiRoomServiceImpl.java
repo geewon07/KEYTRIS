@@ -132,7 +132,6 @@ public class MultiRoomServiceImpl {
         newTargetWord[0][1] = "";
 
         WordListResponse wordListResponse = WordListResponse.builder()
-                .success("success")
                 .playerId("master")
                 .newScore(0L)
                 .sortedWordList(sortedWordList)
@@ -181,11 +180,7 @@ public class MultiRoomServiceImpl {
         log.info("dataGuessWordResponse: {}", dataGuessWordResponse);
 
         if(dataGuessWordResponse.getSuccess().equals("fail")) {
-            // TODO 입력 할 수 없는 단어 커스텀 예외처리.
-            log.info("입력할 수 없는 단어입니다.");
-            return WordListResponse.builder()
-                    .success("fail")
-                    .build();
+            throw new SocketInvalidWordException("입력할 수 없는 단어입니다.", ErrorCode.SOCKET_INVALID_WORD, playerId, roomId);
         }
 
         String[][] sortedWordList = dataGuessWordResponse.getData().getCalWordList();
@@ -220,7 +215,6 @@ public class MultiRoomServiceImpl {
         newTargetWord[0][1] = "";
 
         WordListResponse wordListResponse = WordListResponse.builder()
-                .success("success")
                 .playerId(playerId)
                 .newScore(currentPlayer.getScore())
                 .sortedWordList(sortedWordList)
