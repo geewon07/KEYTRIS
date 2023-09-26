@@ -189,7 +189,7 @@ export const GameCodeInput = (props) => {
             className="Neo"
             type="text" 
             id="gameCodeInput"
-            placeholder="게임 코드를 입력하세요"
+            placeholder="게임 코드를 입력해주세요."
             value={value} 
             readOnly={readOnly}
             onChange={readOnly ? null : onChange}
