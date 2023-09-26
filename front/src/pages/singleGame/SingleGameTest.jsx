@@ -6,7 +6,7 @@ import { DeleteAnimation } from "../../components/game/DeleteAnimation";
 import "./SingleGame.css";
 import { Button } from "react-bootstrap";
 import { SortAnimation } from "../../components/game/SortAnimation";
-import { AddAnimation } from "../../components/game/AddAnimation";
+import { SortAnimationTest } from "../../components/game/SortAnimation copy";
 import { AddWordAnimation } from "../../components/game/AddWordAnimation";
 export const SingleGameTest = () => {
   const [display, setDisplay] = useState(false);
@@ -100,6 +100,7 @@ export const SingleGameTest = () => {
             <div className="score"></div>
             <div className="overlaybox"></div>
             <ul className="indexlist">{listing}</ul>
+            
             {/* {!display && (
               <ul className="wordlist">{renderWordList(wordList)}</ul>
             )} */}
@@ -119,16 +120,27 @@ export const SingleGameTest = () => {
                   </>
                 )}
                 <ul className="wordlist">
-                <SortAnimation
-                      sortedList={sendList.reverse()}
-                      beforeIndex={reverseIndex}
-                    ></SortAnimation>
+           
                   {sorting && (
                     <SortAnimation
-                      sortedList={sendList.reverse()}
+                      sendList={wordList.slice().reverse()}
                       beforeIndex={reverseIndex}
                     ></SortAnimation>
+                  //   <SortAnimationTest
+                  //   sortedList={sendList.reverse()}
+                  //   beforeIndex={reverseIndex}
+                  // ></SortAnimationTest>
                   )}
+                   {/* {!sorting && (
+                    // <SortAnimation
+                    //   sendList={wordList.reverse()}
+                    //   beforeIndex={reverseIndex}
+                    // ></SortAnimation>
+                    <SortAnimationTest
+                    sortedList={sendList.reverse()}
+                    beforeIndex={reverseIndex}
+                  ></SortAnimationTest>
+                  )} */}
                   {deleting && (
                     <DeleteAnimation
                       initialList={deleteList.reverse()}

@@ -22,6 +22,15 @@ const moveRow = keyframes`
   }
 `;
 
+const AnimatedRow = styled.li`
+  &.row-animation {
+    ${({ index, startpoint }) => css`
+      animation: ${moveRow} 0.5s ease-in-out forwards;
+      --top: ${-(endpoint[index] - startpoint[index]) * 2}rem;
+      --bottom: ${-endpoint[index] / 100}rem;
+    `}
+  }
+`;
 // const AnimatedRow = styled.li`
 //   &.row-animation {
 //     ${({ index, startpoint }) => css`
@@ -31,18 +40,9 @@ const moveRow = keyframes`
 //     `}
 //   }
 // `;
-const AnimatedRow = styled.li`
-  &.row-animation {
-    ${({ index, startpoint }) => css`
-      animation: ${moveRow} 0.5s ease-in-out forwards;
-      --top: ${startpoint[index]}px;
-      --bottom: ${-(startpoint[index] - endpoint[index]) * 2}rem;
-    `}
-  }
-`;
 
 export const SortAnimation = (props) => {
-    const{beforeIndex, sendList}=props;
+  const { beforeIndex, sendList } = props;
   const initialLetterList = [
     "타겟",
     "문자1",
@@ -55,27 +55,27 @@ export const SortAnimation = (props) => {
     "문자8",
     "문자9",
   ];
-  
+
   const [letterList, setLetterList] = useState(sendList);
 
   return (
     <>
       {letterList?.map((item, index) => {
-        const [word,point] =item;
-        return(
-        <AnimatedRow key={index} className="row-animation wordline" index={index} startpoint={beforeIndex}>
-   
-          <div
-            className={
-              "집" === word ? "targetWord left" : " left"
-            }
+        const [word, point] = item;
+        return (
+          <AnimatedRow
+            key={index}
+            className="row-animation wordline"
+            index={index}
+            startpoint={beforeIndex}
           >
-            {word}
-          </div>
-          <div className="right points">{point}</div>
-  
-        </AnimatedRow>
-      )})}
+            <div className={"집" === word ? "targetWord left" : " left"}>
+              {word}
+            </div>
+            <div className="right points">{point}</div>
+          </AnimatedRow>
+        );
+      })}
     </>
   );
 };
