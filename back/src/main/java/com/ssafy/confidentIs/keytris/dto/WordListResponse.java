@@ -17,7 +17,6 @@ public class WordListResponse {
     private int targetWordRank; // sortedWordlist 내 targetWord의 위치
 
     // == multi 에서만 사용 ==
-    private String success; // 데이터 유사도 조회 가능한 경우 success, 불가한 경우 fail
     private String playerId;
 
 }
