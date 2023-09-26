@@ -1,5 +1,6 @@
 package com.ssafy.confidentIs.keytris.dto.multiDto;
 
+import com.ssafy.confidentIs.keytris.model.MultiPlayer;
 import com.ssafy.confidentIs.keytris.model.PlayerStatus;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
 import lombok.*;
@@ -11,14 +12,8 @@ import lombok.*;
 @AllArgsConstructor
 public class UpdatedPlayerResponse {
 
-    private String playerId;
-    private PlayerStatus playerStatus;
     private RoomStatus roomStatus;
-
-    public UpdatedPlayerResponse(String playerId, PlayerStatus playerStatus) {
-        this.playerId = playerId;
-        this.playerStatus = playerStatus;
-    }
+    private MultiPlayer player;
 
     public void updateRoomStatus(RoomStatus roomStatus) {
         this.roomStatus = roomStatus;
