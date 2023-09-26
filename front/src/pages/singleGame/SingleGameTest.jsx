@@ -96,40 +96,48 @@ export const SingleGameTest = () => {
       >
         <div className="gamecontainer" style={{ margin: 0 }}>
           {/* <div className="displaylayer2"></div> */}
-
-          {display && (
-            <div className="displaylayer ">
-              {adding && (
-                <AddWordAnimation
-                  wordsToAdd={addList}
-                  targetWord="집"
-                ></AddWordAnimation>
-                // <AddAnimation
-                //   wordsToAdd={addList}
-                //   targetWord="집"
-                // ></AddAnimation>
-              )}
-              <ul className="wordlist">
-                {sorting && (
-                  <SortAnimation
-                    sendList={sendList.reverse()}
-                    sortedIndex={reverseIndex}
-                  ></SortAnimation>
-                )}
-                {deleting && (
-                  <DeleteAnimation
-                    initialList={deleteList.reverse()}
-                    targetIndex={2}
-                  ></DeleteAnimation>
-                )}
-              </ul>
-            </div>
-          )}
           <div className="bglist">
             <div className="score"></div>
             <div className="overlaybox"></div>
             <ul className="indexlist">{listing}</ul>
-            <ul className="wordlist">{renderWordList(wordList)}</ul>
+            {/* {!display && (
+              <ul className="wordlist">{renderWordList(wordList)}</ul>
+            )} */}
+      
+            {display && (
+              // <div className="bglist2 ">
+              <>
+                {adding && (
+                  <>
+                    <AddWordAnimation
+                      bufferList={bufferList}
+                      // targetWord={targetWord}
+                    ></AddWordAnimation>
+                    <ul className="wordlist">
+                      {renderWordList(wordList)}
+                    </ul>
+                  </>
+                )}
+                <ul className="wordlist">
+                <SortAnimation
+                      sortedList={sendList.reverse()}
+                      beforeIndex={reverseIndex}
+                    ></SortAnimation>
+                  {sorting && (
+                    <SortAnimation
+                      sortedList={sendList.reverse()}
+                      beforeIndex={reverseIndex}
+                    ></SortAnimation>
+                  )}
+                  {deleting && (
+                    <DeleteAnimation
+                      initialList={deleteList.reverse()}
+                      targetIndex={2}
+                    ></DeleteAnimation>
+                  )}
+                </ul>
+              </>
+            )}
             <input className="guessbox Neo" disabled></input>
             <input
               className="inputcase Neo"
@@ -193,6 +201,7 @@ export const SingleGameTest = () => {
             추가 모션
           </Button>
         </div>
+        <div>{sendList}</div>
       </div>
     </>
   );

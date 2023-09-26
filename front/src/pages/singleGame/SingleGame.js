@@ -246,23 +246,50 @@ export const SingleGame = (props) => {
         console.log("sorted ");
         console.log(SortedWordResponseDto);
         const sorted = SortedWordResponseDto.sortedWordList;
+        const sortedIdx = SortedWordResponseDto.sortedIndex;
+        const sublist = SortedWordResponseDto.newSubWordList;
+        setSubWordList(sublist);
+        setSortedIndex(sortedIdx);
+        setSortedWordList([...sorted]);
         const newScore = SortedWordResponseDto.newScore;
+        if(subWordList.length>0){
+          setLevelWord((prev) => [...prev, ...subWordList]);
+          setSubWordList([]);
+        }
 
         handleScoring(sorted, newScore, SortedWordResponseDto);
         //효과를 다 하고 쓰세여~
 
-        setSortedWordList([...sorted]);
+        
         // 단어 삭제 모션 있고 난 다음에 변경
-
-        // setSubWordList(SortedWordResponseDto.newSubWordList);
-        // setTargetWord(SortedWordResponseDto.newTargetWord);
       }
-      // setCurrentWordList((prev) => [...prev, subWordList, targetWord]);
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => {
+    if (sortedWordList.length > 0) {
+      setDisplay(true);
+      // setAdding(false);
+      setSorting(true);
+      setTimeout(() => {
+        
+      }, 100);
+
+      setTimeout(() => {
+        
+        setDisplay(false);
+        // setAdding(false);
+        setSorting(false);
+        
+      },3000);
+      setTimeout(() => {
+        // setCurrentWordList((prev) => [...prev, ...levelWord]);
+        setSortedWordList([]);
+      }, 1200);}
+  }, [sortedWordList])
+  
   const handleInputChange = (e) => {
     const { value } = e.target;
     setGuessWord(value);
@@ -481,8 +508,8 @@ export const SingleGame = (props) => {
                 <ul className="wordlist">
                   {sorting && (
                     <SortAnimation
-                      sendList={sendList.reverse()}
-                      sortedIndex={sortedIndex}
+                      sortedList={sendList.reverse()}
+                      beforeIndex={sortedIndex}
                     ></SortAnimation>
                   )}
                   {deleting && (
@@ -502,6 +529,7 @@ export const SingleGame = (props) => {
               placeholder="입력하세요"
               value={guessWord}
               onChange={handleInputChange}
+              disabled={playerStatus==="OVER"}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();

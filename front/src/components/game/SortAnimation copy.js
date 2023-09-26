@@ -4,11 +4,11 @@ import Col from "react-bootstrap/Col";
 import styled, { css, keyframes } from "styled-components";
 import { useState } from "react";
 
-const endpoint = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-const startpoint = [8, 7, 6, 9, 0, 4, 3, 5, 2, 1];
+// const endpoint = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+// const startpoint = [8, 7, 6, 9, 0, 4, 3, 5, 2, 1];
 
-// const startpoint = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-// const endpoint = [8, 7, 6, 9, 0, 4, 3, 5, 2, 1];
+const startpoint = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const endpoint = [8, 7, 6, 9, 0, 4, 3, 5, 2, 1];
 
 // 리스트 간격 계산
 const rowGap = 24;
@@ -33,7 +33,7 @@ const moveRow = keyframes`
 // `;
 const AnimatedRow = styled.li`
   &.row-animation {
-    ${({ index, startpoint }) => css`
+    ${({ index, endpoint }) => css`
       animation: ${moveRow} 0.5s ease-in-out forwards;
       --top: ${startpoint[index]}px;
       --bottom: ${-(startpoint[index] - endpoint[index]) * 2}rem;
@@ -63,7 +63,7 @@ export const SortAnimation = (props) => {
       {letterList?.map((item, index) => {
         const [word,point] =item;
         return(
-        <AnimatedRow key={index} className="row-animation wordline" index={index} startpoint={beforeIndex}>
+        <AnimatedRow key={index} className="row-animation wordline" index={startpoint} endpoint={index}>
    
           <div
             className={

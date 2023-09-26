@@ -18,7 +18,7 @@ const FallRow = styled.ul`
   }
 `;
 export const AddWordAnimation=(props)=> {
-  const {bufferList}=props;
+  const {bufferList,targetWord}=props;
   const [words, setWords] = useState(bufferList);
 
   // 기존 리스트에서 단어가 있는 최상단 y좌표
@@ -32,7 +32,7 @@ export const AddWordAnimation=(props)=> {
             <li key={index} className={"wordline"}>
               <div
                 className={
-                  "집" === word ? "targetWord wordline left" : "wordline left"
+                  targetWord === word ? "targetWord wordline left" : "wordline left"
                 }
               >
                 {word}
