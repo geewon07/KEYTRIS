@@ -1,3 +1,4 @@
+
 .list-title {
   -webkit-text-stroke: 1px white;
   text-align: center;
@@ -13,7 +14,7 @@
 }
 
 .rank-index {
-  width: auto; /* Or whatever you need */
+  width: 100%; /* Or whatever you need */
   padding: 5px 9px;
 }
 

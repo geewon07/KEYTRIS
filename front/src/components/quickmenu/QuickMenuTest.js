@@ -35,47 +35,49 @@ export const QuickMenu = () => {
   };
 
   const location = useLocation();
-  const isMultiPage = location.pathname === '/multiGame';
+  const isMultiPage = location.pathname === '/MultiGame';
 
   return (
-    <nav>
-      {/* <div>
+    <div className='sidenav-container'>
+      <nav>
+        {/* <div>
         <button className='nav-button' onClick={() => {
           console.log('음소거')
         }}>
           <img src={MuteIcon} alt='muteIcon'/>
         </button>
       </div> */}
-      {isMultiPage && (
+        {isMultiPage && (
+          <div>
+            <button
+              className="nav-button"
+              onClick={handleOpenModal3}
+            >
+              초대
+            </button>
+            <Modal3 isOpen={isModalOpen3} onClose={handleCloseModal3} />
+          </div>
+        )}
         <div>
           <button
             className="nav-button"
-            onClick={handleOpenModal3}
+            onClick={handleOpenModal4}
           >
-            초대
+            가이드
           </button>
-          <Modal3 isOpen={isModalOpen3} onClose={handleCloseModal3} />
+          <Modal4 isOpen={isModalOpen4} onClose={handleCloseModal4} />
         </div>
-      )}
-      <div>
-        <button
-          className="nav-button"
-          onClick={handleOpenModal4}
-        >
-          가이드
-        </button>
-        <Modal4 isOpen={isModalOpen4} onClose={handleCloseModal4} />
-      </div>
-      <div>
-        <button
-          className="nav-button"
-          onClick={handleOpenModal5}
-        >
-          소개
-        </button>
-        <Modal5 isOpen={isModalOpen5} onClose={handleCloseModal5} />
-      </div>
-      {/* {modal && <Modal modalShow={title} title={title} setModal={setModal} desc={title} />} */}
-    </nav>
+        <div>
+          <button
+            className="nav-button"
+            onClick={handleOpenModal5}
+          >
+            소개
+          </button>
+          <Modal5 isOpen={isModalOpen5} onClose={handleCloseModal5} />
+        </div>
+        {/* {modal && <Modal modalShow={title} title={title} setModal={setModal} desc={title} />} */}
+      </nav>
+    </div>
   );
 };
