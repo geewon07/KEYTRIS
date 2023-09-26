@@ -22,13 +22,13 @@ public class CommonRoomServiceImpl {
 
         // sortedWordList의 원소 위치를 해시맵에 저장
         Map<String, Integer> positionMap = new HashMap<>();
-        for (int i = 0; i < sortedWordList.length; i++) {
-            positionMap.put(sortedWordList[i][0], i);
+        for (int i = 0; i < currentWordList.length; i++) {
+            positionMap.put(currentWordList[i][0], i);
         }
 
         // currentWordList의 각 원소 위치를 찾아 sortedIndex에 저장
-        for (int i = 0; i < currentWordList.length; i++) {
-            sortedIndex[i] = positionMap.get(currentWordList[i][0]);
+        for (int i = 0; i < sortedWordList.length; i++) {
+            sortedIndex[i] = positionMap.get(sortedWordList[i][0]);
         }
 
         log.info("sortedWordList {}", Arrays.deepToString(sortedWordList));
