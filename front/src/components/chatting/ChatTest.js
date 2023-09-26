@@ -66,14 +66,13 @@ function TextChatting({ onSendMessage, chatContent, playerList, playerId }) {
                 ) : (
                   <div
                     key={index}
-                    className={`${message.playerId === playerId ? "messageContainer userMessage" : "messageContainer otherMessage"}`}
->
-                  <p className="sender">
+                    className={`${message.playerId === playerId ? "messageContainer userMessage" : "messageContainer otherMessage"}`} >
+                  <div>
                     {message.playerId === playerId
                       ? "나"
                       : message.sender}
-                  </p>
-                  <div className="messageBubble">{message.text}</div>
+                  </div>
+                  <div >{message.text}</div>
                 </div>
 
                 )
