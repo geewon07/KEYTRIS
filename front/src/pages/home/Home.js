@@ -68,7 +68,8 @@ export const Home = () => {
 
       if (response.data.success === "success") {
         console.log("요청 success");
-        navigate('/MultiGame', { state: { responseData: response.data.data }});
+        const roomId = response.data.data.gameInfo.roomId;
+        navigate(`/MultiGame/${roomId}`, { state: { responseData: response.data.data }});
       } else {
         alert("게임 만들기 실패");
       }
@@ -108,7 +109,8 @@ export const Home = () => {
 
       if (response.data.success === "success") {
         console.log("요청 success");
-        navigate('/MultiGame', { state: { responseData: response.data.data }});
+        const roomId = response.data.data.gameInfo.roomId;
+        navigate(`/MultiGame/${roomId}`, { state: { responseData: response.data.data }});
       } else {
         alert("게임 입장에 실패했습니다.");
       }

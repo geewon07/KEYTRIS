@@ -5,18 +5,22 @@ export const Modal3 = ({ isOpen, onClose }) => {
   const [address, setAddress] = useState("");
 
   useEffect(() => {
-    setAddress(window.location.href);
+    const url = window.location.href;
+    const segments = url.split('/');
+    const roomId = segments[segments.length - 1];
+    setAddress(roomId);
   }, []);
 
   if (!isOpen) return null;
 
   const copyAddress = () => {
     navigator.clipboard.writeText(address);
-    Swal.fire({
-      icon: "success",
-      title: "주소 복사 완료",
-      text: "주소가 클립보드에 복사되었습니다.",
-    });
+    // Swal.fire({
+    //   icon: "success",
+    //   title: "게임 코드 복사 완료",
+    //   text: "게임 코드가 클립보드에 복사되었습니다.",
+    // });
+    alert("게임 코드가 클립보드에 복사되었습니다.");
   };
 
   const titleStyle = {

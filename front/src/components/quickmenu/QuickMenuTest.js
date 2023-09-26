@@ -1,10 +1,12 @@
 
+import { useMatch } from 'react-router-dom';
+
 import './QuickMenu.css';
 import { Modal3 } from '../modal/Modal3';
 import { Modal4 } from '../modal/Modal4';
 import { Modal5 } from '../modal/Modal5';
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 // import MuteIcon from '../../assets/mute.svg';
 // import {Modal} from '../modal/ModalTest'
 
@@ -29,8 +31,8 @@ export const QuickMenu = () => {
     window.open('https://www.notion.so/87701a296e5240e69af7bb6fac4a6937', '_blank');
   }
 
-  const location = useLocation();
-  const isMultiPage = location.pathname === '/MultiGame';
+  const match = useMatch('/MultiGame/:gameId');
+  const isMultiPage = !!match;
 
   return (
     <div className='sidenav-container'>
