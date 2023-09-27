@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./Score.css";
 import { getNews } from "../../api/singleGame/SingleGameApi.js"
 
-function TodayNew() {
-  const [lastWord] = useState("인공지능");
+function TodayNew({ lastWord }) {
+  // const [lastWord] = useState("인공지능");
   const [newsItems, setNewsItems] = useState([]);
 
   const newsReqeustDto = {

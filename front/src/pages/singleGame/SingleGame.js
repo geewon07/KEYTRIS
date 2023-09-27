@@ -12,7 +12,7 @@ import { Button } from "../../components/button/ButtonTest";
 
 
 //TODO: 입력시 입력창 리셋
-export const SingleGame = (props) => {
+export const SingleGame = () => {
   // const { category } = props;
   // const [streak, setStreak] = useState(null);
   const [playerId, setPlayerId] = useState(null);

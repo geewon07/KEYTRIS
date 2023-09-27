@@ -5,9 +5,10 @@ spring:
       on-profile: "db-local"
   data:
     redis:
-      host: localhost
-      port: 6379
-      password:
+      host: j9a401.p.ssafy.io
+      port: 8380
+      username: develop
+      password: "ssafy@a401"
 
 --- # dev 설정
 spring:

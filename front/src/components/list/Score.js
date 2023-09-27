@@ -4,7 +4,7 @@ import "./Score.css";
 import { overGame, rankPlayer } from "../../api/singleGame/SingleGameApi.js";
 import { Button } from "../button/ButtonTest";
 
-function Score() {
+function Score({ playerId, playerResultList }) {
   const [overResponse, setOverResponse] = useState(null);
   const [rankList, setRankList] = useState([]);
   const [nickName, setNickName] = useState("");
@@ -13,9 +13,47 @@ function Score() {
 
 
   useEffect(() => {
-    handleOverGame(overRequestDto);
+    setOverResponse({
+      recordList: [
+          {
+              nickname: "dfdf",
+              score: 10000
+          },
+          {
+              nickname: "dddd",
+              score: 3000
+          },
+          {
+              nickname: "dgdgd",
+              score: 400
+          },
+          {
+              nickname: "ㅎㅇㅎㅇ",
+              score: 30
+          },
+          {
+              "nickname": "ㅎㅎㅎㅎ",
+              "score": 40
+          }
+      ],
+      statusResponse: {
+          playerId: "8b16bae2-87ee-4c8a-95dc-32ee7f62986e",
+          playerStatus: "OVER",
+          roomId: "891cd6fd-e7f2-4b67-a14c-80704c2eb59c",
+          roomStatus: "FINISHED"
+      },
+      record: true
+  })
+    // handleOverGame(overRequestDto);
      // eslint-disable-next-line
   }, []);
+
+  useEffect(() => {
+    if(overResponse !== null) {
+    setRankList(overResponse.recordList);
+    }
+
+  }, [overResponse]);
 
   const navigate = useNavigate();
 
@@ -26,7 +64,7 @@ function Score() {
 
   const overRequestDto = {
     roomId: "2fd4e586-a402-418c-916d-38f291758b72",
-    lastWord: "초콜릿",
+    lastWord: [["초콜릿",0]],
     score: 0,
   };
 
@@ -88,24 +126,28 @@ function Score() {
         <hr />
         {overResponse && <div className="rank-list">{listing}</div>}
         {/* 내 점수 */}
-        {typeof overResponse?.record === "boolean" &&
-          overResponse.record &&
-          !isSaving && (
-            <>
-              <div className="record">
-                내 점수 &nbsp;{score}&nbsp;&nbsp;
-                {/* 닉네임 입력란 */}
-                <input className="score-nickname-input"
+        <div className="record">
+          내 점수 &nbsp;{score}&nbsp;&nbsp;
+          {/* 닉네임 입력란 */}
+          {typeof overResponse?.record === "boolean" &&
+            overResponse.record &&
+            !isSaving && (
+              <>
+                <input
+                  className="score-nickname-input"
                   type="text"
                   value={nickName}
                   onChange={handleNicknameChange}
                   onKeyPress={handleKeyPress}
                   placeholder="닉네임 입력"
                 />
-                <button className="score-save-btn" onClick={handleSaveClick}>저장</button>
-              </div>
-            </>
-          )}
+                <button className="score-save-btn" onClick={handleSaveClick}>
+                  저장
+                </button>
+              </>
+            )}
+        </div>
+        
         <Button
           label="다시하기"
           onClick={() => handleButtonClickToGO("/")}
@@ -113,6 +155,7 @@ function Score() {
       </div>
     </>
   );
+  
 }
 
 export default Score;
