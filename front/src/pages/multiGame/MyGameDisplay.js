@@ -2,8 +2,17 @@ import React, { useEffect, useState } from "react";
 import "./GameDisplay.css";
 import { Button } from "../../components/button/ButtonTest";
 
-export const MyGameDisplay = ({data, roomStatus, handleStartGame, handlePlayerReady, wordListResponse, insertWord}) => {
-  const [subWordList, setSubWordList] = useState([]); 
+export const MyGameDisplay = ({
+  data,
+  roomStatus,
+  handleStartGame,
+  handlePlayerReady,
+  wordListResponse,
+  insertWord,
+  currentPlayerGameInfo,
+  newlevelWord,
+}) => {
+  const [subWordList, setSubWordList] = useState([]);
   const [targetWord, setTargetWord] = useState("");
 
   const [guessWord, setGuessWord] = useState("");
@@ -16,10 +25,15 @@ export const MyGameDisplay = ({data, roomStatus, handleStartGame, handlePlayerRe
   const [levelWord, setLevelWord] = useState([]);
 
   const [targetWordIndex, setTargetWordIndex] = useState(null);
-  
+
   const [score, setScore] = useState(null);
 
-  
+  const levelWordInfo = (messageBody) => {
+    console.log(messageBody);
+    const toTwoD = [messageBody, ""];
+    setLevelWord((prev) => [...prev, toTwoD]);
+  };
+
   useEffect(() => {
     if (levelWord.length > 0) {
       setCurrentWordList((prev) => [...prev, ...levelWord]);
@@ -28,19 +42,18 @@ export const MyGameDisplay = ({data, roomStatus, handleStartGame, handlePlayerRe
   }, [levelWord]);
 
   useEffect(() => {
-    if(data !== null && data.playerStatus === 'GAMING') {
+    if (data !== null && data.playerStatus === "GAMING") {
       console.log(wordListResponse);
+      console.log(data);
       setTargetWord(wordListResponse.newTargetWord);
       setTargetWordIndex(9);
       setCurrentWordList([...wordListResponse.sortedWordList]);
       setScore(wordListResponse.newscore);
     }
-  },[data]);
+  }, [data]);
 
   useEffect(() => {
-    const where = currentWordList.findIndex(
-      (line) => line[0] === targetWord
-    );
+    const where = currentWordList.findIndex((line) => line[0] === targetWord);
     setTargetWordIndex(where);
   }, [currentWordList, targetWord]);
 
@@ -114,7 +127,15 @@ export const MyGameDisplay = ({data, roomStatus, handleStartGame, handlePlayerRe
         const [word, point] = item;
         return (
           <li key={currentWordList.length - index - 1} className={"wordline"}>
-            <div className={ targetWord[0][0] === word? "targetWord wordline left" : "wordline left"}>{word}</div>
+            <div
+              className={
+                targetWord[0][0] === word
+                  ? "targetWord wordline left"
+                  : "wordline left"
+              }
+            >
+              {word}
+            </div>
             <div className="right points">{point}</div>
           </li>
         );
@@ -136,6 +157,12 @@ export const MyGameDisplay = ({data, roomStatus, handleStartGame, handlePlayerRe
     </li>
   ));
 
+  const insertRequestDto = {
+    currentWordList: currentWordList,
+    guessWord: guessWord,
+    targetWord: targetWord,
+  };
+
   const handleInsertWord = async () => {
     if (guessWord === "") {
       alert("cant guess blank");
@@ -146,59 +173,56 @@ export const MyGameDisplay = ({data, roomStatus, handleStartGame, handlePlayerRe
       alert("target cant be guessed");
       return;
     }
-    try {
-      const res = await insertWord(insertRequestDto);
-      console.log("insert res ");
-      console.log(res);
-      if (res.data.success === "fail") {
-        alert("no such word in db");
-      } else {
-        const SortedWordResponseDto = res.data.data.SortedWordListResponse;
-        console.log("sorted ");
-        console.log(SortedWordResponseDto);
-        const sorted = SortedWordResponseDto.sortedWordList;
-        const newScore = SortedWordResponseDto.newScore;
 
-        handleScoring(sorted, newScore, SortedWordResponseDto);
-        //효과를 다 하고 쓰세여~
-
-        setSortedWordList([...sorted]);
-        // 단어 삭제 모션 있고 난 다음에 변경
-
-        // setSubWordList(SortedWordResponseDto.newSubWordList);
-        // setTargetWord(SortedWordResponseDto.newTargetWord);
-      }
-      // setCurrentWordList((prev) => [...prev, subWordList, targetWord]);
-    } catch (error) {
-      console.error(error);
-    }
+    insertWord(insertRequestDto);
   };
+
+  useEffect(() => {
+    if (currentPlayerGameInfo && currentPlayerGameInfo !== null) {
+      const sorted = currentPlayerGameInfo.sortedWordList;
+      const newScore = currentPlayerGameInfo.newScore;
+
+      handleScoring(sorted, newScore, currentPlayerGameInfo);
+
+      setSortedWordList([...sorted]);
+    }
+  }, [currentPlayerGameInfo]);
 
   return (
     <div>
       <div className="gamecontainer" style={{}}>
         <div className="bglist">
           <div className="multi-score">
-            {roomStatus !== null && roomStatus !== "ONGOING" && roomStatus !== "FINISHED" && data.isMaster && (
-              <div
-              className="startbutton"
-              onClick={() => {
-                handleStartGame();
-              }}
-            >
-                <Button label="START"></Button> {/* 시작누를때 서버응답받고 체크해주는 로직 필요 */}
-              </div>
-            )}
-            {roomStatus !== null && roomStatus !== "ONGOING" && roomStatus !== "FINISHED" && !data.isMaster && data.playerStatus ==="UNREADY" (
-              <div
-              className="startbutton"
-              onClick={() => {
-                handlePlayerReady();
-              }}
-            >
-                <Button label="READY"></Button> {/* 시작누를때 서버응답받고 체크해주는 로직 필요 */}
-              </div>
-            )}
+            {roomStatus !== null &&
+              roomStatus !== "ONGOING" &&
+              roomStatus !== "FINISHED" &&
+              data.isMaster && (
+                <div
+                  className="startbutton"
+                  onClick={() => {
+                    handleStartGame();
+                  }}
+                >
+                  <Button label="START"></Button>{" "}
+                  {/* 시작누를때 서버응답받고 체크해주는 로직 필요 */}
+                </div>
+              )}
+            {roomStatus !== null &&
+              roomStatus !== "ONGOING" &&
+              roomStatus !== "FINISHED" &&
+              !data.isMaster &&
+              data.playerStatus ===
+                "UNREADY"(
+                  <div
+                    className="startbutton"
+                    onClick={() => {
+                      handlePlayerReady();
+                    }}
+                  >
+                    <Button label="READY"></Button>{" "}
+                    {/* 시작누를때 서버응답받고 체크해주는 로직 필요 */}
+                  </div>
+                )}
             {roomStatus !== "PREPARED" &&
               roomStatus !== "PREPARING" &&
               roomStatus !== null &&
@@ -219,7 +243,7 @@ export const MyGameDisplay = ({data, roomStatus, handleStartGame, handlePlayerRe
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
-                handleInsertWord(curr);
+                handleInsertWord();
               }
             }}
           ></input>
