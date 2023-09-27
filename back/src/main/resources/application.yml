@@ -1,11 +1,11 @@
 spring:
   profiles:
     active:
-      - dev
+      - local
     group:
       local:
         - data-local
-        - db-local
+        - db-dev
       dev:
         - data-dev
         - db-dev

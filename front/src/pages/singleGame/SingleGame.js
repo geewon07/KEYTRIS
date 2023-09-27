@@ -46,42 +46,6 @@ export const SingleGame = (props) => {
   const [adding, setAdding] = useState(false);
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    const connectAndSubscribe = async () => {
-      if (roomId !== null) {
-        await connect(); // Wait for the connect function to complete
-        const callback = (messageBody) => {
-          console.log(messageBody);
-          const toTwoD = [messageBody, ""];
-          // setLevelWord((prev) => [...prev, toTwoD]);
-        };
-        // subscribe(`/topic/room/level-word/${roomId}`, callback);
-      }
-    };
-
-    connectAndSubscribe();
-  }, [roomId]);
-  useEffect(() => {
-    // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
-    // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
-    if (levelWord.length > 0) {
-      setDisplay(true);
-      setAdding(true);
-      setTimeout(() => {}, 200);
-      //소켓으로
-      setTimeout(() => {
-        // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
-        setCurrentWordList((prev) => [...prev, ...levelWord]);
-        setLevelWord([]);
-        setDisplay(false);
-        setAdding(false);
-      }, 300);
-      setTimeout(() => {
-        // setCurrentWordList((prev) => [...prev, ...levelWord]);
-      }, 400);
-    }
-  }, [levelWord]);
-
   const handleCreate = async () => {
     try {
       const category = 101;
@@ -133,11 +97,6 @@ export const SingleGame = (props) => {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    const where = currentWordList.findIndex((line) => line[0] === targetWord);
-    setTargetWordIndex(where);
-  }, [currentWordList, targetWord]);
 
   // function delayMethod(method, delayInMilliseconds) {
   //   return new Promise((resolve) => {
@@ -276,6 +235,47 @@ export const SingleGame = (props) => {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    const connectAndSubscribe = async () => {
+      if (roomId !== null) {
+        await connect(); // Wait for the connect function to complete
+        const callback = (messageBody) => {
+          console.log(messageBody);
+          const toTwoD = [messageBody, ""];
+          // setLevelWord((prev) => [...prev, toTwoD]);
+        };
+        // subscribe(`/topic/room/level-word/${roomId}`, callback);
+      }
+    };
+
+    connectAndSubscribe();
+  }, [roomId]);
+  useEffect(() => {
+    // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
+    // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
+    if (levelWord.length > 0) {
+      setDisplay(true);
+      setAdding(true);
+      setTimeout(() => {}, 200);
+      //소켓으로
+      setTimeout(() => {
+        // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
+        setCurrentWordList((prev) => [...prev, ...levelWord]);
+        setLevelWord([]);
+        setDisplay(false);
+        setAdding(false);
+      }, 300);
+      setTimeout(() => {
+        // setCurrentWordList((prev) => [...prev, ...levelWord]);
+      }, 400);
+    }
+  }, [levelWord]);
+  // useEffect(() => {
+  //   const where = currentWordList.findIndex((line) => line[0] === targetWord);
+  //   setTargetWordIndex(where);
+  // }, [currentWordList, targetWord]);
+
   useEffect(() => {
     if (deleteList.length > 0) {
       setDisplay(true);
