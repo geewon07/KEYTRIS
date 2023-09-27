@@ -7,20 +7,20 @@ function TodayNew() {
   const [newsItems, setNewsItems] = useState([]);
 
   const newsReqeustDto = {
-    lastWord : lastWord
+    lastWord: lastWord
   };
 
-  const getNewsList = async() => {
+  const getNewsList = async () => {
     try {
       const res = await getNews(newsReqeustDto);
       let newsResponse = JSON.parse(res.data.data.NewsResponse);
       let items = newsResponse.items;
-      
+
       for (const item in items) {
         items[item].title = items[item].title.replace(/<(\/b|b)([^>]*)>/gi, "");
         items[item].description = items[item].description.replace(/<(\/b|b)([^>]*)>/gi, "");
       }
-      
+
       setNewsItems(items);
 
     } catch (error) {
@@ -44,16 +44,18 @@ function TodayNew() {
         </div>
 
         {newsItems.map((item, index) => (
-          <React.Fragment key={index}>
-            <div className="news-title">
-              <a href={item.link} target="_blank" rel="noopener noreferrer">
-                {item.title}
-              </a>
-            </div>
-            <div className="news-description">
-              <a href={item.link} target="_blank" rel="noopener noreferrer" className="my-news-content">
-                {item.description}
-              </a>
+          <React.Fragment key={index} >
+            <div className="my-news-container1" >
+              <div className="news-title">
+                <a href={item.link} target="_blank" rel="noopener noreferrer">
+                  {item.title}
+                </a>
+              </div>
+              <div className="news-description">
+                <a href={item.link} target="_blank" rel="noopener noreferrer" className="my-news-content">
+                  {item.description}
+                </a>
+              </div>
             </div>
           </React.Fragment>
         ))}
