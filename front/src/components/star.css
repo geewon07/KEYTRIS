@@ -1,6 +1,6 @@
 @keyframes movingstar {
     from {
-      transform: translateY(0);
+      transform: translateY(0px);
     }
   
     to {
