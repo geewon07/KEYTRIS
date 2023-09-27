@@ -66,7 +66,7 @@ function TextChatting({ onSendMessage, chatContent, playerList, playerId }) {
                 ) : (
                   <div
                     key={index}
-                    className={`${message.playerId === playerId ? "messageContainer userMessage" : "messageContainer otherMessage"}`} >
+                    className={`${message.playerId !== playerId ? "messageContainer userMessage" : "messageContainer otherMessage"}`} >
                   <div>
                     {message.playerId === playerId
                       ? "나"
