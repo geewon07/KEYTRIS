@@ -6,6 +6,7 @@
     to {
       transform: translateY(-2000px);
     }
+
   }
 
   .stars {
@@ -64,3 +65,6 @@
     box-shadow: 133px 1472px #FFF , 276px 843px #FFF , 1661px 1453px #FFF , 948px 460px #FFF , 735px 911px #FFF , 549px 786px #FFF , 874px 711px #FFF , 883px 1752px #FFF , 842px 1974px #FFF , 178px 1882px #FFF , 187px 1678px #FFF , 101px 476px #FFF , 496px 1200px #FFF , 1601px 1799px #FFF , 955px 1549px #FFF , 1506px 1820px #FFF , 82px 1319px #FFF , 398px 496px #FFF , 274px 178px #FFF , 1962px 254px #FFF , 1546px 1536px #FFF , 1750px 113px #FFF , 8px 1906px #FFF , 1959px 848px #FFF , 1919px 887px #FFF , 642px 1501px #FFF , 1116px 661px #FFF , 586px 196px #FFF , 1261px 1054px #FFF , 377px 186px #FFF , 590px 1506px #FFF , 938px 484px #FFF , 1650px 1233px #FFF , 395px 654px #FFF , 331px 527px #FFF , 1928px 941px #FFF , 308px 399px #FFF , 1159px 579px #FFF , 1203px 1554px #FFF , 1384px 1973px #FFF , 1029px 715px #FFF , 1946px 670px #FFF , 146px 1758px #FFF , 905px 676px #FFF , 269px 174px #FFF , 1057px 350px #FFF , 1132px 827px #FFF , 1283px 1016px #FFF , 270px 1338px #FFF , 332px 1312px #FFF , 587px 771px #FFF , 323px 1280px #FFF , 485px 1885px #FFF , 145px 158px #FFF , 642px 769px #FFF , 165px 1941px #FFF , 1803px 1256px #FFF , 53px 1884px #FFF , 1615px 299px #FFF , 563px 850px #FFF , 1272px 1308px #FFF , 1721px 778px #FFF , 1325px 390px #FFF , 1444px 1972px #FFF , 968px 1738px #FFF , 1990px 1264px #FFF , 324px 470px #FFF , 1110px 1124px #FFF , 553px 1812px #FFF , 1062px 438px #FFF , 1895px 1322px #FFF , 331px 498px #FFF , 1001px 256px #FFF , 489px 778px #FFF , 1748px 1753px #FFF , 1370px 28px #FFF , 1522px 1226px #FFF , 742px 368px #FFF , 1166px 1978px #FFF , 1567px 195px #FFF , 1543px 1473px #FFF , 923px 656px #FFF , 1477px 1804px #FFF , 1074px 766px #FFF , 1589px 219px #FFF , 691px 907px #FFF , 95px 822px #FFF , 91px 231px #FFF , 1073px 12px #FFF , 1871px 52px #FFF , 1241px 592px #FFF , 335px 1496px #FFF , 1738px 1830px #FFF , 55px 168px #FFF , 1490px 808px #FFF , 1360px 341px #FFF , 1393px 1666px #FFF , 431px 1521px #FFF , 889px 736px #FFF , 1811px 1931px #FFF;
   }
   
+body {
+  width: 100%;
+}

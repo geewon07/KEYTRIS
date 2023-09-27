@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from "react";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
 
-export const Modal3 = ({ isOpen, onClose }) => {
+export const ModalGameCode = ({ isOpen, onClose }) => {
   const [address, setAddress] = useState("");
 
   useEffect(() => {
-    setAddress(window.location.href);
+    const url = window.location.href;
+    const segments = url.split("/");
+    const roomId = segments[segments.length - 1];
+    setAddress(roomId);
   }, []);
 
   if (!isOpen) return null;
 
   const copyAddress = () => {
     navigator.clipboard.writeText(address);
-    Swal.fire({
-      icon: "success",
-      title: "주소 복사 완료",
-      text: "주소가 클립보드에 복사되었습니다.",
-    });
+    // Swal.fire({
+    //   icon: "success",
+    //   title: "주소 복사 완료",
+    //   text: "주소가 클립보드에 복사되었습니다.",
+    // });
+    alert("게임 코드가 복사되었습니다. 친구에게 전달해주세요.");
   };
 
   const titleStyle = {

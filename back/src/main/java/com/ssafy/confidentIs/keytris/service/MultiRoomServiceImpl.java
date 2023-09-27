@@ -75,14 +75,17 @@ public class MultiRoomServiceImpl {
     public MultiGameConnectResponse connectMultiGame(String roomId, MultiGameConnectRequest request) {
 
         // 입장 가능한 방인 지 확인
-        MultiRoom room = findByRoomId(roomId);
+        MultiRoom room = Optional.ofNullable(multiRoomManager.getRoom(roomId))
+                .orElseThrow(() -> new RoomNotFoundException("Room with ID " + roomId + " does not exist.", ErrorCode.ROOM_NOT_FOUND));
 
         if(room.getRoomStatus().equals(RoomStatus.ONGOING) || room.getRoomStatus().equals(RoomStatus.FINISHED)) {
-            throw new InaccessibleGameException("입장할 수 없는 방입니다.", ErrorCode.INACCESSIBLE_GAME);
+//            throw new InaccessibleGameException("입장할 수 없는 방입니다.", ErrorCode.INACCESSIBLE_GAME);
+            log.info("입장할 수 없는 방");
         }
 
         if(room.getPlayerList().size() >= room.getLimit()) {
-            throw new InaccessibleGameException("입장할 수 없는 방입니다.", ErrorCode.INACCESSIBLE_GAME);
+//            throw new InaccessibleGameException("입장할 수 없는 방입니다.", ErrorCode.INACCESSIBLE_GAME);
+            log.info("입장할 수 없는 방");
         }
 
         // 플레이어 생성, 방에 등록
@@ -99,16 +102,18 @@ public class MultiRoomServiceImpl {
     public MultiGameInfoResponse startMultiGame(String roomId, MultiGamePlayerRequest request) {
 
         // 시작 조건을 만족하는 지 확인
-        MultiRoom room = findByRoomId(roomId);
+        MultiRoom room = findByRoomId(roomId, request.getPlayerId());
 
         // 방 상태, 방 인원이 시작할 수 없는 경우
         if(!room.getRoomStatus().equals(RoomStatus.PREPARED) || room.getPlayerList().size() < 2) {
-            throw new SocketInvalidStartException("시작할 수 없는 방 상태", ErrorCode.SOCKET_INVALID_START, request.getPlayerId(), roomId);
+//            throw new SocketInvalidStartException("시작할 수 없는 방 상태", ErrorCode.SOCKET_INVALID_START, request.getPlayerId(), roomId);
+            log.info("시작할 수 없는 방 상태");
         }
 
         // 방장이 아닌 경우
         if(!room.getMaster().getPlayerId().equals(request.getPlayerId())) {
-            throw new SocketNotAuthorizedException("방장이 아니어서 시작할 수 없음", ErrorCode.SOCKET_NOT_AUTHORIZED, request.getPlayerId(), roomId);
+//            throw new SocketNotAuthorizedException("방장이 아니어서 시작할 수 없음", ErrorCode.SOCKET_NOT_AUTHORIZED, request.getPlayerId(), roomId);
+            log.info("방장이 아님");
         }
 
         // 모든 플레이어의 상태를 gaming으로 업데이트
@@ -162,7 +167,7 @@ public class MultiRoomServiceImpl {
     // 단어 입력하여 유사도 확인하기
     public WordListResponse sortByProximity(String roomId, MultiGuessRequest request) {
         String playerId = request.getPlayerId();
-        MultiRoom room = findByRoomId(roomId);
+        MultiRoom room = findByRoomId(roomId, playerId);
         MultiPlayer currentPlayer = findByPlayerId(room, playerId);
         int category = room.getCategory();
 
@@ -313,7 +318,12 @@ public class MultiRoomServiceImpl {
         }
         if(isAllReady) room.updateStatus(RoomStatus.PREPARED);
 
-        return new UpdatedPlayerResponse(playerId, PlayerStatus.READY, room.getRoomStatus());
+        return UpdatedPlayerResponse.builder()
+                .roomStatus(room.getRoomStatus())
+                .player(updatedPlayer)
+                .build();
+
+//        return new UpdatedPlayerResponse(playerId, PlayerStatus.READY, room.getRoomStatus());
     }
 
 
@@ -328,9 +338,8 @@ public class MultiRoomServiceImpl {
         room.updateOverPlayerCnt();
 
         UpdatedPlayerResponse response = UpdatedPlayerResponse.builder()
-                .playerId(playerId)
-                .playerStatus(PlayerStatus.OVER)
                 .roomStatus(room.getRoomStatus())
+                .player(updatedPlayer)
                 .build();
 
         // 한 명 제외하고 모두 OVER 된 경우 game status update
@@ -361,18 +370,20 @@ public class MultiRoomServiceImpl {
     }
 
 
-    // roomId로 Room을 반환하는 메서드. TODO 커스텀 예외 처리 필요
-    private MultiRoom findByRoomId(String roomId) {
+    // roomId로 Room을 반환하는 메서드. 소켓 응답 예외 처리.
+    private MultiRoom findByRoomId(String roomId, String playerId) {
         return Optional.ofNullable(multiRoomManager.getRoom(roomId))
-                .orElseThrow(() -> new RoomNotFoundException("Room with ID " + roomId + " does not exist.", ErrorCode.ROOM_NOT_FOUND));
+                .orElseThrow(() -> new SocketRoomNotFoundException("Room with ID " + roomId + " does not exist.",
+                        ErrorCode.SOCKET_ROOM_NOT_FOUND, playerId, roomId));
     }
 
-    // playerId로 Player를 반환하는 메서드. TODO 커스텀 예외 처리 필요
+    // playerId로 Player를 반환하는 메서드. 소켓 응답 예외 처리
     private MultiPlayer findByPlayerId(MultiRoom room, String playerId) {
         return room.getPlayerList().stream()
                 .filter(player -> playerId.equals(player.getPlayerId()))
                 .findFirst()
-                .orElseThrow(() -> new PlayerNotFoundException("Player with ID " + playerId + " does not exist in the room.",  ErrorCode.PLAYER_NOT_FOUND));
+                .orElseThrow(() -> new SocketPlayerNotFoundException("Player with ID " + playerId + " does not exist in the room.",
+                        ErrorCode.SOCKET_PLAYER_NOT_FOUND, playerId, room.getRoomId()));
     }
 
     // 플레이어를 생성하는 메서드

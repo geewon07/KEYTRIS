@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import keytrisLogo from "../../assets/logo_1.svg";
 import { Modal } from "../../components/modal/ModalTest";
 import "./Home.css";
@@ -10,10 +11,12 @@ import {
 import { createRoom } from "../../api/singleGame/SingleGameApi.js";
 
 export const Home = () => {
+  const navigate = useNavigate();
+
   const [modal, setModal] = useState(false);
   const [multigameModal, setMModal] = useState(false);
   const [multiEnterModal, setMMModal] = useState(false);
-  const singleDesc = "어떤 분야의 뉴스 키워드로 게임을 진행하시겠어요?";
+  const singleDesc = "어떤 카테고리의 뉴스로 게임을 하시겠어요?";
 
   const makeSingleGame = async ({ category }) => {
     console.log(category);
@@ -22,45 +25,83 @@ export const Home = () => {
       const response = await createRoom({ category });
       console.log(response);
 
-      if (response.data.data) {
-        alert("게임을 만들었습니다");
-        // 소켓 연결하기
-
-        // 만들어진 게임으로 이동하기
+      if (response.data.success === "success") {
+        console.log("요청 success");
+        navigate("/SingleGame", {
+          state: { responseData: response.data.data },
+        });
       } else {
-        alert("게임 만들기 실패");
+        alert("게임 만들기를 실패했습니다.");
       }
     } catch (error) {
-      console.error("오류 발생:", error);
+      const { response } = error;
+
+      // 에러 메시지 매핑
+      const errorMessages = {
+        "CMO4-ERR-400": "잘못된 요청입니다.",
+        // 필요하다면 다른 에러 코드들도 여기에 추가
+      };
+
+      console.log(response);
+
+      // 에러 코드에 따른 메시지 출력
+      const errorMessage = errorMessages[response?.data?.errorCode];
+      if (errorMessage) {
+        alert(errorMessage);
+      } else {
+        alert("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
+      }
     }
   };
 
   const makeMultiGame = async ({ category, nickname }) => {
     console.log(category + " " + nickname);
 
+    if (!nickname) {
+      alert("닉네임을 입력해주세요.");
+      return;
+    }
+
     try {
       const MultiGameCreateRequest = { category, nickname };
       const response = await createMultiRoom(MultiGameCreateRequest);
       console.log(response);
 
-      if (response.data.data) {
-        alert("멀티 게임을 만들었습니다");
-        // 소켓 연결하기
-
-        // 만들어진 게임으로 이동하기 + 친구 초대 모달 열림
+      if (response.data.success === "success") {
+        console.log("요청 success");
+        const roomId = response.data.data.gameInfo.roomId;
+        navigate(`/MultiGame/${roomId}`, {
+          state: { responseData: response.data.data },
+        });
       } else {
         alert("게임 만들기 실패");
       }
     } catch (error) {
-      console.error("오류 발생:", error);
+      const { response } = error;
+
+      // 에러 메시지 매핑
+      const errorMessages = {
+        "CMO4-ERR-400": "잘못된 요청입니다.",
+        // 필요하다면 다른 에러 코드들도 여기에 추가
+      };
+
+      console.log(response);
+
+      // 에러 코드에 따른 메시지 출력
+      const errorMessage = errorMessages[response?.data?.errorCode];
+      if (errorMessage) {
+        alert(errorMessage);
+      } else {
+        alert("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
+      }
     }
   };
 
   const enterMultiGame = async ({ nickname, gameCode }) => {
-    console.log(nickname + " " + gameCode);
+    console.log("닉네임: " + nickname + " " + gameCode);
 
     if (!nickname || !gameCode) {
-      alert("닉네임과 게임 모드는 필수 항목입니다.");
+      alert("닉네임과 게임 코드는 필수 항목입니다.");
       return;
     }
 
@@ -69,21 +110,38 @@ export const Home = () => {
       const response = await connectMultiRoom(gameCode, MultiGameCreateRequest);
       console.log(response);
 
-      if (response.data.data) {
-        alert("멀티 게임에 입장했습니다");
-        // 소켓 연결하기
-
-        // 접속한 페이지로 이동하기
+      if (response.data.success === "success") {
+        console.log("요청 success");
+        const roomId = response.data.data.gameInfo.roomId;
+        navigate(`/MultiGame/${roomId}`, {
+          state: { responseData: response.data.data },
+        });
       } else {
-        alert("게임 입장 실패");
+        alert("게임 입장에 실패했습니다.");
       }
     } catch (error) {
-      console.error("오류 발생:", error);
+      const { response } = error;
+
+      // 에러 메시지 매핑
+      const errorMessages = {
+        "GA03-ERR-404": "잘못된 게임 코드입니다.",
+        "GA04-ERR-403": "입장할 수 없는 게임입니다.",
+        // 필요하다면 다른 에러 코드들도 여기에 추가
+      };
+
+      console.log(response);
+
+      // 에러 코드에 따른 메시지 출력
+      const errorMessage = errorMessages[response?.data?.errorCode];
+      if (errorMessage) {
+        alert(errorMessage);
+      } else {
+        alert("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
+      }
     }
   };
 
   return (
-
     <div className="home-content-container">
       {/* // <div id="keytris_title" className="keytris_main_gradient"> */}
       <div id="keytris_title">
@@ -168,7 +226,7 @@ export const Home = () => {
           <Modal
             modalShow={multigameModal}
             setModal={setMModal}
-            title={"게임 만들기"}
+            title={"친구 모드 게임 만들기"}
             buttonLabel="게임 만들기"
             func={makeMultiGame}
             desc={"닉네임, 뉴스카테고리"}
@@ -178,7 +236,7 @@ export const Home = () => {
           <Modal
             modalShow={multiEnterModal}
             setModal={setMMModal}
-            title={"게임 입장하기"}
+            title={"친구 모드 게임 입장하기"}
             buttonLabel="게임 입장하기"
             func={enterMultiGame}
             desc={"닉네임, 게임코드"}
@@ -187,7 +245,5 @@ export const Home = () => {
         </div>
       </div>
     </div>
-
   );
 };
-
