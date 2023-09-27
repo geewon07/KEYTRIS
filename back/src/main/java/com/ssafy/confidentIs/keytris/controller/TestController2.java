@@ -64,7 +64,7 @@ public class TestController2 {
 
         multiRoomManager.addRoom(room);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
             MultiPlayer currentPlayer;
             if (i == 0) {
                 currentPlayer = MultiPlayer.builder()
