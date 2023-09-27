@@ -19,7 +19,7 @@ export const QuickMenu = () => {
 
   const [isModalOpenGameRule, setIsModalOpenGameRule] = useState(false);
   const handleOpenModalGameRule = () => {
-    setIsModalOpenGameRule(true);
+    setIsModalOpenGameRule(true); 
   };
   const handleCloseModalGameRule = () => {
     setIsModalOpenGameRule(false);
