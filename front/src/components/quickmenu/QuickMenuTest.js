@@ -30,7 +30,7 @@ export const QuickMenu = () => {
   }
 
   const location = useLocation();
-  const isMultiPage = location.pathname === '/MultiGame';
+  const isMultiPage = ['/MultiGame', '/multiGame', '/multigame'].includes(location.pathname.toLowerCase());
 
   return (
     <div className='sidenav-container'>
