@@ -23,9 +23,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/SingleGame" element={<SingleGame />} />
         <Route path="/SingleGameResult" element={<SingleGameResult />} />
-        <Route path="/MultiGame" element={<MultiGame />} />
+        <Route path="/MultiGame/:roomId" element={<MultiGame />} />
         <Route path="/MultiGameResult" element={<MultiGameResult />} />
-        <Route path="/TestJisoo" element={<TestJisoo />} />
+        <Route path="/TestJisoo/:roomId" element={<TestJisoo />} />
       </Routes>
     </div>
   );

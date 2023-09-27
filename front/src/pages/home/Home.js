@@ -11,13 +11,12 @@ import {
 import { createRoom } from "../../api/singleGame/SingleGameApi.js";
 
 export const Home = () => {
-
   const navigate = useNavigate();
 
   const [modal, setModal] = useState(false);
   const [multigameModal, setMModal] = useState(false);
   const [multiEnterModal, setMMModal] = useState(false);
-  const singleDesc = "어떤 분야의 뉴스 키워드로 게임을 진행하시겠어요?";
+  const singleDesc = "어떤 카테고리의 뉴스로 게임을 하시겠어요?";
 
   const makeSingleGame = async ({ category }) => {
     console.log(category);
@@ -28,7 +27,9 @@ export const Home = () => {
 
       if (response.data.success === "success") {
         console.log("요청 success");
-        navigate('/SingleGame', { state: { responseData: response.data.data }});
+        navigate("/SingleGame", {
+          state: { responseData: response.data.data },
+        });
       } else {
         alert("게임 만들기를 실패했습니다.");
       }
@@ -40,15 +41,15 @@ export const Home = () => {
         "CMO4-ERR-400": "잘못된 요청입니다.",
         // 필요하다면 다른 에러 코드들도 여기에 추가
       };
-  
+
       console.log(response);
-  
+
       // 에러 코드에 따른 메시지 출력
       const errorMessage = errorMessages[response?.data?.errorCode];
       if (errorMessage) {
         alert(errorMessage);
       } else {
-        alert("게임 입장에 실패했습니다.");  // 일반적인 에러 메시지
+        alert("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
       }
     }
   };
@@ -56,8 +57,8 @@ export const Home = () => {
   const makeMultiGame = async ({ category, nickname }) => {
     console.log(category + " " + nickname);
 
-    if (!nickname || !category) {
-      alert("닉네임과 게임 모드는 필수 항목입니다.");
+    if (!nickname) {
+      alert("닉네임을 입력해주세요.");
       return;
     }
 
@@ -68,7 +69,10 @@ export const Home = () => {
 
       if (response.data.success === "success") {
         console.log("요청 success");
-        navigate('/MultiGame', { state: { responseData: response.data.data }});
+        const roomId = response.data.data.gameInfo.roomId;
+        navigate(`/MultiGame/${roomId}`, {
+          state: { responseData: response.data.data },
+        });
       } else {
         alert("게임 만들기 실패");
       }
@@ -80,15 +84,15 @@ export const Home = () => {
         "CMO4-ERR-400": "잘못된 요청입니다.",
         // 필요하다면 다른 에러 코드들도 여기에 추가
       };
-  
+
       console.log(response);
-  
+
       // 에러 코드에 따른 메시지 출력
       const errorMessage = errorMessages[response?.data?.errorCode];
       if (errorMessage) {
         alert(errorMessage);
       } else {
-        alert("게임 입장에 실패했습니다.");  // 일반적인 에러 메시지
+        alert("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
       }
     }
   };
@@ -97,7 +101,7 @@ export const Home = () => {
     console.log("닉네임: " + nickname + " " + gameCode);
 
     if (!nickname || !gameCode) {
-      alert("닉네임과 게임 모드는 필수 항목입니다.");
+      alert("닉네임과 게임 코드는 필수 항목입니다.");
       return;
     }
 
@@ -108,7 +112,10 @@ export const Home = () => {
 
       if (response.data.success === "success") {
         console.log("요청 success");
-        navigate('/MultiGame', { state: { responseData: response.data.data }});
+        const roomId = response.data.data.gameInfo.roomId;
+        navigate(`/MultiGame/${roomId}`, {
+          state: { responseData: response.data.data },
+        });
       } else {
         alert("게임 입장에 실패했습니다.");
       }
@@ -121,21 +128,20 @@ export const Home = () => {
         "GA04-ERR-403": "입장할 수 없는 게임입니다.",
         // 필요하다면 다른 에러 코드들도 여기에 추가
       };
-  
+
       console.log(response);
-  
+
       // 에러 코드에 따른 메시지 출력
       const errorMessage = errorMessages[response?.data?.errorCode];
       if (errorMessage) {
         alert(errorMessage);
       } else {
-        alert("게임 입장에 실패했습니다.");  // 일반적인 에러 메시지
+        alert("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
       }
     }
   };
 
   return (
-
     <div className="home-content-container">
       {/* // <div id="keytris_title" className="keytris_main_gradient"> */}
       <div id="keytris_title">
@@ -220,7 +226,7 @@ export const Home = () => {
           <Modal
             modalShow={multigameModal}
             setModal={setMModal}
-            title={"게임 만들기"}
+            title={"친구 모드 게임 만들기"}
             buttonLabel="게임 만들기"
             func={makeMultiGame}
             desc={"닉네임, 뉴스카테고리"}
@@ -230,7 +236,7 @@ export const Home = () => {
           <Modal
             modalShow={multiEnterModal}
             setModal={setMMModal}
-            title={"게임 입장하기"}
+            title={"친구 모드 게임 입장하기"}
             buttonLabel="게임 입장하기"
             func={enterMultiGame}
             desc={"닉네임, 게임코드"}
@@ -239,7 +245,5 @@ export const Home = () => {
         </div>
       </div>
     </div>
-
   );
 };
-
