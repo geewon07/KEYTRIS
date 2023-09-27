@@ -14,8 +14,11 @@
 }
 
 .rank-index {
-  width: 100%; /* Or whatever you need */
-  padding: 5px 9px;
+  width: 100%; 
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center; 
 }
 
 .record {
@@ -24,10 +27,23 @@
   font-family: "NeoDunggeunmo Pro";
   font-size: 24px;
 }
-.score-save-btn,
+
 .score-nickname-input[type="text"] {
-  -webkit-text-fill-color: black;
+  height: 2rem;
+  -webkit-text-stroke: 1px white;
+  background-color: rgba(179, 177, 177, 0.216);
+}
+
+.score-save-btn {
+  text-align: center;
+  vertical-align: middle;
+  margin-left: 0.3rem;
+  height: 2.3rem;
+  -webkit-text-stroke: 1px rgb(71, 71, 71);
+  border-width: 0.2rem;
   color: black;
+  border-color: #cf0;
+  background-color: rgba(219, 255, 188, 0.886);
 }
 
 /* WebKit browsers (e.g., Chrome, Safari) */
