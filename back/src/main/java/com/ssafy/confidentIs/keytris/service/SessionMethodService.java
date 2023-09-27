@@ -61,6 +61,7 @@ public class SessionMethodService {
     } else {
       room = multiRoomManager.getRoom(roomId);
       nextWord = room.getLevelWord();
+      System.out.println(room+"ddddddddddddddd"+nextWord);
       messagingTemplate.convertAndSend("/topic/multi/level-word/" + roomId, nextWord);
     }
 
