@@ -1,10 +1,10 @@
-
-import './QuickMenu.css';
-import { ModalGameCode } from '../modal/ModalGameCode';
-import { ModalGameRule } from '../modal/ModalGameRule';
-import { ModalGuide } from '../modal/ModalGuide';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import "./QuickMenu.css";
+import { ModalGameCode } from "../modal/ModalGameCode";
+import { ModalGameRule } from "../modal/ModalGameRule";
+import { ModalGuide } from "../modal/ModalGuide";
+import { useState } from "react";
+import { useMatch } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 // import MuteIcon from '../../assets/mute.svg';
 // import {Modal} from '../modal/ModalTest'
 
@@ -19,7 +19,7 @@ export const QuickMenu = () => {
 
   const [isModalOpenGameRule, setIsModalOpenGameRule] = useState(false);
   const handleOpenModalGameRule = () => {
-    setIsModalOpenGameRule(true); 
+    setIsModalOpenGameRule(true);
   };
   const handleCloseModalGameRule = () => {
     setIsModalOpenGameRule(false);
@@ -34,15 +34,32 @@ export const QuickMenu = () => {
   };
 
   const openLink = () => {
-    window.open('https://www.notion.so/87701a296e5240e69af7bb6fac4a6937', '_blank');
-  }
+    window.open(
+      "https://www.notion.so/87701a296e5240e69af7bb6fac4a6937",
+      "_blank"
+    );
+  };
 
   const location = useLocation();
-  const isGamePage = ['/MultiGame', '/multiGame', '/multigame', '/SingleGame', '/singleGame', '/singlegame'].includes(location.pathname.toLowerCase());
-  const isMultiPage = ['/MultiGame', '/multiGame', '/multigame'].includes(location.pathname.toLowerCase());
+  // const isGamePage = [
+  //   "/MultiGame",
+  //   "/multiGame",
+  //   "/multigame",
+  //   "/SingleGame",
+  //   "/singleGame",
+  //   "/singlegame",
+  // ].includes(location.pathname.toLowerCase());
+  // const isMultiPage = ["/MultiGame", "/multiGame", "/multigame"].includes(
+  //   location.pathname.toLowerCase()
+  // );
+  const isGamePage = ["/SingleGame", "/singleGame", "/singlegame"].includes(
+    location.pathname.toLowerCase()
+  );
+  const multiMatch = useMatch("/MultiGame/:gameId");
+  const isMultiPage = !!multiMatch;
 
   return (
-    <div className='sidenav-container'>
+    <div className="sidenav-container">
       <nav>
         {/* <div>
         <button className='nav-button' onClick={() => {
@@ -53,40 +70,38 @@ export const QuickMenu = () => {
       </div> */}
         {isMultiPage && (
           <div>
-            <button
-              className="nav-button"
-              onClick={handleOpenModalGameCode}
-            >
+            <button className="nav-button" onClick={handleOpenModalGameCode}>
               초대
             </button>
-            <ModalGameCode isOpen={isModalOpenGameCode} onClose={handleCloseModalGameCode} />
+            <ModalGameCode
+              isOpen={isModalOpenGameCode}
+              onClose={handleCloseModalGameCode}
+            />
           </div>
         )}
-        {isGamePage ? (
+        {isGamePage || isMultiPage ? (
           <div>
-            <button
-              className="nav-button"
-              onClick={handleOpenModalGameRule}
-            >
+            <button className="nav-button" onClick={handleOpenModalGameRule}>
               게임 규칙
             </button>
-            <ModalGameRule isOpen={isModalOpenGameRule} onClose={handleCloseModalGameRule} />
+            <ModalGameRule
+              isOpen={isModalOpenGameRule}
+              onClose={handleCloseModalGameRule}
+            />
           </div>
         ) : (
           <div>
-            <button
-              className="nav-button"
-              onClick={handleOpenModalGuide}
-            >
+            <button className="nav-button" onClick={handleOpenModalGuide}>
               가이드
             </button>
-            <ModalGuide isOpen={isModalOpenGuide} onClose={handleCloseModalGuide} />
-          </div>)}
+            <ModalGuide
+              isOpen={isModalOpenGuide}
+              onClose={handleCloseModalGuide}
+            />
+          </div>
+        )}
         <div>
-          <button
-            className="nav-button"
-            onClick={openLink}
-          >
+          <button className="nav-button" onClick={openLink}>
             소개
           </button>
         </div>
