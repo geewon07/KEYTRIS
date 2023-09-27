@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Score.css";
 import { overGame, rankPlayer } from "../../api/singleGame/SingleGameApi.js";
