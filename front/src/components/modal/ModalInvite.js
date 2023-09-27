@@ -1,4 +1,4 @@
-export const Modal2 = ({ isOpen, onClose }) => {
+export const ModalInvite = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const titleStyle = {

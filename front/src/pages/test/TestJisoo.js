@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import { Modal } from "../../components/modal/ModalTest";
@@ -11,10 +11,18 @@ import {
 } from "../../api/multiGame/MultiGameApi.js";
 
 export const TestJisoo = () => {
-
   const location = useLocation();
   const responseData = location.state?.responseData;
   console.log(responseData);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!responseData) {
+      alert("잘못된 접근입니다. 메인화면에서 [게임 참여]를 통해 접속해주세요.");
+      navigate("/");
+    }
+  }, [responseData, navigate]);
 
   const [modal, setModal] = useState(false);
   const [multigameModal, setMModal] = useState(true);
@@ -94,8 +102,6 @@ export const TestJisoo = () => {
     console.log(gameCode);
     alert("코드를 복사했습니다. 친구에게 전달해주세요.");
   };
-
-  const navigate = useNavigate();
 
   const handleButtonClickToGO = (path = "/") => {
     console.log("페이지 이동 경로:", path);
