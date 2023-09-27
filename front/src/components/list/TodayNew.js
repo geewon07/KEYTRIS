@@ -51,7 +51,7 @@ function TodayNew() {
               </a>
             </div>
             <div className="news-description">
-              <a href={item.link} target="_blank" rel="noopener noreferrer">
+              <a href={item.link} target="_blank" rel="noopener noreferrer" className="my-news-content">
                 {item.description}
               </a>
             </div>

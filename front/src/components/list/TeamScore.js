@@ -50,7 +50,7 @@ function Score() {
 
   return (
     <>
-      <div>
+      <div className="rank-container">
         <div className="list-title">랭킹</div>
         <hr />
         {playerResultList && <div className="rank-list">{listing}</div>}

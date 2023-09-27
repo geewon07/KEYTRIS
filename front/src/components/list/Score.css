@@ -71,12 +71,8 @@ input:-ms-input-placeholder {
   text-decoration: none;
 }
 
-.today-keyword {
-  font-size: 2rem;
-}
-
 .news {
-  margin: 5%;
+  margin: 5% 10% 5% 10%;
 }
 
 .list-title,
@@ -88,10 +84,35 @@ input:-ms-input-placeholder {
   /* -webkit-text-stroke: 1px white; */
 }
 
+.today-keyword {
+  font-size: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 4rem;
+}
+
 .highlight {
   color: #cf0;
 }
 
-.my-score-display {
-  margin: 5%;
+.my-score-display, .rank-container {
+  margin: 5% 10%  5% 10%;
 }
+
+.news-title {
+  color: rgb(245, 251, 212);
+}
+
+.news-description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.news-description a {
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-bottom: 2rem;
+}
+
+
