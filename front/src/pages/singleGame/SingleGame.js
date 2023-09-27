@@ -34,30 +34,28 @@ export const SingleGame = (props) => {
   const [score, setScore] = useState(0);
 
   const [targetWordIndex, setTargetWordIndex] = useState(null);
+
   const [sendList, setSendList] = useState([]);
   const [levelWord, setLevelWord] = useState([]);
   const [deleteList, setDeleteList] = useState([]);
   // motion display ->  모션이 일어날때
-  const [sortedIndex, setSortedIndex] = useState([]);
+  const [sortedIdx, setSortedIdx] = useState([]);
   const [display, setDisplay] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [sorting, setSorting] = useState(false);
   const [adding, setAdding] = useState(false);
   const [count, setCount] = useState(0);
-  // const [targetWordSet, setTargetWordSet] = useState(false);
-  // const callback = (messageBody) => {
-  //   console.log(messageBody);
-  // };
+
   useEffect(() => {
     const connectAndSubscribe = async () => {
       if (roomId !== null) {
         await connect(); // Wait for the connect function to complete
         const callback = (messageBody) => {
-          // console.log(messageBody);
+          console.log(messageBody);
           const toTwoD = [messageBody, ""];
-          setLevelWord((prev) => [...prev, toTwoD]);
+          // setLevelWord((prev) => [...prev, toTwoD]);
         };
-        subscribe(`/topic/room/level-word/${roomId}`, callback);
+        // subscribe(`/topic/room/level-word/${roomId}`, callback);
       }
     };
 
@@ -70,16 +68,17 @@ export const SingleGame = (props) => {
       setDisplay(true);
       setAdding(true);
       setTimeout(() => {}, 200);
-
+      //소켓으로
       setTimeout(() => {
+        // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
         setCurrentWordList((prev) => [...prev, ...levelWord]);
+        setLevelWord([]);
         setDisplay(false);
         setAdding(false);
       }, 300);
       setTimeout(() => {
         // setCurrentWordList((prev) => [...prev, ...levelWord]);
-        setLevelWord([]);
-      }, 1200);
+      }, 400);
     }
   }, [levelWord]);
 
@@ -153,54 +152,36 @@ export const SingleGame = (props) => {
     //여기서 새값 들어오기전에 먼저 효과를 주기
     //TODO: 1 단어정렬, 2 점수 효과, 3 득점X 효과
     setCurrentWordList([...newList]);
-    if (newScore === score) {
-      console.log("did not score");
-      //입력창 흔들리는 모션
-      // 정렬 모션
-   
-    } else {
-      console.log("scored" + newList);
-      const toDelete = SortedWordResponseDto.targetWordRank;
-      console.log("toDelete " + toDelete);
-      setDeleteList([...newList.slice(toDelete,4)])
-      setTimeout(() => {
-        setCurrentWordList([
-          ...newList.slice(0, toDelete),
-          ...newList.slice(4),
-        ]);
-        // setDeleteList([...newList.slice(0, toDelete), ...newList.slice(4)]);
-      }, 500);
-      // 삭제 모션
-      setTimeout(() => {
-        if (SortedWordResponseDto.newSubWordList !== null) {
-          setCurrentWordList((prev) => [
-            ...prev,
-            ...SortedWordResponseDto.newSubWordList,
-            ...SortedWordResponseDto.newTargetWord,
-            ...levelWord,
-          ]);
-        } else {
-          setCurrentWordList((prev) => [
-            ...prev,
-            ...SortedWordResponseDto.newTargetWord,
-            ...levelWord,
-          ]);
-        }
-      }, 2000);
-      setTimeout(() => {
-        const where = currentWordList.findIndex(
-          (line) => line[0] === SortedWordResponseDto.newTargetWord
-        );
-        setTargetWordIndex(where);
-      }, 2100);
-      // setScore(newScore);// 단어 삭제 모션 있고 난 다음에 변경
-      setSubWordList(SortedWordResponseDto.newSubWordList);
-      setTargetWord(SortedWordResponseDto.newTargetWord);
-      console.log("new target " + SortedWordResponseDto.newTargetWord);
 
-      setScore(newScore);
-      //새 단어 주기적으로 추가되는 부분-> 실제 리스트에 포함 시키기
-    }
+    console.log("scored" + newList);
+    const toDelete = SortedWordResponseDto.targetWordRank;
+    console.log("toDelete " + toDelete);
+
+    setTimeout(() => {
+      setCurrentWordList([...newList.slice(0, toDelete), ...newList.slice(4)]);
+      // setDeleteList([...newList.slice(0, toDelete), ...newList.slice(4)]);
+    }, 500);
+    // 삭제 모션
+    setTimeout(() => {
+      setCurrentWordList((prev) => [
+        ...prev,
+        ...SortedWordResponseDto.newTargetWord,
+      ]);
+    }, 1000);
+    setTimeout(() => {
+      const where = currentWordList.findIndex(
+        (line) => line[0] === SortedWordResponseDto.newTargetWord
+      );
+      setTargetWordIndex(where);
+    }, 2100);
+    // setScore(newScore);// 단어 삭제 모션 있고 난 다음에 변경
+    setSubWordList(SortedWordResponseDto.newSubWordList);
+    setTargetWord(SortedWordResponseDto.newTargetWord);
+    console.log("new target " + SortedWordResponseDto.newTargetWord);
+
+    setScore(newScore);
+    //새 단어 주기적으로 추가되는 부분-> 실제 리스트에 포함 시키기
+
     console.log("current " + currentWordList);
   };
 
@@ -230,33 +211,63 @@ export const SingleGame = (props) => {
     console.log(insertRequestDto);
     try {
       const res = await insertWord(insertRequestDto);
-
+      setGuessWord("");
       setSendList(insertRequestDto.currentWordList);
-      console.log("insert res ");
+      console.log("입력 응답");
       console.log(res);
       if (res.data.success === "fail") {
         alert("no such word in db");
       } else {
         // 정렬 성공시
-        const SortedWordResponseDto = res.data.data.SortedWordListResponse;
-        console.log("sorted ");
-        console.log(SortedWordResponseDto);
-        const sorted = SortedWordResponseDto.sortedWordList;
-        console.log(sorted)
-        const sortedIdx = SortedWordResponseDto.sortedIndex;
-        const sublist = SortedWordResponseDto.newSubWordList;
-        
-        setSubWordList(sublist);
-        setSortedIndex(sortedIdx);
-        setSortedWordList([...sorted]);
-        //정렬 발동 1.2초 후에 
-        const newScore = SortedWordResponseDto.newScore;
-        if (subWordList.length > 0) {
-          setLevelWord((prev) => [...prev, ...subWordList]);
-          setSubWordList([]);
-        }
 
-        handleScoring(sorted, newScore, SortedWordResponseDto);
+        const sortedRes = res.data.data.SortedWordListResponse;
+        console.log("sorted ");
+        console.log(sortedRes);
+        const sorted = sortedRes.sortedWordList; //정렬단어목록
+        console.log(sorted);
+        const {
+          newScore,
+          newSubWordList,
+          newTargetWord,
+          sortedIndex,
+          targetWordRank,
+        } = sortedRes;
+        console.log(sortedIndex);
+        //정렬-> sortedWordList useEffect-> 모션
+        setSortedIdx(sortedIndex);
+        setSortedWordList(sorted);
+        //득점 성공시
+
+        if (newScore === score) {
+          //득점 실패 -> 정렬 후 끝
+          return;
+        } else {
+          //득점 조건이
+          // if(targetWordRank<4)
+          const update = [
+            ...sorted.slice(0, targetWordRank),
+            ...sorted.slice(4),
+            ...currentWordList.slice(sorted.length),
+          ];
+          setTimeout(() => {
+            setDeleteList([...sorted.slice(targetWordRank, 4)]);
+          }, 1500);
+
+          setCurrentWordList(update);
+        }
+        // console.log(sorted);
+        //추가 단어 여부와 추가
+        setTimeout(() => {
+          setSubWordList(newSubWordList);
+          if (newSubWordList && newSubWordList.length > 0) {
+            setLevelWord((prev) => [...prev, ...newSubWordList]);
+            setSubWordList([]);
+          }
+        }, 300);
+
+        //정렬 발동 1.2초 후에
+
+        // handleScoring(sorted, newScore, SortedWordResponseDto);
         //효과를 다 하고 쓰세여~
 
         // 단어 삭제 모션 있고 난 다음에 변경
@@ -265,24 +276,49 @@ export const SingleGame = (props) => {
       console.error(error);
     }
   };
-
   useEffect(() => {
-    if (sortedWordList.length > 0) {
+    if (deleteList.length > 0) {
       setDisplay(true);
-      // setAdding(false);
-      setSorting(true);
-      setTimeout(() => {}, 100);
+      setDeleting(true);
+      setTimeout(() => {
+        const update = [
+          ...sortedWordList.slice(0, targetWordIndex),
+          ...sortedWordList.slice(4),
+          ...currentWordList.slice(sortedWordList.length),
+        ];
+        setCurrentWordList(update);
+      }, 100);
 
       setTimeout(() => {
         setDisplay(false);
-        // setAdding(false);
-        setSorting(false);
-      }, 700);
-      setTimeout(() => {
-        // setCurrentWordList((prev) => [...prev, ...levelWord]);
-        setSortedWordList([]);
-      }, 800);
+        setDeleting(false);
+        setDeleteList([]);
+      }, 1300);
     }
+  }, [deleteList]);
+
+  useEffect(() => {
+    // setTimeout(() => {
+    if (sortedWordList.length > 0) {
+      // console.log(sortedIdx);
+      setDisplay(true);
+      // setAdding(false);
+      setSorting(true);
+      setTimeout(() => {
+        const update = [
+          ...sortedWordList,
+          ...currentWordList.slice(sortedWordList.length),
+        ];
+        setCurrentWordList(update);
+        // setCurrentWordList([...sortedWordList,...currentWordList.slice(sortedWordList.length)])
+      }, 100);
+
+      setTimeout(() => {
+        setDisplay(false);
+        setSorting(false);
+      }, 1300);
+    }
+    // }, 800);
   }, [sortedWordList]);
 
   const handleInputChange = (e) => {
@@ -457,6 +493,23 @@ export const SingleGame = (props) => {
             </Button> */}
           </div>
         </div>
+        <div style={{ width: "35%" }}>
+          <ul>
+            <li sytle={{ display: "flex", flexDirection: "row" }}>
+              <div style={{}}>
+                타겟 단어: {targetWordIndex}
+                {targetWord}
+              </div>
+            </li>
+            <li>levelWord: {levelWord}</li>
+            <li>next up</li>
+            <li>{subWordList}</li>
+            <li>deleteList</li>
+            <li>{deleteList}</li>
+            <li style={{ color: "white" }}>sorted {sortedWordList}</li>
+          </ul>
+          <ul className="wordlist">{renderWordList(sortedWordList)}</ul>
+        </div>
         <div className="gamecontainer" style={{}}>
           <div className="bglist">
             <div className="score">
@@ -489,26 +542,36 @@ export const SingleGame = (props) => {
                   <>
                     <AddWordAnimation
                       bufferList={levelWord}
-                      // targetWord={targetWord}
+                      targetWord={targetWord}
                     ></AddWordAnimation>
-                    {!sorting && 
-                    <ul className="wordlist">
-                      {renderWordList(currentWordList)}
-                    </ul>}
+                    {!sorting && (
+                      <ul className="wordlist">
+                        {renderWordList(currentWordList)}
+                      </ul>
+                    )}
                   </>
                 )}
                 <ul className="wordlist">
                   {sorting && (
-                    <SortAnimation
-                      sendList={sendList.slice().reverse()}
-                      beforeIndex={sortedIndex}
-                    ></SortAnimation>
+                    <>
+                      <SortAnimation
+                        sendList={sortedWordList.slice().reverse()}
+                        beforeIndex={sortedIdx}
+                        targetWord={targetWord}
+                      ></SortAnimation>
+                    </>
                   )}
                   {deleting && (
-                    <DeleteAnimation
-                      initialList={deleteList.slice().reverse()}
-                      targetIndex={2}
-                    ></DeleteAnimation>
+                    <>
+                      {renderWordList(
+                        currentWordList.slice(4, currentWordList.length)
+                      )}
+                      <DeleteAnimation
+                        initialList={currentWordList.slice()}
+                        targetIndex={targetWordIndex}
+                        targetWord={targetWord}
+                      ></DeleteAnimation>
+                    </>
                   )}
                 </ul>
               </>
@@ -521,7 +584,8 @@ export const SingleGame = (props) => {
               placeholder="입력하세요"
               value={guessWord}
               onChange={handleInputChange}
-              disabled={playerStatus === "OVER"}
+              disabled={playerStatus === "OVER" || sorting}
+              autoFocus
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
                   e.preventDefault();
@@ -530,22 +594,6 @@ export const SingleGame = (props) => {
               }}
             ></input>
           </div>
-        </div>
-        <div style={{ width: "35%" }}>
-          <ul>
-            <li sytle={{ display: "flex", flexDirection: "row" }}>
-              <div style={{}}>
-                타겟 단어: {targetWordIndex}
-                {targetWord}
-              </div>
-            </li>
-            <li>levelWord: {levelWord}</li>
-            <li>next up</li>
-            <li>{subWordList}</li>
-            <li>deleteList</li>
-            <li>{deleteList}</li>
-            <li>sorted {sortedWordList}</li>
-          </ul>
         </div>
       </div>
     </>

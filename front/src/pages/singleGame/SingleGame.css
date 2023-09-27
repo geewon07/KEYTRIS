@@ -162,7 +162,8 @@ li.wordline {
   z-index: 3333;
 }
 .score {
-  position: absolute;
+  /* position: absolute; */
+  position:absolute;
   text-align: center;
   top: 20%;
   left: 52%;

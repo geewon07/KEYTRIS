@@ -26,25 +26,24 @@ const AnimatedRow = styled.li`
   &.delete-animation {
     animation: ${flashAndGrowAndShrink} 0.3s;
     list-style: none;
-    font-size:24px;
+    font-size: 24px;
   }
 `;
 
 export const DeleteAnimation = (props) => {
-  const { initialList, targetWord , targetIndex } = props;
+  const { initialList, targetWord, targetIndex } = props;
   const [letterList, setLetterList] = useState(initialList);
-
 
   return (
     <>
-      {letterList?.map((item, index) => {
+      {letterList?.slice(targetIndex,4).reverse().map((item, index) => {
         const [word, point] = item;
         return (
           <AnimatedRow key={index} className="delete-animation wordline">
             {/* <li key={letterList.length - index - 1} className={"wordline"}> */}
             <div
               className={
-                targetWord === word
+                targetWord[0][0] === word
                   ? "targetWord wordline left"
                   : "wordline left"
               }
@@ -55,6 +54,17 @@ export const DeleteAnimation = (props) => {
             {/* </li> */}
             {/* <li style={{ color: "white" }}>{item[0]}</li> */}
           </AnimatedRow>
+        );
+      })}
+      {letterList?.slice(0, targetIndex).reverse().map((item, index) => {
+        const [word, point] = item;
+        return (
+          <>
+            <li key={index + word} className="wordline">
+              <div className="left">{word}</div>
+              <div className="right points">{point}</div>
+            </li>
+          </>
         );
       })}
     </>

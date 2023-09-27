@@ -108,7 +108,7 @@ export const SingleGameTest = () => {
             {display && (
               // <div className="bglist2 ">
               <>
-                {adding && (
+                {/* {adding && (
                   <>
                     <AddWordAnimation
                       bufferList={bufferList}
@@ -118,10 +118,10 @@ export const SingleGameTest = () => {
                       {renderWordList(wordList)}
                     </ul>
                   </>
-                )}
+                )} */}
                 <ul className="wordlist">
            
-                  {sorting && (
+                  {/* {sorting && (
                     <SortAnimation
                       sendList={wordList.slice().reverse()}
                       beforeIndex={reverseIndex}
@@ -130,7 +130,7 @@ export const SingleGameTest = () => {
                   //   sortedList={sendList.reverse()}
                   //   beforeIndex={reverseIndex}
                   // ></SortAnimationTest>
-                  )}
+                  )} */}
                    {/* {!sorting && (
                     // <SortAnimation
                     //   sendList={wordList.reverse()}
@@ -141,12 +141,15 @@ export const SingleGameTest = () => {
                     beforeIndex={reverseIndex}
                   ></SortAnimationTest>
                   )} */}
-                  {deleting && (
+                  {renderWordList(wordList.slice(4,wordList.length))}
+                  {deleting && (<>
+                  
                     <DeleteAnimation
-                      initialList={deleteList.reverse()}
+                      initialList={wordList.slice()}
                       targetIndex={2}
+                      targetWord={["컴퓨터",""]}
                     ></DeleteAnimation>
-                  )}
+                  </>)}
                 </ul>
               </>
             )}
@@ -180,7 +183,7 @@ export const SingleGameTest = () => {
             size="lg"
             onClick={() => {
               setDeleting(true);
-              setTimeout(() => setDeleting(false), 300);
+              // setTimeout(() => setDeleting(false), 400);
             }}
           >
             삭제 모션
@@ -214,6 +217,7 @@ export const SingleGameTest = () => {
           </Button>
         </div>
         <div>{sendList}</div>
+        <div>{wordList.slice()}</div>
       </div>
     </>
   );

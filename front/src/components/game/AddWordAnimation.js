@@ -14,7 +14,7 @@ const FallRow = styled.ul`
     height:100%;
     // --bottom:${bottomPosition};
 
-    animation: ${fall} 0.3s forwards; /* Adjust the animation duration and easing */
+    animation: ${fall} 0.2s forwards; /* Adjust the animation duration and easing */
   }
 `;
 export const AddWordAnimation=(props)=> {
@@ -24,15 +24,15 @@ export const AddWordAnimation=(props)=> {
   // 기존 리스트에서 단어가 있는 최상단 y좌표
 
   return (
-    <div style={{height:"500px", backgroundColor:"blue"}}> 
+    <div style={{height:"500px", backgroundColor:""}}> 
       {words?.map((item, index) => {
         const [word, point] = item;
         return (
           <FallRow className="add-animation wordlist">
-            <li key={index} className={"wordline"}>
+            <li key={index+word} className={"wordline"}>
               <div
                 className={
-                  targetWord === word ? "targetWord wordline left" : "wordline left"
+                  targetWord[0][0] === word? "targetWord wordline left" : "wordline left"
                 }
               >
                 {word}

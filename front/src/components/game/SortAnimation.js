@@ -42,7 +42,7 @@ const AnimatedRow = styled.li`
 // `;
 
 export const SortAnimation = (props) => {
-  const { beforeIndex, sendList } = props;
+  const { beforeIndex, sendList,targetWord } = props;
   const initialLetterList = [
     "타겟",
     "문자1",
@@ -69,7 +69,7 @@ export const SortAnimation = (props) => {
             index={index}
             startpoint={beforeIndex}
           >
-            <div className={"집" === word ? "targetWord left" : " left"}>
+            <div className={targetWord[0][0] === word ? "targetWord left" : " left"}>
               {word}
             </div>
             <div className="right points">{point}</div>
