@@ -9,7 +9,7 @@ import multiGame from "../../assets/imgs/multiGame.PNG";
 import multiInvite from "../../assets/imgs/multiInvite.PNG";
 import multiResult from "../../assets/imgs/multiResult.PNG";
 
-export const Modal4 = ({ isOpen, onClose }) => {
+export const ModalGuide = ({ isOpen, onClose }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const images = [
