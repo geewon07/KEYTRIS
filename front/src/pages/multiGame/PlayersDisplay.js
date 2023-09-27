@@ -29,28 +29,29 @@ export const PlayersDisplay = ({ data, roomStatus }) => {
                 data.score}
             </>
           )}
-          <div className="overlaybox"></div>
-          {/* <ul className="indexlist">{listing}</ul>
+        </div>
+
+        <div className="overlaybox-player"></div>
+        {/* <ul className="indexlist">{listing}</ul>
           <ul className="wordlist">{renderWordList(currentWordList)}</ul> */}
 
-          {/* <input
+        {/* <input
             className="guessbox Neo" */}
-          {/* // value={lastGuess} disabled> */}
-          {/* ></input> */}
-          <input
-            className="inputcase Neo"
-            type="text"
-            placeholder="언니!! 다른플레이어화면에는 여기에 닉네임 나오게할거야!! "
-            // value={guessWord}
-            // onChange={handleInputChange}
-            // onKeyDown={(e) => {
-            //   if (e.key === "Enter") {
-            //     e.preventDefault();
-            //     handleInsertWord();
-            //   }
-            // }}
-          ></input>
-        </div>
+        {/* // value={lastGuess} disabled> */}
+        {/* ></input> */}
+        <input
+          className="inputcase-playerName"
+          type="text"
+          placeholder="언니!! 다른플레이어화면에는 여기에 닉네임 나오게할거야!! "
+        // value={guessWord}
+        // onChange={handleInputChange}
+        // onKeyDown={(e) => {
+        //   if (e.key === "Enter") {
+        //     e.preventDefault();
+        //     handleInsertWord();
+        //   }
+        // }}
+        ></input>
       </div>
     </div>
   );
