@@ -193,7 +193,7 @@ export const SingleGame = (props) => {
         } = sortedRes;
         // console.log(sortedIndex);
         //정렬-> sortedWordList useEffect-> 모션
-        setSortedIdx(sortedIndex);//0 start
+        setSortedIdx(sortedIndex); //0 start
         setSortedWordList(sorted);
         setTargetWordIndex(targetWordRank);
         //득점 성공시
@@ -211,18 +211,18 @@ export const SingleGame = (props) => {
             // setCurrentWordList((prev)=>[...prev,...newTargetWord]);
             setLevelWord((prev) => [...newTargetWord]);
             // setSubWordList([]);
-          },1700);
+          }, 1700);
           // setCurrentWordList(update);
         }
         // console.log(sorted);
         //추가 단어 여부와 추가
         setTimeout(() => {
-          if(newSubWordList!==null){
+          if (newSubWordList !== null) {
             setSubWordList(...newSubWordList);
-          }else{
+          } else {
             setSubWordList(newSubWordList);
           }
-          
+
           if (newSubWordList && newSubWordList.length > 0) {
             setLevelWord((prev) => [...prev, ...newSubWordList]);
             setSubWordList([]);
@@ -266,7 +266,7 @@ export const SingleGame = (props) => {
       //소켓으로
       setTimeout(() => {
         // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
-        console.log("add level word")
+        console.log("add level word");
         console.log(levelWord);
         setCurrentWordList((prev) => [...prev, ...levelWord]);
         setLevelWord([]);
@@ -278,11 +278,11 @@ export const SingleGame = (props) => {
       }, 400);
     }
   }, [levelWord]);
-useEffect(() => {
-  if(!sorting){
-    inputRef.current.focus();
-  }
-}, [sorting])
+  useEffect(() => {
+    if (!sorting) {
+      inputRef.current.focus();
+    }
+  }, [sorting]);
 
   useEffect(() => {
     if (deleteList.length > 0) {
@@ -493,7 +493,8 @@ useEffect(() => {
             </Button>
             <br /> */}
           </div>
-        </div>        <div className="gamecontainer" style={{}}>
+        </div>{" "}
+        <div className="gamecontainer" style={{}}>
           <div className="bglist">
             <div className="score">
               {roomStatus === "PREPARED" && (
@@ -607,7 +608,6 @@ useEffect(() => {
           </ul>
           <ul className="wordlist">{renderWordList(currentWordList)}</ul>
         </div>
-
       </div>
     </>
   );

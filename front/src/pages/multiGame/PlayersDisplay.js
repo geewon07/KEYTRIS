@@ -32,6 +32,7 @@ export const PlayersDisplay = ({ data, roomStatus }) => {
         </div>
         <div className="overlaybox-player"></div>
         <div className="inputcase-playerName">{data?.nickname}</div>
+        {/* <div className="inputcase-playerName">mickname영역</div> */}
       </div>
     </div>
   );
