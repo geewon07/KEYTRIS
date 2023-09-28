@@ -16,7 +16,7 @@
 .chatMessages {
   width: 100%;
   min-height: 300px;
-  max-height: 350px;
+  max-height: 300px;
   overflow-y: auto;
   scroll-behavior: smooth;
   word-wrap: break-word; /* 강제로 줄바꿈 */
