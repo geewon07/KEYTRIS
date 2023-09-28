@@ -11,6 +11,7 @@
 }
 
 .chatMessages {
+  width: 60%;
   min-height: 300px;
   max-height: 350px;
   overflow-y: auto;
@@ -63,15 +64,15 @@
   word-break: break-all;
 } */
 
-.userMessage {
+/* .userMessage {
   display: block;
   text-align: right;
   color: rgb(187, 215, 74);
   font-family: NeoDunggeunmo Pro;
   margin: 1rem;
-}
+} */
 
-.otherMessage {
+.userMessage {
   display: block;
   text-align: left;
   color: #d1d1d1;
@@ -80,9 +81,17 @@
   margin-left: 5%;
 }
 
+.otherMessage {
+  display: block;
+  text-align: right;
+  color: rgb(187, 215, 74);
+  font-family: NeoDunggeunmo Pro;
+  margin: 1rem;
+}
+
 .NotificationChat {
   text-align: center;
-  color: #CCFF00;
+  color: #ccff00;
   font-family: NeoDunggeunmo Pro;
   background-color: #e4f79738;
   font-size: 20px;
