@@ -83,7 +83,7 @@
   margin: 1rem;
 } */
 
-.userMessage {
+.otherMessage {
   display: block;
   text-align: left;
   color: #d1d1d1;
@@ -91,7 +91,7 @@
   margin: 1rem;
 }
 
-.otherMessage {
+.userMessage {
   display: block;
   text-align: right;
   color: rgb(187, 215, 74);

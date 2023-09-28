@@ -17,7 +17,7 @@ export const MultiGame = () => {
   const [otherPlayerData2, setOtherPlayerData2] = useState(null);
   const [otherPlayerData3, setOtherPlayerData3] = useState(null);
   const [wordListResponse, setWordListResponse] = useState(null);
-  const [levelWord, setLevelWord] = useState(null);
+  const [newLevelWord, setNewLevelWord] = useState(null);
   const [currentPlayerGameInfo, setCurrentPlayerGameInfo] = useState(null);
   const [otherPlayerGame1, setOtherPlayerGame1] = useState(null);
   const [otherPlayerGame2, setOtherPlayerGame2] = useState(null);
@@ -44,11 +44,6 @@ export const MultiGame = () => {
   }, [responseData, navigate]);
 
   playRef.current = (messageBody) => {
-    console.log(playerId);
-    console.log(playerList);
-    console.log(messageBody);
-    console.log(currentPlayerData);
-
     const playInfo = messageBody;
     const currentPlayerId = messageBody.playerId;
 
@@ -87,6 +82,7 @@ export const MultiGame = () => {
       };
 
       const playerReady = (messageBody) => {
+        // 처리하기
         const playerReadyInfo = messageBody;
       };
 
@@ -100,8 +96,7 @@ export const MultiGame = () => {
 
       const levelWordInfo = (messageBody) => {
         console.log(messageBody);
-        const toTwoD = [messageBody, ""];
-        setLevelWord(toTwoD);
+        setNewLevelWord(messageBody);
       };
 
       const errorInfo = (messageBody) => {
@@ -159,7 +154,7 @@ export const MultiGame = () => {
   //   setPlayerList([
   //     {
   //       playerId: "5e532d13-ea01-47f1-8229-a12e2d9e01ae",
-  //       playerStatus: "READY",
+  //       playerStatus: "OVER",
   //       score: 0,
   //       targetWordIndex: 0,
   //       subWordIndex: 9,
@@ -187,16 +182,16 @@ export const MultiGame = () => {
   //       isMaster: false,
   //       overTime: null,
   //     },
-  //     {
-  //       playerId: "playerId3",
-  //       playerStatus: "GAMING",
-  //       score: 0,
-  //       targetWordIndex: 0,
-  //       subWordIndex: 0,
-  //       nickname: "nickname3",
-  //       isMaster: false,
-  //       overTime: null,
-  //     },
+  //     // {
+  //     //   playerId: "playerId3",
+  //     //   playerStatus: "GAMING",
+  //     //   score: 0,
+  //     //   targetWordIndex: 0,
+  //     //   subWordIndex: 0,
+  //     //   nickname: "nickname3",
+  //     //   isMaster: false,
+  //     //   overTime: null,
+  //     // },
   //   ]);
   // }, []);
 
@@ -237,7 +232,7 @@ export const MultiGame = () => {
             wordListResponse={wordListResponse}
             insertWord={insertWord}
             currentPlayerGameInfo={currentPlayerGameInfo}
-            newlevelWord={levelWord}
+            newLevelWord={newLevelWord}
           />
         )}
       </div>
@@ -248,21 +243,21 @@ export const MultiGame = () => {
             roomStatus={roomStatus}
             wordListResponse={wordListResponse}
             otherPlayerGame1={otherPlayerGame1}
-            levelWord={levelWord}
+            newLevelWord={newLevelWord}
           />
           <PlayersDisplay
             data={otherPlayerData2}
             roomStatus={roomStatus}
             wordListResponse={wordListResponse}
             otherPlayerGame2={otherPlayerGame2}
-            levelWord={levelWord}
+            newLevelWord={newLevelWord}
           />
           <PlayersDisplay
             data={otherPlayerData3}
             roomStatus={roomStatus}
             wordListResponse={wordListResponse}
             otherPlayerGame3={otherPlayerGame3}
-            levelWord={levelWord}
+            newLevelWord={newLevelWord}
           />
         </div>
         <div className="chat-container">
@@ -270,7 +265,7 @@ export const MultiGame = () => {
             onSendMessage={handleSendMessage}
             chatContent={chatContent}
             playerList={playerList}
-            playerId={playerId}
+            newLevelWord={newLevelWord}
           ></Chat>
         </div>
       </div>
