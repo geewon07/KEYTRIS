@@ -24,9 +24,10 @@ const flashAndGrowAndShrink = keyframes`
 
 const AnimatedRow = styled.li`
   &.delete-animation {
-    animation: ${flashAndGrowAndShrink} 0.3s;
+    animation: ${flashAndGrowAndShrink} 0.3s forwards;
     list-style: none;
     font-size: 24px;
+    // background-color:red;
   }
 `;
 
@@ -36,10 +37,10 @@ export const DeleteAnimation = (props) => {
 
   return (
     <>
-      {letterList?.slice(targetIndex,4).reverse().map((item, index) => {
+      {letterList?.slice().slice(targetIndex,4).reverse().map((item, index) => {
         const [word, point] = item;
         return (
-          <AnimatedRow key={index} className="delete-animation wordline">
+          <AnimatedRow key={index+word+point} className="delete-animation wordline">
             {/* <li key={letterList.length - index - 1} className={"wordline"}> */}
             <div
               className={
@@ -56,17 +57,17 @@ export const DeleteAnimation = (props) => {
           </AnimatedRow>
         );
       })}
-      {letterList?.slice(0, targetIndex).reverse().map((item, index) => {
+      {/* {letterList?.slice(0, targetIndex).reverse().map((item, index) => {
         const [word, point] = item;
         return (
           <>
-            <li key={index + word} className="wordline">
+            <li key={index + word} className="wordline filler">
               <div className="left">{word}</div>
               <div className="right points">{point}</div>
             </li>
           </>
         );
-      })}
+      })} */}
     </>
   );
 };
