@@ -17,8 +17,8 @@ function TodayNew() {
       let items = newsResponse.items;
 
       for (const item in items) {
-        items[item].title = items[item].title.replace(/<(\/b|b)([^>]*)>/gi, "");
-        items[item].description = items[item].description.replace(/<(\/b|b)([^>]*)>/gi, "");
+        items[item].title = items[item].title.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "").replace(/&quot;/g, "\"");
+        items[item].description = items[item].description.replace(/<(\/)?([a-zA-Z]*)(\s[a-zA-Z]*=[^>]*)?(\s)*(\/)?>/ig, "").replace(/&quot;/g, "\"");
       }
 
       setNewsItems(items);
