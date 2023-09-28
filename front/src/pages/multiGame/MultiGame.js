@@ -265,9 +265,8 @@ export const MultiGame = () => {
             levelWord={levelWord}
           />
         </div>
-        <div>
+        <div className="chat-container">
           <Chat
-            className="chat-container"
             onSendMessage={handleSendMessage}
             chatContent={chatContent}
             playerList={playerList}
