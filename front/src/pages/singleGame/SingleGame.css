@@ -1,13 +1,14 @@
 .gamecontainer {
-  width: 30%;
-  min-width: 25%;
+  width: 30%!important;
+  min-width: 30%;
   display: flex;
+  /* align-self: center; */
   flex-direction: row-reverse;
 }
 .bglist {
   background: #26154a;
   /* background: #fff; */
-  width: 90%;
+  width: 90%!important;
   z-index: 1000;
 
   height: 100vh;
@@ -17,6 +18,38 @@
   justify-content: flex-end;
   align=self: end;
   text-align: start;
+}
+.bglist2 {
+  background: #26154a;
+  /* background: #fff; */
+  width: 90%!important;
+  z-index: 1000;
+
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: flex-end;
+  align=self: end;
+  text-align: start;
+}
+.displaylayer {
+  display:flex;
+  flex-direction:column;
+  height: 85%;
+  /* width: 24%; */
+  top: auto;
+  left: auto;
+  bottom:4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end!important;
+  position: absolute;
+  /* align-self: flex-end; */
+  color:white;
+  /* background: white; */
+  background:gray;
+  z-index: 3332; /* Set a higher z-index for the displaylayer */
 }
 .wordlist {
   margin: 0;
@@ -129,7 +162,8 @@ li.wordline {
   z-index: 3333;
 }
 .score {
-  position: absolute;
+  /* position: absolute; */
+  position:absolute;
   text-align: center;
   top: 20%;
   left: 52%;
