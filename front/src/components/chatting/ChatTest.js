@@ -15,12 +15,18 @@ function TextChatting({ onSendMessage, chatContent, playerList, playerId }) {
   useEffect(() => {
     chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
     if (chatContent && chatContent.playerId !== "notification") {
-      const matchedPlayer = playerList.find(player => player.playerId === chatContent.playerId);
+      const matchedPlayer = playerList.find(
+        (player) => player.playerId === chatContent.playerId
+      );
       const getNickName = matchedPlayer ? matchedPlayer.nickname : "null";
-    
+
       setChatMessages((prevMessages) => [
         ...prevMessages,
-        { sender : getNickName , text: chatContent.content, playerId: chatContent.playerId },
+        {
+          sender: getNickName,
+          text: chatContent.content,
+          playerId: chatContent.playerId,
+        },
       ]);
     } else {
       setChatMessages((prevMessages) => [
@@ -28,7 +34,7 @@ function TextChatting({ onSendMessage, chatContent, playerList, playerId }) {
         { sender: "notification", text: chatContent.content },
       ]);
     }
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [chatContent]);
 
   const handleInputChange = (event) => {
@@ -59,22 +65,22 @@ function TextChatting({ onSendMessage, chatContent, playerList, playerId }) {
               {chatMessages.map((message, index) =>
                 message.sender === "notification" ? (
                   <p className="NotificationChat" key={index}>
-                    <strong>
-                      {message.text}
-                    </strong>
+                    <strong>{message.text}</strong>
                   </p>
                 ) : (
                   <div
                     key={index}
-                    className={`${message.playerId !== playerId ? "messageContainer userMessage" : "messageContainer otherMessage"}`} >
-                  <div>
-                    {message.playerId === playerId
-                      ? "나"
-                      : message.sender}
+                    className={`${
+                      message.playerId !== playerId
+                        ? "messageContainer userMessage"
+                        : "messageContainer otherMessage"
+                    }`}
+                  >
+                    <div>
+                      {message.playerId === playerId ? "나" : message.sender}
+                    </div>
+                    <div>{message.text}</div>
                   </div>
-                  <div >{message.text}</div>
-                </div>
-
                 )
               )}
             </div>

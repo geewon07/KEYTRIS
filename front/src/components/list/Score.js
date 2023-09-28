@@ -11,10 +11,9 @@ function Score() {
   const [isSaving, setIsSaving] = useState(false);
   const score = 3000;
 
-
   useEffect(() => {
     handleOverGame(overRequestDto);
-     // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ function Score() {
 
   const overRequestDto = {
     roomId: "2fd4e586-a402-418c-916d-38f291758b72",
-    lastWord: "초콜릿",
+    lastWord: [["초콜릿", 0]],
     score: 0,
   };
 
@@ -88,24 +87,28 @@ function Score() {
         <hr />
         {overResponse && <div className="rank-list">{listing}</div>}
         {/* 내 점수 */}
-        {typeof overResponse?.record === "boolean" &&
-          overResponse.record &&
-          !isSaving && (
-            <>
-              <div className="record">
-                내 점수 &nbsp;{score}&nbsp;&nbsp;
-                {/* 닉네임 입력란 */}
-                <input className="score-nickname-input"
+        <div className="record">
+          내 점수 &nbsp;{score}&nbsp;&nbsp;
+          {/* 닉네임 입력란 */}
+          {typeof overResponse?.record === "boolean" &&
+            overResponse.record &&
+            !isSaving && (
+              <>
+                <input
+                  className="score-nickname-input"
                   type="text"
                   value={nickName}
                   onChange={handleNicknameChange}
                   onKeyPress={handleKeyPress}
                   placeholder="닉네임 입력"
                 />
-                <button className="score-save-btn" onClick={handleSaveClick}>저장</button>
-              </div>
-            </>
-          )}
+                <button className="score-save-btn" onClick={handleSaveClick}>
+                  저장
+                </button>
+              </>
+            )}
+        </div>
+
         <Button
           label="다시하기"
           onClick={() => handleButtonClickToGO("/")}
