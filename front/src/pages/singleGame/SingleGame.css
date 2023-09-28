@@ -1,31 +1,39 @@
 .gamecontainer {
+  background: #757575;
+  margin-top: 3%;
+  margin-bottom: 3%;
   width: 30% !important;
   min-width: 30%;
+  height: 90vh;
+  /* height: 800px; */
   display: flex;
-  /* align-self: center; */
-  flex-direction: row-reverse;
+  align-self: center;
+  flex-direction: column;
 }
 .bglist {
-  background: #26154a;
-  /* background: #fff; */
-  width: 90% !important;
+  background: #986ff0;
+  width: 100% !important;
   z-index: 1000;
-
-  height: 100vh;
+  height: 80vh;
+  /* height: 800px; */
   display: flex;
   flex-direction: column;
   /* align-items: center; */
   justify-content: flex-end;
   align-self: end;
   text-align: start;
+  margin-top: auto;
+  margin-bottom: auto;
+  /* overflow-y: hidden;
+  overflow-x: auto; */
+  position: relative;
 }
 .bglist2 {
   background: #26154a;
   /* background: #fff; */
   width: 90% !important;
   z-index: 1000;
-
-  height: 100vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -51,7 +59,18 @@
   background: gray;
   z-index: 3332; /* Set a higher z-index for the displaylayer */
 }
+
+.list-container {
+  background: #bcbcbc;
+  width: 100%;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
 .wordlist {
+  background: #500086;
   margin: 0;
   list-style: none;
 }
@@ -75,23 +94,22 @@
   font-size: 16px;
   background: var(--gray2, #888);
   color: var(--gray4, #ddd);
-  font-size: 16px;
-  padding: 10px;
+  font-size: 20px;
+  padding: 20px;
   z-index: 3333;
   border: none;
 }
 input.inputcase {
   width: auto;
-
   font-size: 16px; /* Set the font size */
   border: none;
   background-color: #f4f4f4; /* Set the background color */
   color: #888; /* Set the text color */
-  font-size: 16px;
+  font-size: 20px;
   color: blue;
   background-color: #ccff00 !important;
   /* margin: 5px; */
-  padding: 10px;
+  padding: 20px;
   z-index: 3333;
 }
 .points {
@@ -103,57 +121,36 @@ input.inputcase:focus {
 .wordlist .targetWord::marker {
   content: "▶" !important;
 }
+.indexlist {
+  background: #5b6f01;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0;
+  margin: 0;
+  height: inherit;
+}
 li.wordline {
-  font-size: 16px;
-  color: #fff !important;
+  /* font-size: 25px; */
+  font-size: 2.5vh; 
+  font-size: min(max(2.5vh, 14px), 28px);
+  /* color: #fff !important; */
   /* background-color: #ccff00; */
   /* margin: 10px!important; */
-  padding: 0.25rem;
+  /* padding: 0.25rem; */
+  padding-top: 0.5rem;
+  padding-bottom: 0.4rem;
   display: flex; /* Use flexbox to control layout */
-  justify-content: space-between !important; /* Align items to either side */
-  align-items: center; /* Vertically center the content */
+  justify-content: space-between; /* Align items to either side */
+  align-items: center;
   /* padding: 4px; Add some spacing */
   /* border: 1px solid #ccc;  */
 }
-@media (min-height: 600px) {
-  /* Adjust font size for screens up to 768px wide */
-  li.wordline {
-    font-size: 1.5rem !important;
-  }
-  .indexlist {
-    position: absolute;
-    margin-bottom: 4.3rem;
-    padding: 0;
-  }
-  .indexlist li {
-    list-style-type: none;
-    font-size: 0.5rem !important;
-    padding: 0.51rem;
-    color: var(--gray3, #bcbcbc);
-    font-style: normal;
-    line-height: 1rem !important;
-  }
-}
-
-@media (min-height: 750px) {
-  /* Adjust font size for screens up to 576px wide */
-  li.wordline {
-    font-size: 1.5rem !important;
-  }
-  .overlaybox {
-    height: 12.4rem !important;
-    width: 26.5%;
-    top: auto;
-    right: auto;
-    position: absolute;
-    border-top: 3px solid var(--primary, #cf0);
-    background: rgba(204, 255, 0, 0.2);
-    z-index: 3333;
-  }
-}
 .overlaybox {
-  height: 12.4rem !important;
-  width: 26.5%;
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* 쌓이는 방향을 수직으로 설정 */
   top: auto;
   right: auto;
   position: absolute;

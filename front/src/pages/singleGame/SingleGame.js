@@ -493,7 +493,8 @@ useEffect(() => {
             </Button>
             <br /> */}
           </div>
-        </div>        <div className="gamecontainer" style={{}}>
+        </div>        
+        <div className="gamecontainer" style={{ }}>
           <div className="bglist">
             <div className="score">
               {roomStatus === "PREPARED" && (
@@ -511,84 +512,92 @@ useEffect(() => {
                 roomStatus !== null &&
                 score}
             </div>
-            <div className="overlaybox"></div>
+            <div className="overlaybox">
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+            </div>
 
-            <ul className="indexlist">{listing}</ul>
-            {!display && (
-              <ul className="wordlist">{renderWordList(currentWordList)}</ul>
-            )}
+            <div className="deadline"></div>
+            
+            <div className="list-container">
+              <ul className="indexlist">{listing}</ul>
+              {!display && (
+                <ul className="wordlist">{renderWordList(currentWordList)}</ul>
+              )}
 
-            {display && (
-              // <div className="bglist2 ">
-              <>
-                {adding && (
-                  <>
-                    <AddWordAnimation
-                      bufferList={levelWord}
-                      targetWord={targetWord}
-                    ></AddWordAnimation>
-                    {!sorting && (
-                      <ul className="wordlist">
-                        {renderWordList(currentWordList)}
-                      </ul>
+              {display && (
+                // <div className="bglist2 ">
+                <>
+                  {adding && (
+                    <>
+                      <AddWordAnimation
+                        bufferList={levelWord}
+                        targetWord={targetWord}
+                      ></AddWordAnimation>
+                      {!sorting && (
+                        <ul className="wordlist">
+                          {renderWordList(currentWordList)}
+                        </ul>
+                      )}
+                    </>
+                  )}
+                  <ul className="wordlist">
+                    {sorting && (
+                      <>
+                        <SortAnimation
+                          sendList={sortedWordList.slice().reverse()}
+                          beforeIndex={sortedIdx}
+                          targetWord={targetWord}
+                        ></SortAnimation>
+                      </>
                     )}
-                  </>
-                )}
-                <ul className="wordlist">
-                  {sorting && (
-                    <>
-                      <SortAnimation
-                        sendList={sortedWordList.slice().reverse()}
-                        beforeIndex={sortedIdx}
-                        targetWord={targetWord}
-                      ></SortAnimation>
-                    </>
-                  )}
-                  {deleting && (
-                    <>
-                      {
-                        <div sytle={{ backgroundColor: "red" }}>
-                          {renderWordList(
-                            currentWordList.slice(4, currentWordList.length)
-                          )}
-                        </div>
-                      }
-                      <DeleteAnimation
-                        initialList={currentWordList.slice()}
-                        targetIndex={targetWordIndex}
-                        targetWord={targetWord}
-                      ></DeleteAnimation>
-                      {
-                        <div sytle={{ backgroundColor: "red" }}>
-                          {renderWordList(
-                            currentWordList.slice(0, targetWordIndex)
-                          )}
-                        </div>
-                      }
-                    </>
-                  )}
-                </ul>
-              </>
-            )}
-
-            <input className="guessbox Neo" value={lastGuess} disabled></input>
-            <input
-              className="inputcase Neo"
-              type="text"
-              ref={inputRef}
-              placeholder="입력하세요"
-              value={guessWord}
-              onChange={handleInputChange}
-              disabled={playerStatus === "OVER" || sorting}
-              autoFocus
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  handleInsertWord();
-                }
-              }}
-            ></input>
+                    {deleting && (
+                      <>
+                        {
+                          <div sytle={{ backgroundColor: "red" }}>
+                            {renderWordList(
+                              currentWordList.slice(4, currentWordList.length)
+                            )}
+                          </div>
+                        }
+                        <DeleteAnimation
+                          initialList={currentWordList.slice()}
+                          targetIndex={targetWordIndex}
+                          targetWord={targetWord}
+                        ></DeleteAnimation>
+                        {
+                          <div sytle={{ backgroundColor: "red" }}>
+                            {renderWordList(
+                              currentWordList.slice(0, targetWordIndex)
+                            )}
+                          </div>
+                        }
+                      </>
+                    )}
+                  </ul>
+                </>
+              )}
+            </div>
           </div>
+          <input className="guessbox Neo" value={lastGuess} disabled></input>
+          <input
+            className="inputcase Neo"
+            type="text"
+            ref={inputRef}
+            placeholder="입력하세요"
+            value={guessWord}
+            onChange={handleInputChange}
+            disabled={playerStatus === "OVER" || sorting}
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleInsertWord();
+              }
+            }}
+          ></input>
         </div>
         <div style={{ width: "35%" }}>
           <ul>
