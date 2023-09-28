@@ -35,7 +35,7 @@ useEffect(() => {
 
       // Cleanup funciton
       return() => {
-        disconnect(new Date().toLocaleTimeString());
+        disconnect();
       }
     }
   }, [roomId, playerId]);
