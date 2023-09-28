@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import keytrisLogo from "../../assets/logo_1.svg";
 import { Modal } from "../../components/modal/ModalTest";
 import "./Home.css";
@@ -31,7 +32,7 @@ export const Home = () => {
           state: { responseData: response.data.data },
         });
       } else {
-        alert("게임 만들기를 실패했습니다.");
+        toast.error("게임 만들기를 실패했습니다.");
       }
     } catch (error) {
       const { response } = error;
@@ -47,9 +48,9 @@ export const Home = () => {
       // 에러 코드에 따른 메시지 출력
       const errorMessage = errorMessages[response?.data?.errorCode];
       if (errorMessage) {
-        alert(errorMessage);
+        toast.error(errorMessage);
       } else {
-        alert("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
+        toast.error("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
       }
     }
   };
@@ -58,8 +59,7 @@ export const Home = () => {
     console.log(category + " " + nickname);
 
     if (!nickname) {
-      alert("닉네임을 입력해주세요.");
-      return;
+      return toast.error("닉네임을 입력해주세요.");
     }
 
     try {
@@ -74,7 +74,7 @@ export const Home = () => {
           state: { responseData: response.data.data },
         });
       } else {
-        alert("게임 만들기 실패");
+        toast.error("게임 만들기 실패");
       }
     } catch (error) {
       const { response } = error;
@@ -90,9 +90,9 @@ export const Home = () => {
       // 에러 코드에 따른 메시지 출력
       const errorMessage = errorMessages[response?.data?.errorCode];
       if (errorMessage) {
-        alert(errorMessage);
+        toast.error(errorMessage);
       } else {
-        alert("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
+        toast.error("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
       }
     }
   };
@@ -101,8 +101,7 @@ export const Home = () => {
     console.log("닉네임: " + nickname + " " + gameCode);
 
     if (!nickname || !gameCode) {
-      alert("닉네임과 게임 코드는 필수 항목입니다.");
-      return;
+      return toast.error("닉네임과 게임 코드는 필수 항목입니다.");
     }
 
     try {
@@ -117,7 +116,7 @@ export const Home = () => {
           state: { responseData: response.data.data },
         });
       } else {
-        alert("게임 입장에 실패했습니다.");
+        toast.error("게임 입장에 실패했습니다.");
       }
     } catch (error) {
       const { response } = error;
@@ -134,9 +133,9 @@ export const Home = () => {
       // 에러 코드에 따른 메시지 출력
       const errorMessage = errorMessages[response?.data?.errorCode];
       if (errorMessage) {
-        alert(errorMessage);
+        toast.error(errorMessage);
       } else {
-        alert("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
+        toast.error("게임 입장에 실패했습니다."); // 일반적인 에러 메시지
       }
     }
   };
