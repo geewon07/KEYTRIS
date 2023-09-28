@@ -39,7 +39,7 @@ export const MyGameDisplay = ({
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (newLevelWord !== null && data?.playerStatus === "GAMEING") {
+    if (newLevelWord !== null && data?.playerStatus === "GAMING") {
       const toTwoD = [newLevelWord, ""];
       setLevelWord((prev) => [...prev, toTwoD]);
     }
@@ -301,8 +301,6 @@ export const MyGameDisplay = ({
               roomStatus !== "PREPARING" &&
               roomStatus !== null &&
               score}
-
-            {data.playerStatus === "OVER" && <div>OVER</div>}
           </div>
           <div className="overlaybox"></div>
 
