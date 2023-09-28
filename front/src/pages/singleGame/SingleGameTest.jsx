@@ -2,122 +2,87 @@ import { Stomp } from "@stomp/stompjs";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
-
+import { DeleteAnimation } from "../../components/game/DeleteAnimation";
+import "./SingleGame.css";
+import { Button } from "react-bootstrap";
+import { SortAnimation } from "../../components/game/SortAnimation";
+import { SortAnimationTest } from "../../components/game/SortAnimation copy";
+import { AddWordAnimation } from "../../components/game/AddWordAnimation";
 export const SingleGameTest = () => {
-  const AXIOS_BASE_URL = "http://localhost:8765/api";
-  const [sockJS, setSockJS] = useState();
-  const [player, setPlayer] = useState();
-  const [room, setRoom] = useState();
-  const [words, setWords] = useState([]);
-  const [playerStatus, setPStatus] = useState();
-  const [roomStatus, setRStatus] = useState();
-  const [guess, setGuess] = useState("");
-  const [wordList, setWordList] = useState();
-  const [score, setScore] = useState();
-  const [target, setTarget] = useState("");
-  const listing = words
-    ?.slice()
-    .reverse()
-    .map((value, index) => (
-      <li key={index} style={{lineHeight: "1.5rem",
-      }} className={value === target ? "targetWord" : ""}>
-        {value}+{words.length - index}
-      </li>
-    ));
-  console.log(target);
-  const sock = new SockJS("http:localhost:8765/keytris");
-  const stomp = Stomp.over(sock);
-  const handleCreate = () => {
-    setSockJS(sock);
-    axios.post(`${AXIOS_BASE_URL}/games`, { category: 101 }).then((res) => {
-      const statusResponse = res.data.data.StatusResponse;
-      console.log(res.data);
-      console.log(res.data.data);
-      setPlayer(statusResponse.playerId);
-      setRoom(statusResponse.roomId);
-      setPStatus(statusResponse.playerStatus);
-      setRStatus(statusResponse.roomStatus);
-      console.log(room);
-    });
-    console.log(room);
+  const [display, setDisplay] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [sorting, setSorting] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [count, setCount] = useState(0);
+  const wordList = [
+    ["집", ""],
+    ["나무", ""],
+    ["해변", ""],
+    ["음식", ""],
+    ["물", ""],
+    ["사과", ""],
+    ["바나나", ""],
+    ["컴퓨터", ""],
+    ["학교", ""],
+    ["자동차", ""],
+  ];
+  const addList = [];
+  const bufferList = [
+    ["강아지", ""],
+    ["고양이", ""],
+    ["책", ""],
+    ["휴대폰", ""],
+    ["친구", ""],
+  ];
+  const deleteList = [
+    ["집", ""],
+    ["나무", ""],
+    ["해변", ""],
+    ["음식", ""],
+  ];
+  const handleAdd = () => {
+    // setWordList((prev)=>[...prev,addList[count]]);
+    wordList.push(bufferList[count]);
+    setCount((prev) => prev + 1);
   };
-
-  useEffect(() => {
-    if (room != null)
-      stomp.connect({}, () => {
-        stomp.send("/app/games/room/" + room);
-        stomp.subscribe("/topic/room/level-word/" + room, (message) => {
-          console.log(message.body);
-          const msg =message.body; //JSON.parse(message.body);
-          setPStatus(msg.playerStatus);
-          setRStatus(msg.roomStatus);
-        });
-      });
-  }, [room]);
-
-  const afterCreate = () => {};
-  const handleStart = () => {
-    axios
-      .post(`${AXIOS_BASE_URL}/games/start`, {
-        playerId: player,
-        playerStatus: playerStatus,
-        roomId: room,
-        roomStatus: roomStatus,
-      })
-      .then((res) => {
-        const startResponse = res.data.data.StartResponse;
-        const statusResponse = startResponse.statusResponse;
-        console.log(res.data);
-        console.log(res.data.data);
-        setWordList(startResponse.wordListResponse);
-        setPStatus(statusResponse.playerStatus);
-        setRStatus(statusResponse.roomStatus);
-        setWords(startResponse.wordListResponse.subWordList);
-        setTarget(startResponse.wordListResponse.targetWord);
-        setWords((prev) => [
-          ...prev,
-          startResponse.wordListResponse.targetWord,
-        ]);
-        setScore(startResponse.wordListResponse.score);
-        // stomp.subscribe("/topic/games/level-word/"+room)
+  const reverseIndex = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0];
+  const [dTop, setDTop] = useState([["물", ""]]);
+  const [dBottom, setDBottom] = useState([]);
+  const [sendList, setSendList] = useState(wordList);
+  const renderWordList = (list) => {
+    return list
+      .slice()
+      .reverse()
+      .map((item, index) => {
+        // if (Array.isArray(item)) {
+        // This is a 2D array with points
+        const [word, point] = item;
+        return (
+          <li key={deleteList.length - index - 1} className={"wordline"}>
+            <div
+              className={
+                "집" === word ? "targetWord wordline left" : "wordline left"
+              }
+            >
+              {word}
+            </div>
+            <div className="right points">{point}</div>
+          </li>
+        );
+        // }
       });
   };
-  //   sockJS.onmessage = function (e) {
-  //     //   setReceivedData(e.data)
-  //     console.log(e.data);
-  //   };
-  const handleOver = () => {
-    // sockJS.close();
-    stomp.disconnect();
-  };
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if(words.length<20){
-  //     // Generate a random word and add it to the list
-  //     const timestamp = new Date().getSeconds();
-  //     const randomWord = timestamp;
-  //     // setWords((prevWords) => [ randomWord,...prevWords]);}
-  //     setWords((prevWords) => [...prevWords, randomWord]);}
-
-  //   }, 2000); // Add a random word every 2 seconds}
-
-  //   return () => clearInterval(interval); // Cleanup on unmount
-  // }, [words.length]);
-  const enterWord = () => {
-    console.log("시도" + guess);
-    getList();
-  };
-  const getList = () => {
-    axios.post(`${AXIOS_BASE_URL}/guess-word`).then((res) => {
-      console.log(res.data);
-      setWords((prev) => [...prev, res.data]);
-    });
-  };
-
-  const handleInputChange = (e) => {
-    const { value } = e.target;
-    setGuess(value);
-  };
+  const listIndexStandard = [
+    20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
+  ];
+  const listing = listIndexStandard?.slice().map((value, index) => (
+    <li
+      key={index}
+      className={20 - index - 1 === 9 ? "targetWord wordline" : "wordline"}
+    >
+      {value}
+    </li>
+  ));
   return (
     <>
       <div
@@ -126,74 +91,133 @@ export const SingleGameTest = () => {
           alignItems: "center",
           display: "flex",
           flexDirection: "row",
+          justifyContent: "center",
         }}
       >
-        <div style={{ width: "45%" }}>
-          <h5>
-            player :{player} , room :{room}
-          </h5>
-          <div>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                handleCreate();
-                // onClickConnectBtn();
+        <div className="gamecontainer" style={{ margin: 0 }}>
+          {/* <div className="displaylayer2"></div> */}
+          <div className="bglist">
+            <div className="score"></div>
+            <div className="overlaybox"></div>
+            <ul className="indexlist">{listing}</ul>
+            
+            {/* {!display && (
+              <ul className="wordlist">{renderWordList(wordList)}</ul>
+            )} */}
+      
+            {display && (
+              // <div className="bglist2 ">
+              <>
+                {/* {adding && (
+                  <>
+                    <AddWordAnimation
+                      bufferList={bufferList}
+                      // targetWord={targetWord}
+                    ></AddWordAnimation>
+                    <ul className="wordlist">
+                      {renderWordList(wordList)}
+                    </ul>
+                  </>
+                )} */}
+                <ul className="wordlist">
+           
+                  {/* {sorting && (
+                    <SortAnimation
+                      sendList={wordList.slice().reverse()}
+                      beforeIndex={reverseIndex}
+                    ></SortAnimation>
+                  //   <SortAnimationTest
+                  //   sortedList={sendList.reverse()}
+                  //   beforeIndex={reverseIndex}
+                  // ></SortAnimationTest>
+                  )} */}
+                   {/* {!sorting && (
+                    // <SortAnimation
+                    //   sendList={wordList.reverse()}
+                    //   beforeIndex={reverseIndex}
+                    // ></SortAnimation>
+                    <SortAnimationTest
+                    sortedList={sendList.reverse()}
+                    beforeIndex={reverseIndex}
+                  ></SortAnimationTest>
+                  )} */}
+                  {renderWordList(wordList.slice(4,wordList.length))}
+                  {deleting && (<>
+                  
+                    <DeleteAnimation
+                      initialList={wordList.slice()}
+                      targetIndex={2}
+                      targetWord={["컴퓨터",""]}
+                    ></DeleteAnimation>
+                  </>)}
+                </ul>
+              </>
+            )}
+            <input className="guessbox Neo" disabled></input>
+            <input
+              className="inputcase Neo"
+              type="text"
+              placeholder="입력하세요"
+              // value={guessWord}
+              // onChange={handleInputChange}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  // handleInsertWord();
+                }
               }}
-            >
-              1인 게임 입장
-            </button>
-          </div>
-          <h1>
-            status: player {playerStatus}, room {roomStatus}
-          </h1>
-          <h1 style={{ flex: "none", position: "sticky", top: 0 }}>score:{score}</h1>
-          {/* <Menu></Menu> */}
-          <div>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                handleStart();
-              }}
-            >
-              게임 시작
-            </button>
-            <button onClick={handleOver}>게임 종료/소켓 종료</button>
+            ></input>
           </div>
         </div>
-
-        <div
-          className="wordlist"
-          style={{
-            height: "100vh",
-            display: "flex",
-            width: "25%",
-            flexDirection: "column",
-            // alignItems:"center",
-            justifyContent: "flex-end",
-            textAlign: "start",
-          }}
-        >
-   
-          <ul style={{ listStyle: "none" }}>{listing}</ul>
-          <input
-            type="text"
-            placeholder="입력하세요"
-            value={guess}
-            onChange={handleInputChange}
-          ></input>
-        </div>
-
-        <div>
-          <form
-            onKeyDown={(e) => {
-              if (e.key === "Enter") e.preventDefault();
-              enterWord();
+        <div style={{ width: "300px" }}>
+          <Button
+            size="lg"
+            onClick={() => {
+              setDisplay((prev) => !prev);
             }}
-            // onSubmit={enterWord}
           >
-            {/* <button type="submit">버튼</button> */}
-          </form>
+            레이어 토글
+          </Button>
+          <br />
+          <Button
+            size="lg"
+            onClick={() => {
+              setDeleting(true);
+              // setTimeout(() => setDeleting(false), 400);
+            }}
+          >
+            삭제 모션
+          </Button>
+          <br />
+          <Button
+            size="lg"
+            onClick={() => {
+              setSorting((prev) => !prev);
+            }}
+          >
+            정렬 모션
+          </Button>
+          <br />
+          <Button
+            size="lg"
+            onClick={() => {
+              setAdding((prev) => !prev);
+            }}
+          >
+            추가 토글 {adding.toString()}
+          </Button>
+          <br />
+          <Button
+            size="lg"
+            onClick={() => {
+              handleAdd();
+            }}
+          >
+            추가 모션
+          </Button>
         </div>
+        <div>{sendList}</div>
+        <div>{wordList.slice()}</div>
       </div>
     </>
   );
