@@ -12,8 +12,8 @@ import { MultiGameResult } from "./pages/multiGame/MultiGameResult";
 import { QuickMenu } from "./components/quickmenu/QuickMenuTest.js";
 import { Star } from "./components/star.js";
 import { TestJisoo } from "./pages/test/TestJisoo.js";
+import { TestSocket } from "./pages/test/TestSocket.js";
 import { ToastContainer } from 'react-toastify';
-
 
 function App() {
   return (
@@ -43,6 +43,7 @@ function App() {
         <Route path="/MultiGame/:roomId" element={<MultiGame />} />
         <Route path="/MultiGameResult" element={<MultiGameResult />} />
         <Route path="/TestJisoo/:roomId" element={<TestJisoo />} />
+        <Route path="/TestSocket/:roomId" element={<TestSocket />} />
       </Routes>
     </div>
   );

@@ -3,6 +3,7 @@ package com.ssafy.confidentIs.keytris.controller;
 import com.ssafy.confidentIs.keytris.common.dto.response.ErrorResponseDto;
 import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
 import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
+import com.ssafy.confidentIs.keytris.common.exception.customException.InvalidInputValueException;
 import com.ssafy.confidentIs.keytris.dto.WordListResponse;
 import com.ssafy.confidentIs.keytris.dto.multiDto.*;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
@@ -40,7 +41,7 @@ public class MultiGameController {
         if (errors.hasErrors()) {
             // TODO 예외처리
         }
-        log.info("nickname: {}", request);
+        log.info("멀티 게임 방 생성 요청: {}", request);
 
         ResponseDto responseDto = new ResponseDto(SUCCESS, "멀티모드 게임 생성",
                 Collections.singletonMap("gameInfo", multiRoomServiceImpl.createMultiGame(request)));
@@ -52,7 +53,7 @@ public class MultiGameController {
     public ResponseEntity<?> connectMultiGame(@PathVariable String roomId,
                                               @RequestBody @Validated MultiGameConnectRequest request, Errors errors) {
         if (errors.hasErrors()) {
-            // TODO 예외처리
+            throw new InvalidInputValueException("입력 값이 올바르지 않습니다.", ErrorCode.INVALID_INPUT_VALUE);
         }
         log.info("roomId: {}, request: {}", roomId, request);
 
@@ -96,7 +97,7 @@ public class MultiGameController {
     // 플레이어 상태를 over로 업데이트 하는 api
     @MessageMapping("/multi/player-over/{roomId}")
     public void updatePlayerToOver(@DestinationVariable String roomId, @RequestBody MultiGamePlayerRequest request) {
-        log.info("roomId: {}, playerId: {}", roomId, request.getPlayerId());
+        log.info("player-over 요청. roomId: {}, playerId: {}", roomId, request.getPlayerId());
         UpdatedPlayerResponse response = multiRoomServiceImpl.updatePlayerToOver(roomId, request.getPlayerId());
         messagingTemplate.convertAndSend("/topic/multi/player-over/" + roomId, response);
 
@@ -137,7 +138,6 @@ public class MultiGameController {
     public void sendMessage(@DestinationVariable String roomId, @RequestBody ChatMessage message) {
         log.info("message.content: {}", message.getContent());
         message.updateTime(LocalDateTime.now().toString());
-        log.info("timeStamp {}", message.getTimestamp());
         messagingTemplate.convertAndSend("/topic/multi/chat/" + roomId, message);
     }
 

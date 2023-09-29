@@ -40,4 +40,6 @@ public interface RoomService {
   void checkRefill(Room room, WordType type);
 
 //  List<RankingResponse> addHighscore(String nickname, String roomId);
+
+  Room findByRoomId(String roomId);
 }

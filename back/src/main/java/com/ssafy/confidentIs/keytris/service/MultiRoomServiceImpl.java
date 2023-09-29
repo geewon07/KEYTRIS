@@ -58,7 +58,7 @@ public class MultiRoomServiceImpl {
                 .levelWordList(dataServiceImpl.addLevelWords(levelWordList, WordType.LEVEL, category, LEVEL_AMOUNT))
                 .limit(4)
                 .playerList(new ArrayList<>())
-                .master(currentPlayer)
+                .masterId(currentPlayer.getPlayerId())
                 .overPlayerCnt(0)
                 .build();
 
@@ -111,7 +111,7 @@ public class MultiRoomServiceImpl {
         }
 
         // 방장이 아닌 경우
-        if(!room.getMaster().getPlayerId().equals(request.getPlayerId())) {
+        if(!room.getMasterId().equals(request.getPlayerId())) {
 //            throw new SocketNotAuthorizedException("방장이 아니어서 시작할 수 없음", ErrorCode.SOCKET_NOT_AUTHORIZED, request.getPlayerId(), roomId);
             log.info("방장이 아님");
         }
@@ -137,7 +137,7 @@ public class MultiRoomServiceImpl {
         newTargetWord[0][1] = "";
 
         WordListResponse wordListResponse = WordListResponse.builder()
-                .playerId("master")
+                .playerId("notification")
                 .newScore(0L)
                 .sortedWordList(sortedWordList)
                 .newSubWordList(null)
@@ -342,10 +342,14 @@ public class MultiRoomServiceImpl {
                 .player(updatedPlayer)
                 .build();
 
-        // 한 명 제외하고 모두 OVER 된 경우 game status update
-        if(room.getOverPlayerCnt() == room.getPlayerList().size()-1) {
+        log.info("플레이어 상태 OVER로 변경");
+
+        // 모두 또는 한 명 제외하고 모두 OVER 된 경우 game status update
+        if(room.getOverPlayerCnt() >= room.getPlayerList().size()-1) {
             room.updateStatus(RoomStatus.FINISHED);
             response.updateRoomStatus(RoomStatus.FINISHED);
+
+            log.info("게임 상태 Finished로 변경");
 
             // 레벨어 전송 중단
             sessionMethodService.stopSessionMethod(roomId);
@@ -371,11 +375,12 @@ public class MultiRoomServiceImpl {
 
 
     // roomId로 Room을 반환하는 메서드. 소켓 응답 예외 처리.
-    private MultiRoom findByRoomId(String roomId, String playerId) {
+    public MultiRoom findByRoomId(String roomId, String playerId) {
         return Optional.ofNullable(multiRoomManager.getRoom(roomId))
                 .orElseThrow(() -> new SocketRoomNotFoundException("Room with ID " + roomId + " does not exist.",
                         ErrorCode.SOCKET_ROOM_NOT_FOUND, playerId, roomId));
     }
+
 
     // playerId로 Player를 반환하는 메서드. 소켓 응답 예외 처리
     private MultiPlayer findByPlayerId(MultiRoom room, String playerId) {
@@ -398,6 +403,23 @@ public class MultiRoomServiceImpl {
                 .isMaster(isMaster)
                 .overTime(null)
                 .build();
+    }
+
+
+    public MultiGameInfoResponse removePlayer(MultiRoom room, String playerId) {
+        List<MultiPlayer> updatedList = room.getPlayerList().stream()
+                .filter(player -> !playerId.equals(player.getPlayerId()))
+                .collect(Collectors.toList());
+        room.updatePlayerList(updatedList);
+
+        MultiGameInfoResponse response = MultiGameInfoResponse.builder()
+                .roomId(room.getRoomId())
+                .roomStatus(room.getRoomStatus())
+                .playerList(room.getPlayerList())
+                .build();
+
+        log.info("플레이어 제거 완료. MultiGameInfo: {}", response);
+        return response;
     }
 
 
