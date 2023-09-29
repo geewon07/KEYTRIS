@@ -371,7 +371,7 @@ export const SingleGame = (props) => {
       // 페이지 result로 전환되면서 데이터 넘겨주기? 우선 넘겨줄거를 overResultDto로 만들게요
       // 근데 그냥 위에 overResponseDto 넘겨주는게 나을 것 같아서 그냥 안만들었습니다.
       // stomp.disconnect();
-      
+
       // console.log(OverResponseDto);
       // subscription.unsubscribe();
     } catch (error) {
@@ -386,9 +386,10 @@ export const SingleGame = (props) => {
   }, [currentWordList]);
 
   // 사라짐...
-  const handleOutRoom = async () => { // 위에 dto있음!
+  const handleOutRoom = async () => {
+    // 위에 dto있음!
     try {
-      console.log(overRequestDto)
+      console.log(overRequestDto);
       navigate("/SingleGameResult", {
         state: { overRequestDto: overRequestDto },
       });
@@ -511,8 +512,7 @@ export const SingleGame = (props) => {
         </div> */}
         <div className="gamecontainer" style={{}}>
           <div className="bglist">
-
-            <div className="status">
+            <div className={roomStatus==="FINISHED"?"status over":"status"} >
               {roomStatus === "PREPARED" && (
                 <div
                   className="startbutton"
@@ -531,11 +531,22 @@ export const SingleGame = (props) => {
                     {roomStatus === "FINISHED" &&
                       playerStatus === "OVER" &&
                       roomStatus !== null && (
-                        <div className="gameover" style={{fontSize:"48px"}}>
+                        <div className="gameover" style={{ fontSize: "48px" }}>
                           <br />
                           GAME OVER
-                          <br/>
-                          <button onClick={handleOutRoom}>결과 보기</button>
+                          <br />
+                          <button
+                            onClick={handleOutRoom}
+                            className="large-button-style Neo"
+                            style={{
+                              WebkitTextStroke: "0",
+                              fontSize: "26px",
+                              color: "white",
+                              padding: "5px",
+                            }}
+                          >
+                            결과 보기
+                          </button>
                         </div>
                       )}
                   </div>
@@ -548,10 +559,18 @@ export const SingleGame = (props) => {
               <li className="wordline">&nbsp;</li>
               <li className="wordline">&nbsp;</li>
             </div>
-           
+
             <div className="list-container">
               <ul className="indexlist">
-              <li className={currentWordList.length <= 15 ? "wordline purple" : "wordline red"}>&nbsp;</li>
+                <li
+                  className={
+                    currentWordList.length <= 15
+                      ? "wordline purple"
+                      : "wordline red"
+                  }
+                >
+                  &nbsp;
+                </li>
                 {listing}
               </ul>
               {!display && (
@@ -568,7 +587,7 @@ export const SingleGame = (props) => {
                         targetWord={targetWord}
                       ></AddWordAnimation>
                       {!sorting && (
-                        <ul className="wordlist">
+                        <ul className="wordlist dummy">
                           {renderWordList(currentWordList)}
                         </ul>
                       )}
@@ -613,24 +632,23 @@ export const SingleGame = (props) => {
             </div>
           </div>
 
-            <input className="guessbox Neo" value={lastGuess} disabled></input>
-            <input
-              className="inputcase Neo"
-              type="text"
-              ref={inputRef}
-              placeholder="입력하세요"
-              value={guessWord}
-              onChange={handleInputChange}
-              disabled={playerStatus === "OVER" || sorting}
-              autoFocus
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  handleInsertWord();
-                }
-              }}
-            ></input>
-          
+          <input className="guessbox Neo" value={lastGuess} disabled></input>
+          <input
+            className="inputcase Neo"
+            type="text"
+            ref={inputRef}
+            placeholder="입력하세요"
+            value={guessWord}
+            onChange={handleInputChange}
+            disabled={playerStatus === "OVER" || sorting}
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleInsertWord();
+              }
+            }}
+          ></input>
         </div>
 
         {/* <div style={{ width: "35%" }}>
