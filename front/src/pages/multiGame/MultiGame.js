@@ -24,6 +24,8 @@ export const MultiGame = () => {
   const [otherPlayerGame3, setOtherPlayerGame3] = useState(null);
 
   const playRef = useRef();
+  const playReadyRef = useRef();
+  const playOverRef = useRef();
 
   const location = useLocation();
   const responseData = location.state?.responseData;
@@ -31,11 +33,10 @@ export const MultiGame = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!responseData) {
+    if (!responseData || responseData === null) {
       alert("잘못된 접근입니다. 메인화면에서 [게임 참여]를 통해 접속해주세요.");
       navigate("/");
     } else {
-      console.log(responseData.gameInfo.currentPlayerId);
       setPlayerId(responseData.gameInfo.currentPlayerId);
       setPlayerList(responseData.gameInfo.playerList);
       setRoomId(responseData.gameInfo.roomId);
@@ -45,7 +46,7 @@ export const MultiGame = () => {
 
   playRef.current = (messageBody) => {
     const playInfo = messageBody;
-    const currentPlayerId = messageBody.playerId;
+    const currentPlayerId = playInfo.playerId;
 
     if (currentPlayerData?.playerId === currentPlayerId) {
       setCurrentPlayerGameInfo(playInfo);
@@ -55,6 +56,75 @@ export const MultiGame = () => {
       setOtherPlayerGame2(playInfo);
     } else if (otherPlayerData3?.playerId === currentPlayerId) {
       setOtherPlayerGame3(playInfo);
+    }
+  };
+
+  playReadyRef.current = (playerReadyInfo) => {
+    if (roomStatus !== playerReadyInfo.roomStatus) {
+      setRoomStatus(playerReadyInfo.roomStatus);
+    }
+    const playerUpdateInfo = playerReadyInfo.player;
+    const currentPlayerId = playerUpdateInfo.playerId;
+
+    if (currentPlayerData?.playerId === currentPlayerId) {
+      setCurrentPlayerData(playerUpdateInfo);
+    } else {
+      setOtherPlayerData1((prevOtherPlayerData1) => {
+        if (prevOtherPlayerData1?.playerId === currentPlayerId) {
+          return playerUpdateInfo;
+        } else {
+          return prevOtherPlayerData1;
+        }
+      });
+      setOtherPlayerData2((prevOtherPlayerData2) => {
+        if (prevOtherPlayerData2?.playerId === currentPlayerId) {
+          return playerUpdateInfo;
+        } else {
+          return prevOtherPlayerData2;
+        }
+      });
+      setOtherPlayerData3((prevOtherPlayerData3) => {
+        if (prevOtherPlayerData3?.playerId === currentPlayerId) {
+          return playerUpdateInfo;
+        } else {
+          return prevOtherPlayerData3;
+        }
+      });
+    }
+  };
+
+  playOverRef.current = (playerOverInfo) => {
+    if (roomStatus !== playerOverInfo.roomStatus) {
+      setRoomStatus(playerOverInfo.roomStatus);
+    }
+    const playerUpdateInfo = playerOverInfo.player;
+    const currentPlayerId = playerUpdateInfo.playerId;
+
+    if (currentPlayerData?.playerId === currentPlayerId) {
+      console.log(playerUpdateInfo);
+      setCurrentPlayerData(playerUpdateInfo);
+    } else {
+      setOtherPlayerData1((prevOtherPlayerData1) => {
+        if (prevOtherPlayerData1?.playerId === currentPlayerId) {
+          return playerUpdateInfo;
+        } else {
+          return prevOtherPlayerData1;
+        }
+      });
+      setOtherPlayerData2((prevOtherPlayerData2) => {
+        if (prevOtherPlayerData2?.playerId === currentPlayerId) {
+          return playerUpdateInfo;
+        } else {
+          return prevOtherPlayerData2;
+        }
+      });
+      setOtherPlayerData3((prevOtherPlayerData3) => {
+        if (prevOtherPlayerData3?.playerId === currentPlayerId) {
+          return playerUpdateInfo;
+        } else {
+          return prevOtherPlayerData3;
+        }
+      });
     }
   };
 
@@ -80,16 +150,6 @@ export const MultiGame = () => {
         setRoomStatus(startGameInfo.roomStatus);
         setWordListResponse(startGameInfo.wordListResponse);
       };
-
-      const playerReady = (messageBody) => {
-        // 처리하기
-        const playerReadyInfo = messageBody;
-      };
-
-      const playerOverInfo = (messageBody) => {
-        const playerOverInfo = messageBody;
-      };
-
       const gameEndInfo = (messageBody) => {
         const gameEndInfo = messageBody;
       };
@@ -107,8 +167,8 @@ export const MultiGame = () => {
         subscribe(`/topic/multi/chat/${roomId}`, enterChat);
         subscribe(`/topic/multi/${roomId}`, enterPlayer);
         subscribe(`/topic/multi/start/${roomId}`, startGame);
-        subscribe(`/topic/multi/player-ready/${roomId}`, playerReady);
-        subscribe(`/topic/multi/player-over/${roomId}`, playerOverInfo);
+        subscribe(`/topic/multi/player-ready/${roomId}`, playReadyRef.current);
+        subscribe(`/topic/multi/player-over/${roomId}`, playOverRef.current);
         subscribe(`/topic/multi/end/${roomId}`, gameEndInfo);
         subscribe(`/topic/multi/play/${roomId}`, playRef.current);
         subscribe(`/topic/multi/level-word/${roomId}`, levelWordInfo);
@@ -208,17 +268,14 @@ export const MultiGame = () => {
       const otherPlayers = playerList.filter(
         (player) => player.playerId !== playerId
       );
+      console.log(otherPlayers);
+      console.log(otherPlayers[0]);
       setCurrentPlayerData(me);
       setOtherPlayerData1(otherPlayers[0] || null);
       setOtherPlayerData2(otherPlayers[1] || null);
       setOtherPlayerData3(otherPlayers[2] || null);
     }
   }, [playerId, playerList]);
-
-  useEffect(() => {
-    console.log("여기이곳");
-    console.log(currentPlayerData);
-  }, [currentPlayerData]);
 
   return (
     <div className="multi-display">
@@ -233,6 +290,7 @@ export const MultiGame = () => {
             insertWord={insertWord}
             currentPlayerGameInfo={currentPlayerGameInfo}
             newLevelWord={newLevelWord}
+            updatePlayerToOver={updatePlayerToOver}
           />
         )}
       </div>
@@ -266,6 +324,7 @@ export const MultiGame = () => {
             chatContent={chatContent}
             playerList={playerList}
             newLevelWord={newLevelWord}
+            myplayerId={playerId}
           ></Chat>
         </div>
       </div>
