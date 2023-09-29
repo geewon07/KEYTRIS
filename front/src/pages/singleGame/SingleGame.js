@@ -57,7 +57,7 @@ export const SingleGame = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!responseData) {
+    if (!responseData || responseData === null) {
       alert("잘못된 접근입니다. 메인화면에서 [게임 참여]를 통해 접속해주세요.");
       navigate("/");
     } else {
