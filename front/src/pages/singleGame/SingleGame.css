@@ -1,25 +1,21 @@
 .gamecontainer {
-  /* width: 30% !important; */
-  /* min-width: 30%; */
   display: flex;
   align-self: center;
   height: 100vh;
+  min-width:300px;
   width: 100% !important;
   grid-column: 5 / span 4;
   flex-direction: row-reverse !important;
 }
 .bglist {
   background: #26154a;
-  /* background: #fff; */
   position:relative;
   width: 87.5% !important;
   z-index: 1000;
   height: 100vh !important;
 
-  /* height: 100%!importants; */
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   justify-content: flex-end;
   align-self: end;
   text-align: start;
@@ -38,15 +34,12 @@
   z-index:1000;
 }
 .score {
-  /* position: absolute; */
   position: absolute;
   text-align: center;
   top: 20%;
-  /* left: 52%; */
   font-size: 96px;
   color: #fff;
-  /* left: 52%; Center horizontally by moving the left to the middle */
-  /* transform: translate(-50%, -50%); */
+
   font-size: 96px;
   font-style: normal;
   font-weight: 400;
@@ -54,7 +47,6 @@
 }
 .startbutton {
   position: absolute;
-  /* text-align: center; */
   top: 30%;
 }
 .gameover{
@@ -62,35 +54,31 @@
   font-family: NeoDunggeunmo Pro;
   font-size: 48px;
   font-style: normal;
-  /* font-stretch:expanded!important; */
   font-weight: lighter;
   line-height: normal;
   text-align: center;
   -webkit-text-stroke: 2px  #FFFFFF;
 }
-.overlaybox {
-  height: 12.4rem !important;
-  width: 100%;
-  /* width: auto; */
-  /* grid-column: 5 / span 4; */
+ .overlaybox {
+  /* height: 12.4rem !important; */
+  margin:0;
+  width: 87.5%!important;
   top: auto;
   right: auto;
+  bottom:72px;
   position: absolute;
-  /* position:fixed; */
   border-top: 3px solid var(--primary, #cf0);
   background: rgba(204, 255, 0, 0.2);
   z-index: 3333;
 }
 .bglist2 {
   background: #26154a;
-  /* background: #fff; */
   width: 90% !important;
   z-index: 1000;
 
   height: 100vh;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   justify-content: flex-end;
   align-self: end;
   text-align: start;
@@ -99,7 +87,6 @@
   display: flex;
   flex-direction: column;
   height: 85%;
-  /* width: 24%; */
   top: auto;
   left: auto;
   bottom: 4rem;
@@ -107,28 +94,29 @@
   flex-direction: column;
   justify-content: flex-end !important;
   position: absolute;
-  /* align-self: flex-end; */
   color: white;
-  /* background: white; */
   background: gray;
-  z-index: 3332; /* Set a higher z-index for the displaylayer */
-}
-.wordlist {
+  z-index: 3332; 
+} 
+/* .wordlist {
   margin: 0;
   list-style: none;
-}
-/* .targetWord::marker {
-  content: "▶";
 } */
-.targetWord {
+.targetWord::marker {
+  content: "▶";
+} 
+/* .targetWord {
   color: var(--primary, #cf0);
-}
+} */
 /* .indexlist li.targetWord::after {
   content: "▶";
   padding: 0.2rem;
   font-size: 1rem;
 } */
-.endbar {
+.wordlist{
+  margin-bottom:0;
+}
+ .endbar {
   background: #d9d9d9;
   width: 100%;
 }
@@ -145,14 +133,13 @@
 input.inputcase {
   width: auto;
 
-  font-size: 16px; /* Set the font size */
+  font-size: 16px; 
   border: none;
-  background-color: #f4f4f4; /* Set the background color */
-  color: #888; /* Set the text color */
+  background-color: #f4f4f4; 
+  color: #888; 
   font-size: 16px;
   color: blue;
   background-color: #ccff00 !important;
-  /* margin: 5px; */
   padding: 10px;
   z-index: 3334;
 }
@@ -168,17 +155,14 @@ input.inputcase:focus {
 li.wordline {
   font-size: 16px;
   color: #fff !important;
-  /* background-color: #ccff00; */
-  /* margin: 10px!important; */
+
   padding: 0.25rem;
-  display: flex; /* Use flexbox to control layout */
-  justify-content: space-between !important; /* Align items to either side */
-  align-items: center; /* Vertically center the content */
-  /* padding: 4px; Add some spacing */
-  /* border: 1px solid #ccc;  */
-}
+  display: flex; 
+  justify-content: space-between !important; 
+  align-items: center; 
+
+} 
 @media (min-height: 600px) {
-  /* Adjust font size for screens up to 768px wide */
   li.wordline {
     font-size: 1.5rem !important;
   }
@@ -199,9 +183,9 @@ li.wordline {
 
 @media (min-height: 750px) {
   /* Adjust font size for screens up to 576px wide */
-  li.wordline {
+  /* li.wordline {
     font-size: 1.5rem !important;
-  }
+  } */
   /* .overlaybox {
     height: 12.4rem !important;
     width: 26.5%;

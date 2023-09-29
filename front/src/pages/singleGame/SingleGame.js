@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./SingleGame.css";
+
+// import "./SingleGame copy.css";
+
 import {
   startGame,
   createRoom,
@@ -290,7 +293,7 @@ export const SingleGame = (props) => {
         setLevelWord([]);
         setDisplay(false);
         setAdding(false);
-      }, 300);
+      }, 200);
       setTimeout(() => {
         // setCurrentWordList((prev) => [...prev, ...levelWord]);
       }, 400);
@@ -445,7 +448,7 @@ export const SingleGame = (props) => {
           // grid-template-columns: repeat(12, [col-start] 1fr);
         }}
       >
-        <div style={{ gridColumn: "1 /span 2" }}>
+        {/* <div style={{ gridColumn: "1 /span 2" }}>
           <h5>
             player :{playerId} , room :{roomId}
           </h5>
@@ -505,7 +508,7 @@ export const SingleGame = (props) => {
             </Button>
             <br />
           </div>
-        </div>
+        </div> */}
         <div className="gamecontainer" style={{}}>
           <div className="bglist">
             <div className="status">
@@ -531,13 +534,22 @@ export const SingleGame = (props) => {
                           <br />
                           GAME OVER
                           <br/>
-                          <Button label="결과 보기" onClick={handleOutRoom}></Button>
+                          <button onClick={handleOutRoom}>결과 보기</button>
                         </div>
                       )}
                   </div>
                 )}
             </div>
-            <div className="overlaybox"></div>
+            {/* <div className="overlaybox"></div> */}
+            <div className="deadline"></div>
+            <ul className="overlaybox">
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+            </ul>
+
+           
 
             <ul className="indexlist">{listing}</ul>
             {!display && (
