@@ -4,7 +4,7 @@ import { connect, sendMsg, subscribe } from "../../api/stompClient.js";
 import Chat from "../../components/chatting/ChatTest";
 import { MyGameDisplay } from "./MyGameDisplay.js";
 import { PlayersDisplay } from "./PlayersDisplay.js";
-import "./GameDisplay.css";
+// import "./GameDisplay.css";
 
 export const MultiGame = () => {
   const [playerId, setPlayerId] = useState(null); // 넘겨 받는 정보니까 useState 나중에 지우기
