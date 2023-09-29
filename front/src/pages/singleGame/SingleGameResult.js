@@ -7,12 +7,12 @@ export const SingleGameResult = () => {
 
   const location = useLocation();
   const overRequestDto = location.state?.overRequestDto;
-  console.log(overRequestDto);
-
+  const lastWord = overRequestDto?.lastWord[0][0];
+  
   return (
     <div className="total" >
       <Score overRequestDto={ overRequestDto }></Score>
-      <TodayNew></TodayNew>
+      <TodayNew lastWord={ lastWord }></TodayNew>
     </div>
   );
 };
