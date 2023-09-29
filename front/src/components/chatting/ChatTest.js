@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./Chat.css";
 import { Form, InputGroup } from "react-bootstrap";
 
-function TextChatting({ onSendMessage, chatContent, playerList, playerId }) {
+function TextChatting({ onSendMessage, chatContent, playerList, myplayerId }) {
   const [inputText, setInputText] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
 
@@ -71,13 +71,13 @@ function TextChatting({ onSendMessage, chatContent, playerList, playerId }) {
                   <div
                     key={index}
                     className={`${
-                      message.playerId === playerId
+                      message.playerId === myplayerId
                         ? "messageContainer userMessage"
                         : "messageContainer otherMessage"
                     }`}
                   >
                     <div>
-                      {message.playerId === playerId ? "나" : message.sender}
+                      {message.playerId === myplayerId ? "나" : message.sender}
                     </div>
                     <div>{message.text}</div>
                   </div>
