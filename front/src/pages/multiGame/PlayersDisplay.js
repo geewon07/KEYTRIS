@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import "./GameDisplay.css";
+// import "./GameDisplay.css";
 import { AddWordAnimation } from "../../components/game/AddWordAnimation";
 import { SortAnimation } from "../../components/game/SortAnimation";
 import { DeleteAnimation } from "../../components/game/DeleteAnimation";
