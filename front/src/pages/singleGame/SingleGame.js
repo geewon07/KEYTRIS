@@ -360,10 +360,7 @@ export const SingleGame = (props) => {
   };
   const handleOverGame = async () => {
     try {
-      // const res = await overGame(overRequestDto);
-      // const OverResponseDto = res.data.data.OverResponse;
-      // setPlayerStatus(OverResponseDto.statusResponse.playerStatus);
-      // setRoomStatus(OverResponseDto.statusResponse.roomStatus);
+      disconnect();
       setPlayerStatus("OVER");
       setRoomStatus("FINISHED");
 
@@ -371,7 +368,7 @@ export const SingleGame = (props) => {
       // 페이지 result로 전환되면서 데이터 넘겨주기? 우선 넘겨줄거를 overResultDto로 만들게요
       // 근데 그냥 위에 overResponseDto 넘겨주는게 나을 것 같아서 그냥 안만들었습니다.
       // stomp.disconnect();
-      disconnect();
+      
       // console.log(OverResponseDto);
       // subscription.unsubscribe();
     } catch (error) {
@@ -386,14 +383,16 @@ export const SingleGame = (props) => {
   }, [currentWordList]);
 
   // 사라짐...
-  // const handleOutRoom = async (statusRequestDto) => { // 위에 dto있음!
-  //   try {
-  //     const res = await outRoom(statusRequestDto);
-  //     const OverResponseDto = res.data.data.OverResponse;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleOutRoom = async () => { // 위에 dto있음!
+    try {
+      console.log(overRequestDto)
+      navigate("/SingleGameResult", {
+        state: { overRequestDto: overRequestDto },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const renderWordList = (list) => {
     return list
       .slice()
@@ -528,10 +527,12 @@ export const SingleGame = (props) => {
                     {roomStatus === "FINISHED" &&
                       playerStatus === "OVER" &&
                       roomStatus !== null && (
-                        <span className="gameover" style={{fontSize:"48px"}}>
+                        <div className="gameover" style={{fontSize:"48px"}}>
                           <br />
                           GAME OVER
-                        </span>
+                          <br/>
+                          <Button label="결과 보기" onClick={handleOutRoom}></Button>
+                        </div>
                       )}
                   </div>
                 )}
