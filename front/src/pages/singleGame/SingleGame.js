@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { toast } from 'react-toastify';
 import "./SingleGame.css";
 
 // import "./SingleGame copy.css";
@@ -178,16 +179,21 @@ export const SingleGame = (props) => {
     targetWord: targetWord,
   };
   const handleInsertWord = async () => {
+    console.log("guess:" + guessWord + ", target:" + targetWord+"끝");
+
     if (guessWord === "") {
-      alert("cant guess blank");
+      toast.error("단어를 입력해주세요.");
       return;
     }
     setLastGuess(guessWord);
-    if (guessWord === targetWord) {
-      alert("target cant be guessed");
+
+    const target = targetWord[0][0];
+    if (target.includes(guessWord) || guessWord.includes(target)) {
+      toast.error("타겟어에 포함되는 단어를 입력할 수 없습니다.");
+      setGuessWord("");
       return;
     }
-    console.log("guess " + guessWord);
+    
     console.log(insertRequestDto);
     try {
       const res = await insertWord(insertRequestDto);
@@ -258,14 +264,32 @@ export const SingleGame = (props) => {
         // 단어 삭제 모션 있고 난 다음에 변경
       }
     } catch (error) {
-      console.error(error);
+      const { response } = error;
+      // 에러 메시지 매핑
+      const errorMessages = {
+        "GAO2-ERR-404": "찾을 수 없는 플레이어입니다.",
+        "GAO3-ERR-404": "찾을 수 없는 게임입니다.",
+        "GAO1-ERR-400": "입력할 수 없는 단어입니다."
+        // 필요하다면 다른 에러 코드들도 여기에 추가
+      };
+
+      console.log(response);
+
+      // 에러 코드에 따른 메시지 출력
+      const errorMessage = errorMessages[response?.data?.errorCode];
+      if (errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        toast.error("잘못된 요청입니다."); // 일반적인 에러 메시지
+      }
+      setGuessWord("");
     }
   };
 
   useEffect(() => {
     const connectAndSubscribe = async () => {
       if (roomId !== null) {
-        await connect(); // Wait for the connect function to complete
+        await connect("SINGLE", roomId, playerId); // Wait for the connect function to complete
         const callback = (messageBody) => {
           console.log(messageBody);
           const toTwoD = [messageBody, ""];
@@ -276,7 +300,13 @@ export const SingleGame = (props) => {
     };
 
     connectAndSubscribe();
-  }, [roomId]);
+
+    // Cleanup funciton
+    return () => {
+      disconnect();
+    };
+
+  }, [roomId], [playerId]);
   useEffect(() => {
     // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
     // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
@@ -564,7 +594,7 @@ export const SingleGame = (props) => {
               <ul className="indexlist">
                 <li
                   className={
-                    currentWordList.length <= 15
+                    currentWordList.length <= 17
                       ? "wordline purple"
                       : "wordline red"
                   }
@@ -637,7 +667,7 @@ export const SingleGame = (props) => {
             className="inputcase Neo"
             type="text"
             ref={inputRef}
-            placeholder="입력하세요"
+            placeholder="단어를 입력해주세요."
             value={guessWord}
             onChange={handleInputChange}
             disabled={playerStatus === "OVER" || sorting}
