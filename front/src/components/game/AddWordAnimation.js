@@ -14,7 +14,7 @@ const FallRow = styled.ul`
     height:100%;
     // --bottom:${bottomPosition};
 
-    animation: ${fall} 0.2s forwards; /* Adjust the animation duration and easing */
+    animation: ${fall} 0.2s forwards;
   }
 `;
 export const AddWordAnimation=(props)=> {

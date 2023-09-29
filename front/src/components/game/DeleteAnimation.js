@@ -12,12 +12,12 @@ const flashAndGrowAndShrink = keyframes`
     opacity: 1;
   }
   50% {
-    // transform:translateX(100%) scale(1.1);
+  
     opacity: 0.3;
   }
   
   100% {
-    transform:translateX(100%) scale(2);
+    transform:translateX(10%) scale(2);
     opacity: 0;
   }
 `;
@@ -27,6 +27,7 @@ const AnimatedRow = styled.li`
     animation: ${flashAndGrowAndShrink} 0.3s forwards;
     list-style: none;
     font-size: 24px;
+    overflow-x:hidden;
     // background-color:red;
   }
 `;
