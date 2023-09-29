@@ -511,6 +511,7 @@ export const SingleGame = (props) => {
         </div> */}
         <div className="gamecontainer" style={{}}>
           <div className="bglist">
+
             <div className="status">
               {roomStatus === "PREPARED" && (
                 <div
@@ -540,74 +541,77 @@ export const SingleGame = (props) => {
                   </div>
                 )}
             </div>
-            {/* <div className="overlaybox"></div> */}
-            <div className="deadline"></div>
-            <ul className="overlaybox">
-              <li className="wordline">&nbsp;</li>
-              <li className="wordline">&nbsp;</li>
-              <li className="wordline">&nbsp;</li>
-              <li className="wordline">&nbsp;</li>
-            </ul>
 
+            <div className="overlaybox">
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+            </div>
            
+            <div className="list-container">
+              <ul className="indexlist">
+              <li className={currentWordList.length <= 15 ? "wordline purple" : "wordline red"}>&nbsp;</li>
+                {listing}
+              </ul>
+              {!display && (
+                <ul className="wordlist">{renderWordList(currentWordList)}</ul>
+              )}
 
-            <ul className="indexlist">{listing}</ul>
-            {!display && (
-              <ul className="wordlist">{renderWordList(currentWordList)}</ul>
-            )}
-
-            {display && (
-              // <div className="bglist2 ">
-              <>
-                {adding && (
-                  <>
-                    <AddWordAnimation
-                      bufferList={levelWord}
-                      targetWord={targetWord}
-                    ></AddWordAnimation>
-                    {!sorting && (
-                      <ul className="wordlist">
-                        {renderWordList(currentWordList)}
-                      </ul>
+              {display && (
+                // <div className="bglist2 ">
+                <>
+                  {adding && (
+                    <>
+                      <AddWordAnimation
+                        bufferList={levelWord}
+                        targetWord={targetWord}
+                      ></AddWordAnimation>
+                      {!sorting && (
+                        <ul className="wordlist">
+                          {renderWordList(currentWordList)}
+                        </ul>
+                      )}
+                    </>
+                  )}
+                  <ul className="wordlist">
+                    {sorting && (
+                      <>
+                        <SortAnimation
+                          sendList={sortedWordList.slice().reverse()}
+                          beforeIndex={sortedIdx}
+                          targetWord={targetWord}
+                        ></SortAnimation>
+                      </>
                     )}
-                  </>
-                )}
-                <ul className="wordlist">
-                  {sorting && (
-                    <>
-                      <SortAnimation
-                        sendList={sortedWordList.slice().reverse()}
-                        beforeIndex={sortedIdx}
-                        targetWord={targetWord}
-                      ></SortAnimation>
-                    </>
-                  )}
-                  {deleting && (
-                    <>
-                      {
-                        <div sytle={{ backgroundColor: "red" }}>
-                          {renderWordList(
-                            currentWordList.slice(4, currentWordList.length)
-                          )}
-                        </div>
-                      }
-                      <DeleteAnimation
-                        initialList={currentWordList.slice()}
-                        targetIndex={targetWordIndex}
-                        targetWord={targetWord}
-                      ></DeleteAnimation>
-                      {
-                        <div sytle={{ backgroundColor: "red" }}>
-                          {renderWordList(
-                            currentWordList.slice(0, targetWordIndex)
-                          )}
-                        </div>
-                      }
-                    </>
-                  )}
-                </ul>
-              </>
-            )}
+                    {deleting && (
+                      <>
+                        {
+                          <div sytle={{ backgroundColor: "red" }}>
+                            {renderWordList(
+                              currentWordList.slice(4, currentWordList.length)
+                            )}
+                          </div>
+                        }
+                        <DeleteAnimation
+                          initialList={currentWordList.slice()}
+                          targetIndex={targetWordIndex}
+                          targetWord={targetWord}
+                        ></DeleteAnimation>
+                        {
+                          <div sytle={{ backgroundColor: "red" }}>
+                            {renderWordList(
+                              currentWordList.slice(0, targetWordIndex)
+                            )}
+                          </div>
+                        }
+                      </>
+                    )}
+                  </ul>
+                </>
+              )}
+            </div>
+          </div>
 
             <input className="guessbox Neo" value={lastGuess} disabled></input>
             <input
@@ -626,8 +630,9 @@ export const SingleGame = (props) => {
                 }
               }}
             ></input>
-          </div>
+          
         </div>
+
         {/* <div style={{ width: "35%" }}>
           <ul>
             <li sytle={{ display: "flex", flexDirection: "row" }}>

@@ -1,24 +1,27 @@
 .gamecontainer {
   display: flex;
-  align-self: center;
   height: 100vh;
   min-width:300px;
   width: 100% !important;
+  display: flex;
+  align-self: center;
   grid-column: 5 / span 4;
-  flex-direction: row-reverse !important;
+  flex-direction: column !important;
 }
 .bglist {
   background: #26154a;
   position:relative;
-  width: 87.5% !important;
+  width: 100% !important;
   z-index: 1000;
-  height: 100vh !important;
+  height: 80vh;
 
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-self: end;
   text-align: start;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 .status{
   position:absolute;
@@ -59,13 +62,12 @@
   text-align: center;
   -webkit-text-stroke: 2px  #FFFFFF;
 }
- .overlaybox {
-  /* height: 12.4rem !important; */
-  margin:0;
-  width: -webkit-fill-available;
+.overlaybox {
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* 쌓이는 방향을 수직으로 설정 */
   top: auto;
   right: auto;
-  bottom:72px;
   position: absolute;
   border-top: 3px solid var(--primary, #cf0);
   background: rgba(204, 255, 0, 0.2);
@@ -113,34 +115,54 @@
   padding: 0.2rem;
   font-size: 1rem;
 } */
-.wordlist{
-  margin-bottom:0;
+.list-container {
+  background: #bcbcbc;
+  width: 100%;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
- .endbar {
+.indexlist {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0;
+  margin: 0;
+  height: inherit;
+  width: inherit;
+  z-index: 3;
+}
+.wordlist {
+  background: #500086;
+  margin: 0;
+  list-style: none;
+  padding-left: 10%;
+}
+
+.endbar {
   background: #d9d9d9;
   width: 100%;
 }
 .guessbox {
   width: auto;
-  font-size: 16px;
   background: var(--gray2, #888);
   color: var(--gray4, #ddd);
-  font-size: 16px;
-  padding: 10px;
+  font-size: 20px;
+  padding: 20px;
   z-index: 3333;
   border: none;
 }
 input.inputcase {
-  width: auto;
-
-  font-size: 16px; 
+  width: auto; 
   border: none;
   background-color: #f4f4f4; 
   color: #888; 
-  font-size: 16px;
+  font-size: 20px;
   color: blue;
   background-color: #ccff00 !important;
-  padding: 10px;
+  padding: 20px;
   z-index: 3334;
 }
 .points {
@@ -152,50 +174,19 @@ input.inputcase:focus {
 .wordlist .targetWord::marker {
   content: "▶" !important;
 }
+
 li.wordline {
-  font-size: 16px;
-  color: #fff !important;
-
-  padding: 0.25rem;
-  display: flex; 
-  justify-content: space-between !important; 
-  align-items: center; 
-
-} 
-@media (min-height: 600px) {
-  li.wordline {
-    font-size: 1.5rem !important;
-  }
-  .indexlist {
-    position: absolute;
-    margin-bottom: 4.3rem;
-    padding: 0;
-  }
-  .indexlist li {
-    list-style-type: none;
-    font-size: 0.5rem !important;
-    padding: 0.51rem;
-    color: var(--gray3, #bcbcbc);
-    font-style: normal;
-    line-height: 1rem !important;
-  }
+  font-size: 2.5vh; 
+  font-size: min(max(2.5vh, 14px), 28px);
+  padding-top: 0.45rem;
+  padding-bottom: 0.45rem;
+  display: flex; /* Use flexbox to control layout */
+  justify-content: space-between; /* Align items to either side */
+  align-items: center;
 }
-
-@media (min-height: 750px) {
-  /* Adjust font size for screens up to 576px wide */
-  /* li.wordline {
-    font-size: 1.5rem !important;
-  } */
-  /* .overlaybox {
-    height: 12.4rem !important;
-    width: 26.5%;
-    top: auto;
-    right: auto;
-    position: absolute;
-    border-top: 3px solid var(--primary, #cf0);
-    background: rgba(204, 255, 0, 0.2);
-    z-index: 3333;
-  } */
+li.wordline.purple {
+  background-color: rgb(183, 0, 255);
 }
-
-
+li.wordline.red {
+  background-color: rgb(255, 0, 230);
+}
