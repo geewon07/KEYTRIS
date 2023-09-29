@@ -52,6 +52,9 @@
   position: absolute;
   top: 30%;
 }
+.over{
+  background-color: rgba(0, 0, 0, 0.5);
+}
 .gameover{
   color: rgba(255, 255, 255, 0.20);
   font-family: NeoDunggeunmo Pro;
@@ -107,16 +110,16 @@
 .targetWord::marker {
   content: "▶";
 } 
-/* .targetWord {
+.targetWord {
   color: var(--primary, #cf0);
-} */
+}
 /* .indexlist li.targetWord::after {
   content: "▶";
   padding: 0.2rem;
   font-size: 1rem;
 } */
 .list-container {
-  background: #bcbcbc;
+  /* background: #bcbcbc; */
   width: 100%;
   height: inherit;
   display: flex;
@@ -135,7 +138,8 @@
   z-index: 3;
 }
 .wordlist {
-  background: #500086;
+  /* background: #500086; */
+
   margin: 0;
   list-style: none;
   padding-left: 10%;
