@@ -62,7 +62,7 @@
  .overlaybox {
   /* height: 12.4rem !important; */
   margin:0;
-  width: 87.5%!important;
+  width: -webkit-fill-available;
   top: auto;
   right: auto;
   bottom:72px;

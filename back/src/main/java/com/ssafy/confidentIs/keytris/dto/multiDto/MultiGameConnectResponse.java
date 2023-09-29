@@ -26,7 +26,7 @@ public class MultiGameConnectResponse {
         this.roomId = room.getRoomId();
         this.roomStatus = room.getRoomStatus();
         this.category = room.getCategory();
-        this.masterId = room.getMaster().getPlayerId();
+        this.masterId = room.getMasterId();
         this.playerList = room.getPlayerList();
         this.currentPlayerId = currentPlayerId;
     }
