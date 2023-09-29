@@ -12,6 +12,7 @@ import { Button } from "../../components/button/ButtonTest";
 import { AddWordAnimation } from "../../components/game/AddWordAnimation";
 import { SortAnimation } from "../../components/game/SortAnimation";
 import { DeleteAnimation } from "../../components/game/DeleteAnimation";
+import { useLocation, useNavigate } from "react-router";
 
 //TODO: 입력시 입력창 리셋
 export const SingleGame = (props) => {
@@ -46,23 +47,40 @@ export const SingleGame = (props) => {
   const [adding, setAdding] = useState(false);
   const [count, setCount] = useState(0);
   const inputRef = useRef(null);
-  const handleCreate = async () => {
-    try {
-      const category = 101;
-      const res = await createRoom({ category: 101 });
-      console.log("category " + category);
-      // setSockJS(sock);
-      const statusResponseDto = res.data.data.StatusResponse;
-      // 게임방 만들어질 때 playerId, roomId 넘겨받음 => 이 api에서는 playerStatus, roomStatus만 변경
-      setPlayerStatus(statusResponseDto.playerStatus);
-      setRoomStatus(statusResponseDto.roomStatus);
-      setPlayerId(statusResponseDto.playerId);
-      setRoomId(statusResponseDto.roomId);
-      console.log("roomID SET");
-    } catch (error) {
-      console.error(error);
+  const location = useLocation();
+  const responseData = location.state?.responseData;
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!responseData) {
+      alert("잘못된 접근입니다. 메인화면에서 [게임 참여]를 통해 접속해주세요.");
+      navigate("/");
+    } else {
+      console.log(responseData);
+      setPlayerId(responseData.StatusResponse.playerId);
+      setRoomId(responseData.StatusResponse.roomId);
+      setRoomStatus(responseData.StatusResponse.roomStatus);
+      setPlayerStatus(responseData.StatusResponse.playerStatus);
     }
-  };
+  }, [responseData, navigate]);
+  // const handleCreate = async () => {
+  //   try {
+  //     const category = 101;
+  //     const res = await createRoom({ category: 101 });
+  //     console.log("category " + category);
+  //     // setSockJS(sock);
+  //     const statusResponseDto = res.data.data.StatusResponse;
+  //     // 게임방 만들어질 때 playerId, roomId 넘겨받음 => 이 api에서는 playerStatus, roomStatus만 변경
+  //     setPlayerStatus(statusResponseDto.playerStatus);
+  //     setRoomStatus(statusResponseDto.roomStatus);
+  //     setPlayerId(statusResponseDto.playerId);
+  //     setRoomId(statusResponseDto.roomId);
+  //     console.log("roomID SET");
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
   const statusRequestDto = {
     playerId: playerId,
     playerStatus: playerStatus,
@@ -193,7 +211,7 @@ export const SingleGame = (props) => {
         } = sortedRes;
         // console.log(sortedIndex);
         //정렬-> sortedWordList useEffect-> 모션
-        setSortedIdx(sortedIndex);//0 start
+        setSortedIdx(sortedIndex); //0 start
         setSortedWordList(sorted);
         setTargetWordIndex(targetWordRank);
         //득점 성공시
@@ -211,18 +229,18 @@ export const SingleGame = (props) => {
             // setCurrentWordList((prev)=>[...prev,...newTargetWord]);
             setLevelWord((prev) => [...newTargetWord]);
             // setSubWordList([]);
-          },1700);
+          }, 1700);
           // setCurrentWordList(update);
         }
         // console.log(sorted);
         //추가 단어 여부와 추가
         setTimeout(() => {
-          if(newSubWordList!==null){
+          if (newSubWordList !== null) {
             setSubWordList(...newSubWordList);
-          }else{
+          } else {
             setSubWordList(newSubWordList);
           }
-          
+
           if (newSubWordList && newSubWordList.length > 0) {
             setLevelWord((prev) => [...prev, ...newSubWordList]);
             setSubWordList([]);
@@ -266,7 +284,7 @@ export const SingleGame = (props) => {
       //소켓으로
       setTimeout(() => {
         // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
-        console.log("add level word")
+        console.log("add level word");
         console.log(levelWord);
         setCurrentWordList((prev) => [...prev, ...levelWord]);
         setLevelWord([]);
@@ -278,11 +296,11 @@ export const SingleGame = (props) => {
       }, 400);
     }
   }, [levelWord]);
-useEffect(() => {
-  if(!sorting){
-    inputRef.current.focus();
-  }
-}, [sorting])
+  useEffect(() => {
+    if (!sorting) {
+      inputRef.current.focus();
+    }
+  }, [sorting]);
 
   useEffect(() => {
     if (deleteList.length > 0) {
@@ -342,16 +360,19 @@ useEffect(() => {
   };
   const handleOverGame = async () => {
     try {
-      const res = await overGame(overRequestDto);
-      const OverResponseDto = res.data.data.OverResponse;
-      setPlayerStatus(OverResponseDto.statusResponse.playerStatus);
-      setRoomStatus(OverResponseDto.statusResponse.roomStatus);
+      // const res = await overGame(overRequestDto);
+      // const OverResponseDto = res.data.data.OverResponse;
+      // setPlayerStatus(OverResponseDto.statusResponse.playerStatus);
+      // setRoomStatus(OverResponseDto.statusResponse.roomStatus);
+      setPlayerStatus("OVER");
+      setRoomStatus("FINISHED");
+
       // 페이지 화면 전환
       // 페이지 result로 전환되면서 데이터 넘겨주기? 우선 넘겨줄거를 overResultDto로 만들게요
       // 근데 그냥 위에 overResponseDto 넘겨주는게 나을 것 같아서 그냥 안만들었습니다.
       // stomp.disconnect();
       disconnect();
-      console.log(OverResponseDto);
+      // console.log(OverResponseDto);
       // subscription.unsubscribe();
     } catch (error) {
       console.error(error);
@@ -419,32 +440,24 @@ useEffect(() => {
         style={{
           textAlign: "center",
           alignItems: "center",
-          display: "flex",
-          flexDirection: "row",
+          display: "grid",
+          // flexDirection: "column",
+          gridTemplateColumns: "repeat(12,1fr)",
+          // grid-template-columns: repeat(12, [col-start] 1fr);
         }}
       >
-        <div style={{ width: "35%" }}>
+        <div style={{ gridColumn: "1 /span 2" }}>
           <h5>
             player :{playerId} , room :{roomId}
           </h5>
-          <div>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                handleCreate();
-                // onClickConnectBtn();
-              }}
-            >
-              1인 게임 입장
-            </button>
-          </div>
+          <div></div>
           <h1>
             status: player {playerStatus}, room {roomStatus}
           </h1>
           <h1 style={{ flex: "none", position: "sticky", top: 0 }}>
             score:{score}
           </h1>
-          {/* <Menu></Menu> */}
+
           <div>
             <button
               onClick={(e) => {
@@ -455,7 +468,7 @@ useEffect(() => {
               게임 시작
             </button>
             <button onClick={handleOverGame}> 게임 종료/소켓 종료 </button>
-            {/* <Button
+            <Button
               label="레이어 토글"
               onClick={() => {
                 setDisplay((prev) => !prev);
@@ -491,11 +504,12 @@ useEffect(() => {
             >
               추가 토글 {adding.toString()}
             </Button>
-            <br /> */}
+            <br />
           </div>
-        </div>        <div className="gamecontainer" style={{}}>
+        </div>
+        <div className="gamecontainer" style={{}}>
           <div className="bglist">
-            <div className="score">
+            <div className="status">
               {roomStatus === "PREPARED" && (
                 <div
                   className="startbutton"
@@ -508,8 +522,19 @@ useEffect(() => {
               )}
               {roomStatus !== "PREPARED" &&
                 roomStatus !== "UNPREPARED" &&
-                roomStatus !== null &&
-                score}
+                roomStatus !== null && (
+                  <div className="score">
+                    {score}
+                    {roomStatus === "FINISHED" &&
+                      playerStatus === "OVER" &&
+                      roomStatus !== null && (
+                        <span className="gameover" style={{fontSize:"48px"}}>
+                          <br />
+                          GAME OVER
+                        </span>
+                      )}
+                  </div>
+                )}
             </div>
             <div className="overlaybox"></div>
 
@@ -590,7 +615,7 @@ useEffect(() => {
             ></input>
           </div>
         </div>
-        <div style={{ width: "35%" }}>
+        {/* <div style={{ width: "35%" }}>
           <ul>
             <li sytle={{ display: "flex", flexDirection: "row" }}>
               <div style={{}}>
@@ -606,8 +631,7 @@ useEffect(() => {
             <li style={{ color: "white" }}>sorted {sortedWordList}</li>
           </ul>
           <ul className="wordlist">{renderWordList(currentWordList)}</ul>
-        </div>
-
+        </div>  */}
       </div>
     </>
   );

@@ -1,23 +1,85 @@
 .gamecontainer {
-  width: 30% !important;
-  min-width: 30%;
+  /* width: 30% !important; */
+  /* min-width: 30%; */
   display: flex;
-  /* align-self: center; */
-  flex-direction: row-reverse;
+  align-self: center;
+  height: 100vh;
+  width: 100% !important;
+  grid-column: 5 / span 4;
+  flex-direction: row-reverse !important;
 }
 .bglist {
   background: #26154a;
   /* background: #fff; */
-  width: 90% !important;
+  position:relative;
+  width: 87.5% !important;
   z-index: 1000;
+  height: 100vh !important;
 
-  height: 100vh;
+  /* height: 100%!importants; */
   display: flex;
   flex-direction: column;
   /* align-items: center; */
   justify-content: flex-end;
   align-self: end;
   text-align: start;
+}
+.status{
+  position:absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  align-self:center;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  z-index:1000;
+}
+.score {
+  /* position: absolute; */
+  position: absolute;
+  text-align: center;
+  top: 20%;
+  /* left: 52%; */
+  font-size: 96px;
+  color: #fff;
+  /* left: 52%; Center horizontally by moving the left to the middle */
+  /* transform: translate(-50%, -50%); */
+  font-size: 96px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.startbutton {
+  position: absolute;
+  /* text-align: center; */
+  top: 30%;
+}
+.gameover{
+  color: rgba(255, 255, 255, 0.20);
+  font-family: NeoDunggeunmo Pro;
+  font-size: 48px;
+  font-style: normal;
+  /* font-stretch:expanded!important; */
+  font-weight: lighter;
+  line-height: normal;
+  text-align: center;
+  -webkit-text-stroke: 2px  #FFFFFF;
+}
+.overlaybox {
+  height: 12.4rem !important;
+  width: 100%;
+  /* width: auto; */
+  /* grid-column: 5 / span 4; */
+  top: auto;
+  right: auto;
+  position: absolute;
+  /* position:fixed; */
+  border-top: 3px solid var(--primary, #cf0);
+  background: rgba(204, 255, 0, 0.2);
+  z-index: 3333;
 }
 .bglist2 {
   background: #26154a;
@@ -92,7 +154,7 @@ input.inputcase {
   background-color: #ccff00 !important;
   /* margin: 5px; */
   padding: 10px;
-  z-index: 3333;
+  z-index: 3334;
 }
 .points {
   font-size: 0.5rem;
@@ -140,7 +202,7 @@ li.wordline {
   li.wordline {
     font-size: 1.5rem !important;
   }
-  .overlaybox {
+  /* .overlaybox {
     height: 12.4rem !important;
     width: 26.5%;
     top: auto;
@@ -149,32 +211,7 @@ li.wordline {
     border-top: 3px solid var(--primary, #cf0);
     background: rgba(204, 255, 0, 0.2);
     z-index: 3333;
-  }
+  } */
 }
-.overlaybox {
-  height: 12.4rem !important;
-  width: 26.5%;
-  top: auto;
-  right: auto;
-  position: absolute;
-  border-top: 3px solid var(--primary, #cf0);
-  background: rgba(204, 255, 0, 0.2);
-  z-index: 3333;
-}
-.score {
-  /* position: absolute; */
-  position: absolute;
-  text-align: center;
-  top: 20%;
-  left: 52%;
-  font-size: 96px;
-  color: #fff;
-  /* left: 52%; Center horizontally by moving the left to the middle */
-  transform: translate(-50%, -50%);
-  font-size: 96px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-.startbutton {
-}
+
+
