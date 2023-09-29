@@ -1,4 +1,4 @@
-.gamecontainer {
+.m-gamecontainer {
   height: 100vh;
   min-width:300px;
   width: 100% !important;
@@ -7,12 +7,12 @@
   grid-column: 5 / span 4;
   flex-direction: column !important;
 }
-.bglist {
+.m-bglist {
   background: #26154a;
   position:relative;
   width: 100% !important;
   z-index: 1000;
-  height: 80vh;
+  height: 50vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -21,7 +21,7 @@
   margin-top: auto;
   margin-bottom: auto;
 }
-.status{
+.m-status{
   width: inherit;
   height: inherit;
   align-self: center;
@@ -31,24 +31,25 @@
   align-items: center; 
   z-index:1000;
 }
-.score {
+.m-score {
+  /* background-color: aquamarine; */
   position: absolute;
   text-align: center;
   top: 20%;
-  font-size: 96px;
+  font-size: 50px;
   color: #fff;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
-.startbutton {
+.m-startbutton {
   position: absolute;
   top: 30%;
 }
-.over{
+.m-over{
   background-color: rgba(0, 0, 0, 0.5);
 }
-.gameover{
+.m-gameover{
   color: rgba(255, 255, 255, 0.20);
   font-family: NeoDunggeunmo Pro;
   font-size: 48px;
@@ -58,7 +59,7 @@
   text-align: center;
   -webkit-text-stroke: 2px  #FFFFFF;
 }
-.overlaybox {
+.m-overlaybox {
   width: 100%;
   display: flex;
   flex-direction: column; /* 쌓이는 방향을 수직으로 설정 */
@@ -69,11 +70,10 @@
   background: rgba(204, 255, 0, 0.2);
   z-index: 3333;
 }
-.bglist2 {
+.m-bglist2 {
   background: #26154a;
   width: 90% !important;
   z-index: 1000;
-
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -81,7 +81,7 @@
   align-self: end;
   text-align: start;
 }
-.displaylayer {
+.m-displaylayer {
   display: flex;
   flex-direction: column;
   height: 85%;
@@ -100,10 +100,10 @@
   margin: 0;
   list-style: none;
 } */
-.targetWord::marker {
+.m-targetWord::marker {
   content: "▶";
 } 
-.targetWord {
+.m-targetWord {
   color: var(--primary, #cf0);
 }
 /* .indexlist li.targetWord::after {
@@ -111,7 +111,7 @@
   padding: 0.2rem;
   font-size: 1rem;
 } */
-.list-container {
+.m-list-container {
   /* background: #bcbcbc; */
   width: 100%;
   height: inherit;
@@ -119,7 +119,7 @@
   flex-direction: column;
   justify-content: flex-end;
 }
-.indexlist {
+.m-indexlist {
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -130,60 +130,46 @@
   width: inherit;
   z-index: 3;
 }
-.wordlist {
+.m-wordlist {
   /* background: #500086; */
   margin: 0;
   list-style: none;
   padding-left: 10%;
   padding-right: 2%;
 }
-
-.endbar {
-  background: #d9d9d9;
-  width: 100%;
-}
-.guessbox {
+.m-playerName {
   width: auto;
-  background: var(--gray2, #888);
-  color: var(--gray4, #ddd);
-  font-size: 20px;
-  padding: 20px;
-  z-index: 3333;
+  font-size: 24px;
   border: none;
-}
-input.inputcase {
-  width: auto; 
-  border: none;
-  background-color: #f4f4f4; 
-  color: #888; 
-  font-size: 20px;
-  color: blue;
-  background-color: #ccff00 !important;
-  padding: 20px;
+  color: #26154A;
+  background-color: #ccff00;
+  padding: 10px;
   z-index: 3334;
+  text-align: center;
 }
-.points {
+.m-points {
   font-size: 0.5rem;
+  color: rgba(255, 255, 255, 0.3);
 }
-input.inputcase:focus {
+input.m-inputcase:focus {
   outline: none !important;
 }
-.wordlist .targetWord::marker {
+.m-wordlist .targetWord::marker {
   content: "▶" !important;
 }
 
-li.wordline {
-  font-size: 2.5vh; 
-  font-size: min(max(2.5vh, 14px), 28px);
-  padding-top: 0.45rem;
-  padding-bottom: 0.45rem;
+li.m-wordline {
+  font-size: 1.5vh; 
+  font-size: min(max(1.5vh, 6px), 22px);
+  padding-top: 0.2rem;
+  padding-bottom: 0.15rem;
   display: flex; /* Use flexbox to control layout */
   justify-content: space-between; /* Align items to either side */
   align-items: center;
 }
-li.wordline.purple {
+li.m-wordline.purple {
   background-color: #8F00FF;
 }
-li.wordline.red {
+li.m-wordline.red {
   background-color: rgb(255, 0, 230);
 }

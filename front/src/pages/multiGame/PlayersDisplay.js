@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-// import "./GameDisplay.css";
 import { AddWordAnimation } from "../../components/game/AddWordAnimation";
 import { SortAnimation } from "../../components/game/SortAnimation";
 import { DeleteAnimation } from "../../components/game/DeleteAnimation";
+// import "../singleGame/SingleGame.css";
+import "./PlayersGame.css";
 
 export const PlayersDisplay = ({
   data,
@@ -130,17 +131,17 @@ export const PlayersDisplay = ({
         // This is a 2D array with points
         const [word, point] = item;
         return (
-          <li key={currentWordList.length - index - 1} className={"wordline"}>
+          <li key={currentWordList.length - index - 1} className={"m-wordline"}>
             <div
               className={
                 targetWord[0][0] === word
-                  ? "targetWord wordline left"
-                  : "wordline left"
+                  ? "m-targetWord m-wordline left"
+                  : "m-wordline left"
               }
             >
               {word}
             </div>
-            <div className="right points">{point}</div>
+            <div className="right m-points">{point}</div>
           </li>
         );
         // }
@@ -155,7 +156,7 @@ export const PlayersDisplay = ({
     <li
       key={index}
       className={
-        20 - index - 1 === targetWordIndex ? "targetWord wordline" : "wordline"
+        20 - index - 1 === targetWordIndex ? "m-targetWord m-wordline" : "m-wordline"
       }
     >
       {value}
@@ -222,9 +223,9 @@ export const PlayersDisplay = ({
   }, [otherPlayerGame1]);
   // 점수 나오게 해야함 점수 접근 방법 {socre}
   return (
-    <div className="gamecontainer" style={{}}>
-      <div className="bglist">
-        <div className="multi-score">
+    <div className="m-gamecontainer" style={{}}>
+      <div className="m-bglist">
+        <div className="m-status">
           {!data || data === null ? (
             <div>EMPTY</div>
           ) : (
@@ -247,71 +248,91 @@ export const PlayersDisplay = ({
                     roomStatus !== "PREPARED" &&
                     roomStatus !== "PREPARING" &&
                     roomStatus != null && <div>OVER</div>}
-                  <div>{score}</div>
+                  <div className="m-score">{score}</div>
                 </>
               )}
             </>
           )}
         </div>
-        <div className="overlaybox-player"></div>
-        <div className="inputcase-playerName">{data?.nickname}</div>
-        <ul className="indexlist">{listing}</ul>
-        {!display && (
-          <ul className="wordlist">{renderWordList(currentWordList)}</ul>
-        )}
-        {display && (
-          // <div className="bglist2 ">
-          <>
-            {adding && (
-              <>
-                <AddWordAnimation
-                  bufferList={levelWord}
-                  targetWord={targetWord}
-                ></AddWordAnimation>
-                {!sorting && (
-                  <ul className="wordlist">
-                    {renderWordList(currentWordList)}
-                  </ul>
+
+        <div className="overlaybox">
+          <li className="m-wordline">&nbsp;</li>
+          <li className="m-wordline">&nbsp;</li>
+          <li className="m-wordline">&nbsp;</li>
+          <li className="m-wordline">&nbsp;</li>
+        </div>
+
+        <div className="list-container">
+          <ul className="indexlist">
+            <div className="m-playerName">{data?.nickname}&nbsp;</div>
+            <li
+              className={
+                currentWordList.length <= 15
+                  ? "m-wordline purple"
+                  : "m-wordline red"
+              }
+            >&nbsp;</li>
+            {listing}
+          </ul>
+          {!display && (
+            <ul className="m-wordlist">{renderWordList(currentWordList)}</ul>
+          )}
+          {display && (
+            // <div className="bglist2 ">
+            <>
+              {adding && (
+                <>
+                  <AddWordAnimation
+                    bufferList={levelWord}
+                    targetWord={targetWord}
+                  ></AddWordAnimation>
+                  {!sorting && (
+                    <ul className="m-wordlist">
+                      {renderWordList(currentWordList)}
+                    </ul>
+                  )}
+                </>
+              )}
+              <ul className="m-wordlist">
+                {sorting && (
+                  <>
+                    <SortAnimation
+                      sendList={sortedWordList.slice().reverse()}
+                      beforeIndex={sortedIdx}
+                      targetWord={targetWord}
+                    ></SortAnimation>
+                  </>
                 )}
-              </>
-            )}
-            <ul className="wordlist">
-              {sorting && (
-                <>
-                  <SortAnimation
-                    sendList={sortedWordList.slice().reverse()}
-                    beforeIndex={sortedIdx}
-                    targetWord={targetWord}
-                  ></SortAnimation>
-                </>
-              )}
-              {deleting && (
-                <>
-                  {
-                    <div sytle={{ backgroundColor: "red" }}>
-                      {renderWordList(
-                        currentWordList.slice(4, currentWordList.length)
-                      )}
-                    </div>
-                  }
-                  <DeleteAnimation
-                    initialList={currentWordList.slice()}
-                    targetIndex={targetWordIndex}
-                    targetWord={targetWord}
-                  ></DeleteAnimation>
-                  {
-                    <div sytle={{ backgroundColor: "red" }}>
-                      {renderWordList(
-                        currentWordList.slice(0, targetWordIndex)
-                      )}
-                    </div>
-                  }
-                </>
-              )}
-            </ul>
-          </>
-        )}
-        {/* <div className="inputcase-playerName">mickname영역</div> */}
+                {deleting && (
+                  <>
+                    {
+                      <div sytle={{ backgroundColor: "red" }}>
+                        {renderWordList(
+                          currentWordList.slice(4, currentWordList.length)
+                        )}
+                      </div>
+                    }
+                    <DeleteAnimation
+                      initialList={currentWordList.slice()}
+                      targetIndex={targetWordIndex}
+                      targetWord={targetWord}
+                    ></DeleteAnimation>
+                    {
+                      <div sytle={{ backgroundColor: "red" }}>
+                        {renderWordList(
+                          currentWordList.slice(0, targetWordIndex)
+                        )}
+                      </div>
+                    }
+                  </>
+                )}
+              </ul>
+            </>
+          )}
+        </div>
+
+        
+
       </div>
     </div>
   );
