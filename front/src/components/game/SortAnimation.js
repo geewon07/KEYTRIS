@@ -4,7 +4,7 @@ import Col from "react-bootstrap/Col";
 import styled, { css, keyframes } from "styled-components";
 import { useState } from "react";
 
-const endpoint = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+// const endpoint = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const startpoint = [8, 7, 6, 9, 0, 4, 3, 5, 2, 1];
 
 // const startpoint = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -26,8 +26,8 @@ const AnimatedRow = styled.li`
   &.row-animation {
     ${({ index, startpoint }) => css`
       animation: ${moveRow} 0.5s ease-in-out forwards;
-      --top: ${-(endpoint[index] - startpoint[index]) * 2}rem;
-      --bottom: ${-endpoint[index] / 100}rem;
+      --top: ${-(index - startpoint[index]) * 2}rem;
+      --bottom: ${-index / 100}rem;
     `}
   }
 `;
