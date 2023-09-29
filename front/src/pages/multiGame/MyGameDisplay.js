@@ -4,7 +4,7 @@ import { AddWordAnimation } from "../../components/game/AddWordAnimation";
 import { SortAnimation } from "../../components/game/SortAnimation";
 import { DeleteAnimation } from "../../components/game/DeleteAnimation";
 import "../singleGame/SingleGame.css";
-
+import { toast } from "react-toastify";
 
 export const MyGameDisplay = ({
   data,
@@ -16,6 +16,7 @@ export const MyGameDisplay = ({
   currentPlayerGameInfo,
   newLevelWord,
   updatePlayerToOver,
+  setLastWord,
 }) => {
   const [subWordList, setSubWordList] = useState([]);
   const [targetWord, setTargetWord] = useState("");
@@ -138,6 +139,8 @@ export const MyGameDisplay = ({
 
   useEffect(() => {
     if (currentWordList.length >= 21) {
+      console.log(targetWord);
+      setLastWord(targetWord);
       updatePlayerToOver();
     }
     // eslint-disable-next-line
@@ -191,12 +194,16 @@ export const MyGameDisplay = ({
 
   const handleInsertWord = () => {
     if (guessWord === "") {
-      alert("cant guess blank");
+      toast.error("단어를 입력해주세요.");
       return;
     }
+
     setLastGuess(guessWord);
-    if (guessWord === targetWord) {
-      alert("target cant be guessed");
+
+    const target = targetWord[0][0];
+    if (target.includes(guessWord) || guessWord.includes(target)) {
+      toast.error("타겟어에 포함되는 단어를 입력할 수 없습니다.");
+      setGuessWord("");
       return;
     }
     insertWord(insertRequestDto);
@@ -267,7 +274,6 @@ export const MyGameDisplay = ({
     <div>
       <div className="gamecontainer" style={{}}>
         <div className="bglist">
-
           <div className="status">
             {roomStatus !== null &&
               roomStatus !== "ONGOING" &&
@@ -309,18 +315,25 @@ export const MyGameDisplay = ({
               </>
             )}
           </div>
-          
+
           <div className="overlaybox">
             <li className="wordline">&nbsp;</li>
             <li className="wordline">&nbsp;</li>
             <li className="wordline">&nbsp;</li>
             <li className="wordline">&nbsp;</li>
           </div>
-           
-          <div className="list-container">
 
+          <div className="list-container">
             <ul className="indexlist">
-              <li className={currentWordList.length <= 17 ? "wordline purple" : "wordline red"}>&nbsp;</li>
+              <li
+                className={
+                  currentWordList.length <= 17
+                    ? "wordline purple"
+                    : "wordline red"
+                }
+              >
+                &nbsp;
+              </li>
               {listing}
             </ul>
             {!display && (
@@ -399,7 +412,6 @@ export const MyGameDisplay = ({
             }
           }}
         ></input>
-
       </div>
     </div>
   );
