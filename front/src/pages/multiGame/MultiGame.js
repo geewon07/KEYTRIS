@@ -1,10 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { connect, sendMsg, subscribe } from "../../api/stompClient.js";
+import {
+  connect,
+  disconnect,
+  sendMsg,
+  subscribe,
+} from "../../api/stompClient.js";
 import Chat from "../../components/chatting/ChatTest";
 import { MyGameDisplay } from "./MyGameDisplay.js";
 import { PlayersDisplay } from "./PlayersDisplay.js";
 import "./MultiGame.css";
+import { toast } from "react-toastify";
 
 export const MultiGame = () => {
   const [playerId, setPlayerId] = useState(null); // 넘겨 받는 정보니까 useState 나중에 지우기
@@ -22,10 +28,13 @@ export const MultiGame = () => {
   const [otherPlayerGame1, setOtherPlayerGame1] = useState(null);
   const [otherPlayerGame2, setOtherPlayerGame2] = useState(null);
   const [otherPlayerGame3, setOtherPlayerGame3] = useState(null);
+  const [lastWord, setLastWord] = useState(null);
 
   const playRef = useRef();
   const playReadyRef = useRef();
   const playOverRef = useRef();
+  const playEndRef = useRef();
+  const lastWordRef = useRef(lastWord);
 
   const location = useLocation();
   const responseData = location.state?.responseData;
@@ -148,6 +157,23 @@ export const MultiGame = () => {
     }
   };
 
+  playEndRef.current = (playerEndInfo) => {
+    setTimeout(() => {
+      navigate("/MultiGameResult", {
+        state: {
+          playerResultList: playerEndInfo.playerResultList,
+          playerId: playerId,
+          lastWord: lastWordRef.current,
+        },
+      });
+    }, 5000);
+  };
+
+  useEffect(() => {
+    console.log(lastWord);
+    lastWordRef.current = lastWord;
+  }, [lastWord]);
+
   useEffect(() => {
     if (roomId !== null) {
       const enterChat = (messageBody) => {
@@ -171,31 +197,55 @@ export const MultiGame = () => {
         setWordListResponse(startGameInfo.wordListResponse);
       };
       const gameEndInfo = (messageBody) => {
-        const gameEndInfo = messageBody;
+        setTimeout(() => {
+          navigate("/MultiGameResult", {
+            state: {
+              responseData: messageBody,
+              playerId: playerId,
+              lastWord: lastWord,
+            },
+          });
+        }, 5000);
       };
 
       const levelWordInfo = (messageBody) => {
-        console.log(messageBody);
         setNewLevelWord(messageBody);
       };
 
       const errorInfo = (messageBody) => {
-        const errorInfo = messageBody;
+        const errorMessages = {
+          "SO01-ERR-400": "입력할 수 없는 단어입니다.",
+          "SO02-ERR-404": "찾을 수 없는 플레이어입니다.",
+          "SO03-ERR-404": "찾을 수 없는 게임입니다.",
+          "SO04-ERR-400": "게임을 시작할 수 없습니다.",
+          "SO05-ERR-403": "방장만 시작이 가능합니다.",
+        };
+        console.log(messageBody);
+        const errorMessage = errorMessages[messageBody?.errorCode];
+        console.log(errorMessage);
+        if (errorMessage) {
+          toast.error(errorMessage);
+        }
       };
 
-      connect().then(() => {
+      connect("MULTI", roomId, playerId).then(() => {
         subscribe(`/topic/multi/chat/${roomId}`, enterChat);
         subscribe(`/topic/multi/${roomId}`, enterPlayer);
         subscribe(`/topic/multi/start/${roomId}`, startGame);
         subscribe(`/topic/multi/player-ready/${roomId}`, playReadyRef.current);
         subscribe(`/topic/multi/player-over/${roomId}`, playOverRef.current);
-        subscribe(`/topic/multi/end/${roomId}`, gameEndInfo);
+        subscribe(`/topic/multi/end/${roomId}`, playEndRef.current);
         subscribe(`/topic/multi/play/${roomId}`, playRef.current);
         subscribe(`/topic/multi/level-word/${roomId}`, levelWordInfo);
-        subscribe(`topic/muitl/error/${roomId}/${playerId}`, errorInfo);
+        subscribe(`/topic/multi/error/${roomId}/${playerId}`, errorInfo);
       });
+
+      //Calenup function
+      return () => {
+        disconnect();
+      };
     }
-  }, [roomId]);
+  }, [roomId, playerId]);
 
   const handleSendMessage = (inputText) => {
     const body = { playerId: playerId, content: inputText };
@@ -311,6 +361,7 @@ export const MultiGame = () => {
             currentPlayerGameInfo={currentPlayerGameInfo}
             newLevelWord={newLevelWord}
             updatePlayerToOver={updatePlayerToOver}
+            setLastWord={setLastWord}
           />
         )}
       </div>
