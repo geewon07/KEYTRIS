@@ -28,7 +28,7 @@ export const overGame = async (overRequestDto) => {
 // }
 
 export const rankPlayer = async (rankingRequestDto) => {
-  const response = await axiosInstance.post("/ranking",rankingRequestDto);
+  const response = await axiosInstance.post("/games/ranking",rankingRequestDto);
   return response
 }
 

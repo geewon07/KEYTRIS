@@ -13,6 +13,7 @@
   
   .others {
     flex: 2;
+    margin-top: 4rem !important;
     margin: 2rem;
     display: flex;
     flex-direction: column;
@@ -22,7 +23,7 @@
     flex: 1;
     height: 50%;
     display: flex;
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
     flex-direction: row;
     justify-content: space-between;
   }

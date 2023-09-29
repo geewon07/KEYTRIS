@@ -4,17 +4,21 @@ import "./Score.css";
 import { overGame, rankPlayer } from "../../api/singleGame/SingleGameApi.js";
 import { Button } from "../button/ButtonTest";
 
-function Score() {
+function Score({ overRequestDto }) {
   const [overResponse, setOverResponse] = useState(null);
   const [rankList, setRankList] = useState([]);
   const [nickName, setNickName] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-  const score = 3000;
+  const [score, setScore] = useState("");
+  const [roomId, setRoomId] = useState("");
 
   useEffect(() => {
-    handleOverGame(overRequestDto);
-    // eslint-disable-next-line
-  }, []);
+    if(overRequestDto) {
+      setRoomId(overRequestDto.roomId);
+      setScore(overRequestDto.score);
+      handleOverGame(overRequestDto);
+    }
+  }, [overRequestDto]);
 
   const navigate = useNavigate();
 
@@ -23,29 +27,25 @@ function Score() {
     navigate(path);
   };
 
-  const overRequestDto = {
-    roomId: "2fd4e586-a402-418c-916d-38f291758b72",
-    lastWord: [["초콜릿", 0]],
-    score: 0,
-  };
-
   const handleOverGame = async (overRequestDto) => {
     try {
       const res = await overGame(overRequestDto);
       const overResponseDto = res.data.data.OverResponse;
       setOverResponse(overResponseDto);
       setRankList(overResponseDto.recordList);
+      console.log("overRequestDto", overRequestDto);
     } catch (error) {
       console.error(error);
     }
   };
 
   const rankRequestDto = {
-    roomId: "2fd4e586-a402-418c-916d-38f291758b72",
+    roomId: roomId,
     nickname: nickName,
   };
 
   const handleInsertRank = async (rankRequestDto) => {
+    console.log(rankRequestDto);
     try {
       const res = await rankPlayer(rankRequestDto);
       const rankResponseDto = res.data.data.RankingResponse;
@@ -55,9 +55,17 @@ function Score() {
     }
   };
 
+
+  function getByteLength(str) {
+    return new Blob([str]).size;
+  }
+
   // 닉네임 입력 핸들러
   const handleNicknameChange = (event) => {
-    setNickName(event.target.value);
+    const inputValue = event.target.value;
+    if(getByteLength(inputValue) <= 15) {
+      setNickName(event.target.value);
+    }    
   };
 
   // 저장 버튼 클릭 핸들러

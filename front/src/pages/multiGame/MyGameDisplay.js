@@ -320,7 +320,7 @@ export const MyGameDisplay = ({
           <div className="list-container">
 
             <ul className="indexlist">
-              <li className={currentWordList.length <= 15 ? "wordline purple" : "wordline red"}>&nbsp;</li>
+              <li className={currentWordList.length <= 17 ? "wordline purple" : "wordline red"}>&nbsp;</li>
               {listing}
             </ul>
             {!display && (
