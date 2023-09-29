@@ -4,21 +4,27 @@ import SockJS from "sockjs-client";
 let stompClient = null;
 let socketConnect = null;
 
-export const connect = () =>
+export const connect = (roomType, roomId, playerId) =>
   new Promise((resolve, reject) => {
     const socketFactory = () => new SockJS(process.env.REACT_APP_SOCKET_BASE_URL);
     socketConnect = socketFactory();
     const client = Stomp.over(socketFactory());
 
+    const headers = {
+      roomType: roomType,
+      roomId: roomId,
+      playerId: playerId
+    };
+
     client.connect(
-      {},
+      headers,
       () => {
         stompClient = client;
         resolve();
       },
       (error) => {
         console.error("소켓 연결 실패 5초 후 재연결", error);
-        setTimeout(() => connect(process.env.REACT_APP_SOCKET_BASE_URL), 5000);
+        setTimeout(() => connect(roomId, playerId), 5000);
         reject(error);
       }
     );
