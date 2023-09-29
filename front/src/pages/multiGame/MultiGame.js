@@ -50,12 +50,31 @@ export const MultiGame = () => {
 
     if (currentPlayerData?.playerId === currentPlayerId) {
       setCurrentPlayerGameInfo(playInfo);
-    } else if (otherPlayerData1?.playerId === currentPlayerId) {
-      setOtherPlayerGame1(playInfo);
-    } else if (otherPlayerData2?.playerId === currentPlayerId) {
-      setOtherPlayerGame2(playInfo);
-    } else if (otherPlayerData3?.playerId === currentPlayerId) {
-      setOtherPlayerGame3(playInfo);
+    } else {
+      setOtherPlayerData1((prevOtherPlayerData1) => {
+        if (prevOtherPlayerData1?.playerId === currentPlayerId) {
+          setOtherPlayerGame1(playInfo);
+          return prevOtherPlayerData1;
+        } else {
+          return prevOtherPlayerData1;
+        }
+      });
+      setOtherPlayerData2((prevOtherPlayerData2) => {
+        if (prevOtherPlayerData2?.playerId === currentPlayerId) {
+          setOtherPlayerGame2(playInfo);
+          return prevOtherPlayerData2;
+        } else {
+          return prevOtherPlayerData2;
+        }
+      });
+      setOtherPlayerData3((prevOtherPlayerData3) => {
+        if (prevOtherPlayerData3?.playerId === currentPlayerId) {
+          setOtherPlayerGame3(playInfo);
+          return prevOtherPlayerData3;
+        } else {
+          return prevOtherPlayerData3;
+        }
+      });
     }
   };
 
@@ -71,6 +90,7 @@ export const MultiGame = () => {
     } else {
       setOtherPlayerData1((prevOtherPlayerData1) => {
         if (prevOtherPlayerData1?.playerId === currentPlayerId) {
+          console.log(prevOtherPlayerData1);
           return playerUpdateInfo;
         } else {
           return prevOtherPlayerData1;
