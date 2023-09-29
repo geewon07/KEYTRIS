@@ -7,7 +7,7 @@ import TodayNew from "../../components/list/TodayNew";
 export const MultiGameResult = () => {
   const location = useLocation();
 
-  const lastWord = location.state?.lastWord;
+  const lastWord = location.state?.lastWord[0][0];
   const playerId = location.state?.playerId;
   const playerResultList = location.state?.playerResultList;
   return (
