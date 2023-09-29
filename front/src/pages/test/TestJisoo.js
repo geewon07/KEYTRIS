@@ -17,12 +17,12 @@ export const TestJisoo = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!responseData) {
-      alert("잘못된 접근입니다. 메인화면에서 [게임 참여]를 통해 접속해주세요.");
-      navigate("/");
-    }
-  }, [responseData, navigate]);
+  // useEffect(() => {
+  //   if (!responseData) {
+  //     alert("잘못된 접근입니다. 메인화면에서 [게임 참여]를 통해 접속해주세요.");
+  //     navigate("/");
+  //   }
+  // }, [responseData, navigate]);
 
   const [modal, setModal] = useState(false);
   const [multigameModal, setMModal] = useState(true);
@@ -59,11 +59,12 @@ export const TestJisoo = () => {
       const response = await createMultiRoom(MultiGameCreateRequest);
       console.log(response);
 
-      if (response.data.data) {
-        alert("멀티 게임을 만들었습니다");
-        // 소켓 연결하기
-
-        // 만들어진 게임으로 이동하기 + 친구 초대 모달 열림
+      if (response.data.success === "success") {
+        console.log("요청 success");
+        const roomId = response.data.data.gameInfo.roomId;
+        navigate(`/TestSocket/${roomId}`, {
+          state: { responseData: response.data.data },
+        });
       } else {
         alert("게임 만들기 실패");
       }
@@ -85,13 +86,14 @@ export const TestJisoo = () => {
       const response = await connectMultiRoom(gameCode, MultiGameCreateRequest);
       console.log(response);
 
-      if (response.data.data) {
-        alert("멀티 게임에 입장했습니다");
-        // 소켓 연결하기
-
-        // 접속한 페이지로 이동하기
+      if (response.data.success === "success") {
+        console.log("요청 success");
+        const roomId = response.data.data.gameInfo.roomId;
+        navigate(`/TestSocket/${roomId}`, {
+          state: { responseData: response.data.data },
+        });
       } else {
-        alert("게임 입장 실패");
+        alert("게임 입장에 실패했습니다.");
       }
     } catch (error) {
       console.error("오류 발생:", error);

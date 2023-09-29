@@ -16,24 +16,27 @@ public class MultiRoom extends BaseRoom {
 
     private int limit;
     private List<MultiPlayer> playerList;
-    private MultiPlayer master;
+    private String masterId;
     private int overPlayerCnt;
 
     @Builder
-    public MultiRoom(String roomId, int category, RoomStatus roomStatus, Timestamp startTime, List<String> targetWordList, List<String> subWordList, Queue<String> levelWordList, int limit, List<MultiPlayer> playerList, MultiPlayer master, int overPlayerCnt) {
+    public MultiRoom(String roomId, int category, RoomStatus roomStatus, Timestamp startTime, List<String> targetWordList, List<String> subWordList, Queue<String> levelWordList, int limit, List<MultiPlayer> playerList, String masterId, int overPlayerCnt) {
         super(roomId, category, roomStatus, startTime, targetWordList, subWordList, levelWordList);
         this.limit = limit;
         this.playerList = playerList;
-        this.master = master;
+        this.masterId = masterId;
         this.overPlayerCnt = overPlayerCnt;
     }
 
     public void updateMaster(MultiPlayer currentPlayer) {
-        this.master = currentPlayer;
+        this.masterId = currentPlayer.getPlayerId();
     }
 
     public void updateOverPlayerCnt() {
         this.overPlayerCnt += 1;
     }
 
+    public void updatePlayerList(List<MultiPlayer> playerList) {
+        this.playerList = playerList;
+    }
 }

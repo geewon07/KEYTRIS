@@ -3,6 +3,7 @@ package com.ssafy.confidentIs.keytris.service;
 import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
 import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
 import com.ssafy.confidentIs.keytris.common.exception.customException.InvalidWordException;
+import com.ssafy.confidentIs.keytris.common.exception.customException.RoomNotFoundException;
 import com.ssafy.confidentIs.keytris.dto.*;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListRequest;
@@ -332,7 +333,12 @@ public class RoomServiceImpl implements RoomService {
     roomManager.updateRoom(room.getRoomId(), room);
   }
 
-
+  @Override
+  public Room findByRoomId(String roomId) {
+    return Optional.ofNullable(roomManager.getRoom(roomId))
+            .orElseThrow(() -> new RoomNotFoundException("Room with ID " + roomId + " does not exist.",
+                    ErrorCode.ROOM_NOT_FOUND));
+  }
 
 
 }
