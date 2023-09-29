@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./SingleGame.css";
+
+// import "./SingleGame copy.css";
+
 import {
   startGame,
   createRoom,
@@ -12,6 +15,7 @@ import { Button } from "../../components/button/ButtonTest";
 import { AddWordAnimation } from "../../components/game/AddWordAnimation";
 import { SortAnimation } from "../../components/game/SortAnimation";
 import { DeleteAnimation } from "../../components/game/DeleteAnimation";
+import { useLocation, useNavigate } from "react-router";
 
 //TODO: 입력시 입력창 리셋
 export const SingleGame = (props) => {
@@ -46,23 +50,40 @@ export const SingleGame = (props) => {
   const [adding, setAdding] = useState(false);
   const [count, setCount] = useState(0);
   const inputRef = useRef(null);
-  const handleCreate = async () => {
-    try {
-      const category = 101;
-      const res = await createRoom({ category: 101 });
-      console.log("category " + category);
-      // setSockJS(sock);
-      const statusResponseDto = res.data.data.StatusResponse;
-      // 게임방 만들어질 때 playerId, roomId 넘겨받음 => 이 api에서는 playerStatus, roomStatus만 변경
-      setPlayerStatus(statusResponseDto.playerStatus);
-      setRoomStatus(statusResponseDto.roomStatus);
-      setPlayerId(statusResponseDto.playerId);
-      setRoomId(statusResponseDto.roomId);
-      console.log("roomID SET");
-    } catch (error) {
-      console.error(error);
+  const location = useLocation();
+  const responseData = location.state?.responseData;
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!responseData) {
+      alert("잘못된 접근입니다. 메인화면에서 [게임 참여]를 통해 접속해주세요.");
+      navigate("/");
+    } else {
+      console.log(responseData);
+      setPlayerId(responseData.StatusResponse.playerId);
+      setRoomId(responseData.StatusResponse.roomId);
+      setRoomStatus(responseData.StatusResponse.roomStatus);
+      setPlayerStatus(responseData.StatusResponse.playerStatus);
     }
-  };
+  }, [responseData, navigate]);
+  // const handleCreate = async () => {
+  //   try {
+  //     const category = 101;
+  //     const res = await createRoom({ category: 101 });
+  //     console.log("category " + category);
+  //     // setSockJS(sock);
+  //     const statusResponseDto = res.data.data.StatusResponse;
+  //     // 게임방 만들어질 때 playerId, roomId 넘겨받음 => 이 api에서는 playerStatus, roomStatus만 변경
+  //     setPlayerStatus(statusResponseDto.playerStatus);
+  //     setRoomStatus(statusResponseDto.roomStatus);
+  //     setPlayerId(statusResponseDto.playerId);
+  //     setRoomId(statusResponseDto.roomId);
+  //     console.log("roomID SET");
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
   const statusRequestDto = {
     playerId: playerId,
     playerStatus: playerStatus,
@@ -272,7 +293,7 @@ export const SingleGame = (props) => {
         setLevelWord([]);
         setDisplay(false);
         setAdding(false);
-      }, 300);
+      }, 200);
       setTimeout(() => {
         // setCurrentWordList((prev) => [...prev, ...levelWord]);
       }, 400);
@@ -342,16 +363,16 @@ export const SingleGame = (props) => {
   };
   const handleOverGame = async () => {
     try {
-      const res = await overGame(overRequestDto);
-      const OverResponseDto = res.data.data.OverResponse;
-      setPlayerStatus(OverResponseDto.statusResponse.playerStatus);
-      setRoomStatus(OverResponseDto.statusResponse.roomStatus);
+      disconnect();
+      setPlayerStatus("OVER");
+      setRoomStatus("FINISHED");
+
       // 페이지 화면 전환
       // 페이지 result로 전환되면서 데이터 넘겨주기? 우선 넘겨줄거를 overResultDto로 만들게요
       // 근데 그냥 위에 overResponseDto 넘겨주는게 나을 것 같아서 그냥 안만들었습니다.
       // stomp.disconnect();
-      disconnect();
-      console.log(OverResponseDto);
+      
+      // console.log(OverResponseDto);
       // subscription.unsubscribe();
     } catch (error) {
       console.error(error);
@@ -365,14 +386,16 @@ export const SingleGame = (props) => {
   }, [currentWordList]);
 
   // 사라짐...
-  // const handleOutRoom = async (statusRequestDto) => { // 위에 dto있음!
-  //   try {
-  //     const res = await outRoom(statusRequestDto);
-  //     const OverResponseDto = res.data.data.OverResponse;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const handleOutRoom = async () => { // 위에 dto있음!
+    try {
+      console.log(overRequestDto)
+      navigate("/SingleGameResult", {
+        state: { overRequestDto: overRequestDto },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const renderWordList = (list) => {
     return list
       .slice()
@@ -419,32 +442,24 @@ export const SingleGame = (props) => {
         style={{
           textAlign: "center",
           alignItems: "center",
-          display: "flex",
-          flexDirection: "row",
+          display: "grid",
+          // flexDirection: "column",
+          gridTemplateColumns: "repeat(12,1fr)",
+          // grid-template-columns: repeat(12, [col-start] 1fr);
         }}
       >
-        <div style={{ width: "35%" }}>
+        {/* <div style={{ gridColumn: "1 /span 2" }}>
           <h5>
             player :{playerId} , room :{roomId}
           </h5>
-          <div>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                handleCreate();
-                // onClickConnectBtn();
-              }}
-            >
-              1인 게임 입장
-            </button>
-          </div>
+          <div></div>
           <h1>
             status: player {playerStatus}, room {roomStatus}
           </h1>
           <h1 style={{ flex: "none", position: "sticky", top: 0 }}>
             score:{score}
           </h1>
-          {/* <Menu></Menu> */}
+
           <div>
             <button
               onClick={(e) => {
@@ -455,7 +470,7 @@ export const SingleGame = (props) => {
               게임 시작
             </button>
             <button onClick={handleOverGame}> 게임 종료/소켓 종료 </button>
-            {/* <Button
+            <Button
               label="레이어 토글"
               onClick={() => {
                 setDisplay((prev) => !prev);
@@ -491,12 +506,12 @@ export const SingleGame = (props) => {
             >
               추가 토글 {adding.toString()}
             </Button>
-            <br /> */}
+            <br />
           </div>
-        </div>{" "}
+        </div> */}
         <div className="gamecontainer" style={{}}>
           <div className="bglist">
-            <div className="score">
+            <div className="status">
               {roomStatus === "PREPARED" && (
                 <div
                   className="startbutton"
@@ -509,10 +524,32 @@ export const SingleGame = (props) => {
               )}
               {roomStatus !== "PREPARED" &&
                 roomStatus !== "UNPREPARED" &&
-                roomStatus !== null &&
-                score}
+                roomStatus !== null && (
+                  <div className="score">
+                    {score}
+                    {roomStatus === "FINISHED" &&
+                      playerStatus === "OVER" &&
+                      roomStatus !== null && (
+                        <div className="gameover" style={{fontSize:"48px"}}>
+                          <br />
+                          GAME OVER
+                          <br/>
+                          <button onClick={handleOutRoom}>결과 보기</button>
+                        </div>
+                      )}
+                  </div>
+                )}
             </div>
-            <div className="overlaybox"></div>
+            {/* <div className="overlaybox"></div> */}
+            <div className="deadline"></div>
+            <ul className="overlaybox">
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+              <li className="wordline">&nbsp;</li>
+            </ul>
+
+           
 
             <ul className="indexlist">{listing}</ul>
             {!display && (
@@ -591,7 +628,7 @@ export const SingleGame = (props) => {
             ></input>
           </div>
         </div>
-        <div style={{ width: "35%" }}>
+        {/* <div style={{ width: "35%" }}>
           <ul>
             <li sytle={{ display: "flex", flexDirection: "row" }}>
               <div style={{}}>
@@ -607,7 +644,7 @@ export const SingleGame = (props) => {
             <li style={{ color: "white" }}>sorted {sortedWordList}</li>
           </ul>
           <ul className="wordlist">{renderWordList(currentWordList)}</ul>
-        </div>
+        </div>  */}
       </div>
     </>
   );
