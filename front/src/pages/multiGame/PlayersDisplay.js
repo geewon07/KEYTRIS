@@ -267,7 +267,7 @@ export const PlayersDisplay = ({
             <div className="m-playerName">{data?.nickname}&nbsp;</div>
             <li
               className={
-                currentWordList.length <= 15
+                currentWordList.length <= 17
                   ? "m-wordline purple"
                   : "m-wordline red"
               }

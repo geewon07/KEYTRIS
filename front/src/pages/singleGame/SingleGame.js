@@ -594,7 +594,7 @@ export const SingleGame = (props) => {
               <ul className="indexlist">
                 <li
                   className={
-                    currentWordList.length <= 15
+                    currentWordList.length <= 17
                       ? "wordline purple"
                       : "wordline red"
                   }
