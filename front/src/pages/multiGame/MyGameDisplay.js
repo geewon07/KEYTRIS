@@ -14,6 +14,7 @@ export const MyGameDisplay = ({
   insertWord,
   currentPlayerGameInfo,
   newLevelWord,
+  updatePlayerToOver,
 }) => {
   const [subWordList, setSubWordList] = useState([]);
   const [targetWord, setTargetWord] = useState("");
@@ -43,7 +44,7 @@ export const MyGameDisplay = ({
       const toTwoD = [newLevelWord, ""];
       setLevelWord((prev) => [...prev, toTwoD]);
     }
-  }, [newLevelWord]);
+  }, [newLevelWord, data?.playerStatus]);
 
   useEffect(() => {
     // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
@@ -122,11 +123,10 @@ export const MyGameDisplay = ({
 
   useEffect(() => {
     if (data !== null && data.playerStatus === "GAMING") {
-      console.log(wordListResponse.newTargetWord);
       setTargetWord(wordListResponse.newTargetWord);
       setTargetWordIndex(9);
       setCurrentWordList([...wordListResponse.sortedWordList]);
-      setScore(wordListResponse.newscore);
+      setScore(wordListResponse.newScore);
     }
   }, [data]);
 
@@ -136,9 +136,8 @@ export const MyGameDisplay = ({
   };
 
   useEffect(() => {
-    // 수정 필ㅇ요
     if (currentWordList.length >= 21) {
-      // handleOverGame();
+      updatePlayerToOver();
     }
     // eslint-disable-next-line
   }, [currentWordList]);
@@ -297,10 +296,16 @@ export const MyGameDisplay = ({
                   {/* 시작누를때 서버응답받고 체크해주는 로직 필요 */}
                 </div>
               )}
-            {roomStatus !== "PREPARED" &&
-              roomStatus !== "PREPARING" &&
-              roomStatus !== null &&
-              score}
+            {(data.playerStatus === "OVER" ||
+              data.playerStatus === "GAMING") && (
+              <>
+                {data.playerStatus === "OVER" &&
+                  roomStatus !== "PREPARED" &&
+                  roomStatus !== "PREPARING" &&
+                  roomStatus != null && <div>OVER</div>}
+                <div>{score}</div>
+              </>
+            )}
           </div>
           <div className="overlaybox"></div>
 
