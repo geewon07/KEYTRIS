@@ -1,17 +1,17 @@
 .gamecontainer {
-  width: 30% !important;
-  min-width: 30%;
+  width: 30%;
+  min-width: 25%;
   display: flex;
-  /* align-self: center; */
   flex-direction: row-reverse;
 }
+
 .bglist {
   background: #26154a;
   /* background: #fff; */
-  width: 90% !important;
+  width: 90%;
   z-index: 1000;
 
-  height: 100vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -19,57 +19,24 @@
   align-self: end;
   text-align: start;
 }
-.bglist2 {
-  background: #26154a;
-  /* background: #fff; */
-  width: 90% !important;
-  z-index: 1000;
 
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-  justify-content: flex-end;
-  align-self: end;
-  text-align: start;
-}
-.displaylayer {
-  display: flex;
-  flex-direction: column;
-  height: 85%;
-  /* width: 24%; */
-  top: auto;
-  left: auto;
-  bottom: 4rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end !important;
-  position: absolute;
-  /* align-self: flex-end; */
-  color: white;
-  /* background: white; */
-  background: gray;
-  z-index: 3332; /* Set a higher z-index for the displaylayer */
-}
 .wordlist {
   margin: 0;
   list-style: none;
 }
+
 /* .targetWord::marker {
   content: "▶";
 } */
 .targetWord {
   color: var(--primary, #cf0);
 }
-/* .indexlist li.targetWord::after {
-  content: "▶";
-  padding: 0.2rem;
-  font-size: 1rem;
-} */
+
 .endbar {
   background: #d9d9d9;
   width: 100%;
 }
+
 .guessbox {
   width: auto;
   font-size: 16px;
@@ -83,10 +50,13 @@
 input.inputcase {
   width: auto;
 
-  font-size: 16px; /* Set the font size */
+  font-size: 16px;
+  /* Set the font size */
   border: none;
-  background-color: #f4f4f4; /* Set the background color */
-  color: #888; /* Set the text color */
+  background-color: #f4f4f4;
+  /* Set the background color */
+  color: #888;
+  /* Set the text color */
   font-size: 16px;
   color: blue;
   background-color: #ccff00 !important;
@@ -94,32 +64,41 @@ input.inputcase {
   padding: 10px;
   z-index: 3333;
 }
+
 .points {
   font-size: 0.5rem;
 }
+
 input.inputcase:focus {
   outline: none !important;
 }
+
 .wordlist .targetWord::marker {
   content: "▶" !important;
 }
+
 li.wordline {
   font-size: 16px;
   color: #fff !important;
   /* background-color: #ccff00; */
   /* margin: 10px!important; */
   padding: 0.25rem;
-  display: flex; /* Use flexbox to control layout */
-  justify-content: space-between !important; /* Align items to either side */
-  align-items: center; /* Vertically center the content */
+  display: flex;
+  /* Use flexbox to control layout */
+  justify-content: space-between !important;
+  /* Align items to either side */
+  align-items: center;
+  /* Vertically center the content */
   /* padding: 4px; Add some spacing */
   /* border: 1px solid #ccc;  */
 }
+
 @media (min-height: 600px) {
   /* Adjust font size for screens up to 768px wide */
   li.wordline {
     font-size: 1.5rem !important;
   }
+
   .indexlist {
     position: absolute;
     margin-bottom: 4.3rem;
@@ -140,9 +119,11 @@ li.wordline {
   li.wordline {
     font-size: 1.5rem !important;
   }
+
   .overlaybox {
     height: 12.4rem !important;
     width: 26.5%;
+    overflow: hidden;
     top: auto;
     right: auto;
     position: absolute;
@@ -151,9 +132,11 @@ li.wordline {
     z-index: 3333;
   }
 }
+
 .overlaybox {
   height: 12.4rem !important;
-  width: 26.5%;
+  width: 24%;
+  overflow: hidden;
   top: auto;
   right: auto;
   position: absolute;
@@ -161,20 +144,98 @@ li.wordline {
   background: rgba(204, 255, 0, 0.2);
   z-index: 3333;
 }
-.score {
-  /* position: absolute; */
-  position: absolute;
+
+.multi-score {
+  position: relative;
   text-align: center;
-  top: 20%;
   left: 52%;
   font-size: 96px;
   color: #fff;
   /* left: 52%; Center horizontally by moving the left to the middle */
-  transform: translate(-50%, -50%);
-  font-size: 96px;
+  transform: translate(-50%, -680%);
+  width: 100%;
+  font-size: 80px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
 }
+
 .startbutton {
+  top: 5%;
+  transform: translate(110%, 30%);
+}
+
+.multi-display {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  margin: 0 auto;
+  height: 100vh;
+}
+
+.my-display {
+  flex: 2;
+  margin: 2rem;
+}
+
+.others {
+  flex: 3;
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.others-display {
+  flex: 1;
+  height: 50%;
+  display: flex;
+  margin-bottom: 2rem;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.others-display > * {
+  flex: 1; /* 동일한 비율로 나눔 */
+  margin-right: 1rem;
+}
+
+/* 마지막 요소의 오른쪽 여백 제거 */
+.others-display > *:last-child {
+  margin-right: 0;
+}
+
+.chat-container {
+  flex: 1;
+  width: 100%;
+}
+
+.inputcase-playerName {
+  transform: translateY(-800px);
+  width: auto;
+
+  font-size: 16px;
+  /* Set the font size */
+  border: none;
+  background-color: #f4f4f4;
+  /* Set the background color */
+  color: #888;
+  /* Set the text color */
+  font-size: 16px;
+  color: blue;
+  background-color: #ccff00 !important;
+  /* margin: 5px; */
+  padding: 10px;
+  z-index: 3333;
+}
+
+.overlaybox-player {
+  height: 12.4rem !important;
+  width: 14%;
+  overflow: hidden;
+  top: auto;
+  right: auto;
+  position: absolute;
+  border-top: 3px solid var(--primary, #cf0);
+  background: rgba(204, 255, 0, 0.2);
+  z-index: 3333;
 }

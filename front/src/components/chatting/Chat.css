@@ -1,4 +1,7 @@
-.ChatArea {
+.chatWrapper {
+
+}
+.chatArea {
   background-color: rgba(0, 0, 0, 0.3);
   width: auto;
   height: 100%;
@@ -11,10 +14,15 @@
 }
 
 .chatMessages {
+  width: 100%;
   min-height: 300px;
-  max-height: 350px;
+  max-height: 300px;
   overflow-y: auto;
   scroll-behavior: smooth;
+  word-wrap: break-word; /* 강제로 줄바꿈 */
+  overflow-wrap: break-word; /* 현대 브라우저용 */
+  white-space: pre-wrap; /* 줄바꿈과 공백을 존중하면서 내용 표시 */
+  word-break: break-all; /* 단어 중간에서도 줄바꿈 */
 }
 
 .chatInput {
@@ -42,9 +50,13 @@
   align-items: center;
   margin-top: var(--spacing-2);
   margin-bottom: var(--spacing-2);
-  width: 90%;
+  width: 95%;
   border-radius: var(--radius-md);
   padding-top: 3px;
+  word-wrap: break-word; /* 강제로 줄바꿈 */
+  overflow-wrap: break-word; /* 현대 브라우저용 */
+  white-space: pre-wrap; /* 줄바꿈과 공백을 존중하면서 내용 표시 */
+  word-break: break-all; /* 단어 중간에서도 줄바꿈 */
 }
 
 /* .sender {
@@ -63,6 +75,22 @@
   word-break: break-all;
 } */
 
+/* .userMessage {
+  display: block;
+  text-align: right;
+  color: rgb(187, 215, 74);
+  font-family: NeoDunggeunmo Pro;
+  margin: 1rem;
+} */
+
+.otherMessage {
+  display: block;
+  text-align: left;
+  color: #d1d1d1;
+  font-family: NeoDunggeunmo Pro;
+  margin: 1rem;
+}
+
 .userMessage {
   display: block;
   text-align: right;
@@ -71,18 +99,9 @@
   margin: 1rem;
 }
 
-.otherMessage {
-  display: block;
-  text-align: left;
-  color: #d1d1d1;
-  font-family: NeoDunggeunmo Pro;
-  margin: 1rem;
-  margin-left: 5%;
-}
-
 .NotificationChat {
   text-align: center;
-  color: #CCFF00;
+  color: #ccff00;
   font-family: NeoDunggeunmo Pro;
   background-color: #e4f79738;
   font-size: 20px;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import Swal from "sweetalert2";
+import {CopyToClipboard} from "react-copy-to-clipboard/src";
 
 export const ModalGameCode = ({ isOpen, onClose }) => {
   const [address, setAddress] = useState("");
@@ -14,13 +14,8 @@ export const ModalGameCode = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const copyAddress = () => {
-    navigator.clipboard.writeText(address);
-    // Swal.fire({
-    //   icon: "success",
-    //   title: "주소 복사 완료",
-    //   text: "주소가 클립보드에 복사되었습니다.",
-    // });
-    alert("게임 코드가 복사되었습니다. 친구에게 전달해주세요.");
+    // navigator.clipboard.writeText(address);
+    alert("게임 코드가 복사되었습니다. 친구에게 전달해주세요.")
   };
 
   const titleStyle = {
@@ -77,7 +72,7 @@ export const ModalGameCode = ({ isOpen, onClose }) => {
                 }}
                 className="Neo"
               />
-              <ModalButton onClick={copyAddress}></ModalButton>
+              <ModalButton text={address} onCopy={copyAddress}></ModalButton>
             </div>
           </div>
         </div>
@@ -86,13 +81,15 @@ export const ModalGameCode = ({ isOpen, onClose }) => {
   );
 };
 
-export const ModalButton = ({ onClick }) => {
+export const ModalButton = ({ text, onCopy }) => {
   return (
     <>
       <div className="modal-button-layout">
-        <button className="modal-button-style" onClick={onClick}>
-          <span className="modal-button-text">게임 코드 복사</span>
-        </button>
+        <CopyToClipboard text={text} onCopy={onCopy}>
+          <button className="modal-button-style">
+            <span className="modal-button-text">게임 코드 복사</span>
+          </button>
+        </CopyToClipboard>
       </div>
     </>
   );
