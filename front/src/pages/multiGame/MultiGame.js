@@ -29,6 +29,8 @@ export const MultiGame = () => {
   const [otherPlayerGame2, setOtherPlayerGame2] = useState(null);
   const [otherPlayerGame3, setOtherPlayerGame3] = useState(null);
   const [lastWord, setLastWord] = useState(null);
+  const [countdown, setCountdown] = useState(null);
+  const [startGameInfo, setStartGameInfo] = useState(null);
 
   const playRef = useRef();
   const playReadyRef = useRef();
@@ -192,11 +194,15 @@ export const MultiGame = () => {
 
       const startGame = (messageBody) => {
         const startGameInfo = messageBody;
+        setStartGameInfo(messageBody);
+
+        setCountdown(5);
+
         console.log(startGameInfo);
-        setPlayerList(startGameInfo.playerList);
+        // setPlayerList(startGameInfo.playerList);
         setRoomStatus(startGameInfo.roomStatus);
-        setWordListResponse(startGameInfo.wordListResponse);
-        setLastWord(startGameInfo.wordListResponse.newTargetWord);
+        // setWordListResponse(startGameInfo.wordListResponse);
+        // setLastWord(startGameInfo.wordListResponse.newTargetWord);
       };
 
       const levelWordInfo = (messageBody) => {
@@ -237,6 +243,18 @@ export const MultiGame = () => {
       };
     }
   }, [roomId, playerId]);
+
+  useEffect(() => {
+    if (countdown > 0) {
+      setTimeout(() => setCountdown(countdown - 1), 1000);
+    } else if (countdown === 0 && startGameInfo) {
+      console.log("게임 시작");
+      setPlayerList(startGameInfo.playerList);
+      // setRoomStatus(startGameInfo.roomStatus);
+      setWordListResponse(startGameInfo.wordListResponse);
+      setLastWord(startGameInfo.wordListResponse.newTargetWord);
+    }
+  }, [countdown, startGameInfo]);
 
   const handleSendMessage = (inputText) => {
     const body = { playerId: playerId, content: inputText };
@@ -339,55 +357,58 @@ export const MultiGame = () => {
   }, [playerId, playerList]);
 
   return (
-    <div className="multi-display">
-      <div className="my-display">
-        {currentPlayerData && (
-          <MyGameDisplay
-            data={currentPlayerData}
-            roomStatus={roomStatus}
-            handleStartGame={handleStartGame}
-            handlePlayerReady={handlePlayerReady}
-            wordListResponse={wordListResponse}
-            insertWord={insertWord}
-            currentPlayerGameInfo={currentPlayerGameInfo}
-            newLevelWord={newLevelWord}
-            updatePlayerToOver={updatePlayerToOver}
-            setLastWord={setLastWord}
-          />
-        )}
-      </div>
-      <div className="others">
-        <div className="others-display">
-          <PlayersDisplay
-            data={otherPlayerData1}
-            roomStatus={roomStatus}
-            wordListResponse={wordListResponse}
-            otherPlayerGame1={otherPlayerGame1}
-            newLevelWord={newLevelWord}
-          />
-          <PlayersDisplay
-            data={otherPlayerData2}
-            roomStatus={roomStatus}
-            wordListResponse={wordListResponse}
-            otherPlayerGame2={otherPlayerGame2}
-            newLevelWord={newLevelWord}
-          />
-          <PlayersDisplay
-            data={otherPlayerData3}
-            roomStatus={roomStatus}
-            wordListResponse={wordListResponse}
-            otherPlayerGame3={otherPlayerGame3}
-            newLevelWord={newLevelWord}
-          />
+    <div>
+      <div>{countdown}</div>
+      <div className="multi-display">
+        <div className="my-display">
+          {currentPlayerData && (
+            <MyGameDisplay
+              data={currentPlayerData}
+              roomStatus={roomStatus}
+              handleStartGame={handleStartGame}
+              handlePlayerReady={handlePlayerReady}
+              wordListResponse={wordListResponse}
+              insertWord={insertWord}
+              currentPlayerGameInfo={currentPlayerGameInfo}
+              newLevelWord={newLevelWord}
+              updatePlayerToOver={updatePlayerToOver}
+              setLastWord={setLastWord}
+            />
+          )}
         </div>
-        <div className="chat-container">
-          <Chat
-            onSendMessage={handleSendMessage}
-            chatContent={chatContent}
-            playerList={playerList}
-            newLevelWord={newLevelWord}
-            myplayerId={playerId}
-          ></Chat>
+        <div className="others">
+          <div className="others-display">
+            <PlayersDisplay
+              data={otherPlayerData1}
+              roomStatus={roomStatus}
+              wordListResponse={wordListResponse}
+              otherPlayerGame1={otherPlayerGame1}
+              newLevelWord={newLevelWord}
+            />
+            <PlayersDisplay
+              data={otherPlayerData2}
+              roomStatus={roomStatus}
+              wordListResponse={wordListResponse}
+              otherPlayerGame2={otherPlayerGame2}
+              newLevelWord={newLevelWord}
+            />
+            <PlayersDisplay
+              data={otherPlayerData3}
+              roomStatus={roomStatus}
+              wordListResponse={wordListResponse}
+              otherPlayerGame3={otherPlayerGame3}
+              newLevelWord={newLevelWord}
+            />
+          </div>
+          <div className="chat-container">
+            <Chat
+              onSendMessage={handleSendMessage}
+              chatContent={chatContent}
+              playerList={playerList}
+              newLevelWord={newLevelWord}
+              myplayerId={playerId}
+            ></Chat>
+          </div>
         </div>
       </div>
     </div>
