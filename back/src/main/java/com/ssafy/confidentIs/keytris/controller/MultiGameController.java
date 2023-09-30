@@ -102,6 +102,12 @@ public class MultiGameController {
         messagingTemplate.convertAndSend("/topic/multi/player-over/" + roomId, response);
 
         if (response.getRoomStatus().equals(RoomStatus.FINISHED)) {
+            // 마지막 플레이어 상태도 OVER로 변경하여 전송
+            UpdatedPlayerResponse lastPlayer = multiRoomServiceImpl.updateLastPlayer(roomId);
+            if(lastPlayer != null) {
+                messagingTemplate.convertAndSend("/topic/multi/player-over/" + roomId, lastPlayer);
+            }
+
             MultiGameResultResponse resultResponse = multiRoomServiceImpl.getGameResult(roomId);
             messagingTemplate.convertAndSend("/topic/multi/end/" + roomId, resultResponse);
         }

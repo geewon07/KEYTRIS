@@ -348,7 +348,6 @@ public class MultiRoomServiceImpl {
         if(room.getOverPlayerCnt() >= room.getPlayerList().size()-1) {
             room.updateStatus(RoomStatus.FINISHED);
             response.updateRoomStatus(RoomStatus.FINISHED);
-
             log.info("게임 상태 Finished로 변경");
 
             // 레벨어 전송 중단
@@ -356,6 +355,28 @@ public class MultiRoomServiceImpl {
         }
 
         return response;
+    }
+
+
+    // 마지막 플레이어 상태를 OVER로 업데이트 하는 메서드
+    public UpdatedPlayerResponse updateLastPlayer(String roomId) {
+        MultiRoom room = multiRoomManager.getRoom(roomId);
+
+        UpdatedPlayerResponse lastPlayerResponse = null;
+
+        for(MultiPlayer player : room.getPlayerList()) {
+            if(!player.getPlayerStatus().equals(PlayerStatus.OVER)) {
+                player.updateStatus(PlayerStatus.OVER);
+                player.updateOverTime();
+                room.updateOverPlayerCnt();
+
+                lastPlayerResponse = UpdatedPlayerResponse.builder()
+                        .roomStatus(room.getRoomStatus())
+                        .player(player)
+                        .build();
+            }
+        }
+        return lastPlayerResponse;
     }
 
     
@@ -421,6 +442,7 @@ public class MultiRoomServiceImpl {
         log.info("플레이어 제거 완료. MultiGameInfo: {}", response);
         return response;
     }
+
 
 
 }
