@@ -274,7 +274,7 @@ export const MyGameDisplay = ({
     <div>
       <div className="gamecontainer" style={{}}>
         <div className="bglist">
-          <div className="status">
+          <div className={roomStatus==="FINISHED"?"m-status over":"m-status"} >
             {roomStatus !== null &&
               roomStatus !== "ONGOING" &&
               roomStatus !== "FINISHED" &&
@@ -310,7 +310,7 @@ export const MyGameDisplay = ({
                 {data.playerStatus === "OVER" &&
                   roomStatus !== "PREPARED" &&
                   roomStatus !== "PREPARING" &&
-                  roomStatus != null && <div>OVER</div>}
+                  roomStatus != null && <div style={{ fontSize: "48px" }}>GAME OVER</div>}
                 <div className="score">{score}</div>
               </>
             )}

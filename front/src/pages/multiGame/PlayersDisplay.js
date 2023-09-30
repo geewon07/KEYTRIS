@@ -225,29 +225,29 @@ export const PlayersDisplay = ({
   return (
     <div className="m-gamecontainer" style={{}}>
       <div className="m-bglist">
-        <div className="m-status">
+        <div className={!data||data===null||data.playerStatus!=="GAMING"?"m-status over":"m-status"}>
           {!data || data === null ? (
-            <div>EMPTY</div>
+            <div style={{ fontSize: "24px" }}>EMPTY</div>
           ) : (
             <>
               {data &&
                 roomStatus !== null &&
                 roomStatus !== "ONGOING" &&
                 roomStatus !== "FINISHED" &&
-                data.playerStatus === "READY" && <div>READY</div>}
+                data.playerStatus === "READY" && <div style={{ fontSize: "24px" }}>READY</div>}
               {data &&
                 roomStatus !== null &&
                 roomStatus !== "ONGOING" &&
                 roomStatus !== "FINISHED" &&
                 !data.isMaster &&
-                data.playerStatus === "UNREADY" && <div>UNREADY</div>}
+                data.playerStatus === "UNREADY" && <div style={{ fontSize: "24px" }}>UNREADY</div>}
               {(data.playerStatus === "OVER" ||
                 data.playerStatus === "GAMING") && (
                 <>
                   {data.playerStatus === "OVER" &&
                     roomStatus !== "PREPARED" &&
                     roomStatus !== "PREPARING" &&
-                    roomStatus != null && <div>OVER</div>}
+                    roomStatus != null && <div style={{ fontSize: "24px" }}>OVER</div>}
                   <div className="m-score">{score}</div>
                 </>
               )}
