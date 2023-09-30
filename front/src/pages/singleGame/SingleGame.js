@@ -223,6 +223,7 @@ export const SingleGame = (props) => {
         setSortedIdx(sortedIndex); //0 start
         setSortedWordList(sorted);
         setTargetWordIndex(targetWordRank);
+        console.log(targetWordRank);
         //득점 성공시
 
         if (newScore === score) {
@@ -326,6 +327,7 @@ export const SingleGame = (props) => {
       }, 200);
       setTimeout(() => {
         // setCurrentWordList((prev) => [...prev, ...levelWord]);
+
       }, 400);
     }
   }, [levelWord]);
@@ -412,6 +414,8 @@ export const SingleGame = (props) => {
     if (currentWordList.length >= 21) {
       handleOverGame();
     }
+    const foundindex= currentWordList.findIndex((wordArray) => wordArray[0] === targetWord);
+    console.log(foundindex+targetWord)
     // eslint-disable-next-line
   }, [currentWordList]);
 
@@ -452,6 +456,24 @@ export const SingleGame = (props) => {
         // }
       });
   };
+  const [indexList, setIndexList]=useState();
+  useEffect(() => {
+    // Logic to generate 'listing' based on 'targetWordIndex'
+    const newListing = listIndexStandard?.slice().map((value, index) => (
+      <li
+        key={index}
+        className={
+          20 - index - 1 === targetWordIndex ? "targetWord wordline" : "wordline"
+        }
+      >
+        {value}
+      </li>
+    ));
+
+    // Update 'listing' with the new value
+    console.log(currentWordList)
+    setIndexList(newListing);
+  }, [currentWordList]);
   // index {currentWordList.length - index - 1}
   const listIndexStandard = [
     20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
@@ -601,7 +623,7 @@ export const SingleGame = (props) => {
                 >
                   &nbsp;
                 </li>
-                {listing}
+                {indexList}
               </ul>
               {!display && (
                 <ul className="wordlist">{renderWordList(currentWordList)}</ul>
