@@ -22,8 +22,8 @@
   margin-bottom: auto;
 }
 .status{
-  width: inherit;
-  height: inherit;
+  /* width: inherit;
+  height: inherit; */
   align-self: center;
   display: flex;
   flex-direction: column;
@@ -31,6 +31,20 @@
   align-items: center; 
   z-index:1000;
 }
+.status{
+  position:absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  align-self:center;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  z-index:1000;
+}
+
 .score {
   position: absolute;
   text-align: center;
