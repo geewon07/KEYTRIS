@@ -167,7 +167,7 @@ export const MultiGame = () => {
           lastWord: lastWordRef.current[0][0],
         },
       });
-    }, 5000);
+    }, 3000);
   };
 
   useEffect(() => {
