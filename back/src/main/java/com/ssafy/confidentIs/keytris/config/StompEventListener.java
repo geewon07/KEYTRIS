@@ -35,7 +35,7 @@ public class StompEventListener {
         log.info("socket 연결 요청 도착. session: {}, roomType: {}, room: {}, player: {}", sessionId, roomType, roomId, playerId);
 
         socketSessionMappingManager.registerSession(sessionId, roomType, roomId, playerId);
-        messagingTemplate.convertAndSend("/topic/multi/chat/"+roomId, "소켓 연결 성공");
+//        messagingTemplate.convertAndSend("/topic/multi/chat/"+roomId, "소켓 연결 성공");
     }
 
     // STOMP 연결이 끊어질 때 수행할 로직
