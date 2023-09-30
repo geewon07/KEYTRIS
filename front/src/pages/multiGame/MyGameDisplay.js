@@ -140,7 +140,7 @@ export const MyGameDisplay = ({
   useEffect(() => {
     if (currentWordList.length >= 21) {
       console.log(targetWord);
-      setLastWord(targetWord);
+      setLastWord(targetWord[0][0]);
       updatePlayerToOver();
     }
     // eslint-disable-next-line

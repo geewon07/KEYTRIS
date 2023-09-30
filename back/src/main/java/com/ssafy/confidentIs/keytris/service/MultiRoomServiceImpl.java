@@ -79,13 +79,13 @@ public class MultiRoomServiceImpl {
                 .orElseThrow(() -> new RoomNotFoundException("Room with ID " + roomId + " does not exist.", ErrorCode.ROOM_NOT_FOUND));
 
         if(room.getRoomStatus().equals(RoomStatus.ONGOING) || room.getRoomStatus().equals(RoomStatus.FINISHED)) {
-//            throw new InaccessibleGameException("입장할 수 없는 방입니다.", ErrorCode.INACCESSIBLE_GAME);
-            log.info("입장할 수 없는 방");
+            throw new InaccessibleGameException("입장할 수 없는 방입니다.", ErrorCode.INACCESSIBLE_GAME);
+//            log.info("입장할 수 없는 방");
         }
 
         if(room.getPlayerList().size() >= room.getLimit()) {
-//            throw new InaccessibleGameException("입장할 수 없는 방입니다.", ErrorCode.INACCESSIBLE_GAME);
-            log.info("입장할 수 없는 방");
+            throw new InaccessibleGameException("입장할 수 없는 방입니다.", ErrorCode.INACCESSIBLE_GAME);
+//            log.info("입장할 수 없는 방");
         }
 
         // 플레이어 생성, 방에 등록
@@ -106,14 +106,14 @@ public class MultiRoomServiceImpl {
 
         // 방 상태, 방 인원이 시작할 수 없는 경우
         if(!room.getRoomStatus().equals(RoomStatus.PREPARED) || room.getPlayerList().size() < 2) {
-//            throw new SocketInvalidStartException("시작할 수 없는 방 상태", ErrorCode.SOCKET_INVALID_START, request.getPlayerId(), roomId);
-            log.info("시작할 수 없는 방 상태");
+            throw new SocketInvalidStartException("시작할 수 없는 방 상태", ErrorCode.SOCKET_INVALID_START, request.getPlayerId(), roomId);
+//            log.info("시작할 수 없는 방 상태");
         }
 
         // 방장이 아닌 경우
         if(!room.getMasterId().equals(request.getPlayerId())) {
-//            throw new SocketNotAuthorizedException("방장이 아니어서 시작할 수 없음", ErrorCode.SOCKET_NOT_AUTHORIZED, request.getPlayerId(), roomId);
-            log.info("방장이 아님");
+            throw new SocketNotAuthorizedException("방장이 아니어서 시작할 수 없음", ErrorCode.SOCKET_NOT_AUTHORIZED, request.getPlayerId(), roomId);
+//            log.info("방장이 아님");
         }
 
         // 모든 플레이어의 상태를 gaming으로 업데이트
@@ -296,6 +296,8 @@ public class MultiRoomServiceImpl {
             response.getPlayerResultList().add(playerResult);
         }
 
+        response.sortPlayerResults();
+        log.info("멀티 게임 결과 반환 {}", response);
         return response;
     }
 
@@ -322,8 +324,6 @@ public class MultiRoomServiceImpl {
                 .roomStatus(room.getRoomStatus())
                 .player(updatedPlayer)
                 .build();
-
-//        return new UpdatedPlayerResponse(playerId, PlayerStatus.READY, room.getRoomStatus());
     }
 
 
