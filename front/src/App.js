@@ -2,6 +2,8 @@ import "./App.css";
 import 'react-toastify/dist/ReactToastify.css';
 
 import React from "react";
+import RouteChangeTracker from './components/RouteChangeTracker';
+
 import { Routes, Route } from "react-router-dom";
 import { Home } from "./pages/home/Home";
 import { SingleGame } from "./pages/singleGame/SingleGame";
@@ -16,6 +18,9 @@ import { TestSocket } from "./pages/test/TestSocket.js";
 import { ToastContainer } from 'react-toastify';
 
 function App() {
+
+  RouteChangeTracker();
+
   return (
     <div className="App">
       {/* <div id="stars" />
