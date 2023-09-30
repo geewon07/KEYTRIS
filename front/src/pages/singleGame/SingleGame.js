@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import "./SingleGame.css";
 
 // import "./SingleGame copy.css";
@@ -179,7 +179,7 @@ export const SingleGame = (props) => {
     targetWord: targetWord,
   };
   const handleInsertWord = async () => {
-    console.log("guess:" + guessWord + ", target:" + targetWord+"끝");
+    console.log("guess:" + guessWord + ", target:" + targetWord + "끝");
 
     if (guessWord === "") {
       toast.error("단어를 입력해주세요.");
@@ -193,7 +193,7 @@ export const SingleGame = (props) => {
       setGuessWord("");
       return;
     }
-    
+
     console.log(insertRequestDto);
     try {
       const res = await insertWord(insertRequestDto);
@@ -223,7 +223,6 @@ export const SingleGame = (props) => {
         setSortedIdx(sortedIndex); //0 start
         setSortedWordList(sorted);
         setTargetWordIndex(targetWordRank);
-        console.log(targetWordRank);
         //득점 성공시
 
         if (newScore === score) {
@@ -270,7 +269,7 @@ export const SingleGame = (props) => {
       const errorMessages = {
         "GAO2-ERR-404": "찾을 수 없는 플레이어입니다.",
         "GAO3-ERR-404": "찾을 수 없는 게임입니다.",
-        "GAO1-ERR-400": "입력할 수 없는 단어입니다."
+        "GAO1-ERR-400": "입력할 수 없는 단어입니다.",
         // 필요하다면 다른 에러 코드들도 여기에 추가
       };
 
@@ -287,27 +286,30 @@ export const SingleGame = (props) => {
     }
   };
 
-  useEffect(() => {
-    const connectAndSubscribe = async () => {
-      if (roomId !== null) {
-        await connect("SINGLE", roomId, playerId); // Wait for the connect function to complete
-        const callback = (messageBody) => {
-          console.log(messageBody);
-          const toTwoD = [messageBody, ""];
-          setLevelWord((prev) => [...prev, toTwoD]);
-        };
-        subscribe(`/topic/room/level-word/${roomId}`, callback);
-      }
-    };
+  useEffect(
+    () => {
+      const connectAndSubscribe = async () => {
+        if (roomId !== null) {
+          await connect("SINGLE", roomId, playerId); // Wait for the connect function to complete
+          const callback = (messageBody) => {
+            console.log(messageBody);
+            const toTwoD = [messageBody, ""];
+            setLevelWord((prev) => [...prev, toTwoD]);
+          };
+          subscribe(`/topic/room/level-word/${roomId}`, callback);
+        }
+      };
 
-    connectAndSubscribe();
+      connectAndSubscribe();
 
-    // Cleanup funciton
-    return () => {
-      disconnect();
-    };
-
-  }, [roomId], [playerId]);
+      // Cleanup funciton
+      return () => {
+        disconnect();
+      };
+    },
+    [roomId],
+    [playerId]
+  );
   useEffect(() => {
     // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
     // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
@@ -327,7 +329,6 @@ export const SingleGame = (props) => {
       }, 200);
       setTimeout(() => {
         // setCurrentWordList((prev) => [...prev, ...levelWord]);
-
       }, 400);
     }
   }, [levelWord]);
@@ -414,8 +415,6 @@ export const SingleGame = (props) => {
     if (currentWordList.length >= 21) {
       handleOverGame();
     }
-    const foundindex= currentWordList.findIndex((wordArray) => wordArray[0] === targetWord);
-    console.log(foundindex+targetWord)
     // eslint-disable-next-line
   }, [currentWordList]);
 
@@ -456,24 +455,6 @@ export const SingleGame = (props) => {
         // }
       });
   };
-  const [indexList, setIndexList]=useState();
-  useEffect(() => {
-    // Logic to generate 'listing' based on 'targetWordIndex'
-    const newListing = listIndexStandard?.slice().map((value, index) => (
-      <li
-        key={index}
-        className={
-          20 - index - 1 === targetWordIndex ? "targetWord wordline" : "wordline"
-        }
-      >
-        {value}
-      </li>
-    ));
-
-    // Update 'listing' with the new value
-    console.log(currentWordList)
-    setIndexList(newListing);
-  }, [currentWordList]);
   // index {currentWordList.length - index - 1}
   const listIndexStandard = [
     20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
@@ -564,7 +545,9 @@ export const SingleGame = (props) => {
         </div> */}
         <div className="gamecontainer" style={{}}>
           <div className="bglist">
-            <div className={roomStatus==="FINISHED"?"status over":"status"} >
+            <div
+              className={roomStatus === "FINISHED" ? "status over" : "status"}
+            >
               {roomStatus === "PREPARED" && (
                 <div
                   className="startbutton"
@@ -623,7 +606,7 @@ export const SingleGame = (props) => {
                 >
                   &nbsp;
                 </li>
-                {indexList}
+                {listing}
               </ul>
               {!display && (
                 <ul className="wordlist">{renderWordList(currentWordList)}</ul>
