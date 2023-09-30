@@ -16,7 +16,6 @@ export const MyGameDisplay = ({
   currentPlayerGameInfo,
   newLevelWord,
   updatePlayerToOver,
-  setLastWord,
 }) => {
   const [subWordList, setSubWordList] = useState([]);
   const [targetWord, setTargetWord] = useState("");
@@ -140,7 +139,6 @@ export const MyGameDisplay = ({
   useEffect(() => {
     if (currentWordList.length >= 21) {
       console.log(targetWord);
-      setLastWord(targetWord[0][0]);
       updatePlayerToOver();
     }
     // eslint-disable-next-line
@@ -274,7 +272,9 @@ export const MyGameDisplay = ({
     <div>
       <div className="gamecontainer" style={{}}>
         <div className="bglist">
-          <div className={roomStatus==="FINISHED"?"m-status over":"m-status"} >
+          <div
+            className={roomStatus === "FINISHED" ? "m-status over" : "m-status"}
+          >
             {roomStatus !== null &&
               roomStatus !== "ONGOING" &&
               roomStatus !== "FINISHED" &&
@@ -310,7 +310,9 @@ export const MyGameDisplay = ({
                 {data.playerStatus === "OVER" &&
                   roomStatus !== "PREPARED" &&
                   roomStatus !== "PREPARING" &&
-                  roomStatus != null && <div style={{ fontSize: "48px" }}>GAME OVER</div>}
+                  roomStatus != null && (
+                    <div style={{ fontSize: "48px" }}>GAME OVER</div>
+                  )}
                 <div className="score">{score}</div>
               </>
             )}

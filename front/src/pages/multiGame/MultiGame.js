@@ -34,7 +34,7 @@ export const MultiGame = () => {
   const playReadyRef = useRef();
   const playOverRef = useRef();
   const playEndRef = useRef();
-  const lastWordRef = useRef(lastWord);
+  const lastWordRef = useRef();
 
   const location = useLocation();
   const responseData = location.state?.responseData;
@@ -58,6 +58,7 @@ export const MultiGame = () => {
     const currentPlayerId = playInfo.playerId;
 
     if (currentPlayerData?.playerId === currentPlayerId) {
+      setLastWord(playInfo.newTargetWord);
       setCurrentPlayerGameInfo(playInfo);
     } else {
       setOtherPlayerData1((prevOtherPlayerData1) => {
@@ -163,7 +164,7 @@ export const MultiGame = () => {
         state: {
           playerResultList: playerEndInfo.playerResultList,
           playerId: playerId,
-          lastWord: lastWordRef.current,
+          lastWord: lastWordRef.current[0][0],
         },
       });
     }, 5000);
@@ -195,17 +196,7 @@ export const MultiGame = () => {
         setPlayerList(startGameInfo.playerList);
         setRoomStatus(startGameInfo.roomStatus);
         setWordListResponse(startGameInfo.wordListResponse);
-      };
-      const gameEndInfo = (messageBody) => {
-        setTimeout(() => {
-          navigate("/MultiGameResult", {
-            state: {
-              responseData: messageBody,
-              playerId: playerId,
-              lastWord: lastWord,
-            },
-          });
-        }, 5000);
+        setLastWord(startGameInfo.wordListResponse.newTargetWord);
       };
 
       const levelWordInfo = (messageBody) => {
