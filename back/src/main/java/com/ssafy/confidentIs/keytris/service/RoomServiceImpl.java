@@ -225,7 +225,7 @@ public class RoomServiceImpl implements RoomService {
 
   // 단어 입력 유사도 확인 -> 타겟어 유사도 순위가 높은 경우 점수, 단어 인덱스 갱신 후 newSubWordList를 반환하는 메서드
   private List<String> updatePlayerBasedOnRank(int targetWordRank, SinglePlayer currentPlayer, Room room, int currentListSize) {
-    int[] scoreUpdates = {55, 45, 35, 25};
+    int[] scoreUpdates = {40, 30, 20, 10};
     int[] deletedSubWordCnt = {3, 2, 1, 0};
 
     // 점수 업데이트
