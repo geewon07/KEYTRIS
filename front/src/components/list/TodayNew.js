@@ -36,29 +36,34 @@ function TodayNew({ lastWord }) {
   return (
     <>
       <div className="news">
-        <div className="list-title">오늘의 기사</div>
-        <hr />
+        <div className="list-title">오늘의 기사
+          <hr />
+        </div>
         <div className="today-keyword">
           오늘 나의 키워드는 <span className="highlight">"{lastWord}"</span>
           &nbsp;입니다.
         </div>
 
-        {newsItems.map((item, index) => (
-          <React.Fragment key={index} >
-            <div className="my-news-container1" >
-              <div className="news-title">
-                <a href={item.link} target="_blank" rel="noopener noreferrer">
-                  {item.title}
-                </a>
+        <div className="news-container">
+          {newsItems.map((item, index) => (
+            <React.Fragment key={index} >
+              <div className="my-news-container1" >
+                <div className="news-title">
+                  <a href={item.link} target="_blank" rel="noopener noreferrer">
+                    {item.title}
+                  </a>
+                </div>
+                <div className="news-description">
+                  <div className="my-news-content">
+                  <a href={item.link} target="_blank" rel="noopener noreferrer">
+                    {item.description}
+                  </a>
+                  </div>
+                </div>
               </div>
-              <div className="news-description">
-                <a href={item.link} target="_blank" rel="noopener noreferrer" className="my-news-content">
-                  {item.description}
-                </a>
-              </div>
-            </div>
-          </React.Fragment>
-        ))}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </>
   );
