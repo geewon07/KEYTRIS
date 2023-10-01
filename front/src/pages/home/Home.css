@@ -54,6 +54,7 @@
 }
 
 .main_selection_button {
+    cursor: pointer;
     display: flex;
     color: #FFF;
     font-family: NeoDunggeunmo Pro;
