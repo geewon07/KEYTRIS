@@ -18,7 +18,7 @@ export const MyGameDisplay = ({
   updatePlayerToOver,
 }) => {
   const [subWordList, setSubWordList] = useState([]);
-  const [targetWord, setTargetWord] = useState("");
+  const [targetWord, setTargetWord] = useState([]);
 
   const [guessWord, setGuessWord] = useState("");
   const [lastGuess, setLastGuess] = useState("");
@@ -32,6 +32,7 @@ export const MyGameDisplay = ({
   const [sendList, setSendList] = useState([]);
   const [targetWordIndex, setTargetWordIndex] = useState(null);
 
+  const [isTarget, setIsTarget] = useState(false);
   const [sortedIdx, setSortedIdx] = useState([]);
   const [display, setDisplay] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -63,12 +64,37 @@ export const MyGameDisplay = ({
         setLevelWord([]);
         setDisplay(false);
         setAdding(false);
-      }, 300);
+      }, 200);
       setTimeout(() => {
         // setCurrentWordList((prev) => [...prev, ...levelWord]);
       }, 400);
     }
   }, [levelWord]);
+
+  useEffect(() => {
+    // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
+    // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
+    setDisplay(true);
+    setIsTarget(true);
+    // setAdding(true);
+    setTimeout(() => {}, 200);
+    //소켓으로
+    setTimeout(() => {
+      // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
+      console.log("add target word");
+      console.log(targetWord);
+
+      setCurrentWordList((prev) => [...prev, ...targetWord]);
+      setTargetWordIndex(currentWordList.length);
+      // setLevelWord([]);
+      setDisplay(false);
+      setIsTarget(false);
+      // setAdding(false);
+    }, 200);
+    setTimeout(() => {
+      // setCurrentWordList((prev) => [...prev, ...levelWord]);
+    }, 400);
+  }, [targetWord]);
 
   useEffect(() => {
     if (!sorting) {
@@ -94,6 +120,10 @@ export const MyGameDisplay = ({
         setDisplay(false);
         setDeleting(false);
       }, 300);
+      setTimeout(() => {
+        setDisplay(false);
+        // setDeleting(false);
+      }, 400);
     }
   }, [deleteList]);
 
@@ -126,7 +156,7 @@ export const MyGameDisplay = ({
     if (data !== null && data.playerStatus === "GAMING") {
       setTargetWord(wordListResponse.newTargetWord);
       setTargetWordIndex(9);
-      setCurrentWordList([...wordListResponse.sortedWordList]);
+      setCurrentWordList([...wordListResponse.sortedWordList.slice(0, -1)]);
       setScore(wordListResponse.newScore);
     }
   }, [data]);
@@ -153,7 +183,12 @@ export const MyGameDisplay = ({
         // This is a 2D array with points
         const [word, point] = item;
         return (
-          <li key={currentWordList.length - index - 1} className={"wordline"}>
+          <li
+            key={currentWordList.length - index - 1}
+            className={
+              targetWord[0][0] === word ? "wordline accent" : "wordline"
+            }
+          >
             <div
               className={
                 targetWord[0][0] === word
@@ -227,7 +262,7 @@ export const MyGameDisplay = ({
       setSortedWordList(sorted);
       setTargetWordIndex(targetWordRank);
 
-      //득점 성공시
+      //득점 성공시!
 
       if (newScore === score) {
         return;
@@ -238,10 +273,10 @@ export const MyGameDisplay = ({
         }, 500);
         setTimeout(() => {
           setTargetWord(newTargetWord);
-          // setCurrentWordList((prev)=>[...prev,...newTargetWord]);
-          setLevelWord((prev) => [...newTargetWord]);
-          // setSubWordList([]);
-        }, 1700);
+          // setTargetWordIndex(currentWordList.length);
+          setCurrentWordList((prev) => [...prev, ...newTargetWord]);
+        }, 500);
+
         // setCurrentWordList(update);
       }
       // console.log(sorted);
