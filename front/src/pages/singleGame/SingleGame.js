@@ -50,6 +50,8 @@ export const SingleGame = (props) => {
   const [sorting, setSorting] = useState(false);
   const [adding, setAdding] = useState(false);
   const [isTarget, setIsTarget] = useState(false);
+  const [isSub, setSub] = useState(false);
+  
   const [count, setCount] = useState(0);
   const inputRef = useRef(null);
   const location = useLocation();
@@ -248,17 +250,19 @@ export const SingleGame = (props) => {
         //추가 단어 여부와 추가
         setTimeout(() => {
           if (newSubWordList !== null) {
-            setSubWordList(...newSubWordList);
+            setSubWordList(newSubWordList);
           } else {
             setSubWordList(newSubWordList);
           }
 
           if (newSubWordList && newSubWordList.length > 0) {
             console.log("new sub words");
-            setLevelWord((prev) => [...prev, ...newSubWordList]);
-            setSubWordList([]);
+            setCurrentWordList((prev) => [...prev, ...newSubWordList]);
+            console.log(subWordList)
+            // setLevelWord([]);
+            
           }
-        }, 1500);
+        }, 500);
 
         //정렬 발동 1.2초 후에
 
@@ -320,7 +324,7 @@ export const SingleGame = (props) => {
     if (levelWord.length > 0) {
       setDisplay(true);
       setAdding(true);
-      setTimeout(() => {}, 200);
+      // setTimeout(() => {}, 200);
       //소켓으로
       setTimeout(() => {
         // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
@@ -330,10 +334,10 @@ export const SingleGame = (props) => {
         setLevelWord([]);
         setDisplay(false);
         setAdding(false);
-      }, 200);
-      setTimeout(() => {
-        // setCurrentWordList((prev) => [...prev, ...levelWord]);
-      }, 400);
+      }, 100);
+      // setTimeout(() => {
+      //   // setCurrentWordList((prev) => [...prev, ...levelWord]);
+      // }, 400);
     }
   }, [levelWord]);
   useEffect(() => {
@@ -361,6 +365,33 @@ export const SingleGame = (props) => {
     }, 400);
   }, [targetWord]);
   useEffect(() => {
+    // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
+    // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
+    if(subWordList && subWordList.length<1){
+      
+    }else{
+      setDisplay(true);
+    setSub(true);
+    // setAdding(true);
+    setTimeout(() => {}, 200);
+    //소켓으로
+    setTimeout(() => {
+      // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
+      console.log("add sub word");
+      console.log(subWordList);
+      
+      
+      setDisplay(false);
+      setSub(false);
+      // setAdding(false);
+    }, 200);
+    setTimeout(() => {
+      // setSubWordList([]);
+    }, 400);
+    }
+    
+  }, [subWordList]);
+  useEffect(() => {
     if (!sorting) {
       inputRef.current.focus();
     }
@@ -369,6 +400,9 @@ export const SingleGame = (props) => {
   useEffect(() => {
     if (deleteList.length > 0) {
       setDisplay(true);
+      setTimeout(()=>{
+
+      })
       setDeleting(true);
       setTimeout(() => {
         // console.log("delete log how many times");
@@ -381,7 +415,7 @@ export const SingleGame = (props) => {
       }, 200);
 
       setTimeout(() => {
-        setDisplay(false);
+        // setDisplay(false);
         setDeleting(false);
       }, 300);
       setTimeout(() => {
@@ -491,23 +525,23 @@ export const SingleGame = (props) => {
       });
   };
   const [indexList, setIndexList] = useState();
-  useEffect(() => {
-    // Logic to generate 'listing' based on 'targetWordIndex'
-    const newListing = listIndexStandard?.slice().map((value, index) => (
-      <li
-        key={index}
-        className={
-          20 - index - 1 === targetWordIndex ? "targetWord wordline" : "wordline"
-        }
-      >
-        {value}
-      </li>
-    ));
+  // useEffect(() => {
+  //   // Logic to generate 'listing' based on 'targetWordIndex'
+  //   const newListing = listIndexStandard?.slice().map((value, index) => (
+  //     <li
+  //       key={index}
+  //       className={
+  //         20 - index - 1 === targetWordIndex ? "targetWord wordline" : "wordline"
+  //       }
+  //     >
+  //       {value}
+  //     </li>
+  //   ));
 
-    // Update 'listing' with the new value
-    console.log(currentWordList)
-    setIndexList(newListing);
-  }, [currentWordList]);
+  //   // Update 'listing' with the new value
+  //   console.log(currentWordList)
+  //   setIndexList(newListing);
+  // }, [currentWordList]);
   // index {currentWordList.length - index - 1}
   const listIndexStandard = [
     20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
@@ -607,7 +641,7 @@ export const SingleGame = (props) => {
                 {listing}
               </ul>
               {!display && (
-                <ul className="wordlist">{renderWordList(currentWordList)}</ul>
+                <ul className="wordlist" style={{backgroundColor:""}}>{renderWordList(currentWordList)}</ul>
               )}
 
               {display && (
@@ -618,11 +652,11 @@ export const SingleGame = (props) => {
                         bufferList={targetWord}
                         targetWord={targetWord}
                       ></AddWordAnimation>
-                      {!sorting && (
-                        <ul className="wordlist dummy">
+                      {/* {!sorting && isTarget &&  (
+                        <ul className="wordlist dummy" style={{backgroundColor:'blue'}}>
                           {renderWordList(currentWordList)}
                         </ul>
-                      )}
+                      )} */}
                     </>
                   )}
                   {adding && (
@@ -631,8 +665,21 @@ export const SingleGame = (props) => {
                         bufferList={levelWord}
                         targetWord={targetWord}
                       ></AddWordAnimation>
-                      {!sorting && (
-                        <ul className="wordlist dummy">
+                      {!sorting && adding && (
+                        <ul className="wordlist dummy"  style={{backgroundColor:''}}>
+                          {renderWordList(currentWordList)}
+                        </ul>
+                      )}
+                    </>
+                  )}
+                  {isSub && (
+                    <>
+                      <AddWordAnimation
+                        bufferList={subWordList}
+                        targetWord={targetWord}
+                      ></AddWordAnimation>
+                      {!sorting && isSub && (
+                        <ul className="wordlist dummy"  style={{backgroundColor:''}}>
                           {renderWordList(currentWordList)}
                         </ul>
                       )}
@@ -650,25 +697,25 @@ export const SingleGame = (props) => {
                     )}
                     {deleting && (
                       <>
-                        {
-                          // <div sytle={{ backgroundColor: "red" }}>
-                          //   {renderWordList(
-                          //     currentWordList.slice(4, currentWordList.length)
-                          //   )}
-                          // </div>
-                        }
+                        {/* {
+                          <div sytle={{ backgroundColor: "" }}>
+                            {renderWordList(
+                              currentWordList.slice(4, currentWordList.length)
+                            )}
+                          </div>
+                        } */}
                         <DeleteAnimation
                           initialList={currentWordList.slice()}
                           targetIndex={targetWordIndex}
                           targetWord={targetWord}
                         ></DeleteAnimation>
-                        {
+                        {/* {
                           <div sytle={{ backgroundColor: "red" }}>
                             {renderWordList(
                               currentWordList.slice(0, targetWordIndex)
                             )}
                           </div>
-                        }
+                        } */}
                       </>
                     )}
                   </ul>
