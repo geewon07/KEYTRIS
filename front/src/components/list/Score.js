@@ -85,7 +85,7 @@ function Score({ overRequestDto }) {
     <div key={index} className="rank-item">
       <span className="rank-index" style={{ textAlign: "right" }} >{index + 1}위</span>
       <span className="rank-score" style={{ textAlign: "right" }} >{value.score}점</span>
-      <span className="rank-nickname" style={{ textAlign: "right" }} >{value.nickname}닉네임</span>
+      <span className="rank-nickname" style={{ textAlign: "right" }} >{value.nickname}</span>
     </div>
   ));
 
