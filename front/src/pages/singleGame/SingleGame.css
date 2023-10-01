@@ -22,16 +22,6 @@
   margin-bottom: auto;
 }
 .status{
-  /* width: inherit;
-  height: inherit; */
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; 
-  z-index:1000;
-}
-.status{
   position:absolute;
   top: 0;
   left: 0;
@@ -119,6 +109,9 @@
 } 
 .targetWord {
   color: var(--primary, #cf0);
+}
+.accent{
+  border:1px solid var(--primary, #cf0);
 }
 /* .indexlist li.targetWord::after {
   content: "▶";
