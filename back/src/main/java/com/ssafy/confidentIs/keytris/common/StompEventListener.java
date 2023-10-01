@@ -1,4 +1,4 @@
-package com.ssafy.confidentIs.keytris.config;
+package com.ssafy.confidentIs.keytris.common;
 
 import com.ssafy.confidentIs.keytris.service.SocketSessionMappingManager;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,6 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 public class StompEventListener {
 
     // TODO ConnectEvent에서는 roomId, playerId를 임시 저장소에 보관하고, Connected가 되면 그때 세션매니저에 저장하기
-    // redis에 임시보관하거나 JVM에 보관하는 걸 검토해보자
 
     private final SocketSessionMappingManager socketSessionMappingManager;
     private final SimpMessagingTemplate messagingTemplate;

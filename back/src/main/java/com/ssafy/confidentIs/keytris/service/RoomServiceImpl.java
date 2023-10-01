@@ -1,6 +1,6 @@
 package com.ssafy.confidentIs.keytris.service;
 
-import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
+import com.ssafy.confidentIs.keytris.common.dto.ResponseDto;
 import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
 import com.ssafy.confidentIs.keytris.common.exception.customException.InvalidWordException;
 import com.ssafy.confidentIs.keytris.common.exception.customException.RoomNotFoundException;
@@ -8,6 +8,7 @@ import com.ssafy.confidentIs.keytris.dto.*;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListRequest;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataWordListResponse;
+import com.ssafy.confidentIs.keytris.dto.gameDto.*;
 import com.ssafy.confidentIs.keytris.model.*;
 import com.ssafy.confidentIs.keytris.repository.RoomManager;
 import lombok.RequiredArgsConstructor;
