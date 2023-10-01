@@ -113,7 +113,7 @@ export const SingleGame = (props) => {
       setRoomId(statusResponse.roomId);
       setRoomStatus(startResponseDto.statusResponse.roomStatus);
 
-      setCurrentWordList([...wordListResponse.sortedWordList]);
+      setCurrentWordList([...wordListResponse.sortedWordList.slice(0,-1)]);
 
       setScore(startResponseDto.wordListResponse.newScore);
     } catch (error) {
