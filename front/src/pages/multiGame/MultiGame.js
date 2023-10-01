@@ -169,7 +169,7 @@ export const MultiGame = () => {
           lastWord: lastWordRef.current[0][0],
         },
       });
-    }, 3000);
+    }, 5000);
   };
 
   useEffect(() => {
@@ -255,6 +255,15 @@ export const MultiGame = () => {
       setLastWord(startGameInfo.wordListResponse.newTargetWord);
     }
   }, [countdown, startGameInfo]);
+
+  useEffect(() => {
+    if (countdown === 0 ) {
+      const countdownElement = document.querySelector(".multi._countdown");
+      if (countdownElement) {
+        countdownElement.style.display = "none"; 
+      }
+    }
+  }, [countdown]);
 
   const handleSendMessage = (inputText) => {
     const body = { playerId: playerId, content: inputText };
@@ -358,7 +367,7 @@ export const MultiGame = () => {
 
   return (
     <div>
-      <div>{countdown}</div>
+      <div className="multi _countdown">{countdown}</div>
       <div className="multi-display">
         <div className="my-display">
           {currentPlayerData && (
@@ -382,21 +391,21 @@ export const MultiGame = () => {
               data={otherPlayerData1}
               roomStatus={roomStatus}
               wordListResponse={wordListResponse}
-              otherPlayerGame1={otherPlayerGame1}
+              otherPlayerGame={otherPlayerGame1}
               newLevelWord={newLevelWord}
             />
             <PlayersDisplay
               data={otherPlayerData2}
               roomStatus={roomStatus}
               wordListResponse={wordListResponse}
-              otherPlayerGame2={otherPlayerGame2}
+              otherPlayerGame={otherPlayerGame2}
               newLevelWord={newLevelWord}
             />
             <PlayersDisplay
               data={otherPlayerData3}
               roomStatus={roomStatus}
               wordListResponse={wordListResponse}
-              otherPlayerGame3={otherPlayerGame3}
+              otherPlayerGame={otherPlayerGame3}
               newLevelWord={newLevelWord}
             />
           </div>

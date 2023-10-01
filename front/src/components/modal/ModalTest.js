@@ -55,42 +55,48 @@ export const Modal = (props) => {
 
             <div style={titleStyle}>{title}</div>
 
-            <div style={contentStyle}>
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                func({ category, nickname, gameCode });
+              }}
+              style={contentStyle}
+            >
 
-            { (type === "createSingle" || type === "createMulti") && 
-            <CategorySelect
-              selectedCategory = {category}
-              onChange={(e) => setCategory(e.target.value)}
-            />
-            }
-
-            { (type === "createMulti" || type === "enterMulti") && 
-              <NicknameInput 
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
+              { (type === "createSingle" || type === "createMulti") && 
+              <CategorySelect
+                selectedCategory = {category}
+                onChange={(e) => setCategory(e.target.value)}
               />
-            }
+              }
 
-            {type === "enterMulti" &&
-              <GameCodeInput 
-                value={gameCode}
-                readOnly={false}
-                onChange={(e) => setGamecode(e.target.value)}
+              { (type === "createMulti" || type === "enterMulti") && 
+                <NicknameInput 
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
+                />
+              }
+
+              {type === "enterMulti" &&
+                <GameCodeInput 
+                  value={gameCode}
+                  readOnly={false}
+                  onChange={(e) => setGamecode(e.target.value)}
+                />
+              }
+
+              {type === 'inviteMulti' &&
+                <GameCodeInput 
+                  value={gameCode}
+                  readOnly={true}
+                />
+              }
+
+              <ModalButton 
+                label={buttonLabel}
+                buttonType="submit"
               />
-            }
-
-            {type === 'inviteMulti' &&
-              <GameCodeInput 
-                value={gameCode}
-                readOnly={true}
-              />
-            }
-
-            <ModalButton 
-              label={buttonLabel}
-              func={() => func({ category, nickname, gameCode })}
-            />
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -108,7 +114,6 @@ export const CategorySelect = (props) => {
     <>
       <div>
         <label id="category">뉴스 카테고리</label>
-        <form>
           <select
             id="category"
             style={{
@@ -129,7 +134,6 @@ export const CategorySelect = (props) => {
             <option value={104}>세계</option>
             <option value={105}>IT/과학</option>
           </select>
-        </form>
       </div>
     </>
   );
@@ -149,7 +153,6 @@ export const NicknameInput = (props) => {
     <>
       <div>
         <label id="nicknameInput">닉네임</label>
-        <form>
           <input 
             style={{              
               backgroundColor: "#5523BD",
@@ -165,7 +168,6 @@ export const NicknameInput = (props) => {
             value={value} 
             onChange={handleInputChange} 
           />
-        </form>
       </div>
     </>
   );
@@ -177,7 +179,6 @@ export const GameCodeInput = (props) => {
     <>
       <div>
         <label id="gameCodeInput">게임 코드</label>
-        <form>
           <input 
             style={{              
               backgroundColor: "#5523BD",
@@ -194,21 +195,22 @@ export const GameCodeInput = (props) => {
             readOnly={readOnly}
             onChange={readOnly ? null : onChange}
           />
-        </form>
       </div>
     </>
   );
 };
 
 export const ModalButton = (props) => {
-  const { label, func, buttonType } = props;
+  const { label, buttonType = "button" } = props;
+
   return (
     <>
       <div className="modal-button-layout">
-        <button className="modal-button-style" onClick={func} type={buttonType}>
+        <button className="modal-button-style" type={buttonType}>
           <span className="modal-button-text">{label}</span>
         </button>
       </div>
     </>
   );
 };
+

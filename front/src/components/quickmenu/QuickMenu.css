@@ -26,6 +26,7 @@
     font-weight: 400;
     line-height: normal;
     transition: background-image 0.3s;
+    cursor: pointer;
 
     &:hover {
         background-image: linear-gradient(to right, rgba(205, 205, 205, 0.881), rgba(174, 174, 174, 0.751));

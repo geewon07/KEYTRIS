@@ -291,6 +291,7 @@ public class MultiRoomServiceImpl {
                     .playerId(player.getPlayerId())
                     .nickname(player.getNickname())
                     .score(player.getScore())
+                    .overTime(player.getOverTime())
                     .build();
 
             response.getPlayerResultList().add(playerResult);

@@ -11,7 +11,7 @@ export const MultiGameResult = () => {
   const playerId = location.state?.playerId;
   const playerResultList = location.state?.playerResultList;
   return (
-    <div>
+    <div className="total">
       <TeamScore
         playerId={playerId}
         playerResultList={playerResultList}

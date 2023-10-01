@@ -83,21 +83,22 @@ function Score({ overRequestDto }) {
 
   const listing = rankList?.map((value, index) => (
     <div key={index} className="rank-item">
-      <span className="rank-index">{index + 1}위</span>
-      <span className="rank-score">{value.score}</span>
-      <span className="rank-nickname">{value.nickname}</span>
+      <span className="rank-index" style={{ textAlign: "right" }} >{index + 1}위</span>
+      <span className="rank-score" style={{ textAlign: "right" }} >{value.score}점</span>
+      <span className="rank-nickname" style={{ textAlign: "right" }} >{value.nickname}</span>
     </div>
   ));
 
   return (
     <>
       <div className="my-score-display">
-        <div className="list-title">점수</div>
-        <hr />
+        <div className="list-title">점수
+          <hr />
+        </div>
         {overResponse && <div className="rank-list">{listing}</div>}
         {/* 내 점수 */}
         <div className="record">
-          내 점수 &nbsp;{score}&nbsp;&nbsp;
+          내 점수 &nbsp;&nbsp;{score}점&nbsp;&nbsp;
           {/* 닉네임 입력란 */}
           {typeof overResponse?.record === "boolean" &&
             overResponse.record &&

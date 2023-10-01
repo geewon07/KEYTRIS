@@ -1,30 +1,74 @@
+.total {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 60%;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 120px;
+}
+
+.my-score-display,
+.rank-container,
+.news {
+  width: 100%;
+}
+
+.my-score-display > * {
+  margin-top: 10px;     /* 위쪽 여백 설정 */
+  margin-bottom: 10px;  /* 아래쪽 여백 설정 */
+}
+
+.rank-container > * {
+  margin-top: 10px;     /* 위쪽 여백 설정 */
+  margin-bottom: 10px;  /* 아래쪽 여백 설정 */
+}
+
 .list-title {
   -webkit-text-stroke: 1px white;
   text-align: center;
   font-family: NeoDunggeunmo Pro;
   font-size: 48px;
+  padding-bottom: 3px;
 }
 
 .rank-list {
-  -webkit-text-stroke: 1px white;
+  /* -webkit-text-stroke: 1px white; */
   text-align: center;
   font-family: NeoDunggeunmo Pro;
   font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  color: #CBCBCB;
 }
 
 .rank-index {
   width: 100%;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  display: flex;
   justify-content: center;
 }
 
+.my-rank {
+  line-height: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border: 0.2rem solid #CCFF00;
+  color: #CCFF00;
+  font-size: 1.5rem;
+  word-spacing: 2rem;
+  padding: 1rem;
+}
+
 .record {
-  -webkit-text-stroke: 1px white;
+  color: #cf0;
+  -webkit-text-stroke: 1px #cf0;
   text-align: center;
   font-family: "NeoDunggeunmo Pro";
   font-size: 24px;
+  padding-top: 24px;
 }
 
 .score-nickname-input[type="text"] {
@@ -34,6 +78,7 @@
 }
 
 .score-save-btn {
+  cursor: pointer;
   text-align: center;
   vertical-align: middle;
   margin-left: 0.3rem;
@@ -65,11 +110,18 @@ input:-ms-input-placeholder {
   color: black;
 }
 
+.news-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 35px;
+}
+
 .my-news-container1 {
   width: 60%;
   overflow: hidden;
-  margin-left: 20%;
-  margin-right: 20%;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
 .news-title {
@@ -81,13 +133,10 @@ input:-ms-input-placeholder {
 }
 
 .news-description {
-  display: -webkit-box;
-  /* -webkit-line-clamp: 2;  */
-  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 1rem;
-  width: 100%;
+  color: #CBCBCB;
+  font-size: 1.2rem;
 }
 
 .news-title a,
@@ -115,11 +164,6 @@ input:-ms-input-placeholder {
   color: #cf0;
 }
 
-.my-score-display,
-.rank-container,
-.news {
-  margin: 5% 20% 5% 20%;
-}
 
 .news-title {
   color: rgb(245, 251, 212);
@@ -137,6 +181,7 @@ input:-ms-input-placeholder {
 }
 
 .rank-item {
+  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -149,9 +194,12 @@ input:-ms-input-placeholder {
   flex: 1; 
   white-space: nowrap; 
   overflow: hidden;
+  text-align: right;
   text-overflow: ellipsis; 
   margin: 0 5px; 
 }
+
+
 
 .record {
   margin: 1rem;
