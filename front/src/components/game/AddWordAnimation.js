@@ -29,7 +29,7 @@ export const AddWordAnimation=(props)=> {
         const [word, point] = item;
         return (
           <FallRow className="add-animation wordlist">
-            <li key={index+word} className={"wordline"}>
+            <li key={index+word+point} className={"wordline"}>
               <div
                 className={
                   targetWord[0][0] === word? "targetWord wordline left" : "wordline left"
