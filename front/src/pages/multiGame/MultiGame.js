@@ -30,7 +30,7 @@ export const MultiGame = () => {
   const [otherPlayerGame3, setOtherPlayerGame3] = useState(null);
   const [lastWord, setLastWord] = useState(null);
   const [countdown, setCountdown] = useState(null);
-  const [isCountDown, setIsCountDown]= useState(true);
+  const [isCountDown, setIsCountDown] = useState(true);
   const [startGameInfo, setStartGameInfo] = useState(null);
 
   const playRef = useRef();
@@ -41,6 +41,7 @@ export const MultiGame = () => {
 
   const location = useLocation();
   const responseData = location.state?.responseData;
+  const category = location.state?.responseData.gameInfo.category;
 
   const navigate = useNavigate();
 
@@ -251,7 +252,7 @@ export const MultiGame = () => {
       setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0 && startGameInfo) {
       console.log("게임 시작");
-      setTimeout(()=>setIsCountDown(true), 1000);
+      setTimeout(() => setIsCountDown(true), 1000);
       setPlayerList(startGameInfo.playerList);
       // setRoomStatus(startGameInfo.roomStatus);
       setWordListResponse(startGameInfo.wordListResponse);
@@ -263,7 +264,7 @@ export const MultiGame = () => {
   //   if (countdown === 0 ) {
   //     const countdownElement = document.querySelector(".multi._countdown");
   //     if (countdownElement) {
-  //       countdownElement.style.display = "none"; 
+  //       countdownElement.style.display = "none";
   //     }
   //   }
   // }, [countdown]);
@@ -370,7 +371,9 @@ export const MultiGame = () => {
 
   return (
     <div>
-      <div className="multi _countdown" hidden={isCountDown}>{countdown}</div>
+      <div className="multi _countdown" hidden={isCountDown}>
+        {countdown}
+      </div>
       <div className="multi-display">
         <div className="my-display">
           {currentPlayerData && (
@@ -385,6 +388,7 @@ export const MultiGame = () => {
               newLevelWord={newLevelWord}
               updatePlayerToOver={updatePlayerToOver}
               setLastWord={setLastWord}
+              category={category}
             />
           )}
         </div>
