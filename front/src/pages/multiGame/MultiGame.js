@@ -251,7 +251,7 @@ export const MultiGame = () => {
       setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0 && startGameInfo) {
       console.log("게임 시작");
-      setTimeout(()=>setIsCountDown(true),1000);
+      setTimeout(()=>setIsCountDown(true), 1000);
       setPlayerList(startGameInfo.playerList);
       // setRoomStatus(startGameInfo.roomStatus);
       setWordListResponse(startGameInfo.wordListResponse);
@@ -259,14 +259,14 @@ export const MultiGame = () => {
     }
   }, [countdown, startGameInfo]);
 
-  useEffect(() => {
-    if (countdown === 0 ) {
-      const countdownElement = document.querySelector(".multi._countdown");
-      if (countdownElement) {
-        countdownElement.style.display = "none"; 
-      }
-    }
-  }, [countdown]);
+  // useEffect(() => {
+  //   if (countdown === 0 ) {
+  //     const countdownElement = document.querySelector(".multi._countdown");
+  //     if (countdownElement) {
+  //       countdownElement.style.display = "none"; 
+  //     }
+  //   }
+  // }, [countdown]);
 
   const handleSendMessage = (inputText) => {
     const body = { playerId: playerId, content: inputText };
