@@ -2,6 +2,7 @@ package com.ssafy.confidentIs.keytris.dto.multiDto;
 
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,10 +25,18 @@ public class MultiGameResultResponse {
         private String playerId;
         private String nickname;
         private Long score;
+        private Timestamp overTime;
 
         @Override
         public int compareTo(PlayerResult other) {
-            return Long.compare(other.score, this.score);
+            int scoreComparison = Long.compare(other.score, this.score);
+
+            if (scoreComparison != 0) {
+                return scoreComparison;
+            }
+
+            // score가 같을 경우 overTime 비교
+            return other.overTime.compareTo(this.overTime);
         }
     }
 
