@@ -256,6 +256,15 @@ export const MultiGame = () => {
     }
   }, [countdown, startGameInfo]);
 
+  useEffect(() => {
+    if (countdown === 0 ) {
+      const countdownElement = document.querySelector(".multi._countdown");
+      if (countdownElement) {
+        countdownElement.style.display = "none"; 
+      }
+    }
+  }, [countdown]);
+
   const handleSendMessage = (inputText) => {
     const body = { playerId: playerId, content: inputText };
     sendMsg(`/app/multi/chat/${roomId}`, body);
@@ -358,7 +367,7 @@ export const MultiGame = () => {
 
   return (
     <div>
-      <div>{countdown}</div>
+      <div className="multi _countdown">{countdown}</div>
       <div className="multi-display">
         <div className="my-display">
           {currentPlayerData && (
