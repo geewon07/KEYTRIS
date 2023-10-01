@@ -32,7 +32,7 @@ public class SessionMethodService {
   public void startSessionMethod(String roomId, RoomType roomType) {
     if (!sessionTasks.containsKey(roomId) || sessionTasks.get(roomId).isDone()) {
       ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(
-          () -> executeSessionMethod(roomId, roomType), 10, 2, TimeUnit.SECONDS);
+          () -> executeSessionMethod(roomId, roomType), 10, 3, TimeUnit.SECONDS);
       sessionTasks.put(roomId, scheduledFuture);
       log.info("레벨어 전송 시작 roomId: {}", roomId);
     }
@@ -68,7 +68,6 @@ public class SessionMethodService {
 //      log.info("레벨어 부족으로 추가. 추가 후: {}", room.getLevelWordList());
     }
 
-//    log.info(nextWord + " :Session " + roomId + " method is running every 2 seconds...");
   }
 
 

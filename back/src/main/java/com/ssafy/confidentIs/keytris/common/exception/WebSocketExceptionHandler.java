@@ -1,17 +1,12 @@
 package com.ssafy.confidentIs.keytris.common.exception;
 
-import com.ssafy.confidentIs.keytris.common.dto.response.ErrorResponseDto;
+import com.ssafy.confidentIs.keytris.common.dto.ErrorResponseDto;
 import com.ssafy.confidentIs.keytris.common.exception.customException.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @Slf4j
 @ControllerAdvice

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+/** 더미데이터 생성용 컨트롤러
+ */
 @RestController
 @RequestMapping("/api/test")
 @Slf4j // 로그 찍기
@@ -27,14 +29,6 @@ public class TestController2 {
     private final MultiRoomManager multiRoomManager;
     private final RoomManager roomManager;
     private final DataServiceImpl dataService;
-    private final PlayerServiceImpl playerService;
-
-    @GetMapping
-    public ResponseEntity<?> test() {//@PathVariable String enterWord
-        String[] s = {"하잉", "언니"};
-        return ResponseEntity.ok(s);
-    }
-
 
     // 테스트용 더미데이터 생성
     @PostMapping("/insertData")
@@ -97,7 +91,7 @@ public class TestController2 {
     }
 
 
-    // room 조회
+    // 멀티게임 room 조회
     @GetMapping("/multigames/{roomId}")
     public ResponseEntity<?> findById(@PathVariable String roomId) {
         MultiRoom room = multiRoomManager.getRoom(roomId);
@@ -106,6 +100,7 @@ public class TestController2 {
     }
 
 
+    // 멀티게임 room 전체 조회
     @GetMapping("/multigames/rooms")
     public ResponseEntity<?> findAllRooms() {
         Collection<MultiRoom> rooms = multiRoomManager.getAllRooms();
@@ -115,6 +110,8 @@ public class TestController2 {
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 
+
+    // 싱글게임 room 전체 조회
     @GetMapping("/games/rooms")
     public ResponseEntity<?> findAllSingleRooms() {
         Collection<Room> rooms = roomManager.getAllRooms();
@@ -123,30 +120,5 @@ public class TestController2 {
         }
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
-//
-//
-//    @PostMapping("/basePlayer")
-//    public ResponseEntity<?> createBasePlayer() {
-//        return new ResponseEntity<>(playerService.testBasePlayer(), HttpStatus.OK);
-//    }
-//
-//    @PostMapping("/multiPlayer")
-//    public ResponseEntity<?> creatMultiPlayer() {
-//        return new ResponseEntity<>(playerService.testMultiPlayer(), HttpStatus.OK);
-//    }
-//
-//
-////    @PostMapping("/single/insertData")
-////    public ResponseEntity<?> dummyDataInsertSingle() {
-////
-////
-////        return new ResponseEntity<>();
-////    }
-//
-//
-//    @PostMapping("/builder")
-//    public ResponseEntity<?> testBuilder() {
-//        return new ResponseEntity<>(playerService.testBuilder(), HttpStatus.OK);
-//    }
 
 }

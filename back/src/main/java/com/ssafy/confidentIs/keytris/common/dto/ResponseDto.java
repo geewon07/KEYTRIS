@@ -1,4 +1,4 @@
-package com.ssafy.confidentIs.keytris.common.dto.response;
+package com.ssafy.confidentIs.keytris.common.dto;
 
 import java.util.Map;
 

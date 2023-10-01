@@ -1,5 +1,6 @@
-package com.ssafy.confidentIs.keytris.dto;
+package com.ssafy.confidentIs.keytris.dto.gameDto;
 
+import com.ssafy.confidentIs.keytris.dto.WordListResponse;
 import com.ssafy.confidentIs.keytris.model.Room;
 import com.ssafy.confidentIs.keytris.model.SinglePlayer;
 import lombok.*;

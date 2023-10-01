@@ -48,19 +48,4 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    // 캐시
-//    public RedisCacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
-//        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig();
-//        redisCacheConfiguration.serializeKeysWith(RedisSerializationContext
-//                .SerializationPair.fromSerializer(new StringRedisSerializer()));
-//        redisCacheConfiguration.serializeValuesWith(RedisSerializationContext
-//                .SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
-//
-//        return RedisCacheManager
-//                .RedisCacheManagerBuilder
-//                .fromConnectionFactory(redisConnectionFactory)
-//                .cacheDefaults(redisCacheConfiguration)
-//                .build();
-//    }
-
 }

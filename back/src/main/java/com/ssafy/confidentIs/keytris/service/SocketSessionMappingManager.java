@@ -1,15 +1,13 @@
 package com.ssafy.confidentIs.keytris.service;
 
-import com.ssafy.confidentIs.keytris.dto.multiDto.ChatMessage;
-import com.ssafy.confidentIs.keytris.dto.multiDto.MultiGameResultResponse;
-import com.ssafy.confidentIs.keytris.dto.multiDto.UpdatedPlayerResponse;
+import com.ssafy.confidentIs.keytris.dto.multiGameDto.MultiGameResultResponse;
+import com.ssafy.confidentIs.keytris.dto.multiGameDto.UpdatedPlayerResponse;
 import com.ssafy.confidentIs.keytris.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;

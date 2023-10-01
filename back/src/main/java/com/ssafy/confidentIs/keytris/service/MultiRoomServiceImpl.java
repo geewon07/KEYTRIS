@@ -5,7 +5,7 @@ import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
 import com.ssafy.confidentIs.keytris.common.exception.customException.*;
 import com.ssafy.confidentIs.keytris.dto.WordListResponse;
 import com.ssafy.confidentIs.keytris.dto.dataDto.DataGuessWordResponse;
-import com.ssafy.confidentIs.keytris.dto.multiDto.*;
+import com.ssafy.confidentIs.keytris.dto.multiGameDto.*;
 import com.ssafy.confidentIs.keytris.model.*;
 import com.ssafy.confidentIs.keytris.repository.MultiRoomManager;
 import lombok.RequiredArgsConstructor;

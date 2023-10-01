@@ -1,4 +1,4 @@
-package com.ssafy.confidentIs.keytris.dto.multiDto;
+package com.ssafy.confidentIs.keytris.dto.multiGameDto;
 
 import lombok.*;
 
