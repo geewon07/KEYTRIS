@@ -41,7 +41,7 @@ export const DeleteAnimation = (props) => {
       {letterList?.slice().slice(targetIndex,4).reverse().map((item, index) => {
         const [word, point] = item;
         return (
-          <AnimatedRow key={index+word+point} className="delete-animation wordline">
+          <AnimatedRow key={index+word+point}  style={{backgroundColor:''}} className="delete-animation wordline">
             {/* <li key={letterList.length - index - 1} className={"wordline"}> */}
             <div
               className={
