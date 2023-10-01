@@ -84,8 +84,8 @@ function Score({ overRequestDto }) {
   const listing = rankList?.map((value, index) => (
     <div key={index} className="rank-item">
       <span className="rank-index">{index + 1}위</span>
-      <span className="rank-score">{value.score}</span>
-      <span className="rank-nickname">{value.nickname}</span>
+      <span className="rank-score" style={{ textAlign: "right" }} >{value.score}</span>
+      <span className="rank-nickname" style={{ textAlign: "right" }} >{value.nickname}</span>
     </div>
   ));
 
