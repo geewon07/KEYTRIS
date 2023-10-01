@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {CopyToClipboard} from "react-copy-to-clipboard/src";
+import { toast } from 'react-toastify';
 
 export const ModalGameCode = ({ isOpen, onClose }) => {
   const [address, setAddress] = useState("");
@@ -14,8 +15,7 @@ export const ModalGameCode = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const copyAddress = () => {
-    // navigator.clipboard.writeText(address);
-    alert("게임 코드가 복사되었습니다. 친구에게 전달해주세요.")
+    toast.info(<div>게임 코드가 복사되었습니다.<br/>친구에게 전달해주세요.</div>);
   };
 
   const titleStyle = {
