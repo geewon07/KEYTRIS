@@ -42,3 +42,18 @@
     flex: 1;
     width: 100%;
   }
+
+  .multi._countdown {
+    position: fixed; 
+    top: 40%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    z-index: 9999; 
+    background-color: rgba(0, 0, 0, 0.288); 
+    color: #fff; 
+    padding: 10px; 
+    border-radius: 5px; 
+    font-family: NeoDunggeunmo Pro;
+    font-size: 10rem;
+  }
+  
