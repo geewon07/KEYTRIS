@@ -1,7 +1,4 @@
-package com.ssafy.confidentIs.keytris.dto;
-
-import java.util.List;
-import java.util.UUID;
+package com.ssafy.confidentIs.keytris.dto.gameDto;
 
 import lombok.Getter;
 import lombok.ToString;
