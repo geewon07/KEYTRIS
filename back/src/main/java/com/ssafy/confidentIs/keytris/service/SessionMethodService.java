@@ -24,8 +24,6 @@ public class SessionMethodService {
   private final MultiRoomManager multiRoomManager;
   private final DataServiceImpl dataServiceImpl;
 
-  //TODO: levelword 고갈 체크 방식 점검해야함
-
   private static final int LEVEL_ADD_STANDARD = 5;
   private static final int LEVEL_AMOUNT = 10; // LEVEL 단어 받아오는 단위
 
@@ -34,7 +32,7 @@ public class SessionMethodService {
   public void startSessionMethod(String roomId, RoomType roomType) {
     if (!sessionTasks.containsKey(roomId) || sessionTasks.get(roomId).isDone()) {
       ScheduledFuture<?> scheduledFuture = executorService.scheduleAtFixedRate(
-          () -> executeSessionMethod(roomId, roomType), 10, 2, TimeUnit.SECONDS);
+          () -> executeSessionMethod(roomId, roomType), 10, 4, TimeUnit.SECONDS);
       sessionTasks.put(roomId, scheduledFuture);
       log.info("레벨어 전송 시작 roomId: {}", roomId);
     }
