@@ -16,6 +16,7 @@ export const MyGameDisplay = ({
   currentPlayerGameInfo,
   newLevelWord,
   updatePlayerToOver,
+  category,
 }) => {
   const [subWordList, setSubWordList] = useState([]);
   const [targetWord, setTargetWord] = useState([]);
@@ -239,6 +240,28 @@ export const MyGameDisplay = ({
       setGuessWord("");
       return;
     }
+
+    const forbiddenWords = {
+      100: ["정치"],
+      101: ["경제"],
+      102: ["사회"],
+      103: ["생활", "문화"],
+      104: ["세계"],
+      105: ["IT", "아이티", "과학"],
+    };
+
+    const currentForbiddenWords = forbiddenWords[category];
+
+    console.log("무슨카테고리?");
+    console.log(category);
+    console.log(currentForbiddenWords);
+    console.log(guessWord);
+    if (currentForbiddenWords.includes(guessWord)) {
+      toast.error(`뉴스 카테고리인 ${guessWord}은(는) 입력할 수 없습니다.`);
+      setGuessWord("");
+      return;
+    }
+
     insertWord(insertRequestDto);
     setSendList(insertRequestDto.currentWordList);
     setGuessWord("");
