@@ -30,6 +30,7 @@ export const MultiGame = () => {
   const [otherPlayerGame3, setOtherPlayerGame3] = useState(null);
   const [lastWord, setLastWord] = useState(null);
   const [countdown, setCountdown] = useState(null);
+  const [isCountDown, setIsCountDown]= useState(true);
   const [startGameInfo, setStartGameInfo] = useState(null);
 
   const playRef = useRef();
@@ -246,9 +247,11 @@ export const MultiGame = () => {
 
   useEffect(() => {
     if (countdown > 0) {
+      setIsCountDown(false);
       setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0 && startGameInfo) {
       console.log("게임 시작");
+      setTimeout(()=>setIsCountDown(true),1000);
       setPlayerList(startGameInfo.playerList);
       // setRoomStatus(startGameInfo.roomStatus);
       setWordListResponse(startGameInfo.wordListResponse);
@@ -367,7 +370,7 @@ export const MultiGame = () => {
 
   return (
     <div>
-      <div className="multi _countdown">{countdown}</div>
+      <div className="multi _countdown" hidden={isCountDown}>{countdown}</div>
       <div className="multi-display">
         <div className="my-display">
           {currentPlayerData && (
