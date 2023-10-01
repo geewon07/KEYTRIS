@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import home from "../../assets/imgs/home.PNG";
-import single from "../../assets/imgs/single.PNG";
-import singleGame from "../../assets/imgs/singleGame.PNG";
-import singleResult from "../../assets/imgs/singleResult.PNG";
-import multi from "../../assets/imgs/multi.PNG";
-import multiCode from "../../assets/imgs/multiCode.PNG";
-import multiGame from "../../assets/imgs/multiGame.PNG";
-import multiInvite from "../../assets/imgs/multiInvite.PNG";
-import multiResult from "../../assets/imgs/multiResult.PNG";
+import home from "../../assets/imgs/home.png";
+import single from "../../assets/imgs/single.png";
+import singleGame from "../../assets/imgs/singleGame.png";
+import singleGame1 from "../../assets/imgs/singleGame1.png";
+import singleResult from "../../assets/imgs/singleResult.png";
+import multi from "../../assets/imgs/multi.png";
+import multiCode from "../../assets/imgs/multiCode.png";
+import multiInvite from "../../assets/imgs/multiInvite.png";
+import multiGame from "../../assets/imgs/multiGame.png";
+import multiResult from "../../assets/imgs/multiResult.png";
 
 export const ModalGuide = ({ isOpen, onClose }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -16,6 +17,7 @@ export const ModalGuide = ({ isOpen, onClose }) => {
     home,
     single,
     singleGame,
+    singleGame1,
     singleResult,
     multi,
     multiCode,
@@ -25,20 +27,22 @@ export const ModalGuide = ({ isOpen, onClose }) => {
   ];
 
   const captions = [
-    "모드 선택",
-    "1인 모드 카테고리 선택",
-    "1인 모드 게임 화면",
-    "1인 모드 결과창",
-    "멀티 모드 게임 생성",
-    "멀티 모드 게임 초대 링크",
-    "멀티 모드 초대 참여", 
-    "멀티 모드 게임 화면",
-    "멀티 모드 게임 결과창",
+    "1. 모드 선택",
+    "2. 1인 모드 카테고리 선택",
+    "3. 1인 모드 게임 시작",
+    "4. 1인 모드 게임 화면",
+    "5. 1인 모드 결과창",
+    "6. 멀티 모드 게임 생성",
+    "7. 멀티 모드 게임 초대 링크",
+    "8. 멀티 모드 초대 참여", 
+    "9. 멀티 모드 게임 화면",
+    "10. 멀티 모드 게임 결과창",
   ];
 
   const descriptions = `1인 모드 혹은 멀티 모드 게임을 선택하세요.
   1인 모드 새 게임의 타겟어가 나올 카테고리를 선택하고 게임에 입장하세요.
-  [시작하기] 버튼을 클릭해 게임을 시작하세요<br /> 주어진 제시어들과 비교해 타겟어에 더 유사한 단어를 입력하세요<br /> 입력단어와 유사도 순으로 제시어들이 재정렬됩니다<br /> 타겟어가 목표 순위내에 들어온다면 단어가 제거되고 점수를 얻을 수 있습니다<br /> 2초마다 새로운 제시어가 추가됩니다<br /> 제시어들이 상한선에 도달하지 않도록 타겟어와 가장 유사한 단어를 입력해 단어를 제거하세요.
+  [시작하기] 버튼을 클릭해 게임을 시작하세요.
+  주어진 제시어들과 비교해 타겟어에 더 유사한 단어를 입력하세요<br /> 입력단어와 유사도 순으로 제시어들이 재정렬됩니다<br /> 타겟어가 목표 순위내에 들어온다면 단어가 제거되고 점수를 얻을 수 있습니다<br /> 2초마다 새로운 제시어가 추가됩니다<br /> 제시어들이 상한선에 도달하지 않도록 타겟어와 가장 유사한 단어를 입력해 단어를 제거하세요.
   1인 모드 게임 결과를 기록하고 마지막 타겟어가 나오는 뉴스를 읽어보세요.
   새 게임의 타겟어가 나올 카테고리를 선택하고 게임을 생성하세요.
   게임 코드를 복사해 친구들을 초대하세요.
@@ -73,7 +77,7 @@ export const ModalGuide = ({ isOpen, onClose }) => {
   };
 
   const imgStyle = {
-    width: "500px",
+    width: "400px",
     height: "300px",
   };
 
