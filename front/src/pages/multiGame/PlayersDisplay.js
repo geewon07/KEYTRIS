@@ -9,14 +9,12 @@ export const PlayersDisplay = ({
   data,
   roomStatus,
   wordListResponse,
-  otherPlayerGame1,
+  otherPlayerGame,
   newLevelWord,
 }) => {
   const [subWordList, setSubWordList] = useState([]);
   const [targetWord, setTargetWord] = useState("");
 
-  const [guessWord, setGuessWord] = useState("");
-  const [lastGuess, setLastGuess] = useState("");
   const [currentWordList, setCurrentWordList] = useState([]);
   const [deleteList, setDeleteList] = useState([]);
 
@@ -24,7 +22,6 @@ export const PlayersDisplay = ({
 
   const [score, setScore] = useState(0);
   const [levelWord, setLevelWord] = useState([]);
-  const [sendList, setSendList] = useState([]);
   const [targetWordIndex, setTargetWordIndex] = useState(null);
 
   const [sortedIdx, setSortedIdx] = useState([]);
@@ -33,11 +30,8 @@ export const PlayersDisplay = ({
   const [sorting, setSorting] = useState(false);
   const [adding, setAdding] = useState(false);
 
-  const inputRef = useRef(null);
-
   useEffect(() => {
     if (newLevelWord !== null && data?.playerStatus === "GAMING") {
-      console.log("하이이잉");
       const toTwoD = [newLevelWord, ""];
       setLevelWord((prev) => [...prev, toTwoD]);
     }
@@ -156,7 +150,9 @@ export const PlayersDisplay = ({
     <li
       key={index}
       className={
-        20 - index - 1 === targetWordIndex ? "m-targetWord m-wordline" : "m-wordline"
+        20 - index - 1 === targetWordIndex
+          ? "m-targetWord m-wordline"
+          : "m-wordline"
       }
     >
       {value}
@@ -164,11 +160,11 @@ export const PlayersDisplay = ({
   ));
 
   useEffect(() => {
-    if (otherPlayerGame1 && otherPlayerGame1 !== null) {
-      const sortedRes = otherPlayerGame1;
+    if (otherPlayerGame && otherPlayerGame !== null) {
+      const sortedRes = otherPlayerGame;
       console.log("sorted ");
       console.log(sortedRes);
-      const sorted = otherPlayerGame1.sortedWordList;
+      const sorted = otherPlayerGame.sortedWordList;
       const {
         newScore,
         newSubWordList,
@@ -220,12 +216,18 @@ export const PlayersDisplay = ({
 
       // 단어 삭제 모션 있고 난 다음에 변경
     }
-  }, [otherPlayerGame1]);
+  }, [otherPlayerGame]);
   // 점수 나오게 해야함 점수 접근 방법 {socre}
   return (
     <div className="m-gamecontainer" style={{}}>
       <div className="m-bglist">
-        <div className={!data||data===null||data.playerStatus!=="GAMING"?"m-status over":"m-status"}>
+        <div
+          className={
+            !data || data === null || data.playerStatus !== "GAMING"
+              ? "m-status over"
+              : "m-status"
+          }
+        >
           {!data || data === null ? (
             <div style={{ fontSize: "24px" }}>EMPTY</div>
           ) : (
@@ -234,20 +236,26 @@ export const PlayersDisplay = ({
                 roomStatus !== null &&
                 roomStatus !== "ONGOING" &&
                 roomStatus !== "FINISHED" &&
-                data.playerStatus === "READY" && <div style={{ fontSize: "24px" }}>READY</div>}
+                data.playerStatus === "READY" && (
+                  <div style={{ fontSize: "24px" }}>READY</div>
+                )}
               {data &&
                 roomStatus !== null &&
                 roomStatus !== "ONGOING" &&
                 roomStatus !== "FINISHED" &&
                 !data.isMaster &&
-                data.playerStatus === "UNREADY" && <div style={{ fontSize: "24px" }}>UNREADY</div>}
+                data.playerStatus === "UNREADY" && (
+                  <div style={{ fontSize: "24px" }}>UNREADY</div>
+                )}
               {(data.playerStatus === "OVER" ||
                 data.playerStatus === "GAMING") && (
                 <>
                   {data.playerStatus === "OVER" &&
                     roomStatus !== "PREPARED" &&
                     roomStatus !== "PREPARING" &&
-                    roomStatus != null && <div style={{ fontSize: "24px" }}>OVER</div>}
+                    roomStatus != null && (
+                      <div style={{ fontSize: "24px" }}>OVER</div>
+                    )}
                   <div className="m-score">{score}</div>
                 </>
               )}
@@ -271,7 +279,9 @@ export const PlayersDisplay = ({
                   ? "m-wordline purple"
                   : "m-wordline red"
               }
-            >&nbsp;</li>
+            >
+              &nbsp;
+            </li>
             {listing}
           </ul>
           {!display && (
@@ -330,9 +340,6 @@ export const PlayersDisplay = ({
             </>
           )}
         </div>
-
-        
-
       </div>
     </div>
   );

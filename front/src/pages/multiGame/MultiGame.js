@@ -169,7 +169,7 @@ export const MultiGame = () => {
           lastWord: lastWordRef.current[0][0],
         },
       });
-    }, 3000);
+    }, 5000);
   };
 
   useEffect(() => {
@@ -382,21 +382,21 @@ export const MultiGame = () => {
               data={otherPlayerData1}
               roomStatus={roomStatus}
               wordListResponse={wordListResponse}
-              otherPlayerGame1={otherPlayerGame1}
+              otherPlayerGame={otherPlayerGame1}
               newLevelWord={newLevelWord}
             />
             <PlayersDisplay
               data={otherPlayerData2}
               roomStatus={roomStatus}
               wordListResponse={wordListResponse}
-              otherPlayerGame2={otherPlayerGame2}
+              otherPlayerGame={otherPlayerGame2}
               newLevelWord={newLevelWord}
             />
             <PlayersDisplay
               data={otherPlayerData3}
               roomStatus={roomStatus}
               wordListResponse={wordListResponse}
-              otherPlayerGame3={otherPlayerGame3}
+              otherPlayerGame={otherPlayerGame3}
               newLevelWord={newLevelWord}
             />
           </div>
