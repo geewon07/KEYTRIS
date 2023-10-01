@@ -44,16 +44,18 @@
   }
 
   .multi._countdown {
+    /* display: none; */
     position: fixed; 
     top: 40%; 
     left: 50%; 
     transform: translate(-50%, -50%); 
-    z-index: 9999; 
-    background-color: rgba(0, 0, 0, 0.288); 
-    color: #fff; 
+    z-index: 5000; 
+    background-color: rgba(226, 228, 225, 0.886);
+    color: #cf0; 
     padding: 10px; 
     border-radius: 5px; 
     font-family: NeoDunggeunmo Pro;
     font-size: 10rem;
+    
   }
   

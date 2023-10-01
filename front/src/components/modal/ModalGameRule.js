@@ -53,8 +53,8 @@ export const ModalGameRule = ({ isOpen, onClose }) => {
   };
 
   const imgStyle = {
-    width: "500px",
-    height: "300px",
+    width: "400px",
+    height: "350px",
   };
 
   const handleNext = () => {

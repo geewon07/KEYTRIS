@@ -257,7 +257,7 @@ export const MultiGame = () => {
   }, [countdown, startGameInfo]);
 
   useEffect(() => {
-    if (countdown === 0) {
+    if (countdown === 0 ) {
       const countdownElement = document.querySelector(".multi._countdown");
       if (countdownElement) {
         countdownElement.style.display = "none"; 
