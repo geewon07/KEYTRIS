@@ -35,7 +35,7 @@ export const QuickMenu = () => {
 
   const openLink = () => {
     window.open(
-      "https://www.notion.so/87701a296e5240e69af7bb6fac4a6937",
+      "https://local-corleggy-c3e.notion.site/7a957f372cc24187811a4256378f59ec?pvs=4",
       "_blank"
     );
   };
