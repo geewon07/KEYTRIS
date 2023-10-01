@@ -20,33 +20,5 @@ public class PlayerServiceImpl implements PlayerService {
         .build();
   }
 
-//  public BasePlayer testBasePlayer() {
-//    return BasePlayer.builder()
-//            .playerId(UUID.randomUUID().toString())
-//            .playerStatus(PlayerStatus.UNREADY)
-//            .score(0L)
-//            .targetWordIndex(0)
-//            .subWordIndex(0)
-//            .build();
-//  }
-
-  public MultiPlayer testMultiPlayer() {
-    return MultiPlayer.builder()
-            .playerId(UUID.randomUUID().toString())
-            .playerStatus(PlayerStatus.UNREADY)
-            .score(0L)
-            .targetWordIndex(0)
-            .subWordIndex(0)
-            .nickname("멀티플레이어 닉네임")
-            .isMaster(true)
-            .build();
-  }
-
-  public LevelWord testBuilder() {
-    return LevelWord.builder()
-            .roomId("rooommmm")
-            .levelWord("테스트")
-            .build();
-  }
 
 }

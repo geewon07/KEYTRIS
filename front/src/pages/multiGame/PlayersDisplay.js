@@ -13,7 +13,7 @@ export const PlayersDisplay = ({
   newLevelWord,
 }) => {
   const [subWordList, setSubWordList] = useState([]);
-  const [targetWord, setTargetWord] = useState("");
+  const [targetWord, setTargetWord] = useState([]);
 
   const [currentWordList, setCurrentWordList] = useState([]);
   const [deleteList, setDeleteList] = useState([]);
@@ -25,6 +25,7 @@ export const PlayersDisplay = ({
   const [targetWordIndex, setTargetWordIndex] = useState(null);
 
   const [sortedIdx, setSortedIdx] = useState([]);
+  const [isTarget, setIsTarget] = useState(false);
   const [display, setDisplay] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [sorting, setSorting] = useState(false);
@@ -53,12 +54,37 @@ export const PlayersDisplay = ({
         setLevelWord([]);
         setDisplay(false);
         setAdding(false);
-      }, 300);
+      }, 200);
       setTimeout(() => {
         // setCurrentWordList((prev) => [...prev, ...levelWord]);
       }, 400);
     }
   }, [levelWord]);
+
+  useEffect(() => {
+    // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
+    // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
+    setDisplay(true);
+    setIsTarget(true);
+    // setAdding(true);
+    setTimeout(() => {}, 200);
+    //소켓으로
+    setTimeout(() => {
+      // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
+      console.log("add target word");
+      console.log(targetWord);
+
+      setCurrentWordList((prev) => [...prev, ...targetWord]);
+      setTargetWordIndex(currentWordList.length);
+      // setLevelWord([]);
+      setDisplay(false);
+      setIsTarget(false);
+      // setAdding(false);
+    }, 200);
+    setTimeout(() => {
+      // setCurrentWordList((prev) => [...prev, ...levelWord]);
+    }, 400);
+  }, [targetWord]);
 
   useEffect(() => {
     if (deleteList.length > 0) {
@@ -78,6 +104,10 @@ export const PlayersDisplay = ({
         setDisplay(false);
         setDeleting(false);
       }, 300);
+      setTimeout(() => {
+        setDisplay(false);
+        // setDeleting(false);
+      }, 400);
     }
   }, [deleteList]);
 
@@ -111,7 +141,7 @@ export const PlayersDisplay = ({
       console.log(wordListResponse.newTargetWord);
       setTargetWord(wordListResponse.newTargetWord);
       setTargetWordIndex(9);
-      setCurrentWordList([...wordListResponse.sortedWordList]);
+      setCurrentWordList([...wordListResponse.sortedWordList.slice(0, -1)]);
       setScore(wordListResponse.newScore);
     }
   }, [data]);
@@ -125,7 +155,12 @@ export const PlayersDisplay = ({
         // This is a 2D array with points
         const [word, point] = item;
         return (
-          <li key={currentWordList.length - index - 1} className={"m-wordline"}>
+          <li
+            key={currentWordList.length - index - 1}
+            className={
+              targetWord[0][0] === word ? "m-wordline m-accent" : "m-wordline"
+            }
+          >
             <div
               className={
                 targetWord[0][0] === word
@@ -189,9 +224,10 @@ export const PlayersDisplay = ({
         setTimeout(() => {
           setTargetWord(newTargetWord);
           // setCurrentWordList((prev)=>[...prev,...newTargetWord]);
-          setLevelWord((prev) => [...newTargetWord]);
-          // setSubWordList([]);
-        }, 1700);
+          // setTargetWordIndex(currentWordList.length);
+          setCurrentWordList((prev) => [...prev, ...newTargetWord]);
+        }, 500);
+
         // setCurrentWordList(update);
       }
       // console.log(sorted);

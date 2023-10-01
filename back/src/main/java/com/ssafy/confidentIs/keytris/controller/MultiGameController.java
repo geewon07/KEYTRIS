@@ -1,11 +1,10 @@
 package com.ssafy.confidentIs.keytris.controller;
 
-import com.ssafy.confidentIs.keytris.common.dto.response.ErrorResponseDto;
-import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
+import com.ssafy.confidentIs.keytris.common.dto.ResponseDto;
 import com.ssafy.confidentIs.keytris.common.exception.ErrorCode;
 import com.ssafy.confidentIs.keytris.common.exception.customException.InvalidInputValueException;
 import com.ssafy.confidentIs.keytris.dto.WordListResponse;
-import com.ssafy.confidentIs.keytris.dto.multiDto.*;
+import com.ssafy.confidentIs.keytris.dto.multiGameDto.*;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
 import com.ssafy.confidentIs.keytris.service.MultiRoomServiceImpl;
 import lombok.RequiredArgsConstructor;
