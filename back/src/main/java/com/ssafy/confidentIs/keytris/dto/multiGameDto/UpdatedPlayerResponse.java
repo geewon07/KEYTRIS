@@ -1,7 +1,6 @@
-package com.ssafy.confidentIs.keytris.dto.multiDto;
+package com.ssafy.confidentIs.keytris.dto.multiGameDto;
 
 import com.ssafy.confidentIs.keytris.model.MultiPlayer;
-import com.ssafy.confidentIs.keytris.model.PlayerStatus;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;
 import lombok.*;
 

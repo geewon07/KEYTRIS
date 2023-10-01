@@ -1,11 +1,11 @@
 package com.ssafy.confidentIs.keytris.service;
 
-import com.ssafy.confidentIs.keytris.common.dto.response.ResponseDto;
-import com.ssafy.confidentIs.keytris.dto.GuessRequest;
-import com.ssafy.confidentIs.keytris.dto.OverRequest;
-import com.ssafy.confidentIs.keytris.dto.OverResponse;
-import com.ssafy.confidentIs.keytris.dto.StartResponse;
-import com.ssafy.confidentIs.keytris.dto.StatusResponse;
+import com.ssafy.confidentIs.keytris.common.dto.ResponseDto;
+import com.ssafy.confidentIs.keytris.dto.gameDto.GuessRequest;
+import com.ssafy.confidentIs.keytris.dto.gameDto.OverRequest;
+import com.ssafy.confidentIs.keytris.dto.gameDto.OverResponse;
+import com.ssafy.confidentIs.keytris.dto.gameDto.StartResponse;
+import com.ssafy.confidentIs.keytris.dto.gameDto.StatusResponse;
 import com.ssafy.confidentIs.keytris.model.PlayerStatus;
 import com.ssafy.confidentIs.keytris.model.Room;
 import com.ssafy.confidentIs.keytris.model.RoomStatus;

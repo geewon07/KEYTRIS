@@ -1,6 +1,6 @@
 package com.ssafy.confidentIs.keytris.common.exception;
 
-import com.ssafy.confidentIs.keytris.common.dto.response.ErrorResponseDto;
+import com.ssafy.confidentIs.keytris.common.dto.ErrorResponseDto;
 import com.ssafy.confidentIs.keytris.common.exception.customException.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

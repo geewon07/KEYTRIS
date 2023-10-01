@@ -1,4 +1,4 @@
-package com.ssafy.confidentIs.keytris.dto;
+package com.ssafy.confidentIs.keytris.dto.gameDto;
 
 import com.ssafy.confidentIs.keytris.model.Room;
 
