@@ -123,58 +123,6 @@ export const SingleGame = (props) => {
     }
   };
 
-  // function delayMethod(method, delayInMilliseconds) {
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       method();
-  //       resolve(); // Resolve the promise when the delay is complete
-  //     }, delayInMilliseconds);
-  //   });
-  // }
-
-  // const handleScoring = (newList, newScore, SortedWordResponseDto) => {
-  //   //여기서 새값 들어오기전에 먼저 효과를 주기
-  //   //TODO: 1 단어정렬, 2 점수 효과, 3 득점X 효과
-  //   setCurrentWordList([...newList]);
-
-  //   console.log("scored" + newList);
-  //   const toDelete = SortedWordResponseDto.targetWordRank;
-  //   console.log("toDelete " + toDelete);
-
-  //   setTimeout(() => {
-  //     setCurrentWordList([...newList.slice(0, toDelete), ...newList.slice(4)]);
-  //     // setDeleteList([...newList.slice(0, toDelete), ...newList.slice(4)]);
-  //   }, 500);
-  //   // 삭제 모션
-  //   setTimeout(() => {
-  //     setCurrentWordList((prev) => [
-  //       ...prev,
-  //       ...SortedWordResponseDto.newTargetWord,
-  //     ]);
-  //   }, 1000);
-  //   setTimeout(() => {
-  //     const where = currentWordList.findIndex(
-  //       (line) => line[0] === SortedWordResponseDto.newTargetWord
-  //     );
-  //     setTargetWordIndex(where);
-  //   }, 2100);
-  //   // setScore(newScore);// 단어 삭제 모션 있고 난 다음에 변경
-  //   setSubWordList(SortedWordResponseDto.newSubWordList);
-  //   setTargetWord(SortedWordResponseDto.newTargetWord);
-  //   console.log("new target " + SortedWordResponseDto.newTargetWord);
-
-  //   setScore(newScore);
-  //   //새 단어 주기적으로 추가되는 부분-> 실제 리스트에 포함 시키기
-
-  //   console.log("current " + currentWordList);
-  // };
-
-  // useEffect(() => {
-
-  //   handleStartGame(statusRequestDto);
-  //   console.log(subWordList);
-
-  // },[statusRequestDto]);
   const insertRequestDto = {
     roomId: roomId,
     currentWordList: currentWordList,
@@ -678,11 +626,11 @@ export const SingleGame = (props) => {
                         bufferList={subWordList}
                         targetWord={targetWord}
                       ></AddWordAnimation>
-                      {!sorting && isSub && (
-                        <ul className="wordlist dummy"  style={{backgroundColor:''}}>
+                      {/* {!sorting && isSub && (
+                        <ul className="wordlist dummy"  style={{backgroundColor:'blue'}}>
                           {renderWordList(currentWordList)}
                         </ul>
-                      )}
+                      )} */}
                     </>
                   )}
                   <ul className="wordlist">
