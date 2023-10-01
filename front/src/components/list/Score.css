@@ -135,3 +135,25 @@ input:-ms-input-placeholder {
 .news-description a {
   margin-bottom: 2rem;
 }
+
+.rank-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px; 
+}
+
+.rank-index,
+.rank-score,
+.rank-nickname {
+  flex: 1; 
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
+  margin: 0 5px; 
+}
+
+.record {
+  margin: 1rem;
+  color: rgb(245, 251, 212);
+}

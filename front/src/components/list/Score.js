@@ -13,7 +13,7 @@ function Score({ overRequestDto }) {
   const [roomId, setRoomId] = useState("");
 
   useEffect(() => {
-    if(overRequestDto) {
+    if (overRequestDto) {
       setRoomId(overRequestDto.roomId);
       setScore(overRequestDto.score);
       handleOverGame(overRequestDto);
@@ -63,9 +63,9 @@ function Score({ overRequestDto }) {
   // 닉네임 입력 핸들러
   const handleNicknameChange = (event) => {
     const inputValue = event.target.value;
-    if(getByteLength(inputValue) <= 15) {
+    if (getByteLength(inputValue) <= 15) {
       setNickName(event.target.value);
-    }    
+    }
   };
 
   // 저장 버튼 클릭 핸들러
@@ -82,9 +82,10 @@ function Score({ overRequestDto }) {
   };
 
   const listing = rankList?.map((value, index) => (
-    <div key={index} style={{ lineHeight: "1.5rem" }} className="rank-index">
-      {index + 1}위&nbsp;&nbsp;{value.score}&nbsp;&nbsp;
-      {value.nickname}
+    <div key={index} className="rank-item">
+      <span className="rank-index">{index + 1}위</span>
+      <span className="rank-score">{value.score}</span>
+      <span className="rank-nickname">{value.nickname}</span>
     </div>
   ));
 
