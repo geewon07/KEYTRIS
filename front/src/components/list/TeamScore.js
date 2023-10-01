@@ -14,8 +14,8 @@ function Score({ playerId, playerResultList }) {
   const listing = playerResultList?.map((value, index) => (
     <div key={index} className="rank-item" style={{ lineHeight: "1.5rem" }} >
       <div className="rank-index">{index + 1}위</div>
-      <div className="rank-score">{value.score}</div>
-      <div className="rank-nickname">{value.nickname}</div>
+      <div className="rank-score" style={{ textAlign: "right" }} >{value.score}</div>
+      <div className="rank-nickname" style={{ textAlign: "right" }} >{value.nickname}</div>
     </div>
   ));
 
