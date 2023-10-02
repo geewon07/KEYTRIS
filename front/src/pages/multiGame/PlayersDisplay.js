@@ -30,6 +30,7 @@ export const PlayersDisplay = ({
   const [deleting, setDeleting] = useState(false);
   const [sorting, setSorting] = useState(false);
   const [adding, setAdding] = useState(false);
+  const [isSub, setSub] = useState(false);
 
   useEffect(() => {
     if (newLevelWord !== null && data?.playerStatus === "GAMING") {
@@ -44,7 +45,7 @@ export const PlayersDisplay = ({
     if (levelWord.length > 0) {
       setDisplay(true);
       setAdding(true);
-      setTimeout(() => {}, 200);
+      // setTimeout(() => {}, 200);
       //소켓으로
       setTimeout(() => {
         // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
@@ -54,10 +55,10 @@ export const PlayersDisplay = ({
         setLevelWord([]);
         setDisplay(false);
         setAdding(false);
-      }, 200);
-      setTimeout(() => {
-        // setCurrentWordList((prev) => [...prev, ...levelWord]);
-      }, 400);
+      }, 100);
+      // setTimeout(() => {
+      //   // setCurrentWordList((prev) => [...prev, ...levelWord]);
+      // }, 400);
     }
   }, [levelWord]);
 
@@ -87,8 +88,34 @@ export const PlayersDisplay = ({
   }, [targetWord]);
 
   useEffect(() => {
+    // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
+    // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
+    if (subWordList && subWordList.length < 1) {
+    } else {
+      setDisplay(true);
+      setSub(true);
+      // setAdding(true);
+      setTimeout(() => {}, 200);
+      //소켓으로
+      setTimeout(() => {
+        // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
+        console.log("add sub word");
+        console.log(subWordList);
+
+        setDisplay(false);
+        setSub(false);
+        // setAdding(false);
+      }, 200);
+      setTimeout(() => {
+        // setSubWordList([]);
+      }, 400);
+    }
+  }, [subWordList]);
+
+  useEffect(() => {
     if (deleteList.length > 0) {
       setDisplay(true);
+      setTimeout(() => {});
       setDeleting(true);
       setTimeout(() => {
         // console.log("delete log how many times");
@@ -101,7 +128,7 @@ export const PlayersDisplay = ({
       }, 200);
 
       setTimeout(() => {
-        setDisplay(false);
+        // setDisplay(false);
         setDeleting(false);
       }, 300);
       setTimeout(() => {
@@ -234,16 +261,16 @@ export const PlayersDisplay = ({
       //추가 단어 여부와 추가
       setTimeout(() => {
         if (newSubWordList !== null) {
-          setSubWordList(...newSubWordList);
+          setSubWordList(newSubWordList);
         } else {
           setSubWordList(newSubWordList);
         }
 
         if (newSubWordList && newSubWordList.length > 0) {
-          setLevelWord((prev) => [...prev, ...newSubWordList]);
-          setSubWordList([]);
+          setCurrentWordList((prev) => [...prev, ...newSubWordList]);
+          // setSubWordList([]);
         }
-      }, 1500);
+      }, 500);
 
       //정렬 발동 1.2초 후에
 
@@ -321,22 +348,53 @@ export const PlayersDisplay = ({
             {listing}
           </ul>
           {!display && (
-            <ul className="m-wordlist">{renderWordList(currentWordList)}</ul>
+            <ul className="m-wordlist" style={{ backgroundColor: "" }}>
+              {renderWordList(currentWordList)}
+            </ul>
           )}
           {display && (
             // <div className="bglist2 ">
             <>
+              {isTarget && (
+                <>
+                  <AddWordAnimation
+                    bufferList={targetWord}
+                    targetWord={targetWord}
+                  ></AddWordAnimation>
+                  {/* {!sorting && isTarget &&  (
+                        <ul className="wordlist dummy" style={{backgroundColor:'blue'}}>
+                          {renderWordList(currentWordList)}
+                        </ul>
+                      )} */}
+                </>
+              )}
               {adding && (
                 <>
                   <AddWordAnimation
                     bufferList={levelWord}
                     targetWord={targetWord}
                   ></AddWordAnimation>
-                  {!sorting && (
-                    <ul className="m-wordlist">
+                  {!sorting && adding && (
+                    <ul
+                      className="m-wordlist dummy"
+                      style={{ backgroundColor: "" }}
+                    >
                       {renderWordList(currentWordList)}
                     </ul>
                   )}
+                </>
+              )}
+              {isSub && (
+                <>
+                  <AddWordAnimation
+                    bufferList={subWordList}
+                    targetWord={targetWord}
+                  ></AddWordAnimation>
+                  {/* {!sorting && isSub && (
+                        <ul className="wordlist dummy"  style={{backgroundColor:'blue'}}>
+                          {renderWordList(currentWordList)}
+                        </ul>
+                      )} */}
                 </>
               )}
               <ul className="m-wordlist">
@@ -351,25 +409,25 @@ export const PlayersDisplay = ({
                 )}
                 {deleting && (
                   <>
-                    {
+                    {/* {
                       <div sytle={{ backgroundColor: "red" }}>
                         {renderWordList(
                           currentWordList.slice(4, currentWordList.length)
                         )}
                       </div>
-                    }
+                    } */}
                     <DeleteAnimation
                       initialList={currentWordList.slice()}
                       targetIndex={targetWordIndex}
                       targetWord={targetWord}
                     ></DeleteAnimation>
-                    {
+                    {/* {
                       <div sytle={{ backgroundColor: "red" }}>
                         {renderWordList(
                           currentWordList.slice(0, targetWordIndex)
                         )}
                       </div>
-                    }
+                    } */}
                   </>
                 )}
               </ul>
