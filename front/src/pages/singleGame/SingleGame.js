@@ -51,13 +51,16 @@ export const SingleGame = (props) => {
   const [adding, setAdding] = useState(false);
   const [isTarget, setIsTarget] = useState(false);
   const [isSub, setSub] = useState(false);
-  
+
   const [count, setCount] = useState(0);
   const inputRef = useRef(null);
   const location = useLocation();
   const responseData = location.state?.responseData;
 
   const navigate = useNavigate();
+  const category = location.state?.category;
+  console.log(location.state);
+  console.log(category);
 
   useEffect(() => {
     if (!responseData || responseData === null) {
@@ -115,7 +118,7 @@ export const SingleGame = (props) => {
       setRoomId(statusResponse.roomId);
       setRoomStatus(startResponseDto.statusResponse.roomStatus);
 
-      setCurrentWordList([...wordListResponse.sortedWordList.slice(0,-1)]);
+      setCurrentWordList([...wordListResponse.sortedWordList.slice(0, -1)]);
 
       setScore(startResponseDto.wordListResponse.newScore);
     } catch (error) {
@@ -141,6 +144,23 @@ export const SingleGame = (props) => {
     const target = targetWord[0][0];
     if (target.includes(guessWord) || guessWord.includes(target)) {
       toast.error("타겟어에 포함되는 단어를 입력할 수 없습니다.");
+      setGuessWord("");
+      return;
+    }
+
+    const forbiddenWords = {
+      100: ["정치"],
+      101: ["경제"],
+      102: ["사회"],
+      103: ["생활", "문화"],
+      104: ["세계"],
+      105: ["IT", "아이티", "과학"],
+    };
+
+    const currentForbiddenWords = forbiddenWords[category];
+
+    if (currentForbiddenWords.includes(guessWord)) {
+      toast.error(`뉴스 카테고리인 ${guessWord}은(는) 입력할 수 없습니다.`);
       setGuessWord("");
       return;
     }
@@ -190,7 +210,7 @@ export const SingleGame = (props) => {
             console.log(newTargetWord);
             setTargetWord(newTargetWord);
             // setTargetWordIndex(currentWordList.length);
-            setCurrentWordList((prev)=>[...prev,...newTargetWord]);
+            setCurrentWordList((prev) => [...prev, ...newTargetWord]);
           }, 500);
           // setCurrentWordList(update);
         }
@@ -206,9 +226,8 @@ export const SingleGame = (props) => {
           if (newSubWordList && newSubWordList.length > 0) {
             console.log("new sub words");
             setCurrentWordList((prev) => [...prev, ...newSubWordList]);
-            console.log(subWordList)
+            console.log(subWordList);
             // setLevelWord([]);
-            
           }
         }, 500);
 
@@ -300,7 +319,7 @@ export const SingleGame = (props) => {
       // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
       console.log("add target word");
       console.log(targetWord);
-      
+
       setCurrentWordList((prev) => [...prev, ...targetWord]);
       setTargetWordIndex(currentWordList.length);
       // setLevelWord([]);
@@ -315,29 +334,26 @@ export const SingleGame = (props) => {
   useEffect(() => {
     // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
     // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
-    if(subWordList && subWordList.length<1){
-      
-    }else{
+    if (subWordList && subWordList.length < 1) {
+    } else {
       setDisplay(true);
-    setSub(true);
-    // setAdding(true);
-    setTimeout(() => {}, 200);
-    //소켓으로
-    setTimeout(() => {
-      // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
-      console.log("add sub word");
-      console.log(subWordList);
-      
-      
-      setDisplay(false);
-      setSub(false);
-      // setAdding(false);
-    }, 200);
-    setTimeout(() => {
-      // setSubWordList([]);
-    }, 400);
+      setSub(true);
+      // setAdding(true);
+      setTimeout(() => {}, 200);
+      //소켓으로
+      setTimeout(() => {
+        // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
+        console.log("add sub word");
+        console.log(subWordList);
+
+        setDisplay(false);
+        setSub(false);
+        // setAdding(false);
+      }, 200);
+      setTimeout(() => {
+        // setSubWordList([]);
+      }, 400);
     }
-    
   }, [subWordList]);
   useEffect(() => {
     if (!sorting) {
@@ -348,9 +364,7 @@ export const SingleGame = (props) => {
   useEffect(() => {
     if (deleteList.length > 0) {
       setDisplay(true);
-      setTimeout(()=>{
-
-      })
+      setTimeout(() => {});
       setDeleting(true);
       setTimeout(() => {
         // console.log("delete log how many times");
@@ -455,8 +469,12 @@ export const SingleGame = (props) => {
         // This is a 2D array with points
         const [word, point] = item;
         return (
-          <li key={currentWordList.length - index - 1} className={targetWord[0][0] === word
-            ? "wordline accent":"wordline"}>
+          <li
+            key={currentWordList.length - index - 1}
+            className={
+              targetWord[0][0] === word ? "wordline accent" : "wordline"
+            }
+          >
             <div
               className={
                 targetWord[0][0] === word
@@ -497,11 +515,7 @@ export const SingleGame = (props) => {
   const listing = listIndexStandard?.slice().map((value, index) => (
     <li
       key={index}
-      className={
-        20 - index - 1 === targetWordIndex
-          ? "wordline"
-          : "wordline"
-      }
+      className={20 - index - 1 === targetWordIndex ? "wordline" : "wordline"}
     >
       {value}
     </li>
@@ -519,8 +533,12 @@ export const SingleGame = (props) => {
           // grid-template-columns: repeat(12, [col-start] 1fr);
         }}
       >
-        <div className="sidenave-container" style={{flex:"column",justifyContent:"flex-start"}}>
-          <button className="nav-button" onClick={()=>navigate("/")}>홈
+        <div
+          className="sidenave-container"
+          style={{ flex: "column", justifyContent: "flex-start" }}
+        >
+          <button className="nav-button" onClick={() => navigate("/")}>
+            홈
           </button>
         </div>
         <div className="gamecontainer" style={{}}>
@@ -589,7 +607,9 @@ export const SingleGame = (props) => {
                 {listing}
               </ul>
               {!display && (
-                <ul className="wordlist" style={{backgroundColor:""}}>{renderWordList(currentWordList)}</ul>
+                <ul className="wordlist" style={{ backgroundColor: "" }}>
+                  {renderWordList(currentWordList)}
+                </ul>
               )}
 
               {display && (
@@ -614,7 +634,10 @@ export const SingleGame = (props) => {
                         targetWord={targetWord}
                       ></AddWordAnimation>
                       {!sorting && adding && (
-                        <ul className="wordlist dummy"  style={{backgroundColor:''}}>
+                        <ul
+                          className="wordlist dummy"
+                          style={{ backgroundColor: "" }}
+                        >
                           {renderWordList(currentWordList)}
                         </ul>
                       )}
