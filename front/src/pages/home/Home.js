@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import keytrisLogo from "../../assets/logo_1.svg";
 import { Modal } from "../../components/modal/ModalTest";
 import "./Home.css";
@@ -29,7 +29,7 @@ export const Home = () => {
       if (response.data.success === "success") {
         console.log("요청 success");
         navigate("/SingleGame", {
-          state: { responseData: response.data.data },
+          state: { responseData: response.data.data, category: category },
         });
       } else {
         toast.error("게임 만들기를 실패했습니다.");
