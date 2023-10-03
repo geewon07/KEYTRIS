@@ -1,15 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 import "./SingleGame.css";
-
-// import "./SingleGame copy.css";
-
-import {
-  startGame,
-  createRoom,
-  insertWord,
-  overGame,
-} from "../../api/singleGame/SingleGameApi.js";
+import { startGame, insertWord } from "../../api/singleGame/SingleGameApi.js";
 import { connect, disconnect, subscribe } from "../../api/stompClient.js";
 
 import { Button } from "../../components/button/ButtonTest";
@@ -18,10 +10,7 @@ import { SortAnimation } from "../../components/game/SortAnimation";
 import { DeleteAnimation } from "../../components/game/DeleteAnimation";
 import { useLocation, useNavigate } from "react-router";
 
-//TODO: 입력시 입력창 리셋
 export const SingleGame = (props) => {
-  // const { category } = props;
-  // const [streak, setStreak] = useState(null);
   const [playerId, setPlayerId] = useState(null);
   const [playerStatus, setPlayerStatus] = useState(null);
   const [roomId, setRoomId] = useState(null);
@@ -52,45 +41,28 @@ export const SingleGame = (props) => {
   const [isTarget, setIsTarget] = useState(false);
   const [isSub, setSub] = useState(false);
 
-  const [count, setCount] = useState(0);
   const inputRef = useRef(null);
   const location = useLocation();
   const responseData = location.state?.responseData;
 
   const navigate = useNavigate();
   const category = location.state?.category;
-  console.log(location.state);
-  console.log(category);
+  // console.log(location.state);
+  // console.log(category);
 
   useEffect(() => {
     if (!responseData || responseData === null) {
       alert("잘못된 접근입니다. 메인화면에서 [게임 참여]를 통해 접속해주세요.");
       navigate("/");
     } else {
-      console.log(responseData);
+      // console.log(responseData);
       setPlayerId(responseData.StatusResponse.playerId);
       setRoomId(responseData.StatusResponse.roomId);
       setRoomStatus(responseData.StatusResponse.roomStatus);
       setPlayerStatus(responseData.StatusResponse.playerStatus);
     }
   }, [responseData, navigate]);
-  // const handleCreate = async () => {
-  //   try {
-  //     const category = 101;
-  //     const res = await createRoom({ category: 101 });
-  //     console.log("category " + category);
-  //     // setSockJS(sock);
-  //     const statusResponseDto = res.data.data.StatusResponse;
-  //     // 게임방 만들어질 때 playerId, roomId 넘겨받음 => 이 api에서는 playerStatus, roomStatus만 변경
-  //     setPlayerStatus(statusResponseDto.playerStatus);
-  //     setRoomStatus(statusResponseDto.roomStatus);
-  //     setPlayerId(statusResponseDto.playerId);
-  //     setRoomId(statusResponseDto.roomId);
-  //     console.log("roomID SET");
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+
   const statusRequestDto = {
     playerId: playerId,
     playerStatus: playerStatus,
@@ -98,19 +70,12 @@ export const SingleGame = (props) => {
     roomStatus: roomStatus,
   };
   const handleStartGame = async () => {
-    //게임시작api
-    //newScore:0
-    //newTargetWord
-    //subWordList null
-    //sortedIndex null
-    //targetRank 9
     try {
       const res = await startGame(statusRequestDto);
       const startResponseDto = res.data.data.StartResponse;
-      const statusResponse = startResponseDto.statusResponse;
-      const wordListResponse = startResponseDto.wordListResponse;
+      const { statusResponse, wordListResponse } = startResponseDto;
       // console.log(res);
-      console.log(wordListResponse);
+      // console.log(wordListResponse);
       setTargetWord(wordListResponse.newTargetWord);
       // setTargetWordSet(true);
       setTargetWordIndex(9);
@@ -129,11 +94,11 @@ export const SingleGame = (props) => {
   const insertRequestDto = {
     roomId: roomId,
     currentWordList: currentWordList,
-    guessWord: guessWord, // 입력한 단어 넣어주기
+    guessWord: guessWord,
     targetWord: targetWord,
   };
   const handleInsertWord = async () => {
-    console.log("guess:" + guessWord + ", target:" + targetWord + "끝");
+    // console.log("guess:" + guessWord + ", target:" + targetWord + "끝");
 
     if (guessWord === "") {
       toast.error("단어를 입력해주세요.");
@@ -170,74 +135,59 @@ export const SingleGame = (props) => {
       const res = await insertWord(insertRequestDto);
       setGuessWord("");
       setSendList(insertRequestDto.currentWordList);
-      console.log("입력 응답");
-      console.log(res);
-      if (res.data.success === "fail") {
-        alert("no such word in db");
+      // console.log("입력 응답");
+      // console.log(res);
+      // 정렬 성공시
+
+      const sortedRes = res.data.data.SortedWordListResponse;
+      // console.log("sorted ");
+      // console.log(sortedRes);
+      const sorted = sortedRes.sortedWordList; //정렬단어목록
+      // console.log(sorted);
+      const {
+        newScore,
+        newSubWordList,
+        newTargetWord,
+        sortedIndex,
+        targetWordRank,
+      } = sortedRes;
+      // console.log(sortedIndex);
+      //정렬-> sortedWordList useEffect-> 모션
+      setSortedIdx(sortedIndex); //0 start
+      setSortedWordList(sorted);
+      setTargetWordIndex(targetWordRank);
+      // console.log("targetRank" + targetWordRank);
+      //득점 성공시
+
+      if (newScore === score) {
+        //득점 실패 -> 정렬 후 끝
+        return;
       } else {
-        // 정렬 성공시
-
-        const sortedRes = res.data.data.SortedWordListResponse;
-        console.log("sorted ");
-        console.log(sortedRes);
-        const sorted = sortedRes.sortedWordList; //정렬단어목록
-        // console.log(sorted);
-        const {
-          newScore,
-          newSubWordList,
-          newTargetWord,
-          sortedIndex,
-          targetWordRank,
-        } = sortedRes;
-        // console.log(sortedIndex);
-        //정렬-> sortedWordList useEffect-> 모션
-        setSortedIdx(sortedIndex); //0 start
-        setSortedWordList(sorted);
-        setTargetWordIndex(targetWordRank);
-        console.log("targetRank" + targetWordRank);
-        //득점 성공시
-
-        if (newScore === score) {
-          //득점 실패 -> 정렬 후 끝
-          return;
-        } else {
-          setTimeout(() => {
-            setDeleteList([...sorted.slice(targetWordRank, 4)]);
-            setScore(newScore);
-          }, 500);
-          setTimeout(() => {
-            console.log("new target");
-            console.log(newTargetWord);
-            setTargetWord(newTargetWord);
-            // setTargetWordIndex(currentWordList.length);
-            setCurrentWordList((prev) => [...prev, ...newTargetWord]);
-          }, 500);
-          // setCurrentWordList(update);
-        }
-        // console.log(sorted);
-        //추가 단어 여부와 추가
         setTimeout(() => {
-          if (newSubWordList !== null) {
-            setSubWordList(newSubWordList);
-          } else {
-            setSubWordList(newSubWordList);
-          }
-
-          if (newSubWordList && newSubWordList.length > 0) {
-            console.log("new sub words");
-            setCurrentWordList((prev) => [...prev, ...newSubWordList]);
-            console.log(subWordList);
-            // setLevelWord([]);
-          }
+          setDeleteList([...sorted.slice(targetWordRank, 4)]);
+          setScore(newScore);
         }, 500);
-
-        //정렬 발동 1.2초 후에
-
-        // handleScoring(sorted, newScore, SortedWordResponseDto);
-        //효과를 다 하고 쓰세여~
-
-        // 단어 삭제 모션 있고 난 다음에 변경
+        setTimeout(() => {
+          // console.log("new target");
+          // console.log(newTargetWord);
+          setTargetWord(newTargetWord);
+          // setTargetWordIndex(currentWordList.length);
+          setCurrentWordList((prev) => [...prev, ...newTargetWord]);
+        }, 500);
+        // setCurrentWordList(update);
       }
+      // console.log(sorted);
+      //추가 단어 여부와 추가
+      setTimeout(() => {
+        setSubWordList(newSubWordList);
+
+        if (newSubWordList && newSubWordList.length > 0) {
+          // console.log("new sub words");
+          setCurrentWordList((prev) => [...prev, ...newSubWordList]);
+          // console.log(subWordList);
+          // setLevelWord([]);
+        }
+      }, 500);
     } catch (error) {
       const { response } = error;
       // 에러 메시지 매핑
@@ -265,9 +215,9 @@ export const SingleGame = (props) => {
     () => {
       const connectAndSubscribe = async () => {
         if (roomId !== null) {
-          await connect("SINGLE", roomId, playerId); // Wait for the connect function to complete
+          await connect("SINGLE", roomId, playerId);
           const callback = (messageBody) => {
-            console.log(messageBody);
+            // console.log(messageBody);
             const toTwoD = [messageBody, ""];
             setLevelWord((prev) => [...prev, toTwoD]);
           };
@@ -277,7 +227,6 @@ export const SingleGame = (props) => {
 
       connectAndSubscribe();
 
-      // Cleanup funciton
       return () => {
         disconnect();
       };
@@ -286,15 +235,12 @@ export const SingleGame = (props) => {
     [playerId]
   );
   useEffect(() => {
-    // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
-    // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
     if (levelWord.length > 0) {
       setDisplay(true);
       setAdding(true);
       // setTimeout(() => {}, 200);
       //소켓으로
       setTimeout(() => {
-        // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
         console.log("add level word");
         console.log(levelWord);
         setCurrentWordList((prev) => [...prev, ...levelWord]);
@@ -308,43 +254,34 @@ export const SingleGame = (props) => {
     }
   }, [levelWord]);
   useEffect(() => {
-    // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
-    // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
     setDisplay(true);
     setIsTarget(true);
     // setAdding(true);
     setTimeout(() => {}, 200);
     //소켓으로
     setTimeout(() => {
-      // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
-      console.log("add target word");
-      console.log(targetWord);
+      // console.log("add target word");
+      // console.log(targetWord);
 
       setCurrentWordList((prev) => [...prev, ...targetWord]);
-      setTargetWordIndex(currentWordList.length);
-      // setLevelWord([]);
+      // setTargetWordIndex(currentWordList.length);
       setDisplay(false);
       setIsTarget(false);
-      // setAdding(false);
     }, 200);
     setTimeout(() => {
       // setCurrentWordList((prev) => [...prev, ...levelWord]);
     }, 400);
   }, [targetWord]);
   useEffect(() => {
-    // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
-    // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
     if (subWordList && subWordList.length < 1) {
     } else {
       setDisplay(true);
       setSub(true);
       // setAdding(true);
       setTimeout(() => {}, 200);
-      //소켓으로
       setTimeout(() => {
-        // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
-        console.log("add sub word");
-        console.log(subWordList);
+        // console.log("add sub word");
+        // console.log(subWordList);
 
         setDisplay(false);
         setSub(false);
@@ -409,7 +346,6 @@ export const SingleGame = (props) => {
         setSorting(false);
       }, 500);
     }
-    // }, 800);
   }, [sortedWordList]);
 
   const handleInputChange = (e) => {
@@ -427,14 +363,6 @@ export const SingleGame = (props) => {
       disconnect();
       setPlayerStatus("OVER");
       setRoomStatus("FINISHED");
-
-      // 페이지 화면 전환
-      // 페이지 result로 전환되면서 데이터 넘겨주기? 우선 넘겨줄거를 overResultDto로 만들게요
-      // 근데 그냥 위에 overResponseDto 넘겨주는게 나을 것 같아서 그냥 안만들었습니다.
-      // stomp.disconnect();
-
-      // console.log(OverResponseDto);
-      // subscription.unsubscribe();
     } catch (error) {
       console.error(error);
     }
@@ -443,14 +371,10 @@ export const SingleGame = (props) => {
     if (currentWordList.length >= 21) {
       handleOverGame();
     }
-    // const foundindex= currentWordList.findIndex((wordArray) => wordArray[0] === targetWord);
-    // console.log(foundindex+targetWord)
     // eslint-disable-next-line
   }, [currentWordList]);
 
-  // 사라짐...
   const handleOutRoom = async () => {
-    // 위에 dto있음!
     try {
       console.log(overRequestDto);
       navigate("/SingleGameResult", {
@@ -465,8 +389,6 @@ export const SingleGame = (props) => {
       .slice()
       .reverse()
       .map((item, index) => {
-        // if (Array.isArray(item)) {
-        // This is a 2D array with points
         const [word, point] = item;
         return (
           <li
@@ -487,35 +409,16 @@ export const SingleGame = (props) => {
             <div className="right points">{point}</div>
           </li>
         );
-        // }
       });
   };
-  const [indexList, setIndexList] = useState();
-  // useEffect(() => {
-  //   // Logic to generate 'listing' based on 'targetWordIndex'
-  //   const newListing = listIndexStandard?.slice().map((value, index) => (
-  //     <li
-  //       key={index}
-  //       className={
-  //         20 - index - 1 === targetWordIndex ? "targetWord wordline" : "wordline"
-  //       }
-  //     >
-  //       {value}
-  //     </li>
-  //   ));
-
-  //   // Update 'listing' with the new value
-  //   console.log(currentWordList)
-  //   setIndexList(newListing);
-  // }, [currentWordList]);
-  // index {currentWordList.length - index - 1}
   const listIndexStandard = [
     20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
   ];
   const listing = listIndexStandard?.slice().map((value, index) => (
     <li
       key={index}
-      className={20 - index - 1 === targetWordIndex ? "wordline" : "wordline"}
+      // className={20 - index - 1 === targetWordIndex ? "wordline" : "wordline"}
+      className={"wordline"}
     >
       {value}
     </li>
@@ -607,7 +510,7 @@ export const SingleGame = (props) => {
                 {listing}
               </ul>
               {!display && (
-                <ul className="wordlist" style={{ backgroundColor: "" }}>
+                <ul className="wordlist" style={{ backgroundColor: "", listStyle:"none" }}>
                   {renderWordList(currentWordList)}
                 </ul>
               )}
@@ -713,24 +616,6 @@ export const SingleGame = (props) => {
             }}
           ></input>
         </div>
-
-        {/* <div style={{ gridColumn: " 9 / span 4;" }}>
-          <ul>
-            <li sytle={{ display: "flex", flexDirection: "row" }}>
-              <div style={{}}>
-                타겟 단어: {targetWordIndex}
-                {targetWord}
-              </div>
-            </li>
-            <li>levelWord: {levelWord}</li>
-            <li>next up</li>
-            <li>{subWordList}</li>
-            <li>deleteList</li>
-            <li>{deleteList}</li>
-            <li style={{ color: "white" }}>sorted {sortedWordList}</li>
-          </ul>
-          <ul className="wordlist">{renderWordList(currentWordList)}</ul>
-        </div> */}
       </div>
     </>
   );
