@@ -516,8 +516,9 @@ export const MyGameDisplay = ({
           value={guessWord}
           onChange={handleInputChange}
           disabled={
-            data.playerStatus === "OVER" || sorting
-            // data.playerStatus !== "GAMING"
+            data.playerStatus === "OVER" ||
+            sorting ||
+            data.playerStatus !== "GAMING"
           }
           autoFocus
           onKeyDown={(e) => {
