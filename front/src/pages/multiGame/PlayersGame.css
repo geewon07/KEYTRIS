@@ -1,10 +1,11 @@
 .m-gamecontainer {
-  height: 100vh;
-  min-width: 300px;
-  width: 100% !important;
+  /* height: 80vh; */
+  min-width: 270px;
+  width: 80% !important;
+  height: 100%;
   display: flex;
   align-self: center;
-  grid-column: 5 / span 4;
+  /* grid-column: 5 / span 4; */
   flex-direction: column !important;
 }
 .m-bglist {
