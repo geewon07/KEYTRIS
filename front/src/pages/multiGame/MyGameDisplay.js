@@ -17,6 +17,7 @@ export const MyGameDisplay = ({
   newLevelWord,
   updatePlayerToOver,
   category,
+  isCountDown,
 }) => {
   const [subWordList, setSubWordList] = useState([]);
   const [targetWord, setTargetWord] = useState([]);
@@ -76,8 +77,11 @@ export const MyGameDisplay = ({
   useEffect(() => {
     // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
     // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
-    setDisplay(true);
-    setIsTarget(true);
+    if (isCountDown) {
+      setDisplay(true);
+      setIsTarget(true);
+    }
+
     // setAdding(true);
     setTimeout(() => {}, 200);
     //소켓으로
@@ -128,6 +132,12 @@ export const MyGameDisplay = ({
       inputRef.current.focus();
     }
   }, [sorting]);
+
+  // useEffect(() => {
+  //   if (targetWord) {
+  //     inputRef.current.focus();
+  //   }
+  // }, [listing]);
 
   useEffect(() => {
     if (deleteList.length > 0) {
@@ -515,11 +525,7 @@ export const MyGameDisplay = ({
           placeholder="입력하세요"
           value={guessWord}
           onChange={handleInputChange}
-          disabled={
-            data.playerStatus === "OVER" ||
-            sorting ||
-            data.playerStatus !== "GAMING"
-          }
+          disabled={data.playerStatus === "OVER" || sorting || !isCountDown}
           autoFocus
           onKeyDown={(e) => {
             if (e.key === "Enter") {
