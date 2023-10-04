@@ -60,8 +60,8 @@ export const MyGameDisplay = ({
       //소켓으로
       setTimeout(() => {
         // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
-        console.log("add level word");
-        console.log(levelWord);
+        //console.log("add level word");
+        //console.log(levelWord);
         setCurrentWordList((prev) => [...prev, ...levelWord]);
         setLevelWord([]);
         setDisplay(false);
@@ -83,8 +83,8 @@ export const MyGameDisplay = ({
     //소켓으로
     setTimeout(() => {
       // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
-      console.log("add target word");
-      console.log(targetWord);
+      //console.log("add target word");
+      //console.log(targetWord);
 
       setCurrentWordList((prev) => [...prev, ...targetWord]);
       setTargetWordIndex(currentWordList.length);
@@ -110,8 +110,8 @@ export const MyGameDisplay = ({
       //소켓으로
       setTimeout(() => {
         // 타이밍 문제로 중간에 씹힐 수 있음, 타겟단어 또 따로 줄까?
-        console.log("add sub word");
-        console.log(subWordList);
+        //console.log("add sub word");
+        //console.log(subWordList);
 
         setDisplay(false);
         setSub(false);
@@ -135,7 +135,7 @@ export const MyGameDisplay = ({
       setTimeout(() => {});
       setDeleting(true);
       setTimeout(() => {
-        // console.log("delete log how many times");
+        // //console.log("delete log how many times");
         const update = [
           ...sortedWordList.slice(0, targetWordIndex),
           ...sortedWordList.slice(4),
@@ -158,12 +158,12 @@ export const MyGameDisplay = ({
   useEffect(() => {
     // setTimeout(() => {
     if (sortedWordList.length > 0) {
-      // console.log(sortedIdx);
+      // //console.log(sortedIdx);
       setDisplay(true);
       // setAdding(false);
       setSorting(true);
       setTimeout(() => {
-        // console.log("sort log, set current");
+        // //console.log("sort log, set current");
         const update = [
           ...sortedWordList,
           ...currentWordList.slice(sortedWordList.length),
@@ -196,7 +196,7 @@ export const MyGameDisplay = ({
 
   useEffect(() => {
     if (currentWordList.length >= 21) {
-      console.log(targetWord);
+      //console.log(targetWord);
       updatePlayerToOver();
     }
     // eslint-disable-next-line
@@ -288,8 +288,8 @@ export const MyGameDisplay = ({
   useEffect(() => {
     if (currentPlayerGameInfo && currentPlayerGameInfo !== null) {
       const sortedRes = currentPlayerGameInfo;
-      console.log("sorted ");
-      console.log(sortedRes);
+      //console.log("sorted ");
+      //console.log(sortedRes);
       const sorted = currentPlayerGameInfo.sortedWordList;
       const {
         newScore,
@@ -320,7 +320,7 @@ export const MyGameDisplay = ({
 
         // setCurrentWordList(update);
       }
-      // console.log(sorted);
+      // //console.log(sorted);
       //추가 단어 여부와 추가
       setTimeout(() => {
         if (newSubWordList !== null) {

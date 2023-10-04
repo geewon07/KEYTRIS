@@ -56,7 +56,7 @@ export const QuickMenu = () => {
       <nav>
         {/* <div>
         <button className='nav-button' onClick={() => {
-          console.log('음소거')
+          //console.log('음소거')
         }}>
           <img src={MuteIcon} alt='muteIcon'/>
         </button>
