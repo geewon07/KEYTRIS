@@ -197,6 +197,8 @@ export const MultiGame = () => {
       const startGame = (messageBody) => {
         const startGameInfo = messageBody;
         setStartGameInfo(messageBody);
+        setWordListResponse(startGameInfo.wordListResponse);
+        setLastWord(startGameInfo.wordListResponse.newTargetWord);
 
         setCountdown(5);
 
@@ -255,8 +257,6 @@ export const MultiGame = () => {
       setTimeout(() => setIsCountDown(true), 1000);
       setPlayerList(startGameInfo.playerList);
       // setRoomStatus(startGameInfo.roomStatus);
-      setWordListResponse(startGameInfo.wordListResponse);
-      setLastWord(startGameInfo.wordListResponse.newTargetWord);
     }
   }, [countdown, startGameInfo]);
 
