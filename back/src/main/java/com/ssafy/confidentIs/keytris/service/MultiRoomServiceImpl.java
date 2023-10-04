@@ -343,7 +343,7 @@ public class MultiRoomServiceImpl {
                 .player(updatedPlayer)
                 .build();
 
-        log.info("플레이어 상태 OVER로 변경");
+        log.info("플레이어 상태 OVER로 변경 {}", playerId);
 
         // 모두 또는 한 명 제외하고 모두 OVER 된 경우 game status update
         if(room.getOverPlayerCnt() >= room.getPlayerList().size()-1) {
