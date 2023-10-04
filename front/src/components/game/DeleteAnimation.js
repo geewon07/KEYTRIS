@@ -27,7 +27,7 @@ const AnimatedRow = styled.li`
     animation: ${flashAndGrowAndShrink} 0.3s forwards;
     list-style: none;
     font-size: 24px;
-    overflow-x:hidden;
+    overflow-x: hidden;
     // background-color:red;
   }
 `;
@@ -38,26 +38,36 @@ export const DeleteAnimation = (props) => {
 
   return (
     <>
-      {letterList?.slice().slice(targetIndex,4).reverse().map((item, index) => {
-        const [word, point] = item;
-        return (
-          <AnimatedRow key={index+word+point}  style={{backgroundColor:''}} className="delete-animation wordline">
-            {/* <li key={letterList.length - index - 1} className={"wordline"}> */}
-            <div
-              className={
-                targetWord[0] === word
-                  ? "targetWord wordline left"
-                  : "wordline left"
-              }
+      {letterList
+        ?.slice()
+        .slice(targetIndex, 4)
+        .reverse()
+        .map((item, index) => {
+          const [word, point] = item;
+          return (
+            <AnimatedRow
+              key={index + word + point}
+              style={{ backgroundColor: "" }}
+              className="delete-animation wordline"
             >
-              {word}
-            </div>
-            <div className="right points">{point}</div>
-            {/* </li> */}
-            {/* <li style={{ color: "white" }}>{item[0]}</li> */}
-          </AnimatedRow>
-        );
-      })}
+              {/* <li key={letterList.length - index - 1} className={"wordline"}> */}
+              <div
+                className={
+                  targetWord[0][0] === word
+                    ? "targetWord left"
+                    : " left"
+                    ? "targetWord wordline left"
+                    : "wordline left"
+                }
+              >
+                {word}
+              </div>
+              <div className="right points">{point}</div>
+              {/* </li> */}
+              {/* <li style={{ color: "white" }}>{item[0]}</li> */}
+            </AnimatedRow>
+          );
+        })}
       {/* {letterList?.slice(0, targetIndex).reverse().map((item, index) => {
         const [word, point] = item;
         return (
