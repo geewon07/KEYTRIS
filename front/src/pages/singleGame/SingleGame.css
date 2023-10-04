@@ -1,5 +1,6 @@
 .gamecontainer {
   height: 100vh;
+  /* min-height:550px; */
   min-width:300px;
   width: 100% !important;
   display: flex;
@@ -72,18 +73,6 @@
   border-top: 3px solid var(--primary, #cf0);
   background: rgba(204, 255, 0, 0.2);
   z-index: 3333;
-}
-.bglist2 {
-  background: #26154a;
-  width: 90% !important;
-  z-index: 1000;
-
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-self: end;
-  text-align: start;
 }
 .displaylayer {
   display: flex;
@@ -163,7 +152,8 @@ input.inputcase {
   border: none;
   background-color: #f4f4f4; 
   color: #888; 
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: min(max(2.5vh, 14px), 28px);
   color: blue;
   background-color: #ccff00 !important;
   padding: 20px;
@@ -181,6 +171,7 @@ input.inputcase:focus {
 
 li.wordline {
   font-size: 2.5vh; 
+  /* font-size: clamp() */
   font-size: min(max(2.5vh, 14px), 28px);
   padding-top: 0.45rem;
   padding-bottom: 0.45rem;
@@ -193,4 +184,35 @@ li.wordline.purple {
 }
 li.wordline.red {
   background-color: rgb(255, 0, 230);
+}
+.sidenav-left {
+  height: 100vh;
+  padding: 5px;
+  z-index: 9999;
+  align-items:start;
+}
+
+.nav-button {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  margin: 10px;
+  stroke-width: 2px;
+  stroke: #FFF;
+  background: transparent;
+  flex-shrink: 0;
+  font-family: NeoDunggeunmo Pro;
+  color: #FFF;
+  border-color: #FFF;
+  flex-shrink: 0;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  transition: background-image 0.3s;
+  cursor: pointer;
+
+  &:hover {
+      background-image: linear-gradient(to right, rgba(205, 205, 205, 0.881), rgba(174, 174, 174, 0.751));
+  }
 }
