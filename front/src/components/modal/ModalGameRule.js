@@ -85,7 +85,7 @@ export const ModalGameRule = ({ isOpen, onClose }) => {
                 X
               </button>
             </div>
-            <div style={titleStyle}>키트리스 가이드</div>
+            <div style={titleStyle}>게임 규칙</div>
             <div style={contentStyle}>
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px", }}>
                 <button className="slide-button" onClick={handlePrev} style={{ margin: "5%", cursor: "pointer", }}>
