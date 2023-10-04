@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 export const Modal = (props) => {
   let { modalShow, setModal, title, buttonLabel, func, type } = props;
-  // console.log(props);
+  // //console.log(props);
 
   const [category, setCategory] = useState(100);
   const [nickname, setNickname] = useState("");

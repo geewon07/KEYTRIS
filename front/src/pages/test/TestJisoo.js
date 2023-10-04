@@ -13,7 +13,7 @@ import {
 export const TestJisoo = () => {
   const location = useLocation();
   const responseData = location.state?.responseData;
-  console.log(responseData);
+  //console.log(responseData);
 
   const navigate = useNavigate();
 
@@ -32,11 +32,11 @@ export const TestJisoo = () => {
   const singleDesc = "어떤 분야의 뉴스 키워드로 게임을 진행하시겠어요?";
 
   const makeSingleGame = async ({ category }) => {
-    console.log(category);
+    //console.log(category);
 
     try {
       const response = await createRoom({ category });
-      console.log(response);
+      //console.log(response);
 
       if (response.data.data) {
         alert("게임을 만들었습니다");
@@ -52,15 +52,15 @@ export const TestJisoo = () => {
   };
 
   const makeMultiGame = async ({ category, nickname }) => {
-    console.log(category + " " + nickname);
+    //console.log(category + " " + nickname);
 
     try {
       const MultiGameCreateRequest = { category, nickname };
       const response = await createMultiRoom(MultiGameCreateRequest);
-      console.log(response);
+      //console.log(response);
 
       if (response.data.success === "success") {
-        console.log("요청 success");
+        //console.log("요청 success");
         const roomId = response.data.data.gameInfo.roomId;
         navigate(`/TestSocket/${roomId}`, {
           state: { responseData: response.data.data },
@@ -74,7 +74,7 @@ export const TestJisoo = () => {
   };
 
   const enterMultiGame = async ({ nickname, gameCode }) => {
-    console.log(nickname + " " + gameCode);
+    //console.log(nickname + " " + gameCode);
 
     if (!nickname || !gameCode) {
       alert("닉네임과 게임 모드는 필수 항목입니다.");
@@ -84,10 +84,10 @@ export const TestJisoo = () => {
     try {
       const MultiGameCreateRequest = { nickname };
       const response = await connectMultiRoom(gameCode, MultiGameCreateRequest);
-      console.log(response);
+      //console.log(response);
 
       if (response.data.success === "success") {
-        console.log("요청 success");
+        //console.log("요청 success");
         const roomId = response.data.data.gameInfo.roomId;
         navigate(`/TestSocket/${roomId}`, {
           state: { responseData: response.data.data },
@@ -101,12 +101,12 @@ export const TestJisoo = () => {
   };
 
   const copyCode = ({ gameCode }) => {
-    console.log(gameCode);
+    //console.log(gameCode);
     alert("코드를 복사했습니다. 친구에게 전달해주세요.");
   };
 
   const handleButtonClickToGO = (path = "/") => {
-    console.log("페이지 이동 경로:", path);
+    //console.log("페이지 이동 경로:", path);
     navigate(path);
   };
 

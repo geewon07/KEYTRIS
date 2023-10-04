@@ -7,7 +7,7 @@ function Score({ playerId, playerResultList }) {
   const navigate = useNavigate();
 
   const handleButtonClickToGO = (path = "/") => {
-    console.log("페이지 이동 경로:", path);
+    // //console.log("페이지 이동 경로:", path);
     navigate(path);
   };
 

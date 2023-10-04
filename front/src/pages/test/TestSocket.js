@@ -6,7 +6,7 @@ import Chat from "../../components/chatting/ChatTest";
 export const TestSocket = () => {
     const location = useLocation();
     const responseData = location.state?.responseData;
-    console.log(responseData);
+    //console.log(responseData);
 
 
     // const [streak, setStreak] = useState(null);
@@ -20,7 +20,7 @@ useEffect(() => {
     if (roomId !== null) {
       const enterChat = (messageBody) => {
         const context = messageBody;
-        console.log(context);
+        //console.log(context);
         setChatContent(context);
       };
 
