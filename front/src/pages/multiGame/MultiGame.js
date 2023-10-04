@@ -251,14 +251,34 @@ export const MultiGame = () => {
   useEffect(() => {
     if (countdown > 0) {
       setIsCountDown(false);
+      // setTimeout(() => setCountdown(countdown - 1), 1000);
+      if (countdown === 1 && startGameInfo) {
+        //console.loglog("게임 시작");
+
+        setPlayerList(startGameInfo.playerList);
+
+        // setRoomStatus(startGameInfo.roomStatus);
+      }
       setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0 && startGameInfo) {
-      //console.loglog("게임 시작");
+      console.log("true로 바뀌니?");
       setTimeout(() => setIsCountDown(true), 1000);
-      setPlayerList(startGameInfo.playerList);
-      // setRoomStatus(startGameInfo.roomStatus);
     }
   }, [countdown, startGameInfo]);
+
+  //   if (countdown > 0) {
+  //     setIsCountDown(false);
+  //     setTimeout(() => setCountdown(countdown - 1), 1000);
+  //   } else if (countdown === 1 && startGameInfo) {
+  //     //console.loglog("게임 시작");
+  //     setPlayerList(startGameInfo.playerList);
+  //     // setRoomStatus(startGameInfo.roomStatus);
+  //     setTimeout(() => setCountdown(countdown - 1), 1000);
+  //   }
+  //   if (countdown === 0) {
+  //     setTimeout(() => setIsCountDown(true), 1000);
+  //   }
+  // }, [countdown, startGameInfo]);
 
   // useEffect(() => {
   //   if (countdown === 0 ) {
@@ -389,6 +409,7 @@ export const MultiGame = () => {
               updatePlayerToOver={updatePlayerToOver}
               setLastWord={setLastWord}
               category={category}
+              isCountDown={isCountDown}
             />
           )}
         </div>
@@ -400,6 +421,7 @@ export const MultiGame = () => {
               wordListResponse={wordListResponse}
               otherPlayerGame={otherPlayerGame1}
               newLevelWord={newLevelWord}
+              isCountDown={isCountDown}
             />
             <PlayersDisplay
               data={otherPlayerData2}
@@ -407,6 +429,7 @@ export const MultiGame = () => {
               wordListResponse={wordListResponse}
               otherPlayerGame={otherPlayerGame2}
               newLevelWord={newLevelWord}
+              isCountDown={isCountDown}
             />
             <PlayersDisplay
               data={otherPlayerData3}
@@ -414,6 +437,7 @@ export const MultiGame = () => {
               wordListResponse={wordListResponse}
               otherPlayerGame={otherPlayerGame3}
               newLevelWord={newLevelWord}
+              isCountDown={isCountDown}
             />
           </div>
           <div className="chat-container">
