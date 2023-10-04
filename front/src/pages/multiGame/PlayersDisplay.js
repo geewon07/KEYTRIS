@@ -164,15 +164,14 @@ export const PlayersDisplay = ({
   }, [sortedWordList]);
 
   useEffect(() => {
-    if (data !== null && data.playerStatus === "GAMING") {
-      //console.log(wordListResponse.newTargetWord);
+    if (data !== null && wordListResponse !== null) {
+      // && data.playerStatus === "GAMING") {
       setTargetWord(wordListResponse.newTargetWord);
       setTargetWordIndex(9);
       setCurrentWordList([...wordListResponse.sortedWordList.slice(0, -1)]);
       setScore(wordListResponse.newScore);
     }
-  }, [data]);
-
+  }, [wordListResponse]);
   const renderWordList = (list) => {
     return list
       .slice()
@@ -216,6 +215,7 @@ export const PlayersDisplay = ({
 
   useEffect(() => {
     if (otherPlayerGame && otherPlayerGame !== null) {
+      console.log(otherPlayerGame);
       const sortedRes = otherPlayerGame;
       //console.log("sorted ");
       //console.log(sortedRes);
@@ -227,7 +227,9 @@ export const PlayersDisplay = ({
         sortedIndex,
         targetWordRank,
       } = sortedRes;
-
+      console.log(newTargetWord);
+      console.log(newTargetWord[0]);
+      console.log(newTargetWord[0][0]);
       setSortedIdx(sortedIndex); //0 start
       setSortedWordList(sorted);
       setTargetWordIndex(targetWordRank);
@@ -318,14 +320,12 @@ export const PlayersDisplay = ({
             </>
           )}
         </div>
-
         <div className="overlaybox">
           <li className="m-wordline">&nbsp;</li>
           <li className="m-wordline">&nbsp;</li>
           <li className="m-wordline">&nbsp;</li>
           <li className="m-wordline">&nbsp;</li>
         </div>
-
         <div className="list-container">
           <ul className="indexlist">
             <div className="m-playerName">{data?.nickname}&nbsp;</div>
@@ -340,11 +340,12 @@ export const PlayersDisplay = ({
             </li>
             {listing}
           </ul>
-          {!display && (
-            <ul className="m-wordlist" style={{ backgroundColor: "" }}>
-              {renderWordList(currentWordList)}
-            </ul>
-          )}
+          {(data?.playerStatus === "GAMING" || data?.playerStatus === "OVER") &&
+            !display && (
+              <ul className="m-wordlist" style={{ backgroundColor: "" }}>
+                {renderWordList(currentWordList)}
+              </ul>
+            )}
           {display && (
             // <div className="bglist2 ">
             <>
@@ -427,6 +428,7 @@ export const PlayersDisplay = ({
             </>
           )}
         </div>
+        )}
       </div>
     </div>
   );

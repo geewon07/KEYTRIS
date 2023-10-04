@@ -181,13 +181,14 @@ export const MyGameDisplay = ({
   }, [sortedWordList]);
 
   useEffect(() => {
-    if (data !== null && data.playerStatus === "GAMING") {
+    if (data !== null && wordListResponse !== null) {
+      // && data.playerStatus === "GAMING") {
       setTargetWord(wordListResponse.newTargetWord);
       setTargetWordIndex(9);
       setCurrentWordList([...wordListResponse.sortedWordList.slice(0, -1)]);
       setScore(wordListResponse.newScore);
     }
-  }, [data]);
+  }, [wordListResponse]);
 
   const handleInputChange = (e) => {
     const { value } = e.target;
@@ -400,25 +401,27 @@ export const MyGameDisplay = ({
             <li className="wordline">&nbsp;</li>
             <li className="wordline">&nbsp;</li>
           </div>
-
           <div className="list-container">
             <ul className="indexlist">
+              <div className="m-playerName">{data?.nickname}&nbsp;</div>
               <li
                 className={
                   currentWordList.length <= 17
-                    ? "wordline purple"
-                    : "wordline red"
+                    ? "m-wordline purple"
+                    : "m-wordline red"
                 }
               >
                 &nbsp;
               </li>
               {listing}
             </ul>
-            {!display && (
-              <ul className="wordlist" style={{ backgroundColor: "" }}>
-                {renderWordList(currentWordList)}
-              </ul>
-            )}
+            {(data?.playerStatus === "GAMING" ||
+              data?.playerStatus === "OVER") &&
+              !display && (
+                <ul className="wordlist" style={{ backgroundColor: "" }}>
+                  {renderWordList(currentWordList)}
+                </ul>
+              )}
 
             {display && (
               // <div className="bglist2 ">
@@ -512,7 +515,11 @@ export const MyGameDisplay = ({
           placeholder="입력하세요"
           value={guessWord}
           onChange={handleInputChange}
-          disabled={data.playerStatus === "OVER" || sorting}
+          disabled={
+            data.playerStatus === "OVER" ||
+            sorting ||
+            data.playerStatus !== "GAMING"
+          }
           autoFocus
           onKeyDown={(e) => {
             if (e.key === "Enter") {
