@@ -1,5 +1,4 @@
 .chatWrapper {
-
 }
 .chatArea {
   background-color: rgba(0, 0, 0, 0.3);
@@ -15,8 +14,8 @@
 
 .chatMessages {
   width: 100%;
-  min-height: 300px;
-  max-height: 300px;
+  min-height: 220px;
+  max-height: 220px;
   overflow-y: auto;
   scroll-behavior: smooth;
   word-wrap: break-word; /* 강제로 줄바꿈 */

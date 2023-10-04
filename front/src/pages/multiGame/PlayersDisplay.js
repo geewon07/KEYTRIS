@@ -209,14 +209,7 @@ export const PlayersDisplay = ({
   ];
 
   const listing = listIndexStandard?.slice().map((value, index) => (
-    <li
-      key={index}
-      className={
-        20 - index - 1 === targetWordIndex
-          ? "m-targetWord m-wordline"
-          : "m-wordline"
-      }
-    >
+    <li key={index} className="m-wordline">
       {value}
     </li>
   ));
