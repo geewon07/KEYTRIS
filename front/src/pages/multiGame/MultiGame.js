@@ -200,7 +200,7 @@ export const MultiGame = () => {
         setWordListResponse(startGameInfo.wordListResponse);
         setLastWord(startGameInfo.wordListResponse.newTargetWord);
 
-        setCountdown(5);
+        setCountdown(6);
 
         //console.loglog(startGameInfo);
         // setPlayerList(startGameInfo.playerList);
@@ -251,12 +251,16 @@ export const MultiGame = () => {
   useEffect(() => {
     if (countdown > 0) {
       setIsCountDown(false);
-      setTimeout(() => setCountdown(countdown - 1), 1000);
+      // setTimeout(() => setCountdown(countdown - 1), 1000);
+      if (countdown === 1 && startGameInfo) {
+        //console.loglog("게임 시작");
+
+        setPlayerList(startGameInfo.playerList);
+        
+        // setRoomStatus(startGameInfo.roomStatus);
+      }setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0 && startGameInfo) {
-      //console.loglog("게임 시작");
       setTimeout(() => setIsCountDown(true), 1000);
-      setPlayerList(startGameInfo.playerList);
-      // setRoomStatus(startGameInfo.roomStatus);
     }
   }, [countdown, startGameInfo]);
 
