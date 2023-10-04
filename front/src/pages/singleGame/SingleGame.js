@@ -437,8 +437,7 @@ export const SingleGame = (props) => {
         }}
       >
         <div
-          className="sidenave-container"
-          style={{ flex: "column", justifyContent: "flex-start" }}
+          className="sidenav-left"
         >
           <button className="nav-button" onClick={() => navigate("/")}>
             홈
