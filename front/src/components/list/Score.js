@@ -23,7 +23,7 @@ function Score({ overRequestDto }) {
   const navigate = useNavigate();
 
   const handleButtonClickToGO = (path = "/") => {
-    console.log("페이지 이동 경로:", path);
+    //console.log("페이지 이동 경로:", path);
     navigate(path);
   };
 
@@ -33,7 +33,7 @@ function Score({ overRequestDto }) {
       const overResponseDto = res.data.data.OverResponse;
       setOverResponse(overResponseDto);
       setRankList(overResponseDto.recordList);
-      console.log("overRequestDto", overRequestDto);
+      // //console.log("overRequestDto", overRequestDto);
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +45,7 @@ function Score({ overRequestDto }) {
   };
 
   const handleInsertRank = async (rankRequestDto) => {
-    console.log(rankRequestDto);
+    // //console.log(rankRequestDto);
     try {
       const res = await rankPlayer(rankRequestDto);
       const rankResponseDto = res.data.data.RankingResponse;

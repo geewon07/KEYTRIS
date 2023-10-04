@@ -104,7 +104,7 @@ export const MultiGame = () => {
     } else {
       setOtherPlayerData1((prevOtherPlayerData1) => {
         if (prevOtherPlayerData1?.playerId === currentPlayerId) {
-          console.log(prevOtherPlayerData1);
+          //console.loglog(prevOtherPlayerData1);
           return playerUpdateInfo;
         } else {
           return prevOtherPlayerData1;
@@ -135,7 +135,7 @@ export const MultiGame = () => {
     const currentPlayerId = playerUpdateInfo.playerId;
 
     if (currentPlayerData?.playerId === currentPlayerId) {
-      console.log(playerUpdateInfo);
+      //console.loglog(playerUpdateInfo);
       setCurrentPlayerData(playerUpdateInfo);
     } else {
       setOtherPlayerData1((prevOtherPlayerData1) => {
@@ -175,7 +175,7 @@ export const MultiGame = () => {
   };
 
   useEffect(() => {
-    console.log(lastWord);
+    //console.loglog(lastWord);
     lastWordRef.current = lastWord;
   }, [lastWord]);
 
@@ -183,13 +183,13 @@ export const MultiGame = () => {
     if (roomId !== null) {
       const enterChat = (messageBody) => {
         const context = messageBody;
-        console.log(context);
+        //console.loglog(context);
         setChatContent(context);
       };
 
       const enterPlayer = (messageBody) => {
         const gameInfo = messageBody;
-        console.log(gameInfo);
+        //console.loglog(gameInfo);
         setPlayerList(gameInfo.playerList);
         setRoomStatus(gameInfo.roomStatus);
       };
@@ -200,7 +200,7 @@ export const MultiGame = () => {
 
         setCountdown(5);
 
-        console.log(startGameInfo);
+        //console.loglog(startGameInfo);
         // setPlayerList(startGameInfo.playerList);
         setRoomStatus(startGameInfo.roomStatus);
         // setWordListResponse(startGameInfo.wordListResponse);
@@ -219,9 +219,9 @@ export const MultiGame = () => {
           "SO04-ERR-400": "게임을 시작할 수 없습니다.",
           "SO05-ERR-403": "방장만 시작이 가능합니다.",
         };
-        console.log(messageBody);
+        //console.loglog(messageBody);
         const errorMessage = errorMessages[messageBody?.errorCode];
-        console.log(errorMessage);
+        //console.loglog(errorMessage);
         if (errorMessage) {
           toast.error(errorMessage);
         }
@@ -251,7 +251,7 @@ export const MultiGame = () => {
       setIsCountDown(false);
       setTimeout(() => setCountdown(countdown - 1), 1000);
     } else if (countdown === 0 && startGameInfo) {
-      console.log("게임 시작");
+      //console.loglog("게임 시작");
       setTimeout(() => setIsCountDown(true), 1000);
       setPlayerList(startGameInfo.playerList);
       // setRoomStatus(startGameInfo.roomStatus);
@@ -348,20 +348,20 @@ export const MultiGame = () => {
   // }, []);
 
   useEffect(() => {
-    console.log("dd");
+    //console.log("dd");
     // props로 넘겨받는 playerId와 playerList
     if (playerId && playerList) {
-      console.log("dddd");
-      console.log(playerList);
-      console.log(playerId);
+      //console.log("dddd");
+      //console.log(playerList);
+      //console.log(playerId);
       const me = playerList.find((player) => player.playerId === playerId);
-      console.log("힣");
-      console.log(playerList.find((player) => player.playerId === playerId));
+      //console.log("힣");
+      //console.log(playerList.find((player) => player.playerId === playerId));
       const otherPlayers = playerList.filter(
         (player) => player.playerId !== playerId
       );
-      console.log(otherPlayers);
-      console.log(otherPlayers[0]);
+      //console.log(otherPlayers);
+      //console.log(otherPlayers[0]);
       setCurrentPlayerData(me);
       setOtherPlayerData1(otherPlayers[0] || null);
       setOtherPlayerData2(otherPlayers[1] || null);

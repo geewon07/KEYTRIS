@@ -20,14 +20,14 @@ export const Home = () => {
   const singleDesc = "어떤 카테고리의 뉴스로 게임을 하시겠어요?";
 
   const makeSingleGame = async ({ category }) => {
-    console.log(category);
+    // //console.log(category);
 
     try {
       const response = await createRoom({ category });
-      console.log(response);
+      // //console.log(response);
 
       if (response.data.success === "success") {
-        console.log("요청 success");
+        // //console.log("요청 success");
         navigate("/SingleGame", {
           state: { responseData: response.data.data, category: category },
         });
@@ -43,7 +43,7 @@ export const Home = () => {
         // 필요하다면 다른 에러 코드들도 여기에 추가
       };
 
-      console.log(response);
+      // //console.log(response);
 
       // 에러 코드에 따른 메시지 출력
       const errorMessage = errorMessages[response?.data?.errorCode];
@@ -56,7 +56,7 @@ export const Home = () => {
   };
 
   const makeMultiGame = async ({ category, nickname }) => {
-    console.log(category + " " + nickname);
+    // //console.log(category + " " + nickname);
 
     if (!nickname) {
       return toast.error("닉네임을 입력해주세요.");
@@ -65,10 +65,10 @@ export const Home = () => {
     try {
       const MultiGameCreateRequest = { category, nickname };
       const response = await createMultiRoom(MultiGameCreateRequest);
-      console.log(response);
+      // //console.log(response);
 
       if (response.data.success === "success") {
-        console.log("요청 success");
+        // //console.log("요청 success");
         const roomId = response.data.data.gameInfo.roomId;
         navigate(`/MultiGame/${roomId}`, {
           state: { responseData: response.data.data },
@@ -85,7 +85,7 @@ export const Home = () => {
         // 필요하다면 다른 에러 코드들도 여기에 추가
       };
 
-      console.log(response);
+      // //console.log(response);
 
       // 에러 코드에 따른 메시지 출력
       const errorMessage = errorMessages[response?.data?.errorCode];
@@ -98,7 +98,7 @@ export const Home = () => {
   };
 
   const enterMultiGame = async ({ nickname, gameCode }) => {
-    console.log("닉네임: " + nickname + " " + gameCode);
+    // //console.log("닉네임: " + nickname + " " + gameCode);
 
     if (!nickname || !gameCode) {
       return toast.error("닉네임과 게임 코드는 필수 항목입니다.");
@@ -107,10 +107,10 @@ export const Home = () => {
     try {
       const MultiGameCreateRequest = { nickname };
       const response = await connectMultiRoom(gameCode, MultiGameCreateRequest);
-      console.log(response);
+      // //console.log(response);
 
       if (response.data.success === "success") {
-        console.log("요청 success");
+        // //console.log("요청 success");
         const roomId = response.data.data.gameInfo.roomId;
         navigate(`/MultiGame/${roomId}`, {
           state: { responseData: response.data.data },
@@ -128,7 +128,7 @@ export const Home = () => {
         // 필요하다면 다른 에러 코드들도 여기에 추가
       };
 
-      console.log(response);
+      // //console.log(response);
 
       // 에러 코드에 따른 메시지 출력
       const errorMessage = errorMessages[response?.data?.errorCode];

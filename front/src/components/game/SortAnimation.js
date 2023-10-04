@@ -56,12 +56,6 @@ export const SortAnimation = (props) => {
     "문자8",
     "문자9",
   ];
-useEffect(() => {
-  console.log("sort anim")
- console.log(targetWord);
-
-
-}, [targetWord])
 
   const [letterList, setLetterList] = useState(sendList);
 

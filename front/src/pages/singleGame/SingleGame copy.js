@@ -28,12 +28,12 @@ export const SingleGame = (props) => {
 
   const [levelWord, setLevelWord] = useState();
   const callback = (messageBody) => {
-    console.log(messageBody);
+    //console.log(messageBody);
   };
   useEffect(() => {
     let subscription;
 
-    console.log("ddddd");
+    //console.log("ddddd");
     connect();
 
     // const destination = '/your/destination';
@@ -42,7 +42,7 @@ export const SingleGame = (props) => {
     // sendMsg(destination, body);
 
     const callback = (messageBody) => {
-      console.log(messageBody);
+      //console.log(messageBody);
     };
 
     subscription = subscribe(`/topic/room/level-word/${roomId}`, callback);
@@ -62,16 +62,16 @@ export const SingleGame = (props) => {
     try {
       const category = 101;
       const res = await createRoom({ category: 101 });
-      console.log(category);
+      //console.log(category);
       // setSockJS(sock);
       const statusResponseDto = res.data.data.StatusResponse;
-      console.log(statusResponseDto);
+      //console.log(statusResponseDto);
       // 게임방 만들어질 때 playerId, roomId 넘겨받음 => 이 api에서는 playerStatus, roomStatus만 변경
       setPlayerStatus(statusResponseDto.playerStatus);
       setRoomStatus(statusResponseDto.roomStatus);
       setPlayerId(statusResponseDto.playerId);
       setRoomId(statusResponseDto.roomId);
-      console.log("roomID SET");
+      //console.log("roomID SET");
     } catch (error) {
       console.error(error);
     }
@@ -89,8 +89,8 @@ export const SingleGame = (props) => {
       const startResponseDto = res.data.data.StartResponse;
       const statusResponse = startResponseDto.statusResponse;
       const wordListResponse = startResponseDto.wordListResponse;
-      // console.log(startResponseDto);
-      // console.log(wordListResponse);
+      // //console.log(startResponseDto);
+      // //console.log(wordListResponse);
       setPlayerStatus(startResponseDto.statusResponse.playerStatus);
       setRoomStatus(startResponseDto.statusResponse.roomStatus);
 
@@ -104,7 +104,7 @@ export const SingleGame = (props) => {
       ]);
       setScore(startResponseDto.wordListResponse.score);
 
-      console.log(currentWordList);
+      //console.log(currentWordList);
       // currentWordList 저장해야함 -> 어떻게 저장?? subWordList에 TargetWord뒤에 추가???
     } catch (error) {
       console.error(error);
@@ -115,25 +115,25 @@ export const SingleGame = (props) => {
     //여기서 새값 들어오기전에 먼저 효과를 주기
     //TODO: 1 단어정렬, 2 점수 효과, 3 득점X 효과
     if (newScore === score) {
-      console.log("did not score");
+      //console.log("did not score");
       //흔들리는 모션
       setCurrentWordList(newList);
     } else {
       const toDelete = newList.findIndex((word) => word === targetWord);
       setCurrentWordList(...newList.slice(0, toDelete), newList.slice(4));
     }
-    console.log(newList);
-    console.log(currentWordList);
+    //console.log(newList);
+    //console.log(currentWordList);
   };
 
   // useEffect(() => {
-  //   console.log(subWordList); // subWordList가 변경될 때마다 이 로그가 출력
+  //   //console.log(subWordList); // subWordList가 변경될 때마다 이 로그가 출력
   // }, [subWordList]);
 
   // useEffect(() => {
 
   //   handleStartGame(statusRequestDto);
-  //   console.log(subWordList);
+  //   //console.log(subWordList);
 
   // },[statusRequestDto]);
   const insertRequestDto = {
@@ -237,11 +237,11 @@ export const SingleGame = (props) => {
         {value}+{currentWordList.length - index}
       </li>
     ));
-  // console.log(target);
+  // //console.log(target);
 
   //   sockJS.onmessage = function (e) {
   //     //   setReceivedData(e.data)
-  //     console.log(e.data);
+  //     //console.log(e.data);
   //   };
 
   // useEffect(() => {
