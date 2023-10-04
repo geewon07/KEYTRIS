@@ -64,7 +64,7 @@ export const SortAnimation = (props) => {
         const [word, point] = item;
         return (
           <AnimatedRow
-            key={index}
+            key={index+word+point}
             className="row-animation wordline"
             index={index}
             startpoint={beforeIndex}
