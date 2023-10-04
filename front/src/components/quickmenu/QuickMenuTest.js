@@ -40,18 +40,11 @@ export const QuickMenu = () => {
     );
   };
 
+  const openSurvey = () => {
+    window.open("https://forms.gle/iFGch4Y9jbUBZfHD6", "_blank");
+  };
+
   const location = useLocation();
-  // const isGamePage = [
-  //   "/MultiGame",
-  //   "/multiGame",
-  //   "/multigame",
-  //   "/SingleGame",
-  //   "/singleGame",
-  //   "/singlegame",
-  // ].includes(location.pathname.toLowerCase());
-  // const isMultiPage = ["/MultiGame", "/multiGame", "/multigame"].includes(
-  //   location.pathname.toLowerCase()
-  // );
   const isGamePage = ["/SingleGame", "/singleGame", "/singlegame"].includes(
     location.pathname.toLowerCase()
   );
@@ -106,6 +99,11 @@ export const QuickMenu = () => {
           </button>
         </div>
         {/* {modal && <Modal modalShow={title} title={title} setModal={setModal} desc={title} />} */}
+        <div>
+          <button className="nav-button" onClick={openSurvey}>
+            커피 쿠폰 받기
+          </button>
+        </div>
       </nav>
     </div>
   );
