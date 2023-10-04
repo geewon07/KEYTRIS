@@ -112,6 +112,11 @@ export const SingleGame = (props) => {
       setGuessWord("");
       return;
     }
+    if (lastGuess===guessWord) {
+      toast.error("직전에 입력했던 단어를 입력할 수 없습니다.");
+      setGuessWord("");
+      return;
+    }
 
     const forbiddenWords = {
       100: ["정치"],
