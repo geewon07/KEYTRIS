@@ -3,6 +3,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import styled, { css, keyframes } from "styled-components";
 import { useState } from "react";
+import { useEffect } from "react";
 
 // const endpoint = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 const startpoint = [8, 7, 6, 9, 0, 4, 3, 5, 2, 1];
@@ -55,6 +56,12 @@ export const SortAnimation = (props) => {
     "문자8",
     "문자9",
   ];
+useEffect(() => {
+  console.log("sort anim")
+ console.log(targetWord);
+
+
+}, [targetWord])
 
   const [letterList, setLetterList] = useState(sendList);
 
@@ -69,7 +76,7 @@ export const SortAnimation = (props) => {
             index={index}
             startpoint={beforeIndex}
           >
-            <div className={targetWord[0][0] === word ? "targetWord left" : " left"}>
+            <div className={targetWord[0] === word ? "targetWord left" : " left"}>
               {word}
             </div>
             <div className="right points">{point}</div>

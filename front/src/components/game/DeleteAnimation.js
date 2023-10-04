@@ -45,7 +45,7 @@ export const DeleteAnimation = (props) => {
             {/* <li key={letterList.length - index - 1} className={"wordline"}> */}
             <div
               className={
-                targetWord[0][0] === word
+                targetWord[0] === word
                   ? "targetWord wordline left"
                   : "wordline left"
               }
