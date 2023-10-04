@@ -11,6 +11,7 @@ export const PlayersDisplay = ({
   wordListResponse,
   otherPlayerGame,
   newLevelWord,
+  isCountDown,
 }) => {
   const [subWordList, setSubWordList] = useState([]);
   const [targetWord, setTargetWord] = useState([]);
@@ -44,7 +45,7 @@ export const PlayersDisplay = ({
     // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
     if (levelWord.length > 0) {
       setDisplay(true);
-      setAdding(true);
+      setIsTarget(true);
       // setTimeout(() => {}, 200);
       //소켓으로
       setTimeout(() => {
@@ -65,8 +66,10 @@ export const PlayersDisplay = ({
   useEffect(() => {
     // levelword 오면 등록되어 바뀜, 바뀌었을때  useEffect 발동,
     // 먼저 모션 레이어를 키고, 전달한 levelword로 모션을 보여줌
-    setDisplay(true);
-    setIsTarget(true);
+    if (isCountDown) {
+      setDisplay(true);
+      setIsTarget(true);
+    }
     // setAdding(true);
     setTimeout(() => {}, 200);
     //소켓으로
@@ -428,7 +431,7 @@ export const PlayersDisplay = ({
             </>
           )}
         </div>
-        )}
+        )
       </div>
     </div>
   );
