@@ -1,34 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import singleGame from "../../assets/imgs/singleGame.png";
-import singleGame1 from "../../assets/imgs/singleGame1.png";
-import GameSort from "../../assets/imgs/GameSort.png";
-import singleGame2 from "../../assets/imgs/singleGame2.png";
-import singleGameOver from "../../assets/imgs/singleGameOver.png";
+import game_rule_0 from "../../assets/imgs/game_rule_0.gif";
+import game_rule_1 from "../../assets/imgs/game_rule_1.gif";
+import game_rule_2 from "../../assets/imgs/game_rule_2.gif";
+import game_rule_3 from "../../assets/imgs/game_rule_3.gif";
 
 export const ModalGameRule = ({ isOpen, onClose }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const images = [
-    singleGame,
-    singleGame1,
-    GameSort,
-    singleGame2,
-    singleGameOver,
+    // singleGame,
+    game_rule_0,
+    game_rule_1,
+    game_rule_2,
+    game_rule_3,
   ];
 
   const captions = [
-    "1. 게임 시작",
-    "2. 유사 단어 입력",
-    "3. 유사도에 따른 재정렬",
-    "4. 점수 획득",
-    "5. 게임 종료 조건",
+    // "1. 게임 시작",
+    "1. 단어 입력",
+    "2. 유사도 순으로 정렬",
+    "3. 점수 획득",
+    "4. 게임 종료 조건",
   ];
 
-  const descriptions =`[시작하기] 버튼을 클릭해 게임을 시작하세요.
-    주어진 제시어들과 비교해 타겟어에 더 유사한 단어를 입력하세요.
-    입력단어와 유사도 순으로 제시어들이 재정렬됩니다.
-    타겟어가 목표 순위내에 들어온다면 단어가 제거되고 점수를 얻을 수 있습니다.
-    2초마다 새로운 제시어가 추가됩니다<br /> 제시어들이 상한선에 도달하지 않도록 타겟어와 가장 유사한 단어를 입력해 단어를 제거하세요.`;
+  const descriptions = `연두색 타겟어와 맥락이 유사한 새로운 단어를 입력해주세요.
+    화면의 단어들이 입력 단어와 가장 유사한 순으로 정렬됩니다.
+    타겟 단어가 4위 이내 이면 단어가 제거되고 점수를 얻을 수 있어요.
+    3초 마다 새로운 단어가 추가됩니다.<br /> 단어가 천장에 닿으면 게임이 종료됩니다.`;
 
   if (!isOpen) return null;
 
@@ -66,10 +65,12 @@ export const ModalGameRule = ({ isOpen, onClose }) => {
   };
 
   const handlePrev = () => {
-    setActiveIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    setActiveIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    );
   };
 
-  const paragraphs = descriptions.split('\n');
+  const paragraphs = descriptions.split("\n");
 
   return (
     <>
@@ -87,21 +88,38 @@ export const ModalGameRule = ({ isOpen, onClose }) => {
             </div>
             <div style={titleStyle}>게임 규칙</div>
             <div style={contentStyle}>
-              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "300px", }}>
-                <button className="slide-button" onClick={handlePrev} style={{ margin: "5%", cursor: "pointer", }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "300px",
+                }}
+              >
+                <button
+                  className="slide-button"
+                  onClick={handlePrev}
+                  style={{ margin: "5%", cursor: "pointer" }}
+                >
                   &#9664;
                 </button>
-                <img src={images[activeIndex]} alt={captions[activeIndex]} style={imgStyle} />
-                <button className="slide-button" onClick={handleNext} style={{ margin: "5%", cursor: "pointer", }}>
+                <img
+                  src={images[activeIndex]}
+                  alt={captions[activeIndex]}
+                  style={imgStyle}
+                />
+                <button
+                  className="slide-button"
+                  onClick={handleNext}
+                  style={{ margin: "5%", cursor: "pointer" }}
+                >
                   &#9654;
                 </button>
               </div>
-              <div style={{ margin: "5%", }}>
+              <div style={{ margin: "5%" }}>
                 <h3>{captions[activeIndex]}</h3>
-                {paragraphs[activeIndex].split('<br />').map((line, index) => (
-                  <p key={index} >
-                    {line}
-                  </p>
+                {paragraphs[activeIndex].split("<br />").map((line, index) => (
+                  <p key={index}>{line}</p>
                 ))}
               </div>
             </div>
