@@ -93,7 +93,7 @@ function TextChatting({ onSendMessage, chatContent, playerList, myplayerId }) {
                 placeholder="메시지를 입력하세요"
                 value={inputText}
                 onChange={handleInputChange}
-                className={"inputChat"}
+                className={"inputChat Neo"}
                 onKeyPress={handleKeyPress}
                 style={{
                   borderColor: "var(--blue-500)",
