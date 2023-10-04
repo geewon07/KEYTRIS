@@ -426,6 +426,9 @@ export const MultiGame = () => {
             ></Chat>
           </div>
         </div>
+        <div className="quick-layout">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
       </div>
     </div>
   );
