@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.7.16'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '11'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Web Starter
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // JUnit Jupiter for Tests
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    // Spring Boot Starter Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // Spark Core
+    implementation 'org.apache.spark:spark-core_2.12:3.4.1'
+    // Spark SQL
+    implementation 'org.apache.spark:spark-sql_2.12:3.4.1'
+    // Spark YARN
+    implementation 'org.apache.spark:spark-yarn_2.12:3.4.1'
+    // Hadoop YARN Web Proxy
+    implementation 'org.apache.hadoop:hadoop-yarn-server-web-proxy:3.3.4'
+    // Hadoop Common
+    implementation 'org.apache.hadoop:hadoop-common:3.3.1'
+    // Hadoop HDFS Client
+    implementation 'org.apache.hadoop:hadoop-hdfs-client:3.3.1'
+    // Hadoop YARN Client
+    implementation 'org.apache.hadoop:hadoop-yarn-client:3.3.1'
+    // Log4j
+    implementation 'org.apache.logging.log4j:log4j-api:2.19.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.19.0'
+    // Spark MLlib
+    compileOnly 'org.apache.spark:spark-mllib_2.12:3.4.1'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
