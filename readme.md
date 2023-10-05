@@ -116,7 +116,7 @@
 
 ### 채팅
 - 참여자 입장 알림, 참여자 간 채팅 기능
-<img src="./exec/image/service/multi_enter.PNG"  width="600"/>
+<img src="./exec/image/service/multi_chat.gif"  width="600"/>
 
 ### 참여자 순위 확인
 - 함께한 플레이어, 나의 순위 확인 가능
