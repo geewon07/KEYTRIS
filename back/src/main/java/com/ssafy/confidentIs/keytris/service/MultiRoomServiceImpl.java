@@ -30,11 +30,11 @@ public class MultiRoomServiceImpl {
 
     private final SessionMethodService sessionMethodService;
 
-    private static final int TARGET_AMOUNT = 5; // TARGET 단어 받아오는 단위
-    private static final int SUB_AMOUNT = 15; // SUB 단어 받어오는 단위
-    private static final int LEVEL_AMOUNT = 10; // LEVEL 단어 받아오는 단위
-    private static final int TARGET_ADD_STANDARD = 3; // TARGET 단어를 추가로 받아오는 기준
-    private static final int SUB_ADD_STANDARD = 5; // SUB 단어를 추가로 받아오는 기준
+    private static final int TARGET_AMOUNT = 50; // TARGET 단어 받아오는 단위
+    private static final int SUB_AMOUNT = 100; // SUB 단어 받어오는 단위
+    private static final int LEVEL_AMOUNT = 50; // LEVEL 단어 받아오는 단위
+    private static final int TARGET_ADD_STANDARD = 10; // TARGET 단어를 추가로 받아오는 기준
+    private static final int SUB_ADD_STANDARD = 10; // SUB 단어를 추가로 받아오는 기준
     private static final String SUCCESS = "success";
 
 

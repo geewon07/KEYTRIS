@@ -24,8 +24,8 @@ public class SessionMethodService {
   private final MultiRoomManager multiRoomManager;
   private final DataServiceImpl dataServiceImpl;
 
-  private static final int LEVEL_ADD_STANDARD = 5;
-  private static final int LEVEL_AMOUNT = 10; // LEVEL 단어 받아오는 단위
+  private static final int LEVEL_ADD_STANDARD = 10;
+  private static final int LEVEL_AMOUNT = 50; // LEVEL 단어 받아오는 단위
 
   private final Map<String, ScheduledFuture<?>> sessionTasks = new ConcurrentHashMap<>();
 
