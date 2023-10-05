@@ -99,7 +99,7 @@
 
 ### 최대 4명이 함께 게임 가능 
 
-<img src="./exec/image/service/single_play.gif"  width="600"/>
+<img src="./exec/image/service/multi_play.gif"  width="600"/>
 
 ### 친구 모드 게임 만들기
 
