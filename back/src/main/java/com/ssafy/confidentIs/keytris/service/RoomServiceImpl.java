@@ -32,13 +32,8 @@ public class RoomServiceImpl implements RoomService {
   private final CommonRoomServiceImpl commonRoomServiceImpl;
 
   private final SessionMethodService sessionMethodService;
-  private static final int AMOUNT = 10;
-
-  private static final int TARGET_AMOUNT = 5; // TARGET 단어 받아오는 단위
-  private static final int SUB_AMOUNT = 15; // SUB 단어 받어오는 단위
-  private static final int LEVEL_AMOUNT = 10; // LEVEL 단어 받아오는 단위
-  private static final int TARGET_ADD_STANDARD = 3; // TARGET 단어를 추가로 받아오는 기준
-  private static final int SUB_ADD_STANDARD = 5; // SUB 단어를 추가로 받아오는 기준
+  private static final int AMOUNT = 50;
+  private static final int ADD_STANDARD = 10; // SUB 단어를 추가로 받아오는 기준
 
 
   //TODO: 주석처리한 부분 정리하기
@@ -300,18 +295,17 @@ public class RoomServiceImpl implements RoomService {
     dataWordListResponse = dataServiceImpl.sendWordListRequest(dataWordListRequest);
     switch (type) {
       case SUB:
-        if (room.getPlayerList().get(0).getSubWordIndex() + 10 > room.getSubWordList().size()) {
+        if (room.getPlayerList().get(0).getSubWordIndex() + ADD_STANDARD > room.getSubWordList().size()) {
           if (dataWordListResponse.getSuccess().equals("success")) {
             room.updateSubWordList(dataWordListResponse.getData().getWordList());
             log.info("SUB wordList 단어 추가: {}", room.getSubWordList());
           } else {
             log.info("refill sub fail");
           }
-          //TODO: FAIL 일때 예외처리 어떻게 해줄 것인지, return 타입을 컨트롤러 단에서 부터 고쳐서 메세지가 통하게 만들 것인지
         }
         break;
       case TARGET:
-        if (room.getPlayerList().get(0).getTargetWordIndex() + 10 > room.getTargetWordList()
+        if (room.getPlayerList().get(0).getTargetWordIndex() + ADD_STANDARD > room.getTargetWordList()
                 .size()) {
           if (dataWordListResponse.getSuccess().equals("success")) {
             room.updateTargetWordList(dataWordListResponse.getData().getWordList());
@@ -322,7 +316,7 @@ public class RoomServiceImpl implements RoomService {
         }
         break;
       case LEVEL:
-        if (10 > room.getLevelWordList().size()) {
+        if (ADD_STANDARD > room.getLevelWordList().size()) {
           if (dataWordListResponse.getSuccess().equals("success")) {
             room.updateLevelWordList(dataWordListResponse.getData().getWordList());
           } else {
