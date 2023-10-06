@@ -39,6 +39,12 @@ public class ScoreServiceImpl implements ScoreService {
     ZSetOperations<String, String> stringStringZSetOperations = redisTemplate.opsForZSet();
     Set<TypedTuple<String>> typedTuples = stringStringZSetOperations.reverseRangeWithScores(KEY, 0,
         limit);
+    if(typedTuples.isEmpty()|| typedTuples ==null){
+      log.warn("Ranking data is unavailable. Resetting the ranking.");
+      setRanking();
+      typedTuples = stringStringZSetOperations.reverseRangeWithScores(KEY, 0,
+          limit);
+    }
     log.info("get ranking result :{}", typedTuples.toString());
     List<RankingResponse> toList = typedTuples.stream().map(RankingResponse::convert).collect(
         Collectors.toList());
