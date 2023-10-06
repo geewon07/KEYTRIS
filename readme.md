@@ -37,11 +37,11 @@
 
 ### System Architecture
 
-<img src="./exec/image/system_architecture.png"  width="600"/>
+<img src="./exec/image/system_architecture.png"  width="800"/>
 
 ### Data Pipeline
 
-<img src="./exec/image/hadoop_pipeline.png"  width="600"/>
+<img src="./exec/image/hadoop_pipeline.png"  width="800"/>
 
 
 <br><br>
@@ -49,24 +49,24 @@
 
 # Game Rules
 
-### 1. 연두색 타겟어와 맥락이 유사한 새로운 단어를 입력해주세요.
+1. 연두색 타겟어와 맥락이 유사한 새로운 단어를 입력해주세요.
 
-<img src="./exec/image/rule/game_rule_0.gif"  width="600"/>
-
-
-### 2. 화면의 단어들이 입력 단어와 가장 유사한 순으로 정렬됩니다.
-
-<img src="./exec/image/rule/game_rule_1.gif"  width="600"/>
+<img src="./exec/image/rule/game_rule_0.gif"  width="400"/>
 
 
-### 3. 타겟어가 4위 이내에 들어오면 단어가 제거되고 점수를 얻을 수 있어요.
+2. 화면의 단어들이 입력 단어와 가장 유사한 순으로 정렬됩니다.
 
-<img src="./exec/image/rule/game_rule_2.gif"  width="600"/>
+<img src="./exec/image/rule/game_rule_1.gif"  width="400"/>
 
 
-### 4. 3초마다 새로운 단어가 화면에 추가됩니다. 최상단까지 단어가 쌓이면 게임이 종료되니, 빠르게 단어를 제거해보세요.
+3. 타겟어가 4위 이내에 들어오면 단어가 제거되고 점수를 얻을 수 있어요.
 
-<img src="./exec/image/rule/game_rule_3.gif"  width="600"/>
+<img src="./exec/image/rule/game_rule_2.gif"  width="400"/>
+
+
+4. 3초마다 새로운 단어가 화면에 추가됩니다. 최상단까지 단어가 쌓이면 게임이 종료되니, 빠르게 단어를 제거해보세요.
+
+<img src="./exec/image/rule/game_rule_3.gif"  width="400"/>
 
 
 <br>
@@ -74,7 +74,7 @@
 
 # Screens
 
-## 게임 시작
+## 1. 게임 시작
 
 ### 1인 모드, 친구 모드 선택 가능
 
@@ -86,7 +86,7 @@
 <img src="./exec/image/service/single_create.png"  width="600"/>
 
 
-## 1인 모드
+## 2. 1인 모드 게임
 
 ### 매일 새로운 기사에서 추출된 단어로 1인 게임 가능
 - 3초마다 새로운 단어 추가
@@ -94,8 +94,20 @@
 
 <img src="./exec/image/service/single_play.gif"  width="600"/>
 
+### 일일 랭킹 시스템
+- 1인 모드 일일 랭킹 조회 기능
+- 내 점수가 순위권인 경우 내 점수를 랭킹 보드에 저장하는 기능
 
-## 친구 모드
+<img src="./exec/image/service/single_ranking.gif"  width="600"/>
+
+### 오늘의 기사 확인 기능
+- 게임의 마지막 타겟어가 포함된 오늘의 기사를 확인할 수 있는 기능
+- 링크 클릭 시 해당 기사 조회 가능
+
+<img src="./exec/image/service/single_article.gif"  width="600"/>
+
+
+## 3. 친구 모드 게임
 
 ### 최대 4명이 함께 게임 가능 
 
@@ -174,6 +186,8 @@
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
 <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">
 <img src="https://img.shields.io/badge/redis-DC382D?style=for-the-badge&logo=redis&logoColor=white">
+<img src="https://img.shields.io/badge/web_socket-007396?style=for-the-badge&logo=web_socket&logoColor=white">
+
 
 ### FE
 
