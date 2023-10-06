@@ -16,7 +16,7 @@ spring:
       on-profile: "db-dev"
   data:
     redis:
-      host: j9a401aa.p.ssafy.io
+      host: keytris-redis
       port: 8380
       username: develop
       password: "ssafy@a401"
@@ -28,7 +28,7 @@ spring:
       on-profile: "db-prod"
   data:
     redis:
-      host: j9a401aa.p.ssafy.io
+      host: keytris-redis
       port: 8379
       username: develop
       password: "ssafy@a401"

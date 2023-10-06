@@ -16,6 +16,7 @@ import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -43,6 +44,13 @@ public class GameController {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final RestTemplate restTemplate;
+
+    @Value("${naver.client.id}")
+    private String naverClientId;
+
+    @Value("${naver.client.secret}")
+    private String naverClientSecret;
+
 
     @MessageMapping("")
     @PostMapping
@@ -93,8 +101,8 @@ public class GameController {
 
         HttpHeaders headers = new HttpHeaders();
 
-        headers.add("X-Naver-Client-Id", "yAKeqMoJi1FOsLskKCcc");
-        headers.add("X-Naver-Client-Secret", "ltjfU_TDwF");
+        headers.add("X-Naver-Client-Id", naverClientId);
+        headers.add("X-Naver-Client-Secret", naverClientSecret);
 
         HttpEntity<MultiValueMap<String, String>> newsRequest = new HttpEntity<>(headers);
 
