@@ -1,8 +1,9 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  height: 100vh;
+  width: 80vw;
+  overflow: auto;
+  margin: 0 auto;
+  font-family: NeoDunggeunmo Pro;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -10,4 +11,18 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+html {
+  height: 100%;
+  font-size: 16px;
+  color:white;
+  background: radial-gradient(ellipse, #1b2735 0%, #26154a 100%);
+  /* overflow: hidden; */
+}
+
+.keytris_main_gradient {
+  background: -webkit-linear-gradient(white, #38495a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

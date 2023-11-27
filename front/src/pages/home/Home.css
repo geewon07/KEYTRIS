@@ -1,0 +1,108 @@
+.home-content-container {
+    height: 100vh;
+    /* overflow: hidden; */
+    
+}
+
+.main_logo_image {
+    margin-top: 3%;
+}
+
+.main_selection_div {
+    margin-top: 10%;
+    font-family: NeoDunggeunmo Pro;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: transparent;
+    -webkit-text-stroke: 2px white;
+    text-stroke: 2px white;
+
+}
+
+.main_selection_table {
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 5vw;
+    text-align: center;
+}
+
+.main_selection_table_td {
+    border: 3px solid #FFF;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.20) 0%, rgba(217, 217, 217, 0.00) 100%);
+    text-align: center;
+    font-family: NeoDunggeunmo Pro;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: inherit;
+}
+
+.main_selection_desc {
+    color: #CBCBCB;
+    text-align: center;
+    font-family: NeoDunggeunmo;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.button_box {
+    padding-top: 29%;
+}
+
+.main_selection_button {
+    cursor: pointer;
+    display: flex;
+    color: #FFF;
+    font-family: NeoDunggeunmo Pro;
+    text-align: center;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 3px;
+
+    margin: 4vw 5vh;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border: 2px solid #FFF;
+    background-color: transparent;
+    width: 320px;
+    height: 60px;
+    transition: background-image 0.3s;
+
+    &:hover {
+        background-image: linear-gradient(to right, rgba(205, 205, 205, 0.881), rgba(174, 174, 174, 0.751));
+    }
+}
+
+.main_selection_text {
+    color: transparent;
+    text-align: center;
+    margin-top: 200px;
+    font-family: NeoDunggeunmo Pro;
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 2px;
+    paint-order: stroke fill;
+    -webkit-text-stroke: 2px #FFF;
+
+}
+
+.test {
+    z-index: 9999;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+}
+
+.main-logo-layout {
+    margin-top: 1000px;
+}

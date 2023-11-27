@@ -1,0 +1,207 @@
+.total {
+  margin-top: 5%;
+  margin-bottom: 5%;
+  width: 60%;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 120px;
+}
+
+.my-score-display,
+.rank-container,
+.news {
+  width: 100%;
+}
+
+.my-score-display > * {
+  margin-top: 10px;     /* 위쪽 여백 설정 */
+  margin-bottom: 10px;  /* 아래쪽 여백 설정 */
+}
+
+.rank-container > * {
+  margin-top: 10px;     /* 위쪽 여백 설정 */
+  margin-bottom: 10px;  /* 아래쪽 여백 설정 */
+}
+
+.list-title {
+  -webkit-text-stroke: 1px white;
+  text-align: center;
+  font-family: NeoDunggeunmo Pro;
+  font-size: 48px;
+  padding-bottom: 3px;
+}
+
+.rank-list {
+  /* -webkit-text-stroke: 1px white; */
+  text-align: center;
+  font-family: NeoDunggeunmo Pro;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  color: #CBCBCB;
+}
+
+.rank-index {
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.my-rank {
+  line-height: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border: 0.2rem solid #CCFF00;
+  color: #CCFF00;
+  font-size: 1.5rem;
+  word-spacing: 2rem;
+  padding: 1rem;
+}
+
+.record {
+  color: #cf0;
+  -webkit-text-stroke: 1px #cf0;
+  text-align: center;
+  font-family: "NeoDunggeunmo Pro";
+  font-size: 24px;
+  padding-top: 24px;
+}
+
+.score-nickname-input[type="text"] {
+  height: 2rem;
+  -webkit-text-stroke: 1px white;
+  background-color: rgba(179, 177, 177, 0.216);
+}
+
+.score-save-btn {
+  cursor: pointer;
+  text-align: center;
+  vertical-align: middle;
+  margin-left: 0.3rem;
+  height: 2.3rem;
+  -webkit-text-stroke: 1px rgb(71, 71, 71);
+  border-width: 0.2rem;
+  color: black;
+  border-color: #cf0;
+  background-color: rgba(219, 255, 188, 0.886);
+}
+
+/* WebKit browsers (e.g., Chrome, Safari) */
+input::-webkit-input-placeholder {
+  color: black;
+}
+
+/* Mozilla Firefox 4 to 18 */
+input:-moz-placeholder {
+  color: black;
+}
+
+/* Mozilla Firefox 19+ */
+input::-moz-placeholder {
+  color: black;
+}
+
+/* Internet Explorer 10+ */
+input:-ms-input-placeholder {
+  color: black;
+}
+
+.news-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 35px;
+}
+
+.my-news-container1 {
+  width: 60%;
+  overflow: hidden;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.news-title {
+  font-weight: bold;
+  line-height: 1.2;
+  font-size: 1.5rem;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.news-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #CBCBCB;
+  font-size: 1.2rem;
+}
+
+.news-title a,
+.news-description a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.list-title,
+.today-keyword,
+.news-title,
+.news-description {
+  margin-bottom: 20px;
+  color: #cbcbcb;
+  /* -webkit-text-stroke: 1px white; */
+}
+
+.today-keyword {
+  font-size: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 4rem;
+}
+
+.highlight {
+  color: #cf0;
+}
+
+
+.news-title {
+  color: rgb(245, 251, 212);
+}
+
+.news-description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.news-description a {
+  margin-bottom: 2rem;
+}
+
+.rank-item {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px; 
+}
+
+.rank-index,
+.rank-score,
+.rank-nickname {
+  flex: 1; 
+  white-space: nowrap; 
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis; 
+  margin: 0 5px; 
+}
+
+
+
+.record {
+  margin: 1rem;
+  color: rgb(245, 251, 212);
+}
