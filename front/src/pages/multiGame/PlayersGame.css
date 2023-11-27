@@ -1,0 +1,189 @@
+.m-gamecontainer {
+  /* height: 80vh; */
+  min-width: 270px;
+  width: 80% !important;
+  height: 100%;
+  display: flex;
+  align-self: center;
+  /* grid-column: 5 / span 4; */
+  flex-direction: column !important;
+}
+.m-bglist {
+  background: #26154a;
+  position: relative;
+  width: 100% !important;
+  z-index: 1000;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-self: end;
+  text-align: start;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.m-status {
+  /* width: inherit;
+  height: inherit; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.m-score {
+  /* background-color: aquamarine; */
+  position: absolute;
+  text-align: center;
+  top: 20%;
+  font-size: 50px;
+  color: #fff;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.m-startbutton {
+  position: absolute;
+  top: 30%;
+}
+.m-over {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.m-gameover {
+  color: rgba(255, 255, 255, 0.2);
+  font-family: NeoDunggeunmo Pro;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: lighter;
+  line-height: normal;
+  text-align: center;
+  -webkit-text-stroke: 2px #ffffff;
+}
+.m-overlaybox {
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* 쌓이는 방향을 수직으로 설정 */
+  top: auto;
+  right: auto;
+  position: absolute;
+  border-top: 3px solid var(--primary, #cf0);
+  background: rgba(204, 255, 0, 0.2);
+  z-index: 3333;
+}
+.m-bglist2 {
+  background: #26154a;
+  width: 90% !important;
+  z-index: 1000;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-self: end;
+  text-align: start;
+}
+.m-displaylayer {
+  display: flex;
+  flex-direction: column;
+  height: 85%;
+  top: auto;
+  left: auto;
+  bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end !important;
+  position: absolute;
+  color: white;
+  background: gray;
+  z-index: 3332;
+}
+/* .wordlist {
+  margin: 0;
+  list-style: none;
+} */
+.m-targetWord::marker {
+  content: "▶";
+}
+.m-targetWord {
+  color: var(--primary, #cf0);
+}
+/* .indexlist li.targetWord::after {
+  content: "▶";
+  padding: 0.2rem;
+  font-size: 1rem;
+} */
+.m-list-container {
+  /* background: #bcbcbc; */
+  width: 100%;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.m-indexlist {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0;
+  margin: 0;
+  height: inherit;
+  width: inherit;
+  z-index: 3;
+}
+.m-accent {
+  border: 1px solid var(--primary, #cf0);
+}
+.m-wordlist {
+  /* background: #500086; */
+  margin: 0;
+  list-style: none;
+  padding-left: 10%;
+  padding-right: 2%;
+}
+
+.m-accent {
+  border: 1px solid var(--primary, #cf0);
+}
+
+.m-playerName {
+  width: auto;
+  font-size: 24px;
+  border: none;
+  color: #26154a;
+  background-color: #ccff00;
+  padding: 10px;
+  z-index: 3334;
+  text-align: center;
+}
+.m-points {
+  font-size: 0.5rem;
+  color: rgba(255, 255, 255, 0.3);
+}
+input.m-inputcase:focus {
+  outline: none !important;
+}
+.m-wordlist .targetWord::marker {
+  content: "▶" !important;
+}
+
+li.m-wordline {
+  font-size: 1.5vh;
+  font-size: min(max(1.5vh, 6px), 22px);
+  padding-top: 0.2rem;
+  padding-bottom: 0.15rem;
+  display: flex; /* Use flexbox to control layout */
+  justify-content: space-between; /* Align items to either side */
+  align-items: center;
+}
+li.m-wordline.purple {
+  background-color: #8f00ff;
+}
+li.m-wordline.red {
+  background-color: rgb(255, 0, 230);
+}

@@ -1,0 +1,221 @@
+.gamecontainer {
+  height: 100vh;
+  /* min-height:550px; */
+  min-width: 300px;
+  width: 100% !important;
+  display: flex;
+  align-self: center;
+  grid-column: 5 / span 4;
+  flex-direction: column !important;
+}
+.bglist {
+  background: #26154a;
+  position: relative;
+  width: 100% !important;
+  z-index: 1000;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-self: end;
+  text-align: start;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.score {
+  position: absolute;
+  text-align: center;
+  top: 20%;
+  font-size: 96px;
+  color: #fff;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.startbutton {
+  position: absolute;
+  top: 30%;
+}
+.over {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.gameover {
+  color: rgba(255, 255, 255, 0.2);
+  font-family: NeoDunggeunmo Pro;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: lighter;
+  line-height: normal;
+  text-align: center;
+  -webkit-text-stroke: 2px #ffffff;
+}
+.overlaybox {
+  width: 100%;
+  display: flex;
+  flex-direction: column; /* 쌓이는 방향을 수직으로 설정 */
+  top: auto;
+  right: auto;
+  position: absolute;
+  border-top: 3px solid var(--primary, #cf0);
+  background: rgba(204, 255, 0, 0.2);
+  z-index: 3333;
+}
+.displaylayer {
+  display: flex;
+  flex-direction: column;
+  height: 85%;
+  top: auto;
+  left: auto;
+  bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end !important;
+  position: absolute;
+  color: white;
+  background: gray;
+  z-index: 3332;
+}
+/* .wordlist {
+  margin: 0;
+  list-style: none;
+} */
+.targetWord::marker {
+  content: "▶";
+}
+.targetWord {
+  color: var(--primary, #cf0);
+}
+.accent {
+  border: 1px solid var(--primary, #cf0);
+}
+/* .indexlist li.targetWord::after {
+  content: "▶";
+  padding: 0.2rem;
+  font-size: 1rem;
+} */
+.list-container {
+  /* background: #bcbcbc; */
+  width: 100%;
+  height: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.indexlist {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0;
+  margin: 0;
+  height: inherit;
+  width: inherit;
+  z-index: 3;
+}
+.wordlist {
+  /* background: #500086; */
+  margin: 0;
+  list-style: none;
+  padding-left: 10%;
+  padding-right: 2%;
+}
+
+.endbar {
+  background: #d9d9d9;
+  width: 100%;
+}
+.guessbox {
+  width: auto;
+  background: var(--gray2, #888);
+  color: var(--gray4, #ddd);
+  font-size: 20px;
+  padding: 20px;
+  z-index: 3333;
+  border: none;
+}
+input.inputcase {
+  width: auto;
+  border: none;
+  background-color: #f4f4f4;
+  color: #888;
+  /* font-size: 20px; */
+  font-size: min(max(2.5vh, 14px), 28px);
+  color: blue;
+  background-color: #ccff00 !important;
+  padding: 20px;
+  z-index: 3334;
+}
+.points {
+  font-size: 0.5rem;
+}
+input.inputcase:focus {
+  outline: none !important;
+}
+.wordlist .targetWord::marker {
+  content: "▶" !important;
+}
+
+li.wordline {
+  font-size: 2.3vh;
+  font-size: min(max(2.3vh, 14px), 26px);
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  display: flex; /* Use flexbox to control layout */
+  justify-content: space-between; /* Align items to either side */
+  align-items: center;
+}
+li.wordline.purple {
+  background-color: #8f00ff;
+}
+li.wordline.red {
+  background-color: rgb(255, 0, 230);
+}
+.sidenav-left {
+  height: 100vh;
+  padding: 5px;
+  z-index: 9999;
+  align-items: start;
+}
+
+.nav-button {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  margin: 10px;
+  stroke-width: 2px;
+  stroke: #fff;
+  background: transparent;
+  flex-shrink: 0;
+  font-family: NeoDunggeunmo Pro;
+  color: #fff;
+  border-color: #fff;
+  flex-shrink: 0;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  transition: background-image 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    background-image: linear-gradient(
+      to right,
+      rgba(205, 205, 205, 0.881),
+      rgba(174, 174, 174, 0.751)
+    );
+  }
+}

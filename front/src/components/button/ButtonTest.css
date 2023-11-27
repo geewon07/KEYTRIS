@@ -1,0 +1,68 @@
+.modal-button-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+.modal-button-style {
+  border-radius: 10px;
+  border: 1px solid #fff;
+  padding: 1rem;
+  width: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+.modal-button-text {
+  color: #fff;
+  text-align: center;
+  font-family: NeoDunggeunmo Pro;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 3px;
+}
+
+.large-button-layout {
+  display: inline-flex;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.large-button-style {
+  border-radius: 20px;
+  border: 1px solid #fff;
+  padding: 1rem 3rem;
+  width: 100%;
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.04) 100%
+    ),
+    #26154a;
+  transition: 0.3s; /* Optional: Adds smooth transition for the hover effect */
+}
+.large-button-text {
+  color: transparent;
+  text-align: center;
+  font-family: NeoDunggeunmo Pro;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 4px;
+  -webkit-text-stroke: 1px white;
+}
+.large-button-style:hover {
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.04) 100%
+    ),
+    #5523bd;
+  border: 1px solid #8f00ff;
+  cursor: pointer;
+}

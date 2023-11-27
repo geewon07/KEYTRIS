@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active:
+      - dev
+    group:
+      local:
+        - data-local
+        - db-dev
+      dev:
+        - data-dev
+        - db-dev
+      prod:
+        - data-prod
+        - db-prod
+    include:
+      - data
+      - db
+
+server:
+  port: 8765
+
+logging:
+  level:
+    org:
+      springframework: info
+  pattern:
+    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
+
+naver:
+  client:
+    id: "yAKeqMoJi1FOsLskKCcc"
+    secret: "ltjfU_TDwF"

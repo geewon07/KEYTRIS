@@ -1,0 +1,63 @@
+.multi-display {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  margin: 0 auto;
+  height: 100vh;
+}
+
+.my-display {
+  flex: 2;
+  margin-right: 2rem;
+}
+
+.others {
+  flex: 3;
+  margin-top: 4rem !important;
+  margin: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.others-display {
+  flex: 1;
+  height: 50%;
+  display: flex;
+  margin-bottom: 4rem;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.others-display > * {
+  flex: 1; /* 동일한 비율로 나눔 */
+  margin-right: 1rem;
+}
+
+/* 마지막 요소의 오른쪽 여백 제거 */
+.others-display > *:last-child {
+  margin-right: 0;
+}
+
+.chat-container {
+  flex: 1;
+  width: 100%;
+}
+
+.quick-layout {
+  flex: 1;
+}
+
+.multi._countdown {
+  /* display: none; */
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5000;
+  background-color: rgba(226, 228, 225, 0.886);
+  color: #cf0;
+  padding: 10px;
+  border-radius: 5px;
+  font-family: NeoDunggeunmo Pro;
+  font-size: 10rem;
+}
