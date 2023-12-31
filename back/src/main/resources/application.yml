@@ -28,5 +28,5 @@ logging:
 
 naver:
   client:
-    id: "yAKeqMoJi1FOsLskKCcc"
-    secret: "ltjfU_TDwF"
+    id: ${NAVER_CLIENT_ID}
+    secret: ${NAVER_CLIENT_SECRET}

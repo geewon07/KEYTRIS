@@ -17,6 +17,7 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -32,6 +33,9 @@ import static org.apache.spark.sql.functions.split;
 @Component
 @RequiredArgsConstructor
 public class TfidfModel {
+
+    @Value("${spring.hdfs.baseUrl}")
+    private String hdfsBaseUrl;
 
     private final WordModel wordModel;
 
@@ -97,8 +101,7 @@ public class TfidfModel {
         Dataset<Row> df = spark.read().format("csv")
                 .option("header", "true")
 //                        .load("src/main/resources/data/"+csvPath+".csv") // hdfs에 지정된 주소로 바꾸기!!!!!!!!!!!!
-//                .load("hdfs://ip-172-26-2-236:9000/data-noun/"+csvPath+"/*.csv")
-                .load("hdfs://ip-172-26-2-236:9000/data-noun/" + csvPath + "/*.csv")
+                .load(hdfsBaseUrl + "/data-noun/" + csvPath + "/*.csv")
                 .withColumn("words", split(col("words"), ","));
 
         // CountVectorizerModel 생성

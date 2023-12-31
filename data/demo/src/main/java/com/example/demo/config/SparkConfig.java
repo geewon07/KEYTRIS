@@ -3,11 +3,15 @@ package com.example.demo.config;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.SparkSession;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SparkConfig {
+
+    @Value("${spring.hdfs.baseUrl}")
+    private String hdfsBaseUrl;
 
     @Bean
     public SparkConf sparkConf() {
@@ -15,7 +19,7 @@ public class SparkConfig {
                 .setAppName("yarn")
                 .set("spark.master", "yarn")
                 .set("spark.submit.deployMode", "client")
-                .set("spark.yarn.jars", "hdfs://ip-172-26-2-236:9000/spark/jars/*.jar")
+                .set("spark.yarn.jars", hdfsBaseUrl+"/spark/jars/*.jar")
 //                .set("spark.executor.extraJavaOptions","-Dlog4jspark.root.logger=ERROR,console")
 //                .set("spark.driver.extraJavaOptions", "-Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR,console")
                 .set("spark.dynamicAllocation.enabled", "true");
@@ -27,7 +31,7 @@ public class SparkConfig {
 //                .setMaster("local[*]")
 //                .set("spark.master", "local")
 //                .set("spark.submit.deployMode", "client")
-//                .set("spark.yarn.jars", "hdfs://ip-172-26-2-236:9000/spark/jars/*.jar")
+//                .set("spark.yarn.jars", hdfsBaseUrl+"/spark/jars/*.jar")
 //                .set("spark.executor.extraJavaOptions","-Dlog4jspark.root.logger=ERROR,console")
 //                .set("spark.driver.extraJavaOptions", "-Dorg.slf4j.simpleLogger.defaultLogLevel=ERROR,console");
         return conf;

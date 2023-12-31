@@ -11,6 +11,7 @@ import org.apache.spark.ml.feature.Word2VecModel;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -27,6 +28,9 @@ import static org.apache.spark.sql.functions.split;
 @Getter
 @RequiredArgsConstructor
 public class WordModel {
+
+    @Value("${spring.hdfs.baseUrl}")
+    private String hdfsBaseUrl;
 
     // 실제 모델
     private final SparkConf sparkConf;
@@ -144,7 +148,7 @@ public class WordModel {
         Dataset<Row> documentDF = sparkSession.read()
                 .format("csv")
                 .option("header", "true")
-                .load("hdfs://ip-172-26-2-236:9000/data/*/*.csv")
+                .load(hdfsBaseUrl + "/data/*/*.csv")
                 .withColumn("words", split(col("words"), ","));
         documentDF.show();
         documentDF = documentDF.filter(col("words").isNotNull());

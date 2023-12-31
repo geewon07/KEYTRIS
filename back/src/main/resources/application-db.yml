@@ -18,8 +18,8 @@ spring:
     redis:
       host: keytris-redis
       port: 8380
-      username: develop
-      password: "ssafy@a401"
+      username: ${REDIS_USERNAME_DEV}
+      password: ${REDIS_PASSWORD_DEV}
 
 --- # prod 설정
 spring:
@@ -30,5 +30,5 @@ spring:
     redis:
       host: keytris-redis
       port: 8379
-      username: develop
-      password: "ssafy@a401"
+      username: ${REDIS_USERNAME_PROD}
+      password: ${REDIS_PASSWORD_PROD}

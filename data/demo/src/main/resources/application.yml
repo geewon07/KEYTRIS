@@ -1,2 +1,6 @@
 server:
   port: 8766
+
+spring:
+  hdfs:
+    baseUrl: ${HDFS_BASE_URL}
